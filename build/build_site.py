@@ -2,8 +2,12 @@
 """Assemble index.html : CSS inlinés, FAQ synchronisée avec data.js (texte identique au balisage FAQPage)."""
 import json, subprocess, html, re, os
 SITE='../site'
+# json.dumps produit un littéral de chaîne JavaScript correctement échappé.
+# Sans lui, un chemin Windows « C:\Users\rival\… » voit ses \U, \r, \t interprétés
+# comme des séquences d'échappement par Node, et le require échoue.
+_data = json.dumps(os.path.join(os.path.abspath(SITE), 'data.js').replace('\\', '/'))
 faq = json.loads(subprocess.check_output(['node','-e',
-  "global.window={};require('%s/data.js');console.log(JSON.stringify(window.FAQ))"%os.path.abspath(SITE)]).decode())
+  "global.window={};require(%s);console.log(JSON.stringify(window.FAQ))" % _data]).decode())
 
 def esc(s): return html.escape(s, quote=False)
 faq_html = '\n'.join(

@@ -916,7 +916,11 @@ main{display:flex;flex-direction:column;gap:3rem}
 #layout{--pad:1.25rem;max-width:min(1180px,100%);margin:0 auto;padding:2.5rem var(--pad) 5rem;display:flex;flex-direction:column;gap:3rem;overflow-x:clip}
 
 /* en-tête */
-h1{font-size:clamp(1.7rem,5.2vw,3.6rem);text-wrap:balance}
+h1{font-size:clamp(1.7rem,5.2vw,3.6rem);text-wrap:balance;letter-spacing:-.012em}
+/* les italiques penchent : sans ce recul elles butent sur le mot suivant */
+h1 em{margin-right:.09em}
+/* la seconde ligne du titre est décalée, comme une reprise de souffle */
+.h1-l2{display:inline-block;margin-left:clamp(.5rem,3vw,2.6rem)}
 .h1-pro{font-size:clamp(1.5rem,3.9vw,2.6rem)}
 .sub{margin-top:1rem;color:var(--mut);font-size:clamp(1rem,1.6vw,1.2rem)}
 /* le chapô occupe toute la largeur : deux phrases, deux lignes, sans césure mal placée */
@@ -937,13 +941,16 @@ h1{font-size:clamp(1.7rem,5.2vw,3.6rem);text-wrap:balance}
 .nav a{text-decoration:none}
 .nav a:hover{color:var(--bl-t)}
 
-h2{font-size:clamp(1.5rem,3.4vw,2.25rem);display:flex;align-items:center;gap:.7rem}
-h2 .n{width:2.4rem;height:2.4rem;flex:0 0 auto;border-radius:999px;background:var(--bl);color:#fff;display:grid;place-items:center;font-size:1.05rem}
+/* gap:0 — sinon l'espace du flex s'ajoute à celui du texte et « La situation de  votre
+   parent » se retrouve avec un trou. Seule la pastille numérotée est écartée. */
+h2{font-size:clamp(1.5rem,3.4vw,2.25rem);display:flex;align-items:center;gap:0;flex-wrap:wrap}
+h2 .n{width:2.4rem;height:2.4rem;margin-right:.7rem;flex:0 0 auto;border-radius:999px;background:var(--bl);color:#fff;display:grid;place-items:center;font-size:1.05rem}
 h3{font-size:1.05rem}
 .s-head{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
 .s-head-r{display:flex;align-items:center;gap:1rem}
 .s-int{margin-top:.6rem;color:var(--mut);font-size:.95rem;max-width:80ch}
 .s-sub{margin-top:1.6rem;font-weight:600;font-size:.95rem}
+.prio-fld{margin-top:2.2rem}
 .s-sub span{color:var(--mut2);font-weight:400}
 .s-priv{margin-top:1rem;font-size:.8rem;color:var(--mut2)}
 .s-foot{margin-top:1.2rem;font-size:.8rem;color:var(--mut)}
@@ -1048,6 +1055,13 @@ input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:none
 .b-bleu{background:var(--ti-bl);color:var(--bl-t)}.b-gris{background:var(--ti-gr);color:var(--mut2)}.b-slate{background:var(--ti-gr);color:var(--txt2)}
 .b-coral{background:var(--co);color:#fff;box-shadow:0 4px 12px rgba(255,99,71,.3)}
 .det{margin-top:.8rem;border-top:1px solid var(--bd2);padding-top:.6rem}
+.bloc-plus{margin-top:2rem}
+.bloc-plus>summary{cursor:pointer;list-style:none;padding:.7rem 0;font-size:.95rem;display:inline-flex;align-items:center;gap:.4rem}
+.bloc-plus>summary::-webkit-details-marker{display:none}
+.bloc-plus>summary::before{content:'▸';color:var(--bl-t);transition:transform .18s;display:inline-block}
+.bloc-plus[open]>summary::before{transform:rotate(90deg)}
+.bloc-plus>summary span{color:var(--mut);font-weight:400}
+.bloc-plus[open]>summary{margin-bottom:.4rem}
 .det summary{cursor:pointer;font-size:.82rem;font-weight:600;color:var(--bl-t);list-style:none}
 .det summary::-webkit-details-marker{display:none}
 .det summary::after{content:' ▾'}
@@ -1058,6 +1072,8 @@ input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:none
 .ln.moins b{color:var(--vert)}
 .ln.tot{border-bottom:0;border-top:1.5px solid var(--ink);margin-top:.3rem;padding-top:.45rem;font-size:.95rem}
 .warn{margin-top:.5rem;font-size:.78rem;color:var(--sur-or);background:var(--ti-or);border-radius:.6rem;padding:.4rem .6rem}
+.att{margin-top:.7rem;font-size:.78rem;line-height:1.5;color:var(--sur-or);background:var(--ti-or);border-radius:.6rem;padding:.5rem .7rem}
+.att a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .scenario{margin-top:.8rem;background:var(--bg);border-radius:.8rem;padding:.7rem .8rem;font-size:.82rem}
 .scenario b{font-size:.85rem}
 .chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
@@ -1320,6 +1336,16 @@ body.fige{overflow:hidden}
 .f-panneau .ln{font-size:.85rem}
 .f-panneau h4{font-size:.85rem;margin-top:1rem;color:var(--mut)}
 .f-src{margin-top:1rem;font-size:.72rem;color:var(--mut2);line-height:1.45;border-top:1px solid var(--bd2);padding-top:.6rem}
+/* ---------- fiche : la lecture d'un néophyte ----------
+   Chaque montant est suivi d'une phrase courte qui dit d'où il vient. */
+.f-t1{font-size:.75rem!important;text-transform:uppercase;letter-spacing:.05em;color:var(--mut2)!important;margin-top:1.3rem!important;padding-bottom:.3rem;border-bottom:1px solid var(--bd2)}
+.f-t1:first-child{margin-top:.2rem!important}
+.f-note{font-size:.78rem;color:var(--mut);line-height:1.5;margin:.15rem 0 .7rem;padding-left:.1rem}
+.f-note a{color:var(--bl-t)}
+.f-resume{font-size:.88rem;line-height:1.5;background:var(--bg);border-left:3px solid var(--bl);border-radius:.5rem;padding:.6rem .8rem;margin-bottom:.9rem}
+.ln.sstot{border-top:1px solid var(--bd2);margin-top:.2rem;padding-top:.45rem}
+.f-faits b{font-size:1.05rem}
+.f-faits span{line-height:1.3}
 
 /* panneau de filtres et comparaison */
 .drawer,.cmp-drawer{position:fixed;inset:0;z-index:2500;background:rgba(var(--om),.35);display:flex;justify-content:flex-end}
@@ -1597,7 +1623,7 @@ body.fige{overflow:hidden}
   <header>
     <div class="head-row">
       <div>
-        <h1>Ce que l’EHPAD coûtera<br><em class="bl">vraiment</em> à <em class="co">votre parent</em>.</h1>
+        <h1>Ce que l’EHPAD coûtera<br><span class="h1-l2"><em class="bl">vraiment</em> à <em class="co">votre parent</em></span></h1>
       </div>
       <div class="head-side print-hide">
         <a href="/professionnels/" class="lien-pro">Vous accompagnez des personnes âgées&nbsp;?<b>Espace professionnel</b></a>

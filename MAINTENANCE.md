@@ -290,6 +290,25 @@ Deux points d'attention techniques :
 
 ---
 
+### 5.1 Reconstruire seulement le style
+
+`build_seo.py` charge d'abord les bases sources (`merged_v2.json` et les autres), qui ne sont
+**pas versionnées** : elles pèsent plus de 100 Mo et se retéléchargent (§2.2). Quand on n'a
+touché qu'à `site.css` ou `seo.css`, ce détour est inutile — et sur un dépôt fraîchement cloné
+il échoue avec `FileNotFoundError: merged_v2.json`.
+
+```bash
+cd build
+python build_assets.py     # régénère site/assets/site.css et site/assets/pages.js
+python build_site.py       # régénère site/index.html (CSS inliné)
+python build_pages.py      # régénère les 4 pages annexes (CSS inliné)
+```
+
+Les 7 903 pages de contenu, elles, ne contiennent pas de CSS : elles pointent vers
+`/assets/site.css`. Un changement de style les atteint donc **sans** avoir à les régénérer.
+
+---
+
 ## 6. Format des fichiers produits
 
 ### 6.1 `site/data/dep/ehpad-XX.js` — un tableau par EHPAD, 45 colonnes

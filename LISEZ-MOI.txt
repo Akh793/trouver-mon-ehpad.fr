@@ -1,61 +1,32 @@
-TROUVER MON EHPAD — v2.4 — site complet
+CORRECTIF — build_site.py plantait sous Windows
 
-Le site est livré en trois archives, à décompresser DANS LE MÊME DOSSIER :
-  trouver-mon-ehpad-v2.4-base.zip      le site, le code, les données du calculateur, la documentation
-  trouver-mon-ehpad-v2.4-fiches-1.zip  les fiches d'établissement (1re moitié)
-  trouver-mon-ehpad-v2.4-fiches-2.zip  les fiches d'établissement (2e moitié)
+CE QUI S'ÉTAIT PASSÉ
+  build_site.py construisait une commande Node en collant le chemin du projet
+  dans une chaîne JavaScript. Sous Windows, « C:\Users\rival\... » contient des
+  antislashs que Node interprète comme des séquences d'échappement (\U, \r, \t) :
+  le chemin arrivait déformé et le script s'arrêtait. index.html n'a donc pas
+  été régénéré chez vous.
+  Sous Linux le bug n'apparaît pas — les chemins y utilisent des slashs.
 
-Après décompression, on obtient un seul dossier « trouver-mon-ehpad/ ».
+  build_seo.py, lui, s'arrête sur « merged_v2.json introuvable » : c'est normal.
+  Les bases sources ne sont pas versionnées (plus de 100 Mo). Un nouveau script,
+  build_assets.py, régénère la feuille de style sans elles.
 
-POUR REGARDER LE SITE
-  Ouvrir un terminal dans trouver-mon-ehpad/site puis :
-      python3 -m http.server 8000
-  et aller sur http://127.0.0.1:8000
-  Le mode professionnel s'ouvre par http://127.0.0.1:8000/professionnels/
-  ou directement par http://127.0.0.1:8000/?pro=1
+À EXTRAIRE DIRECTEMENT DANS :
+  C:\Users\rival\Desktop\Ehpad\V7\trouver-mon-ehpad
 
-OÙ SE TROUVE QUOI
-  site/index.html            la page d'accueil complète (CSS en ligne, aucune requête bloquante)
-  site/app.js                le moteur : calculs, interface, carte, thème, mode professionnel, tests
-  site/data.js               les règles nationales et les sources, modifiables à la main
-  site/data/dep/             les données par département, chargées à la demande
-  build/index.template.html  le gabarit d'où index.html est produit — titre et chapô s'y modifient
-  build/site.css             la feuille de style unique — la palette est en tête de fichier
-  build/seo_pages.js         le script commun aux pages de contenu (thème, barre, consentement)
-  build/seo/                 les 8 modules qui produisent les 7 903 pages de contenu
+CONTENU
+  build\build_site.py     corrigé
+  build\build_assets.py   nouveau : régénère le style sans les bases sources
+  site\index.html         déjà régénéré (titre et styles à jour)
+  site\assets\site.css    déjà régénéré (pour les 7 903 pages de contenu)
+  site\assets\pages.js    déjà régénéré
+  MAINTENANCE.md          nouveau paragraphe 5.1
 
-  Pour modifier l'accueil : éditer build/index.template.html ou build/site.css,
-  puis relancer « python3 build_site.py » depuis build/.
-  Pour les pages annexes : « python3 build_pages.py » depuis build/.
-  Pour les pages de contenu : « python3 build_seo.py » depuis build/seo/.
-  Contrôle rapide dans la console du navigateur : runTests() doit renvoyer true.
+ENSUITE, dans PowerShell :
+  cd C:\Users\rival\Desktop\Ehpad\V7\trouver-mon-ehpad
+  git add .
+  git commit -m "correctif build Windows + index et assets regeneres"
+  git push
 
-CHANGER LES COULEURS
-  Tout part du bloc « :root » en haut de build/site.css. Le thème sombre est le bloc
-  « [data-theme="dark"] » juste en dessous : il ne redéfinit que des variables, jamais
-  une règle de mise en page. Détail complet au paragraphe 10.7 de MAINTENANCE.md.
-
-CE QU'IL FAUT LIRE
-  MAINTENANCE.md   le mode d'emploi complet : les 17 bases de données, comment les
-                   rafraîchir, la chaîne de construction, les contrôles avant publication.
-                   Thème et barre de défilement au §10.7, mode professionnel au §10.8.
-  DEPLOIEMENT.md   la mise en ligne sur GitHub Pages, pas à pas.
-  README.md        la présentation courte du dépôt.
-
-CE QUI N'EST PAS DANS L'ARCHIVE
-  Les fichiers sources téléchargés (FINESS, CNSA, HAS, INSEE…) : plus de 100 Mo,
-  retéléchargeables par les scripts décrits au paragraphe 2.2 de MAINTENANCE.md.
-
-AVANT DE PUBLIER
-  site/mentions-legales.html contient encore deux « À COMPLÉTER » : le nom de
-  l'éditeur et l'adresse postale. Le workflow GitHub refuse volontairement de
-  publier tant qu'ils sont là — la loi pour la confiance dans l'économie
-  numérique les exige.
-
-NOUVEAU DANS LA v2.4
-  Thème clair / sombre sur tout le site, avec bouton dans l'en-tête et dans la barre.
-  Le choix est mémorisé sur l'appareil ; sans choix, le site suit le réglage du système.
-  L'impression reste toujours claire.
-  Barre de défilement : elle apparaît quand on descend, avec le menu « Naviguer », le
-  bouton de thème, l'appel à l'action et un liseré de progression.
-  En-tête d'accueil : titre sur deux lignes, chapô sur deux lignes.
+  Rien d'autre à lancer : les fichiers générés sont déjà dans l'archive.
