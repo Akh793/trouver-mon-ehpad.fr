@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* Thème : appliqué avant le premier rendu, sinon la page clignote en blanc. */
+(function(){try{var k='mon_ehpad_theme',t=localStorage.getItem(k);
+if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<title>Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD, sur une carte</title>
+<meta name="description" content="Calculateur gratuit du reste à charge en EHPAD : prix réel après APA, aide au logement et réduction d’impôt, pour les 7 417 EHPAD français. Carte, évolution du prix depuis 2018, places qui se libèrent, aide sociale à l’hébergement, part de chaque enfant et mode d’emploi des démarches.">
+<link rel="canonical" href="https://trouver-mon-ehpad.fr/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:title" content="Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD, sur une carte">
+<meta property="og:description" content="Ce que coûtera vraiment un EHPAD à votre parent, après APA, aide au logement et réduction d’impôt : 7 417 établissements, prix officiels CNSA, évolution du prix depuis 2018, qualité HAS, habilitation à l’aide sociale.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://trouver-mon-ehpad.fr/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Trouver mon EHPAD">
+<meta property="og:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Trouver mon EHPAD — le reste à charge réel, établissement par établissement">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD">
+<meta name="twitter:description" content="Le prix affiché n’est pas ce que vous paierez. Calculez le reste à charge réel de votre parent, sur une carte.">
+<meta name="twitter:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta name="theme-color" content="#2548FF">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.json">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", "@id": "https://trouver-mon-ehpad.fr/#website", "url": "https://trouver-mon-ehpad.fr/", "name": "Trouver mon EHPAD",
+      "description": "Calculateur gratuit du reste à charge en EHPAD, établissement par établissement, sur une carte.",
+      "inLanguage": "fr-FR", "publisher": { "@id": "https://trouver-mon-ehpad.fr/#organization" } },
+    { "@type": "Organization", "@id": "https://trouver-mon-ehpad.fr/#organization", "name": "Trouver mon EHPAD", "url": "https://trouver-mon-ehpad.fr/",
+      "email": "contact@trouver-mon-ehpad.fr", "areaServed": { "@type": "Country", "name": "France" } },
+    { "@type": "SoftwareApplication", "@id": "https://trouver-mon-ehpad.fr/#app",
+      "name": "Trouver mon EHPAD — calculateur du reste à charge en maison de retraite",
+      "alternateName": "Simulateur reste à charge EHPAD 2026",
+      "url": "https://trouver-mon-ehpad.fr/", "applicationCategory": "FinanceApplication",
+      "applicationSubCategory": "Simulateur d’aides publiques", "operatingSystem": "Web (tout navigateur)",
+      "browserRequirements": "JavaScript activé", "inLanguage": "fr-FR", "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+      "featureList": [
+        "Reste à charge mensuel calculé pour 7 417 EHPAD français, après APA en établissement, aide au logement et réduction d’impôt",
+        "Carte interactive : l’étiquette de chaque établissement est le montant calculé pour votre parent, pas le prix affiché",
+        "Évolution du prix de la chambre de 2018 à 2025, établissement par établissement, comparée à l’inflation INSEE",
+        "Places qui se libèrent : taux d’occupation du segment et rythme de rotation, faute de base publique des places disponibles",
+        "Part de chaque enfant si la famille complète, et coût réel après déduction fiscale de la pension alimentaire",
+        "Couple hébergé à deux, conjoint resté à domicile, autres revenus : les situations que les simulateurs ignorent",
+        "Scénario aide sociale à l’hébergement : ce que verse le résident, ce qui reste au département et aux obligés alimentaires",
+        "Pratique départementale de l’ASH : recours sur succession, personnes sollicitées au titre de l’obligation alimentaire",
+        "Qualité : note d’évaluation A à D de la Haute Autorité de santé, critères impératifs atteints, hygiène alimentaire Alim’confiance",
+        "Lien de partage : la simulation se rouvre à l’identique chez les frères et sœurs, sans aucun nom transmis",
+        "Comparaison de trois établissements, fiche imprimable et mode d’emploi des démarches",
+        "Mode professionnel : export CSV pour les services sociaux, CCAS et mandataires judiciaires",
+        "Une page par région, département, ville et établissement : tarifs, comparaison locale et évolution depuis 2018, consultables sans lancer de recherche",
+        "Comparateur en deux volets : la liste à gauche, la fiche de l’établissement à droite — on passe d’un établissement à l’autre sans jamais perdre sa place",
+        "Calcul entièrement dans le navigateur : aucune donnée personnelle, médicale ou financière transmise"
+      ],
+      "softwareVersion": "2.4", "dateModified": "2026-09-11",
+      "publisher": { "@id": "https://trouver-mon-ehpad.fr/#organization" } },
+    { "@type": "WebPage", "@id": "https://trouver-mon-ehpad.fr/#webpage", "url": "https://trouver-mon-ehpad.fr/",
+      "name": "Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD, sur une carte",
+      "isPartOf": { "@id": "https://trouver-mon-ehpad.fr/#website" }, "about": { "@id": "https://trouver-mon-ehpad.fr/#app" },
+      "inLanguage": "fr-FR", "dateModified": "2026-09-11" },
+    { "@type": "BreadcrumbList", "@id": "https://trouver-mon-ehpad.fr/#breadcrumb",
+      "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://trouver-mon-ehpad.fr/" } ] },
+    { "@type": "FAQPage", "@id": "https://trouver-mon-ehpad.fr/#faq", "mainEntity": [FAQ_JSONLD] }
+  ]
+}
+</script>
+<style>
+{FONTFACE}
+{LEAFLETCSS}
+{SITECSS}
+</style>
+<!-- Consentement (Consent Mode v2) : aucune mesure d'audience tant que l'utilisateur n'a pas accepté -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});
+  (function(){
+    var KEY='mon_ehpad_consent', TTL=182*24*3600*1000, choice=null;   // choix conservé 6 mois (recommandation CNIL)
+    try{var raw=localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);if(o&&o.v&&Date.now()-o.t<TTL)choice=o.v;else localStorage.removeItem(KEY);}}catch(e){}
+    function apply(v){gtag('consent','update',{analytics_storage:v==='granted'?'granted':'denied'});window.dataLayer.push({event:v==='granted'?'consent_granted':'consent_denied'});if(v==='granted')window.ME_startGTM&&window.ME_startGTM();}
+    window.ME_consent={get:function(){return choice;},set:function(v){choice=v;try{localStorage.setItem(KEY,JSON.stringify({v:v,t:Date.now()}));}catch(e){}apply(v);},reset:function(){choice=null;try{localStorage.removeItem(KEY);}catch(e){}}};
+    if(choice)apply(choice);
+  })();
+  // Mesure d'audience différée : ne part qu'au premier geste, et seulement si un identifiant est renseigné ci-dessous.
+  var ME_GTM_ID = '';   // ← renseigner l'identifiant GTM (GTM-XXXXXXX) le jour de la mise en ligne
+  window.ME_startGTM = function () {
+    if (!ME_GTM_ID || window.ME_gtmStarted) return; window.ME_gtmStarted = true;
+    var f=document.getElementsByTagName('script')[0],j=document.createElement('script');
+    window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+ME_GTM_ID;f.parentNode.insertBefore(j,f);
+  };
+</script>
+</head>
+<body>
+
+<a href="#contenu" class="skip">Aller au calculateur</a>
+<div id="layout">
+
+  <!-- barre compacte, révélée au défilement -->
+  <div id="topbar" class="topbar print-hide">
+    <div class="topbar-in">
+      <a class="tb-logo" href="#contenu">Trouver mon <span>EHPAD</span></a>
+      <div class="tb-r">
+        <div class="tb-nav-wrap">
+          <button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
+          <nav id="tb-menu" class="tb-menu" hidden aria-label="Navigation rapide">
+            <a href="#bande-situation">La situation de votre parent</a>
+            <a href="#bande-carte">La carte des restes à charge</a>
+            <a href="#bande-route">Votre mode d’emploi</a>
+            <a href="#bande-faq">Questions fréquentes</a>
+            <hr>
+            <a href="/ehpad/">Les EHPAD en France</a>
+            <a href="/prix-ehpad/">Prix des EHPAD</a>
+            <a href="/aides-ehpad/">Aides financières</a>
+            <a href="/guides/">Guides</a>
+            <a href="/professionnels/">Espace professionnel</a>
+            <a href="notre-methodologie.html">Notre méthodologie</a>
+          </nav>
+        </div>
+        <button type="button" id="theme-btn" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button>
+        <a href="#bande-situation" class="tb-cta">Calculer mon reste à charge</a>
+      </div>
+    </div>
+    <div class="tb-prog" aria-hidden="true"><i id="tb-prog"></i></div>
+  </div>
+
+  <!-- ============ EN-TÊTE ============ -->
+  <header>
+    <div class="head-row">
+      <div>
+        <h1>Ce que l’EHPAD coûtera<br><em class="bl">vraiment</em> à <em class="co">votre parent</em>.</h1>
+      </div>
+      <div class="head-side print-hide">
+        <a href="/professionnels/" class="lien-pro">Vous accompagnez des personnes âgées&nbsp;?<b>Espace professionnel</b></a>
+        <div class="head-act"><button type="button" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button>
+        <a href="qui-sommes-nous.html">Qui sommes-nous ?</a></div>
+        <span class="badge b-coral">Règles à jour au&nbsp;<span class="meta-date">—</span></span>
+        <span class="perf">temps de calcul : <span id="perf">—</span></span>
+      </div>
+    </div>
+    <p class="sub">Découvrez ce que vous paierez vraiment en EHPAD.<br><span class="sub2">Renseignez la situation de votre parent et comparez, établissement par établissement, le reste à charge après aides.</span></p>
+    <nav aria-label="Navigation principale" class="nav print-hide">
+      <a href="#bande-carte">La carte des restes à charge</a>
+      <a href="/ehpad/">Les EHPAD en France</a>
+      <a href="/prix-ehpad/">Prix des EHPAD</a>
+      <a href="/aides-ehpad/">Aides financières</a>
+      <a href="/guides/">Guides</a>
+      <a href="notre-methodologie.html">Méthodologie</a>
+      <a href="#bande-faq">Questions fréquentes</a>
+    </nav>
+  </header>
+
+  <main id="contenu">
+  <!-- ============ BANDE 1 : LA SITUATION ============ -->
+  <section id="bande-situation">
+    <div class="s-head">
+      <h2><span class="n">1</span> La situation de <em class="bl">votre parent</em></h2>
+      <div class="s-head-r">
+        <button type="button" id="reset-btn" class="lien">Effacer mes réponses</button>
+      </div>
+    </div>
+    <div data-mode="pro" hidden class="pro-bandeau">
+      <div class="pro-b-t">
+        <p class="pro-b-h">Espace professionnel</p>
+        <p class="pro-b-s">Identifiez les établissements compatibles avec le budget, la localisation et les aides disponibles, puis constituez votre liste de démarches.</p>
+      </div>
+      <div class="pro-b-a">
+        <button type="button" id="dossiers-btn" class="btn-w">Mes recherches</button>
+        <button type="button" id="pro-quitter" class="lien">Revenir au parcours famille</button>
+      </div>
+    </div>
+    <p data-mode="pro" hidden class="mode-note" id="pro-dossier-ligne"><span id="pro-dossier">Aucune recherche enregistrée ouverte.</span> Les critères et la liste de démarches restent sur cet appareil, dans ce navigateur&nbsp;: rien n’est transmis, rien n’est enregistré ailleurs. N’y saisissez aucune donnée nominative.</p>
+
+    <div class="grid4">
+      <div class="fld">
+        <label for="cp">Où chercher</label>
+        <input id="cp" inputmode="numeric" maxlength="5" placeholder="69003" autocomplete="postal-code" aria-describedby="cp-aide">
+        <div id="commune" class="fld-ok"></div>
+        <div id="cp-dd" class="dd" hidden></div>
+        <p id="cp-aide" class="fld-h">Le code postal de la famille, pas celui du parent : c’est la distance de visite qui compte.</p>
+      </div>
+      <div class="fld">
+        <label for="rayon">Dans un rayon de</label>
+        <select id="rayon">
+          <option value="10">10 km</option>
+          <option value="20" selected>20 km</option>
+          <option value="40">40 km</option>
+          <option value="60">60 km</option>
+        </select>
+        <p class="fld-h">Au-delà de 40 résultats, la carte regroupe les établissements.</p>
+      </div>
+      <div class="fld">
+        <label>Niveau de dépendance (GIR)</label>
+        <div class="seg seg4" data-seg="gir:12,34,56,?" role="group" aria-label="Groupe iso-ressources">
+          <button type="button">GIR 1-2</button><button type="button">GIR 3-4</button><button type="button">GIR 5-6</button><button type="button">Je ne sais pas</button>
+        </div>
+        <p class="fld-h">Le GIR est notifié par le département. Il fixe le tarif dépendance facturé.</p>
+      </div>
+      <div class="fld">
+        <label for="revenus">Retraites et pensions du parent</label>
+        <div class="in-eur"><input id="revenus" inputmode="numeric" placeholder="1 600"><span>€/mois</span></div>
+        <p class="fld-h">Un seul chiffre rond. C’est l’entrée de l’APA et de l’aide sociale.</p>
+      </div>
+    </div>
+
+    <div id="gir-aide" hidden class="gir-box">
+      <p><b>Quatre questions pour situer le GIR</b> — estimation indicative, jamais la notification officielle.</p>
+      <div id="gir-calc" class="gir-q">
+        <label><input type="checkbox"> Il ou elle a besoin d’aide pour se lever et se déplacer</label>
+        <label><input type="checkbox"> Il ou elle a besoin d’aide pour s’habiller ou faire sa toilette</label>
+        <label><input type="checkbox"> Il ou elle a besoin d’aide pour manger</label>
+        <label><input type="checkbox"> Il ou elle se repère mal dans le temps ou dans l’espace</label>
+      </div>
+      <p id="gir-res" class="fld-h"></p>
+    </div>
+
+    <details class="bloc-plus" id="plus-situation">
+      <summary><b>Préciser la situation</b> <span>— épargne, couple, enfants, impôt : le calcul devient plus juste</span></summary>
+    <div class="grid3">
+      <div class="fld">
+        <label for="autres">Autres revenus mensuels</label>
+        <div class="in-eur"><input id="autres" inputmode="numeric" placeholder="0"><span>€/mois</span></div>
+        <p class="fld-h">Loyers perçus, rente viagère, revenus de placements. Le département les compte dans l’aide sociale ; l’APA aussi.</p>
+      </div>
+      <div class="fld">
+        <label for="epargne">Épargne disponible</label>
+        <div class="in-eur"><input id="epargne" inputmode="numeric" placeholder="30 000"><span>€</span></div>
+        <p class="fld-h">Sert à savoir combien de mois l’épargne tient face au reste à charge.</p>
+      </div>
+      <div class="fld">
+        <label for="apl">Aide au logement déjà notifiée</label>
+        <div class="in-eur"><input id="apl" inputmode="numeric" placeholder="0"><span>€/mois</span></div>
+        <p class="fld-h">Nous ne l’inventons pas : elle dépend du conventionnement de l’établissement. Demandez-la, puis saisissez-la ici.</p>
+      </div>
+      <div class="fld">
+        <label>Chambre</label>
+        <div class="seg" data-seg="chambre:cs,cd" role="group" aria-label="Type de chambre">
+          <button type="button">Seule</button><button type="button">Double</button>
+        </div>
+        <p class="fld-h">La chambre double est facturée au tarif « chambre double » déclaré par l’établissement, quand il en déclare un.</p>
+      </div>
+      <div class="fld">
+        <label>Le parent paie-t-il de l’impôt sur le revenu ?</label>
+        <div class="seg" data-seg="imposable:false,true" role="group" aria-label="Imposable">
+          <button type="button">Non</button><button type="button">Oui</button>
+        </div>
+        <p class="fld-h">Si oui, la réduction d’impôt de 25 % est déduite (plafond 2 500 € par an et par personne hébergée).</p>
+      </div>
+      <div class="fld">
+        <label>Vit-il ou elle en couple ?</label>
+        <div class="seg" data-seg="couple:false,true" role="group" aria-label="En couple">
+          <button type="button">Non</button><button type="button">Oui</button>
+        </div>
+        <p class="fld-h">En couple, les ressources du ménage sont divisées par deux pour l’APA.</p>
+      </div>
+      <div class="fld" id="fld-deuxres" hidden>
+        <label>Les deux sont-ils hébergés en EHPAD ?</label>
+        <div class="seg" data-seg="deuxResidents:false,true" role="group" aria-label="Deux résidents hébergés">
+          <button type="button">Non</button><button type="button">Oui</button>
+        </div>
+        <p class="fld-h">Deux hébergements, deux tarifs dépendance, et un plafond de réduction d’impôt par personne hébergée.</p>
+      </div>
+      <div class="fld" id="fld-conjoint" hidden>
+        <label>Le conjoint reste-t-il à domicile ?</label>
+        <div class="seg" data-seg="conjointDomicile:false,true" role="group" aria-label="Conjoint à domicile">
+          <button type="button">Non</button><button type="button">Oui</button>
+        </div>
+        <p class="fld-h">En aide sociale, le conjoint resté chez lui doit conserver au moins 1 043,59 € par mois : le département ne peut pas descendre en dessous.</p>
+      </div>
+      <div class="fld">
+        <label>Est-il ou elle propriétaire de son logement ?</label>
+        <div class="seg" data-seg="proprietaire:false,true" role="group" aria-label="Propriétaire">
+          <button type="button">Non</button><button type="button">Oui</button>
+        </div>
+        <p class="fld-h">Change le scénario aide sociale : le département récupère sur la succession.</p>
+      </div>
+      <div class="fld">
+        <label for="enfants">Combien d’enfants peuvent participer ?</label>
+        <select id="enfants">
+          <option value="0">Aucun, ou je ne veux pas le calculer</option>
+          <option value="1">1 enfant</option>
+          <option value="2">2 enfants</option>
+          <option value="3">3 enfants</option>
+          <option value="4">4 enfants</option>
+          <option value="5">5 enfants</option>
+          <option value="6">6 enfants ou plus</option>
+        </select>
+        <p class="fld-h">Le site répartit à parts égales ce qui n’est pas couvert. Aucun barème national n’existe : le département, ou le juge, tranche.</p>
+      </div>
+      <div class="fld" id="fam-detail" hidden>
+        <label for="tmi">Tranche d’imposition de chaque enfant</label>
+        <select id="tmi">
+          <option value="0">0 % — non imposable</option>
+          <option value="11">11 %</option>
+          <option value="30" selected>30 %</option>
+          <option value="41">41 %</option>
+          <option value="45">45 %</option>
+        </select>
+        <p class="fld-h">La pension versée à un parent dans le besoin se déduit du revenu imposable, sans plafond. Le coût réel dépend donc de cette tranche.</p>
+      </div>
+    </div>
+    </details>
+
+    <div class="fld prio-fld">
+      <label>Qu’est-ce qui compte le plus pour vous&nbsp;?</label>
+      <div class="seg seg4" data-seg="priorite:rac,dist,ash,has" role="group" aria-label="Ce qui compte le plus">
+        <button type="button">Le budget</button><button type="button">La proximité</button><button type="button">Les aides</button><button type="button">La qualité</button>
+      </div>
+      <p class="fld-h">Ce choix change l’ordre des résultats, jamais leur contenu. Vous pouvez en changer à tout moment.</p>
+    </div>
+    <p class="s-priv">Aucun nom, aucune date de naissance, aucun avis d’imposition : ces chiffres restent sur votre appareil.</p>
+  </section>
+
+  <!-- ============ BANDE 2 : L'ESPACE DE COMPARAISON ============ -->
+  <section id="bande-carte">
+    <h2><span class="n">2</span> Le reste à charge, <em class="bl">établissement par établissement</em></h2>
+
+    <div id="vide" class="vide">
+      <p class="v-t">Commencez par le <em class="bl">code postal</em></p>
+      <p class="v-s">Les établissements autour de vous s’affichent aussitôt. Indiquez ensuite la retraite de votre parent&nbsp;: chaque tarif devient le montant qui resterait réellement à payer.</p>
+    </div>
+
+    <div id="resultats" hidden>
+      <!-- synthèse compacte -->
+      <div id="total-card">
+        <div class="t-row">
+          <div>
+            <p class="t-l" id="res-titre">—</p>
+            <p class="t-m" id="res-chiffre" aria-live="polite">—</p>
+            <p class="t-s" id="res-sous"></p>
+          </div>
+          <div class="t-a print-hide">
+            <button type="button" id="action-rouge" hidden class="btn-w">Voir seulement les établissements habilités à l’aide sociale</button>
+            <button type="button" id="share-btn" class="btn-sec">🔗 Copier le lien</button>
+          </div>
+        </div>
+        <p class="t-share" id="share-msg" hidden role="status"></p>
+        <details class="t-det print-hide">
+          <summary id="res-recap-r">Voir la situation retenue pour ce calcul</summary>
+          <p class="t-r" id="res-recap"></p>
+          <p class="t-d">Ces montants sont des estimations. Le niveau d’autonomie, l’allocation personnalisée d’autonomie et l’aide sociale à l’hébergement sont notifiés par le conseil départemental&nbsp;: seule sa décision fait foi.</p>
+        </details>
+      </div>
+
+      <!-- espace de travail : liste à gauche, carte ou fiche à droite -->
+      <div class="atelier" id="atelier" data-vue="carte">
+
+        <div class="col-liste">
+          <div class="barre print-hide">
+            <span class="barre-n" id="barre-n">—</span>
+            <div class="barre-r">
+              <div class="seg seg-vue" data-vue-seg role="group" aria-label="Affichage">
+                <button type="button" data-vue="carte" aria-pressed="true">Carte</button>
+                <button type="button" data-vue="fiche" aria-pressed="false">Fiche</button>
+              </div>
+              <label class="sr-only" for="rayon2">Rayon de recherche</label>
+              <select id="rayon2" aria-label="Rayon de recherche">
+                <option value="10">10 km</option><option value="20">20 km</option>
+                <option value="40">40 km</option><option value="60">60 km</option>
+              </select>
+              <label class="sr-only" for="tri">Trier par</label>
+              <select id="tri" aria-label="Trier les résultats">
+                <option value="rac">Reste à charge</option>
+                <option value="dist">Distance</option>
+                <option value="prix">Tarif affiché</option>
+                <option value="has">Qualité</option>
+                <option value="marge">Places libres estimées</option>
+                <option value="evol">Tarif qui a le moins augmenté</option>
+              </select>
+              <button type="button" id="fav-btn" class="btn-f" hidden aria-pressed="false">♥<span id="fav-n"></span></button>
+              <button type="button" id="filtres-btn" class="btn-f" aria-expanded="false" aria-controls="drawer-filtres">Filtres<span id="filtres-n" hidden></span></button>
+            </div>
+          </div>
+          <div id="chips-actifs" class="chips-actifs print-hide"></div>
+          <div id="liste" class="liste" role="list"></div>
+          <div class="liste-pied print-hide">
+            <button type="button" id="plus-btn" class="btn-sec" hidden></button>
+            <button type="button" id="export-btn" class="btn-sec" hidden>⬇ Exporter la liste en CSV</button>
+          </div>
+        </div>
+
+        <aside class="col-detail" id="col-detail" aria-label="Carte et fiche de l’établissement">
+          <div id="pan-carte" class="pan">
+            <div class="map-wrap">
+              <div id="map" role="application" aria-label="Carte des EHPAD et de leur reste à charge"></div>
+              <button type="button" id="zone-btn" class="zone-btn" hidden>Rechercher dans cette zone</button>
+              <p id="tile-warn" hidden class="tile-warn">Fond de carte indisponible (pas de connexion à la Géoplateforme de l’IGN). Les établissements et leurs montants restent affichés et positionnés.</p>
+              <p class="legende" id="legende"><span><i style="background:#2548FF"></i> tarif déclaré</span> <span><i style="background:#94a3b8"></i> tarif non déclaré</span> <span><i class="depart"></i> votre point de départ</span></p>
+            </div>
+          </div>
+          <div id="pan-fiche" class="pan" hidden>
+            <div class="sheet-poignee" id="sheet-poignee" role="button" tabindex="0" aria-label="Agrandir ou réduire la fiche"></div>
+            <div id="fiche" class="fiche"></div>
+          </div>
+        </aside>
+      </div>
+
+      <div id="contexte" class="contexte"></div>
+    </div>
+  </section>
+
+  <!-- panneau des filtres -->
+  <div id="drawer-filtres" class="drawer print-hide" hidden role="dialog" aria-modal="true" aria-labelledby="drawer-titre">
+    <div class="drawer-in">
+      <div class="drawer-h">
+        <h3 id="drawer-titre">Affiner la liste</h3>
+        <button type="button" class="x" id="drawer-close" aria-label="Fermer les filtres">×</button>
+      </div>
+      <div class="drawer-b">
+        <p class="q-lbl">Avez-vous besoin d’un établissement habilité à l’aide sociale&nbsp;?</p>
+        <div class="seg seg4" data-seg="besoinAsh:oui,non,nsp" role="group" aria-label="Besoin de l’aide sociale à l’hébergement">
+          <button type="button">Oui</button><button type="button">Non</button><button type="button">Je ne sais pas</button>
+        </div>
+        <p id="ash-aide" class="fld-h" hidden>L’aide sociale à l’hébergement est l’aide du département quand les ressources et l’épargne ne suffisent pas à payer l’hébergement. Elle n’est possible que dans un établissement habilité, elle peut être demandée aux enfants et elle est récupérée sur la succession. <a href="/aides-ehpad/aide-sociale-hebergement/">Ce qu’il faut savoir</a></p>
+        <label class="chk-l"><input type="checkbox" data-check="ashConfirmer" checked> Inclure les habilitations partielles, à confirmer auprès de l’établissement</label>
+
+        <p class="q-lbl">Quel type d’établissement&nbsp;?</p>
+        <label class="chk-l"><input type="checkbox" data-check="statut0" checked> Public</label>
+        <label class="chk-l"><input type="checkbox" data-check="statut1" checked> Associatif, à but non lucratif</label>
+        <label class="chk-l"><input type="checkbox" data-check="statut2" checked> Privé commercial</label>
+
+        <p class="q-lbl">Autres critères</p>
+        <label class="chk-l"><input type="checkbox" data-check="hasAB"> Seulement les établissements évalués A ou B</label>
+        <label class="chk-l"><input type="checkbox" data-check="tempOnly"> Accueil temporaire proposé (séjour de quelques semaines)</label>
+        <label class="chk-l"><input type="checkbox" data-check="prixConnu"> Masquer ceux qui n’ont pas déclaré leur tarif</label>
+        <label class="chk-l"><input type="checkbox" data-check="favorisOnly"> Seulement ceux que j’ai gardés</label>
+      </div>
+      <div class="drawer-f">
+        <button type="button" id="filtres-reset" class="lien">Tout réinitialiser</button>
+        <button type="button" id="filtres-ok" class="btn">Voir les résultats</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- mes recherches (mode professionnel) -->
+  <div id="drawer-dossiers" class="drawer print-hide" hidden role="dialog" aria-modal="true" aria-labelledby="dossiers-titre">
+    <div class="drawer-in">
+      <div class="drawer-h">
+        <h3 id="dossiers-titre">Mes recherches</h3>
+        <button type="button" class="x" id="dossiers-close" aria-label="Fermer">×</button>
+      </div>
+      <div class="drawer-b">
+        <p class="fld-h">Une recherche enregistrée retient la zone, la distance, les critères de recherche et la liste de démarches. Elle ne retient <b>ni identité, ni ressources</b>&nbsp;: les montants saisis servent au calcul du moment et ne sont pas enregistrés dans la recherche. Tout reste sur cet appareil, dans ce navigateur&nbsp;: rien n’est transmis, et vider le cache efface tout. Donnez à vos recherches un repère neutre — «&nbsp;Dossier 001&nbsp;», «&nbsp;Recherche Lyon Est&nbsp;» — jamais le nom de la personne accompagnée.</p>
+        <div class="fld" style="margin-top:1rem">
+          <label for="dossier-nom">Nom de la recherche</label>
+          <input id="dossier-nom" maxlength="60" placeholder="Dossier 001">
+        </div>
+        <button type="button" id="dossier-enreg" class="btn" style="margin-top:.7rem">Enregistrer la recherche en cours</button>
+        <div id="dossiers-liste" class="dossiers"></div>
+      </div>
+      <div class="drawer-f">
+        <span class="fld-h" id="dossiers-n"></span>
+        <button type="button" id="dossiers-ok" class="btn-sec">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- barre de comparaison -->
+  <div id="cmp-barre" class="cmp-barre print-hide" hidden>
+    <span id="cmp-n"></span>
+    <div class="cmp-b">
+      <button type="button" id="cmp-vider" class="lien">Vider</button>
+      <button type="button" id="cmp-ouvrir" class="btn">Comparer</button>
+    </div>
+  </div>
+
+  <!-- tableau de comparaison -->
+  <div id="cmp-drawer" class="cmp-drawer print-hide" hidden role="dialog" aria-modal="true" aria-labelledby="cmp-titre">
+    <div class="cmp-in">
+      <div class="drawer-h">
+        <h3 id="cmp-titre">Ma comparaison</h3>
+        <div class="cmp-h-r">
+          <label class="chk-l"><input type="checkbox" id="cmp-diff"> Afficher uniquement les différences</label>
+          <button type="button" class="x" id="cmp-close" aria-label="Fermer la comparaison">×</button>
+        </div>
+      </div>
+      <div id="cmp-wrap" class="cmp-scroll"><div id="comparaison"></div></div>
+      <div class="drawer-f">
+        <button type="button" id="cmp-plus" class="lien">Voir toutes les caractéristiques</button>
+        <div class="cmp-f-r">
+          <button type="button" id="cmp-export" class="btn-sec" hidden>⬇ Exporter en CSV</button>
+          <button type="button" class="btn" data-print>🖨️ Imprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BANDE 3 : LE MODE D'EMPLOI ============ -->
+  <section id="bande-route">
+    <div class="s-head">
+      <h2><span class="n">3</span> Votre mode <em class="co">d’emploi</em></h2>
+      <button type="button" id="print-btn" class="btn" data-print>🖨️ Imprimer ou enregistrer ma fiche</button>
+    </div>
+    <div id="route-vide" class="vide"><p class="v-s">Les démarches à faire, dans l’ordre, avec les pièces à préparer et les pièges documentés, apparaîtront ici.</p></div>
+    <div id="route-wrap" hidden class="route-wrap"><div id="route"></div></div>
+  </section>
+
+  </main>
+
+  <!-- ============ BANDE 4 : LES DONNÉES ============ -->
+  <section id="bande-sources">
+    <h2>D’où viennent <em class="bl">ces données</em> ?</h2>
+    <p class="s-int">Chaque chiffre de cette page vient d’une base publique ou d’un texte officiel, et porte sa date. Dernière vérification des règles nationales : <strong class="meta-date"></strong>. Nous n’inventons aucun montant : quand une donnée n’est pas publiée, l’outil le dit au lieu de la remplacer par une valeur vraisemblable.</p>
+    <div id="sources" class="src-grid"></div>
+
+    <h3 class="h3b">La référence de comparaison des prix</h3>
+    <p class="s-int">L’évolution du prix de chaque établissement est comparée à l’inflation constatée par l’INSEE (indice des prix à la consommation, ensemble des ménages, moyenne annuelle) :</p>
+    <div class="infl-wrap">
+      <table class="infl">
+        <caption>Inflation annuelle en France, INSEE — cumul 2018 → 2025 : +17,2 %</caption>
+        <thead><tr><th scope="col">Année</th><th scope="col">Inflation</th></tr></thead>
+        <tbody id="infl-table"></tbody>
+      </table>
+    </div>
+
+    <h3 class="h3b">Ce que ce site ne calcule pas, et pourquoi</h3>
+    <ul id="non-simule" class="non-sim"></ul>
+    <p class="s-foot">Les seuils de l’APA en établissement utilisés ici : <b id="seuil-inf">—</b> et <b id="seuil-sup">—</b> de ressources mensuelles. Périmètre : 7 417 EHPAD ouverts au 11/09/2026, dont 5 793 déclarent un prix à la CNSA. Les 1 624 autres restent affichés avec la mention « prix non déclaré » — les faire disparaître reviendrait à récompenser l’opacité — et 67 établissements sans coordonnées connues n’apparaissent pas sur la carte. Habilitation à l’aide sociale, d’après le libellé officiel FINESS : 6 081 habilités, 1 142 non habilités, 194 à confirmer (l’établissement déclare un tarif aide sociale à la CNSA sans être habilité dans FINESS). Historique de prix disponible pour 7 255 établissements, taux d’occupation du segment pour 6 602. Chaque établissement documenté, chaque ville et chaque département ont aussi leur page&nbsp;: <a href="/ehpad/">voir l’annuaire</a>. Version 2.4.</p>
+  </section>
+
+  <!-- ============ BANDE 5 : QUESTIONS FRÉQUENTES ============ -->
+  <section id="bande-faq" class="print-hide">
+    <h2>Questions <em class="co">fréquentes</em></h2>
+    <div class="faq">{FAQ_HTML}</div>
+  </section>
+
+  <!-- ============ BANDE 6 : COMPRENDRE ============ -->
+  <section id="bande-guides" class="print-hide">
+    <h2>Pour aller <em class="bl">plus loin</em></h2>
+    <div class="guides">
+      <a class="g-card" href="notre-methodologie.html"><b>Notre méthodologie</b><span>Comment le reste à charge est calculé, quelles sources sont croisées, ce que nous refusons de simuler.</span></a>
+      <a class="g-card" href="https://www.pour-les-personnes-agees.gouv.fr/" target="_blank" rel="noopener"><b>Le portail officiel des personnes âgées</b><span>Annuaire de la CNSA, taux d’encadrement, absentéisme et rotation du personnel, publiés depuis août 2026.</span></a>
+      <a class="g-card" href="https://www.service-public.fr/particuliers/vosdroits/F2444" target="_blank" rel="noopener"><b>L’aide sociale à l’hébergement</b><span>Les règles nationales : minimum laissé au résident, conjoint à domicile, récupération sur succession.</span></a>
+      <a class="g-card" href="https://www.service-public.fr/particuliers/vosdroits/F17" target="_blank" rel="noopener"><b>La réduction d’impôt</b><span>25 % des frais d’hébergement et de dépendance restant à charge, dans la limite de 10 000 € par an et par personne hébergée.</span></a>
+      <a class="g-card" href="https://www.pour-les-personnes-agees.gouv.fr/annuaire-ehpad-et-maisons-de-retraite" target="_blank" rel="noopener"><b>Déposer un dossier ViaTrajectoire</b><span>Le dossier unique : la seule voie pour candidater. Les places disponibles ne sont publiées nulle part.</span></a>
+      <a class="g-card" href="mentions-legales.html"><b>Mentions légales et données personnelles</b><span>Ce que le site enregistre — presque rien — et où l’écrire si un chiffre vous paraît faux.</span></a>
+    </div>
+  </section>
+
+  <!-- ============ BANDE 7 : PARCOURIR SANS CALCULER ============ -->
+  <section id="bande-explorer" class="print-hide">
+    <h2>Parcourir <em class="co">sans calculer</em></h2>
+    <p class="s-int">Vous voulez d’abord vous faire une idée des tarifs&nbsp;? Chaque région, chaque département, chaque ville et chaque établissement a sa page, avec les tarifs réellement déclarés.</p>
+    <div class="guides">
+      <a class="g-card" href="/ehpad/"><b>Les EHPAD en France</b><span>7 417 établissements, par région puis par département et par ville.</span></a>
+      <a class="g-card" href="/prix-ehpad/"><b>Le prix des EHPAD</b><span>Tarif médian, écarts entre établissements, évolution depuis 2018.</span></a>
+      <a class="g-card" href="/prix-ehpad-par-departement/"><b>Le prix par département</b><span>Les 101 départements classés du moins cher au plus cher.</span></a>
+      <a class="g-card" href="/aides-ehpad/"><b>Les aides financières</b><span>Quatre aides, dans l’ordre où il faut les demander.</span></a>
+      <a class="g-card" href="/calcul-reste-a-charge-ehpad/"><b>Calculer le reste à charge</b><span>La méthode, ligne par ligne, avec un exemple chiffré.</span></a>
+      <a class="g-card" href="/guides/"><b>Les guides</b><span>Choisir, visiter, monter un dossier, financer le séjour.</span></a>
+    </div>
+  </section>
+
+  <!-- ============ PIED DE PAGE ============ -->
+  <footer id="site-footer" class="print-hide">
+    <nav aria-label="Pied de page">
+      <a href="./">Le calculateur</a>
+      <a href="/ehpad/">Les EHPAD en France</a>
+      <a href="/prix-ehpad/">Prix des EHPAD</a>
+      <a href="/aides-ehpad/">Aides financières</a>
+      <a href="/guides/">Guides</a>
+      <a href="/professionnels/">Espace professionnel</a>
+      <a href="notre-methodologie.html">Notre méthodologie</a>
+      <a href="qui-sommes-nous.html">Qui sommes-nous ?</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="#" data-consent-open>Gérer les cookies</a>
+      <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Mon%20EHPAD%20%E2%80%94%20contact">Nous écrire</a>
+    </nav>
+    <p>© 2026 Trouver mon EHPAD — gratuit, sans publicité, sans partenariat avec des établissements.</p>
+  </footer>
+</div>
+
+<!-- Bandeau de consentement -->
+<div id="consent-banner" hidden class="print-hide">
+  <div class="cb">
+    <p>Ce site peut utiliser une mesure d’audience, uniquement si vous l’acceptez. Les informations sur votre parent (ressources, épargne, dépendance) ne sont jamais transmises : elles ne quittent pas votre appareil. <a href="mentions-legales.html#cookies">En savoir plus</a></p>
+    <div class="cb-b">
+      <button type="button" id="consent-accept" class="btn">Accepter</button>
+      <button type="button" id="consent-refuse" class="lien">Continuer sans accepter</button>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    var b = document.getElementById('consent-banner'); if (!b || !window.ME_consent) return;
+    function show(){b.hidden=false;} function hide(){b.hidden=true;}
+    if (!ME_consent.get()) show();
+    document.getElementById('consent-accept').addEventListener('click', function(){ME_consent.set('granted');hide();});
+    document.getElementById('consent-refuse').addEventListener('click', function(){ME_consent.set('denied');hide();});
+    document.querySelectorAll('[data-consent-open]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();ME_consent.reset();show();});});
+    ['pointerdown','keydown','touchstart','scroll'].forEach(function(ev){
+      window.addEventListener(ev, function once(){window.removeEventListener(ev, once);if(ME_consent.get()==='granted')window.ME_startGTM&&window.ME_startGTM();},{once:true,passive:true});
+    });
+  })();
+</script>
+
+<script src="data.js" defer></script>
+<script src="data/departements.js" defer></script>
+<script src="data/prix-reference.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>

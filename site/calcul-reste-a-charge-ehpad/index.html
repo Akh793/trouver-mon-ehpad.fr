@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* Thème : appliqué avant le premier rendu, sinon la page clignote en blanc. */
+(function(){try{var k='mon_ehpad_theme',t=localStorage.getItem(k);
+if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<title>Calcul du reste à charge en EHPAD : la méthode</title>
+<meta name="description" content="Comment calculer ce que coûtera réellement un EHPAD : tarif d’hébergement, tarif dépendance, allocation personnalisée d’autonomie, aide au logement et réduction d’impôt, avec un exemple chiffré.">
+<link rel="canonical" href="https://trouver-mon-ehpad.fr/calcul-reste-a-charge-ehpad/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Calcul du reste à charge en EHPAD : la méthode">
+<meta property="og:description" content="Comment calculer ce que coûtera réellement un EHPAD : tarif d’hébergement, tarif dépendance, allocation personnalisée d’autonomie, aide au logement et réduction d’impôt, avec un exemple chiffré.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://trouver-mon-ehpad.fr/calcul-reste-a-charge-ehpad/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Trouver mon EHPAD">
+<meta property="og:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta name="theme-color" content="#2548FF">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://trouver-mon-ehpad.fr/#website","url":"https://trouver-mon-ehpad.fr/","name":"Trouver mon EHPAD","description":"Comprendre, comparer et estimer le coût réel des EHPAD en France.","inLanguage":"fr-FR","publisher":{"@id":"https://trouver-mon-ehpad.fr/#organization"}},{"@type":"Organization","@id":"https://trouver-mon-ehpad.fr/#organization","name":"Trouver mon EHPAD","url":"https://trouver-mon-ehpad.fr/","email":"contact@trouver-mon-ehpad.fr","areaServed":{"@type":"Country","name":"France"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://trouver-mon-ehpad.fr/"},{"@type":"ListItem","position":2,"name":"Calculer le reste à charge"}]},{"@type":"Article","headline":"Calculer le reste à charge d’un EHPAD","description":"Comment calculer ce que coûtera réellement un EHPAD : tarif d’hébergement, tarif dépendance, allocation personnalisée d’autonomie, aide au logement et réduction d’impôt, avec un exemple chiffré.","inLanguage":"fr-FR","datePublished":"2026-09-11","dateModified":"2026-09-11","author":{"@id":"https://trouver-mon-ehpad.fr/#organization"},"publisher":{"@id":"https://trouver-mon-ehpad.fr/#organization"},"mainEntityOfPage":"https://trouver-mon-ehpad.fr/calcul-reste-a-charge-ehpad/"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quel est le reste à charge moyen en EHPAD&nbsp;?","acceptedAnswer":{"@type":"Answer","text":"Il n’existe pas de montant unique : le reste à charge dépend du tarif de l’établissement, du niveau d’autonomie et des ressources. Pour une personne seule avec une retraite modeste, dans un établissement au tarif médian (2 245 € par mois), il dépasse généralement le montant de la retraite."}},{"@type":"Question","name":"L’allocation personnalisée d’autonomie est-elle versée à la famille&nbsp;?","acceptedAnswer":{"@type":"Answer","text":"Non. En établissement, elle est le plus souvent versée directement à l’EHPAD, qui la déduit de la facture. La famille voit donc un tarif dépendance déjà allégé."}},{"@type":"Question","name":"Faut-il vendre la maison pour payer l’EHPAD&nbsp;?","acceptedAnswer":{"@type":"Answer","text":"Pas nécessairement. La louer permet souvent de couvrir une partie du reste à charge. En revanche, si l’aide sociale à l’hébergement est demandée, le département peut récupérer les sommes versées sur la succession, donc sur le bien."}}]}]}</script>
+<script src="/assets/pages.js" defer></script>
+</head>
+<body data-type="national" data-lieu="">
+<div id="topbar" class="topbar print-hide">
+<div class="topbar-in">
+<a class="tb-logo" href="/">Trouver mon <span>EHPAD</span></a>
+<div class="tb-r">
+<div class="tb-nav-wrap">
+<button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
+<nav id="tb-menu" class="tb-menu" hidden aria-label="Navigation rapide">
+<a href="/">Le calculateur</a>
+<a href="/ehpad/">Les EHPAD en France</a>
+<a href="/prix-ehpad/">Prix des EHPAD</a>
+<a href="/aides-ehpad/">Aides financières</a>
+<a href="/guides/">Guides</a>
+<a href="/professionnels/">Espace professionnel</a>
+<hr>
+<a href="/notre-methodologie.html">Notre méthodologie</a>
+<a href="/qui-sommes-nous.html">Qui sommes-nous&nbsp;?</a>
+</nav>
+</div>
+<button type="button" id="theme-btn" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button>
+<a href="/" class="tb-cta" data-ev="seo_topbar_to_calculator">Calculer mon reste à charge</a>
+</div>
+</div>
+<div class="tb-prog" aria-hidden="true"><i id="tb-prog"></i></div>
+</div>
+<header class="top"><div class="top-in">
+<a class="logo" href="/">Trouver mon <span>EHPAD</span></a>
+<nav aria-label="Navigation principale">
+<a href="/">Calculateur</a>
+<a href="/ehpad/">Les EHPAD en France</a>
+<a href="/prix-ehpad/">Prix</a>
+<a href="/aides-ehpad/">Aides</a>
+<a href="/guides/">Guides</a>
+<a href="/notre-methodologie.html">Méthodologie</a>
+</nav>
+<button type="button" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button></div></header>
+<main class="wrap">
+<nav class="fil-ariane" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span aria-hidden="true">›</span> <span aria-current="page">Calculer le reste à charge</span></nav>
+<h1 class="p-h1">Calculer le reste à charge d’un EHPAD</h1>
+<p class="p-sub">Les cinq lignes du calcul, un exemple chiffré, et ce qui fait varier le résultat.</p>
+<p class="p-maj">Règles et chiffres vérifiés le 11/09/2026</p>
+<div class="note"><b>La réponse courte.</b> On additionne le tarif d’hébergement et le tarif
+dépendance, puis on retire l’allocation personnalisée d’autonomie, l’aide au logement et la réduction d’impôt.
+Ce qui reste est le reste à charge. Pour un tarif médian et une retraite modeste, il représente souvent une à
+deux fois le montant de la retraite.</div>
+
+<section><h2>Les cinq lignes du calcul</h2>
+<ol>
+<li><b>Hébergement</b> — le tarif journalier de l’établissement, multiplié par 30,5 jours (la durée moyenne d’un mois).</li>
+<li><b>Dépendance</b> — le tarif correspondant au niveau d’autonomie de la personne, mesuré par la grille officielle GIR.</li>
+<li><b>Moins l’allocation personnalisée d’autonomie</b> — versée directement à l’établissement par le département. Jusqu’à 2 846,77 € de ressources par mois, le résident ne paie que le tarif dépendance le plus faible. Au-delà de 4 379,64 €, sa participation est plafonnée. <a href="/aides-ehpad/apa/">Le détail</a></li>
+<li><b>Moins l’aide au logement</b> — si l’établissement est conventionné. Son montant est notifié par la caisse d’allocations familiales ou la Mutualité sociale agricole. <a href="/aides-ehpad/aide-au-logement/">Dans quels cas</a></li>
+<li><b>Moins la réduction d’impôt</b> — 25 % des frais d’hébergement et de dépendance restants, dans la limite de 2 500 € par an et par personne hébergée, et seulement si la personne paie de l’impôt sur le revenu. <a href="/aides-ehpad/reduction-impot/">Qui y a droit</a></li>
+</ol></section>
+
+<section><h2>Un exemple chiffré</h2>
+<p>Une personne seule, 1 600 € de retraite par mois, autonomie moyenne (GIR 3-4), dans un établissement au tarif médian&nbsp;:</p>
+<ul>
+<li>Hébergement&nbsp;: 2 245 € par mois.</li>
+<li>Tarif dépendance&nbsp;: environ 420 € par mois, dont l’essentiel est pris en charge par l’allocation personnalisée d’autonomie, puisque la retraite est inférieure à 2 846,77 €.</li>
+<li>Aide au logement&nbsp;: dépend du conventionnement de l’établissement, à demander à la caisse d’allocations familiales.</li>
+<li>Réduction d’impôt&nbsp;: nulle ici, la personne n’étant pas imposable.</li>
+</ul>
+<p>Le reste à charge tourne alors autour de <b>2 425 € par mois</b>, pour 1 600 € de ressources.
+L’écart se comble par l’épargne, par la famille, par la vente ou la location du logement, ou par
+<a href="/aides-ehpad/aide-sociale-hebergement/">l’aide sociale à l’hébergement</a>.</p>
+<div class="att">Cet exemple est une illustration, pas une simulation. Les tarifs dépendance varient d’un établissement
+à l’autre, et le montant exact dépend de la situation complète de la personne.</div></section>
+
+<section><h2>Faire le calcul sur un établissement réel</h2>
+<p>Le calculateur applique ces cinq lignes à chaque EHPAD autour d’une commune, avec les tarifs réellement déclarés
+par chaque établissement. Il gère aussi les situations que les simulateurs ignorent&nbsp;: couple dont les deux membres
+sont hébergés, conjoint resté à domicile, autres revenus, et répartition entre les enfants.</p>
+<div class="cta"><a class="cta-b" href="/" data-ev="seo_calcul_to_calculator">Estimer mon reste à charge</a><span class="cta-n">Aucune inscription, aucune donnée transmise : le calcul s’exécute dans votre navigateur.</span></div></section>
+<section><h2>Questions fréquentes</h2><div class="qa"><details><summary><span>Quel est le reste à charge moyen en EHPAD&amp;nbsp;?</span></summary><p>Il n’existe pas de montant unique&nbsp;: le reste à charge dépend du tarif de l’établissement, du niveau d’autonomie et des ressources. Pour une personne seule avec une retraite modeste, dans un établissement au tarif médian (2 245 € par mois), il dépasse généralement le montant de la retraite.</p></details><details><summary><span>L’allocation personnalisée d’autonomie est-elle versée à la famille&amp;nbsp;?</span></summary><p>Non. En établissement, elle est le plus souvent versée directement à l’EHPAD, qui la déduit de la facture. La famille voit donc un tarif dépendance déjà allégé.</p></details><details><summary><span>Faut-il vendre la maison pour payer l’EHPAD&amp;nbsp;?</span></summary><p>Pas nécessairement. La louer permet souvent de couvrir une partie du reste à charge. En revanche, si l’aide sociale à l’hébergement est demandée, le département peut récupérer les sommes versées sur la succession, donc sur le bien.</p></details></div></section>
+<p class="src-bloc"><b>Sources.</b> Tarifs et places : Caisse nationale de solidarité pour l’autonomie (CNSA), fichier « prix et tarifs des EHPAD », dernière publication&nbsp;: janvier 2026. Identité, adresse et habilitation à l’aide sociale&nbsp;: répertoire FINESS (Agence du numérique en santé). Évaluations&nbsp;: Haute Autorité de santé. Les tarifs mensuels affichés sont le tarif journalier d’hébergement multiplié par 30,5 jours. Règles nationales vérifiées le 11/09/2026. <a href="/notre-methodologie.html">Voir la méthode complète</a> · <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Correction">Signaler une erreur</a></p>
+</main>
+<footer class="foot"><div class="foot-in">
+<nav aria-label="Pied de page">
+<a href="/">Le calculateur</a>
+<a href="/ehpad/">Les EHPAD en France</a>
+<a href="/prix-ehpad/">Prix des EHPAD</a>
+<a href="/aides-ehpad/">Aides financières</a>
+<a href="/guides/">Guides</a>
+<a href="/professionnels/">Espace professionnel</a>
+<a href="/notre-methodologie.html">Méthodologie</a>
+<a href="/qui-sommes-nous.html">Qui sommes-nous ?</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+<a href="#" data-consent-open>Gérer les cookies</a>
+</nav>
+<p>© 2026 Trouver mon EHPAD — service indépendant, gratuit, sans publicité et sans partenariat avec des établissements. Ce site n’est pas un service public.</p>
+</div></footer>
+<div id="consent-banner" hidden><div class="cb">
+<p>Ce site peut utiliser une mesure d’audience, uniquement si vous l’acceptez. Les informations que vous saisissez dans le calculateur ne sont jamais transmises : elles restent sur votre appareil. <a href="/mentions-legales.html#cookies">En savoir plus</a></p>
+<div class="cb-b"><button type="button" id="consent-accept" class="btn">Accepter</button>
+<button type="button" id="consent-refuse" class="lien">Continuer sans accepter</button></div></div></div>
+</body>
+</html>

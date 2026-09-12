@@ -1,0 +1,89 @@
+# Trouver mon EHPAD
+
+> Calculateur gratuit du reste à charge en EHPAD, établissement par établissement, sur une carte. Pour une situation familiale donnée (lieu, GIR, ressources, épargne, imposition), il calcule ce que le résident paiera réellement après APA en établissement, aide au logement notifiée et réduction d'impôt, puis expose le scénario aide sociale à l'hébergement (part du résident, part du département, obligation alimentaire, recours sur succession) et la marche à suivre administrative. Gratuit, sans publicité, sans partenariat avec des établissements, sans collecte de données : tout le calcul s'exécute dans le navigateur.
+
+Dernière vérification des règles nationales : 11/09/2026. Version 2.0.
+
+## Ce que le site couvre
+
+- 7 417 EHPAD ouverts en France (extraction FINESS du 10/09/2026), dont 5 793 déclarant un prix à la CNSA. Les 1 624 sans prix déclaré restent affichés avec la mention « prix non déclaré ».
+- Prix hébergement (chambre seule et double), tarif « aide sociale », tarifs dépendance GIR 1-2 / 3-4 / 5-6, prix de l'accueil temporaire, prix du linge, date de mise à jour déclarée — source CNSA.
+- Habilitation à l'aide sociale à l'hébergement, d'après le libellé officiel du mode de fixation tarifaire FINESS : 6 081 habilités, 1 142 non habilités, 194 « à confirmer » (l'établissement déclare un tarif aide sociale à la CNSA sans être habilité dans FINESS — habilitation partielle probable). La source de l'information figure sur chaque fiche.
+- Qualité : note d'évaluation A/B/C/D de la Haute Autorité de santé pour 4 815 établissements, date, organisme évaluateur (choisi et rémunéré par l'établissement), cotations des trois chapitres, nombre de critères impératifs atteints sur 18 (variable documentée `nb_ci_atteints`).
+- Hygiène alimentaire : résultat de la dernière inspection Alim'confiance pour 1 012 établissements, appariés par SIRET puis par SIREN + commune identique lorsqu'un seul candidat correspond.
+- Évolution du prix de la chambre de 2018 à 2025 pour 7 255 établissements : courbe, évolution totale et annualisée, écart à l'inflation INSEE (+17,2 % sur la période). Prix médian d'une chambre seule : 60,22 € en 2018, 73,41 € en 2025, soit +20,5 % pour les établissements présents aux deux dates ; 65 % ont augmenté plus vite que le coût de la vie, environ 2,5 % ont baissé.
+- Estimation de la disponibilité pour 6 602 établissements : taux d'occupation du segment (statut × densité de la commune, enquête EHPA 2023 de la DREES, de 89 à 97 résidents pour 100 places) et rotation des résidents (38,8 % par an), traduits en places libres et en délai moyen entre deux libérations quand la capacité 2020 est connue. Ce n'est jamais un relevé de places réellement disponibles, et le site le dit.
+- Mode de fixation tarifaire : tarif global ou partiel de soins, présence d'une pharmacie à usage intérieur.
+- Plan de financement familial : part de chaque enfant si la famille complète, à parts égales, et coût réel après déduction fiscale de la pension alimentaire (déductible sans plafond du revenu imposable).
+- Contexte départemental : part des places occupées par un bénéficiaire de l'ASH, taux d'équipement (DREES 2024), pratique départementale de l'ASH (DREES, enquête 2018) : recours sur succession, personnes sollicitées au titre de l'obligation alimentaire, prise en charge du GIR 5-6.
+
+## Règles de calcul appliquées (vérifiées le 10/09/2026)
+
+- Passage du prix journalier au mois : × 30,5 jours, affiché sur la page.
+- APA en établissement : formule OpenFisca-France `apa_etablissement`. Participation du résident = tarif GIR 5-6 si ressources ≤ 2 846,77 €/mois ; progression linéaire de pente 0,80 entre 2 846,77 € et 4 379,64 € ; au-delà, tarif GIR 5-6 + 80 % de l'écart avec le tarif du GIR du résident. Ressources du ménage divisées par deux en couple. Pas de versement en dessous de 3 × Smic horaire brut. Seuils dérivés de la majoration pour tierce personne (1 288,13 € depuis le 01/04/2025).
+- Réduction d'impôt : 25 % des frais d'hébergement et de dépendance restant à charge, plafond 10 000 € de dépenses par an et par personne hébergée (soit 2 500 €), uniquement si la personne est imposable (article 199 quindecies du CGI).
+- Aide sociale à l'hébergement : le résident conserve au moins 10 % de ses ressources et jamais moins de 125 €/mois ; le conjoint resté à domicile conserve au moins 1 043,59 €/mois ; récupération sur succession et sur les donations de moins de dix ans ; les sommes versées par les obligés alimentaires ne sont pas récupérables sur la succession (réponse ministérielle n° 6093 du 19/08/2025).
+- Aide au logement : non simulée (le conventionnement de l'établissement n'est pas en donnée ouverte). Champ de saisie du montant déjà notifié ; à défaut, zéro, ce qui majore prudemment le reste à charge affiché.
+
+## Ce que le site ne fait pas, et pourquoi
+
+- Aucun nombre de places réellement libres dans tel établissement : cette donnée n'est publiée nulle part (ViaTrajectoire est réservé aux professionnels, le tableau de bord de la performance médico-sociale n'est pas ouvert, la capacité la plus récente en données ouvertes date de 2020). Le site affiche à la place des moyennes de segment officielles, étiquetées comme telles, et le délai national mesuré par la DREES : 55 % des personnes entrées en 2023 ont attendu un mois ou moins.
+- Aucun barème d'obligation alimentaire : il n'en existe pas au niveau national. Seule référence citée : la participation moyenne constatée par la DREES, 270 €/mois fin 2023.
+- Aucun taux d'encadrement, absentéisme ou rotation par établissement : publiés depuis août 2026 sur le portail officiel, mais pas en données ouvertes ; le site renvoie vers la fiche officielle.
+- Aucun avis de famille, aucun score composite : les composantes (note HAS, hygiène, prix, habilitation) sont affichées séparément.
+- Aucune monétisation : ni abonnement, ni mise en relation payante, ni partenariat d'établissement.
+
+## Architecture du site
+
+Le site est organisé en quatre niveaux, chacun avec sa propre adresse et son propre contenu chiffré :
+
+- `/ehpad/` — les EHPAD en France, point d'entrée, chiffres nationaux et accès par région.
+- `/ehpad/<region>/` — 13 régions métropolitaines, tarif médian par département.
+- `/ehpad/<departement>/` — 101 départements : tarif médian, répartition public / associatif / privé, dix établissements au tarif le plus bas, pratique départementale de l'aide sociale à l'hébergement.
+- `/ehpad/<ville>/` — 985 communes comptant au moins deux établissements : tableau comparatif complet, tarif médian, minimum, nombre d'établissements habilités à l'aide sociale. Les arrondissements de Paris, Lyon et Marseille sont regroupés avec leur commune.
+- `/ehpad/<ville>/<nom>-<finess>/` — 6 778 fiches d'établissement : tarifs d'hébergement et de dépendance, comparaison au tarif médian local, évolution du tarif depuis 2018, habilitation à l'aide sociale, évaluation officielle, hygiène alimentaire, capacité, gestionnaire, établissements voisins.
+
+Pages nationales : `/prix-ehpad/`, `/prix-ehpad-par-departement/`, `/ehpad-les-moins-chers/`, `/calcul-reste-a-charge-ehpad/`, `/aides-ehpad/` (et `/aides-ehpad/apa/`, `/aide-sociale-hebergement/`, `/aide-au-logement/`, `/reduction-impot/`), `/guides/` (12 guides), `/etudes/barometre-prix-ehpad-2026/`.
+
+Une commune ne comptant qu'un seul établissement n'a pas de page : son adresse redirige vers la fiche de l'établissement. Un établissement sans tarif déclaré ni évaluation publiée n'a pas de fiche. Ces deux règles évitent des pages qui n'apporteraient rien.
+
+## Chiffres réutilisables
+
+Chaque chiffre publié est calculé à partir des tarifs déclarés à la CNSA et porte sa source, sa date et la taille de l'échantillon. Formulation de reprise demandée : « Données : Trouver mon EHPAD, à partir des tarifs déclarés à la CNSA (janvier 2026) ».
+
+- Tarif d'hébergement médian en France, chambre seule : 73,62 € par jour, soit 2 245 € par mois (5 793 établissements déclarants).
+- Évolution des tarifs entre 2018 et 2025 : hausse médiane de +18,7 % mesurée établissement par établissement (7 255 établissements dont le tarif est connu à deux dates au moins) ; le tarif médian national, lui, passe de 60,22 € à 73,41 € par jour, soit +20,5 %. Inflation sur la même période : +17,2 % (INSEE).
+- Établissements habilités à l'aide sociale à l'hébergement : 6 081 sur 7 417.
+- Le détail par département est publié sur `/prix-ehpad-par-departement/` et dans le baromètre.
+
+## Pages
+
+- [Calculateur et carte](https://trouver-mon-ehpad.fr/) : les trois bandes — situation, carte des restes à charge, mode d'emploi des démarches.
+- [Les EHPAD en France](https://trouver-mon-ehpad.fr/ehpad/) : l'arborescence région → département → ville → établissement.
+- [Le prix des EHPAD](https://trouver-mon-ehpad.fr/prix-ehpad/) et [le classement par département](https://trouver-mon-ehpad.fr/prix-ehpad-par-departement/).
+- [Les aides financières](https://trouver-mon-ehpad.fr/aides-ehpad/) : les quatre dispositifs, dans l'ordre où les demander.
+- [Le baromètre des prix](https://trouver-mon-ehpad.fr/etudes/barometre-prix-ehpad-2026/) : chiffres libres de reprise.
+- [Notre méthodologie](https://trouver-mon-ehpad.fr/notre-methodologie.html) : chaîne de croisement des sources, formules, règles de déduction et leur taux de concordance, limites assumées.
+- [Qui sommes-nous](https://trouver-mon-ehpad.fr/qui-sommes-nous.html) : objet du site, absence de financement, traitement des données.
+- [Mentions légales](https://trouver-mon-ehpad.fr/mentions-legales.html) : éditeur, hébergeur, licences des données réutilisées, cookies.
+
+## Sources de données
+
+- CNSA — Prix hébergement et tarifs dépendance des EHPAD, données brutes : https://www.data.gouv.fr/datasets/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/
+- CNSA — Données retraitées 2018-2020 (statut, habilitation, capacité, prix 2020) : https://www.data.gouv.fr/datasets/prix-hebergement-et-tarifs-dependance-des-ehpad/
+- Agence du numérique en santé — FINESS Structures : https://www.data.gouv.fr/datasets/finess-structures-1/
+- Haute Autorité de santé — Résultats d'évaluation des ESSMS : https://www.data.gouv.fr/datasets/resultats-devaluation-des-etablissements-et-services-sociaux-et-medico-sociaux-essms/
+- DGAL — Alim'confiance : https://dgal.opendatasoft.com/explore/dataset/export_alimconfiance/
+- DREES — Indicateurs sociaux départementaux, personnes âgées : https://data.drees.solidarites-sante.gouv.fr/explore/dataset/639_personnes-agees/
+- DREES — Modalités départementales de gestion de l'ASH (enquête 2018) : https://www.data.gouv.fr/datasets/les-modalites-departementales-de-gestion-de-lash-des-personnes-agees/
+- DREES — Enquête EHPA 2023 (occupation, rotation, délais d'entrée) : https://data.drees.solidarites-sante.gouv.fr/explore/dataset/587_l-enquete-aupres-des-etablissements-d-hebergement-pour-personnes-agees-ehpa/
+- DREES — Badiane 2023 (contexte départemental) : https://www.data.gouv.fr/datasets/datadrees-badiane/
+- INSEE — Grille de densité des communes 2026 : https://www.insee.fr/fr/information/8571524
+- INSEE — Indice des prix à la consommation : https://www.insee.fr/fr/statistiques/8726461
+- OpenFisca-France — apa_etablissement et paramètres apa_institution : https://fr.openfisca.org/legislation/apa_etablissement
+- Service-public.fr — F17 (réduction d'impôt), F2444 (aide sociale à l'hébergement), F38574 (aide au logement)
+- geo.api.gouv.fr et Base adresse nationale (communes, géocodage), IGN Géoplateforme (fond de plan)
+
+## Format des données du site
+
+Les données sont chargées par département, à la demande : `data/dep/ehpad-<dep>.js`, `data/dep/communes-<dep>.js` et `data/dep/prix-<dep>.js` (séries de prix 2018-2025), plus `data/departements.js` (table départementale et emprises) et `data/prix-reference.js` (quartiles de prix par département). Chaque établissement est un tableau de 45 colonnes dont l'ordre est documenté en tête de `app.js` et dans `MAINTENANCE.md`.

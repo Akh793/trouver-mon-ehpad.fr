@@ -1,0 +1,44 @@
+# --- données sources téléchargées : volumineuses et retéléchargeables (voir MAINTENANCE.md §2 et §4)
+build/*.csv
+build/*.xlsx
+build/*.pkl
+build/*.parquet
+build/*.gz
+build/*.pdf
+build/*.log
+build/merged.json
+build/merged_v2.json
+build/communes_geo.json
+build/finess_ehpad.json
+build/drees.json
+build/alim.json
+build/params.json
+build/of.json
+build/a1.json
+build/a2.json
+build/d1.json
+build/d2.json
+build/p1.json
+build/cnsa/
+build/fonts/
+build/__pycache__/
+build/seo/__pycache__/
+
+# --- audit : on garde les résultats dérivés légers, pas les fichiers bruts
+build/audit/*
+!build/audit/*.json
+build/audit/finess_act.json.gz
+build/audit/*.xlsx
+build/audit/*.parquet
+build/audit/*.csv
+build/audit/*.html
+build/audit/prix/
+build/audit/__pycache__/
+!build/audit/probe.py
+
+# --- captures et fichiers de travail
+build/*.png
+build/index.template.v*.html
+build/site.v*.css
+site/*.v*.js
+.DS_Store

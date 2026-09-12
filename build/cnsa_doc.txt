@@ -1,0 +1,189 @@
+                                                                           Prix et prestations en
+                                                                           EHPAD – Données brutes
+
+
+      Documentation relative à la mise à disposition des
+       données de tarif et des prestations en EHPAD sur
+                      le site data.gouv.fr
+
+                                                                                                                               29 août 2025
+
+
+1.      PRÉSENTATION DU CADRE DE PUBLICATION ........................................................................................... 2
+
+
+2.      DESCRIPTION DES DONNEES ......................................................................................................................... 3
+
+
+
+
+66, avenue du Maine 75682 Paris cedex 14 · tél : 01 53 91 28 00                           www.cnsa.fr · www.pour-les-personnes-agees.gouv.fr
+1.        Présentation du cadre de publication
+1.1 Contexte
+Dans le cadre de la loi n° 2016-1321 du 7 octobre 2016 pour une République numérique, la Caisse
+nationale de solidarité pour l’autonomie (CNSA) met à disposition du public la liste des tarifs et des
+prestations en établissement d'hébergement pour personnes âgées dépendantes (EHPAD).
+Ces informations sont renseignées par les directeurs ou gestionnaires d’établissements toute l’année avec
+une obligation de mise à jour une fois par année civile via l’application dédiée Prix-ESMS. Les informations
+transmises dans cette application sont affichées dans un délai de 48 heures sur le portail https://www.pour-
+les-personnes-agees.gouv.fr/
+
+1.2 Contenu
+Le fichier de données contient les données des tarifs et des prestations connus à la fin du mois indiqué dans
+le nom du fichier.
+Par exemple, pour la publication du jeu de données au 30 août 2025, le fichier déposé sur le site
+data.gouv.fr est celui suffixé avec « _202508 ».
+Il contient des données brutes non retravaillées par la CNSA. Elles sont strictement conformes à celles
+déclarées par les établissements dans l’application Prix-ESMS.
+
+1.3 Particularité
+Seules les données des EHPAD sont récupérées dans ce flux.
+Le fichier des années antérieur suffixé en _AAAA, contient les données connues au 31 décembre de l’année
+indiquée.
+Seul le fichier de l’année en cours suffixé en _AAAAMM est généré régulièrement.
+
+
+
+
+66, avenue du Maine 75682 Paris cedex 14 · tél : 01 53 91 28 00   www.cnsa.fr · www.pour-les-personnes-agees.gouv.fr
+                                                                  Prix et prestations en EHPAD – Données brutes
+2.        Description des données
+2.1 Description de l’existant
+
+
+                             Champs                                      Type                  Option                  Description
+                             ID                                          bigint                identity                Clé primaire
+  Identification
+                             FINESS_ET                                   Varchar (9)           Not null                Numéro FINESS de l’établissement.
+                                                                                                                       Prix TTC en euro (€) d’une place en chambre seule en hébergement
+                             PRIX_HEB_PERM_CS                            decimal(5,2)          null default null       permanent pour les places non habilitées à l'aide sociale à
+                                                                                                                       l'hébergement (ASH)
+                                                                                                                  Prix TTC en euro (€) d’une place en chambre double en hébergement
+                             PRIX_HEB_PERM_CD                            decimal(5,2)           null default null permanent pour les places non habilitées à l'aide sociale à
+      Places
+                                                                                                                  l'hébergement (ASH) (prix par personne)
+   permanentes
+                                                                                                                  Prix TTC en euro (€) d’une place en chambre simple pour les places
+     non ASH
+                             PRIX_HEB_PERM_MOINS_60_ANS_CS_NASH          decimal(5,2)           null default null non habilitées à l'ASH en hébergement permanent –60 ans (prix par
+                                                                                                                  personne)
+                                                                                                                  Prix TTC en euro (€) d’une place en chambre double pour les places
+                             PRIX_HEB_PERM_MOINS_60_ANS_CD_NASH          decimal(5,2)           null default null non habilitées à l'ASH en hébergement permanent –60 ans (prix par
+                                                                                                                  personne)
+                                                                                                                  Prix TTC en euro (€) d’une place en chambre seule pour les places
+     Places
+                  PRIX_HEB_PERM_CSA                                      decimal(5,2)           null default null habilitées à l'ASH pour les bénéficiaires de l'ASH en hébergement
+  permanentes
+                                                                                                                  permanent
+  ASH pour les
+                                                                                                                  Prix TTC en euro (€) d’une place en chambre double pour les places
+ bénéficiaires de
+                  PRIX_HEB_PERM_CDA                                      decimal(5,2)           null default null habilitée à l'ASH pour les bénéficiaires de l'ASH en hébergement
+     l’ASH                                                                                                        permanent (prix par personne)
+
+
+
+
+66, avenue du Maine 75682 Paris cedex 14 · tél : 01 53 91 28 00       www.cnsa.fr · www.pour-les-personnes-agees.gouv.fr
+                                                                                                              Prix TTC en euro (€) d’une place en chambre simple pour les places
+                             PRIX_HEB_PERM_MOINS_60_ANS_CS_ASH       decimal(5,2)           null default null habilitées à l'ASH pour les bénéficiaires de l'ASH en hébergement
+                                                                                                              permanent –60 ans (prix par personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre double pour les places
+                             PRIX_HEB_PERM_MOINS_60_ANS_CD_ASH       decimal(5,2)           null default null habilitées à l'ASH pour les bénéficiaires de l'ASH en hébergement
+                                                                                                              permanent –60 ans (prix par personne)
+                                                                                                                   Prix TTC en euro (€) d’une place en chambre simple pour les places
+                             PRIX_HEB_PERM_CS_NASH                   decimal(5,2)                  null            habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+                                                                                                                   hébergement permanent (prix par personne)
+     Place                                                                                                         Prix TTC en euro (€) d’une place en chambre double pour les places
+  permanentes PRIX_HEB_PERM_CD_NASH                                  decimal(5,2)                  null            habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+  ASH pour les                                                                                                     hébergement permanent (prix par personne)
+       non                                                                                                    Prix TTC en euro (€) d’une place en chambre simple pour les places
+ bénéficiaires de PRIX_HEB_PERM_MOINS_60_ANS_CS_ASHN                 decimal(5,2)           null default null habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+     l’ASH                                                                                                    hébergement permanent –60 ans (prix par personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre double pour les places
+                             PRIX_HEB_PERM_MOINS_60_ANS_CD_ASHN      decimal(5,2)           null default null habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+                                                                                                              hébergement permanent –60 ans (prix par personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre seule en hébergement
+                             PRIX_HEB_TEMP_CS                        decimal(5,2)           null default null temporaire pour les places non habilitées à l'aide sociale à
+                                                                                                              l'hébergement (ASH)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre double en hébergement
+                             PRIX_HEB_TEMP_CD                        decimal(5,2)           null default null temporaire pour les places non habilitées à l'aide sociale à
+       Places
+                                                                                                              l'hébergement (ASH) (prix par personne)
+    temporaires
+                                                                                                              Prix TTC en euro (€) d’une place en chambre simple pour les places
+      non ASH
+                             PRIX_HEB_TEMP_MOINS_60_ANS_CS_NASH      decimal(5,2)           null default null non habilitées à l'ASH en hébergement temporaire –60 ans (prix par
+                                                                                                              personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre double pour les places
+                             PRIX_HEB_TEMP_MOINS_60_ANS_CD_NASH      decimal(5,2)           null default null non habilitées à l'ASH en hébergement temporaire –60 ans (prix par
+                                                                                                              personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre seule pour les places
+      Places
+                             PRIX_HEB_TEMP_CSA                       decimal(5,2)           null default null habilitées à l'ASH pour les bénéficiaires de l'ASH en hébergement
+    temporaires                                                                                               temporaire
+
+
+
+
+66, avenue du Maine 75682 Paris cedex 14 · tél : 01 53 91 28 00   www.cnsa.fr · www.pour-les-personnes-agees.gouv.fr
+  ASH pour les                                                                                                Prix TTC en euro (€) d’une place en chambre double pour les places
+ bénéficiaires de PRIX_HEB_TEMP_CDA                                  decimal(5,2)           null default null habilitée à l'ASH pour les bénéficiaires de l'ASH en hébergement
+     l’ASH                                                                                                    temporaire (prix par personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre simple pour les places
+                             PRIX_HEB_TEMP_MOINS_60_ANS_CS_ASH       decimal(5,2)           null default null habilitées à l'ASH pour les bénéficiaires de l'ASH en hébergement
+                                                                                                              temporaire –60 ans (prix par personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre double pour les places
+                             PRIX_HEB_TEMP_MOINS_60_ANS_CD_ASH       decimal(5,2)           null default null habilitées à l'ASH pour les bénéficiaires de l'ASH en hébergement
+                                                                                                              temporaire –60 ans (prix par personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre simple pour les places
+                             PRIX_HEB_TEMP_CS_NASH                   decimal(5,2)           null default null habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+                                                                                                              hébergement temporaire (prix par personne)
+     Place                                                                                                    Prix TTC en euro (€) d’une place en chambre double pour les places
+  temporaires PRIX_HEB_TEMP_CD_NASH                                  decimal(5,2)           null default null habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+  ASH pour les                                                                                                hébergement temporaire (prix par personne)
+       non                                                                                                    Prix TTC en euro (€) d’une place en chambre simple pour les places
+ bénéficiaires de PRIX_HEB_TEMP_MOINS_60_ANS_CS_ASHN                 decimal(5,2)           null default null habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+     l’ASH                                                                                                    hébergement temporaire –60 ans (prix par personne)
+                                                                                                              Prix TTC en euro (€) d’une place en chambre double pour les places
+                             PRIX_HEB_TEMP_MOINS_60_ANS_CD_ASHN      decimal(5,2)           null default null habilitées à l'ASH pour les personnes non bénéficiaires de l'ASH en
+                                                                                                              hébergement temporaire –60 ans (prix par personne)
+                             TARIF_GIR_12                            decimal(5,2)                  null            Prix TTC en euro (€) du GIR 1-2 pour l'hébergement permanent
+                             TARIF_GIR_34                            decimal(5,2)                  null            Prix TTC en euro (€) du GIR 3-4 pour l'hébergement permanent
+      Tarifs                 TARIF_GIR_56                            decimal(5,2)                  null            Prix TTC en euro (€) du GIR 5-6 pour l'hébergement permanent
+   dépendances               TARIF_GIR_TEMP_12                       decimal(5,2)           null default null Prix TTC en euro (€) du GIR 1-2 pour l'hébergement temporaire
+                             TARIF_GIR_TEMP_34                       decimal(5,2)           null default null Prix TTC en euro (€) du GIR 3-4 pour l'hébergement temporaire
+                             TARIF_GIR_TEMP_56                       decimal(5,2)           null default null Prix TTC en euro (€) du GIR 5-6 pour l'hébergement temporaire
+                                                                                                              Prix TTC en euro (€) d’une chambre en accueil spécifique jour (prix par
+                             PRIX_ACCUEIL_JOUR                       decimal(5,2)           null default null
+                                                                                                              personne)
+    Prix accueils                                                                                             Prix TTC en euro (€) d’une chambre en accueil spécifique nuit (prix par
+                             PRIX_ACCUEIL_NUIT                       decimal(5,2)           null default null
+    spécifiques                                                                                               personne)
+                                                                                                              Prix TTC en euro (€) d’une chambre en accueil spécifique séquentiel
+                             PRIX_ACCUEIL_SEQUENTIEL                 decimal(5,2)           null default null
+                                                                                                              (prix par personne)
+
+
+
+66, avenue du Maine 75682 Paris cedex 14 · tél : 01 53 91 28 00   www.cnsa.fr · www.pour-les-personnes-agees.gouv.fr
+                                                                                                              Réponse de la question relative aux prestations incluses avec radio
+                             CHOIX_PRESTATIONS_INCLUSES              Bit                         Not null
+                                                                                                              bouton : oui (1), non (0).
+                                                                                                              Réponse de la question relative aux prestations facturées en sus avec
+                             CHOIX_PRESTATIONS_SUS                   Bit                        Not null
+                                                                                                              radio bouton : oui (1), non (0).
+   Autres prix et                                                                                             Réponse de la question relative aux autres prix hébergement avec radio
+    prestations              CHOIX_HEB                               Bit                        Not null
+                                                                                                              bouton : oui (1), non (0).
+                             AUTRE_PRESTATION                        Varchar (MAX)          null default null Autres prestations comprises dans les prix saisis ci-dessus.
+                             AUTRE_TARIF_PREST                       Varchar (MAX)          null default null Autres prestations facturées en sus du prix du socle
+                             AUTRE_HEB                               Varchar (2500)         null default null Autres prix hébergements
+ Informations de DATE_ACTIVATION                                     datetime                    not null          Date d’activation du tarif
+    mise à jour  DATE_MAJ                                            datetime                    not null          Date de mise à jour du tarif
+
+
+
+
+66, avenue du Maine 75682 Paris cedex 14 · tél : 01 53 91 28 00   www.cnsa.fr · www.pour-les-personnes-agees.gouv.fr
+

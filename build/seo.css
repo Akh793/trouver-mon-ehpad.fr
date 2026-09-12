@@ -1,0 +1,140 @@
+/* ---------- Styles propres aux pages de contenu (villes, départements, fiches, guides) ---------- */
+.wrap{--pad:1.25rem;max-width:min(1080px,100%);margin:0 auto;padding:1.5rem var(--pad) 4rem;overflow-x:clip;display:block;gap:0}
+@media (max-width:640px){.wrap{--pad:1rem}}
+
+/* en-tête commun */
+.top{border-bottom:1px solid var(--bd2);background:var(--surf)}
+.top-in{max-width:min(1080px,100%);margin:0 auto;padding:.8rem 1.25rem;display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;align-items:center}
+.logo{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1rem;text-decoration:none;letter-spacing:-.02em}
+.logo span{color:var(--bl)}
+.top nav{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.85rem;font-weight:500;color:var(--mut);margin-left:auto}
+.top nav a{text-decoration:none}
+.top nav a:hover{color:var(--bl)}
+
+/* fil d'Ariane */
+.fil-ariane{font-size:.78rem;color:var(--mut2);margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:.3rem}
+.fil-ariane a{color:var(--mut);text-decoration:none}
+.fil-ariane a:hover{color:var(--bl);text-decoration:underline;text-underline-offset:3px}
+.fil-ariane span[aria-current]{color:var(--ink)}
+
+/* titres de page */
+.p-h1{font-size:clamp(1.6rem,4vw,2.5rem)}
+.p-sub{margin-top:.6rem;color:var(--mut);font-size:1rem;max-width:70ch}
+.p-maj{margin-top:.5rem;font-size:.75rem;color:var(--mut2)}
+.wrap h2{font-size:clamp(1.25rem,2.6vw,1.6rem);margin-top:2.2rem}
+.wrap h2 .n{display:none}
+.wrap h3{font-size:1.02rem;margin-top:1.2rem}
+.wrap p{margin-top:.7rem;color:var(--txt2)}
+.wrap section>p:first-child{margin-top:.8rem}
+.wrap ul,.wrap ol{margin-top:.7rem;padding-left:1.2rem;color:var(--txt2)}
+.wrap li{margin-top:.3rem}
+.wrap a{color:var(--bl);text-decoration:underline;text-underline-offset:3px}
+.wrap .cta-b,.wrap .cta-s,.wrap .lien-c,.wrap .puces a,.wrap .tbl a,.wrap .kpi a{text-decoration:none}
+.wrap .cta-b{color:#fff}
+.wrap .cta-s,.wrap .lien-c,.wrap .puces a{color:var(--ink)}
+.wrap .lien-c:hover,.wrap .puces a:hover,.wrap .cta-s:hover{color:var(--bl)}
+.wrap .tbl a:hover{text-decoration:underline}
+.wrap section{margin-top:2.2rem}
+.wrap section>h2:first-child{margin-top:0}
+
+/* chiffres clés */
+.kpis{margin-top:1.4rem;display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.kpi{background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r2);padding:.9rem 1rem}
+.kpi b{display:block;font-family:Poppins,Inter,sans-serif;font-size:1.5rem;line-height:1.1;letter-spacing:-.02em}
+.kpi span{display:block;margin-top:.3rem;font-size:.78rem;color:var(--mut)}
+.kpi.bl b{color:var(--bl)}
+
+/* appel à l'action */
+.cta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+.cta-b{display:inline-block;border:0;border-radius:999px;background:var(--co);color:#fff;font:inherit;font-weight:600;font-size:.95rem;padding:.8rem 1.5rem;text-decoration:none;box-shadow:0 10px 15px -3px rgba(255,99,71,.3)}
+.cta-b:hover{filter:brightness(1.08);color:#fff}
+.cta-s{display:inline-block;border:1.5px solid var(--bd);border-radius:999px;background:var(--surf);font-size:.9rem;font-weight:600;padding:.7rem 1.2rem;text-decoration:none;color:var(--ink)}
+.cta-s:hover{border-color:var(--bl);color:var(--bl)}
+.cta-n{font-size:.78rem;color:var(--mut2);flex-basis:100%}
+
+/* tableau d'établissements — devient une liste de cartes sur mobile */
+.tbl-wrap{margin-top:1rem;overflow-x:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+.tbl caption{text-align:left;font-size:.78rem;color:var(--mut2);padding-bottom:.5rem}
+.tbl th{text-align:left;font-weight:600;color:var(--mut);padding:.5rem .6rem;border-bottom:1.5px solid var(--bd);white-space:nowrap}
+.tbl td{padding:.55rem .6rem;border-bottom:1px solid var(--bd2);vertical-align:top}
+.tbl td.num,.tbl th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl tr:hover td{background:var(--bg)}
+.tbl a{font-weight:600;text-decoration:none}
+.tbl a:hover{text-decoration:underline}
+.oui{color:var(--vert);font-weight:600}
+.non{color:var(--mut2)}
+@media (max-width:720px){
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl caption{display:block;width:100%;text-align:left}
+  .tbl thead{position:absolute;left:-9999px}
+  .tbl tr{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);padding:.8rem;margin-top:.7rem}
+  .tbl td{border:0;padding:.15rem 0;display:flex;justify-content:space-between;gap:1rem;text-align:right}
+  .tbl td::before{content:attr(data-l);color:var(--mut);font-size:.78rem;text-align:left;flex:0 0 auto}
+  .tbl td:first-child{display:block;text-align:left;font-size:1rem;margin-bottom:.3rem}
+  .tbl td:first-child::before{display:none}
+  .tbl tr:hover td{background:transparent}
+}
+
+/* fiche établissement */
+.f-head{margin-top:1.2rem;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:1.2rem}
+.f-grid{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-top:.4rem}
+.f-grid div b{display:block;font-family:Poppins,Inter,sans-serif;font-size:1.15rem}
+.f-grid div span{display:block;font-size:.75rem;color:var(--mut);margin-top:.15rem}
+.f-adr{margin-top:.9rem;font-size:.88rem;color:var(--mut)}
+.f-adr a{font-weight:600}
+
+/* encadrés */
+.note{margin-top:1rem;background:var(--ti-bl);border-radius:var(--r2);padding:.8rem 1rem;font-size:.88rem;color:var(--txt2)}
+.note b{color:var(--ink)}
+.att{margin-top:1rem;background:var(--ti-or);border-radius:var(--r2);padding:.8rem 1rem;font-size:.85rem;color:#7a4a00}
+.def{margin-top:.8rem;font-size:.85rem;color:var(--mut);background:var(--surf);border-left:3px solid var(--bl);padding:.5rem .8rem}
+
+/* liens de maillage */
+.liens-grid{margin-top:1rem;display:grid;gap:.6rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+/* déroulé en étapes numérotées : une étape = un paragraphe, jamais plus */
+.wrap ol.etapes{margin-top:1rem;padding-left:0;list-style:none;counter-reset:et;display:grid;gap:.7rem}
+.wrap ol.etapes li{counter-increment:et;background:var(--bg);border-radius:var(--r2);padding:.8rem 1rem .8rem 3rem;position:relative;font-size:.9rem}
+.wrap ol.etapes li::before{content:counter(et);position:absolute;left:.8rem;top:.8rem;width:1.6rem;height:1.6rem;border-radius:999px;background:var(--bl);color:#fff;display:grid;place-items:center;font-size:.8rem;font-weight:700}
+.lien-c{display:block;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);padding:.7rem .9rem;text-decoration:none;font-size:.88rem}
+.lien-c:hover{background:var(--bg);border-color:var(--bl)}
+/* même relief léger que sur le calculateur : transform et ombre seulement */
+.kpi,.lien-c,.tbl-wrap,.src-bloc{transition:transform .16s ease-out,box-shadow .16s ease-out,border-color .16s ease-out}
+.kpi:hover,.lien-c:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(var(--om),.08)}
+.wrap ol.etapes li{transition:transform .16s ease-out,box-shadow .16s ease-out}
+.wrap ol.etapes li:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(var(--om),.08)}
+@media (prefers-reduced-motion:reduce){.kpi,.lien-c,.wrap ol.etapes li{transition:none}
+  .kpi:hover,.lien-c:hover,.wrap ol.etapes li:hover{transform:none}}
+@media (hover:none){.kpi:hover,.lien-c:hover,.wrap ol.etapes li:hover{transform:none;box-shadow:none}}
+.lien-c b{display:block;font-weight:600}
+.lien-c span{display:block;font-size:.75rem;color:var(--mut2);margin-top:.15rem}
+.puces{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.4rem}
+.puces a{display:inline-block;background:var(--surf);border:1px solid var(--bd2);border-radius:999px;padding:.3rem .8rem;font-size:.82rem;text-decoration:none;color:var(--txt2)}
+.puces a:hover{border-color:var(--bl);color:var(--bl)}
+
+/* questions fréquentes */
+.qa{margin-top:1rem;display:grid;gap:.6rem}
+.qa details{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);padding:.9rem 1.1rem}
+.qa summary{cursor:pointer;font-weight:600;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:'▾';color:var(--bl)}
+.qa p{font-size:.9rem}
+
+/* sources */
+.src-bloc{margin-top:2rem;border-top:1px solid var(--bd2);padding-top:1rem;font-size:.8rem;color:var(--mut)}
+.src-bloc b{color:var(--mut)}
+.src-bloc a{color:var(--mut)}
+
+/* pied de page commun */
+.foot{border-top:1px solid var(--bd);background:var(--bg)}
+.foot-in{max-width:min(1080px,100%);margin:0 auto;padding:1.8rem 1.25rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
+.foot nav{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;font-size:.85rem;color:var(--mut)}
+.foot a{text-decoration:none;color:inherit}
+.foot a:hover{color:var(--bl)}
+.foot p{font-size:.75rem;color:var(--mut2)}
+
+/* en-tête des pages de contenu : le bouton de thème s'aligne à droite de la navigation.
+   La règle .top-in d'origine (largeur, marges, retour à la ligne) n'est pas retouchée. */
+.top-in .tb-icon{width:32px;height:32px;flex:0 0 auto;margin-left:auto}
+.top-in .tb-icon svg{width:.95rem;height:.95rem}
+@media (max-width:720px){.top-in .tb-icon{margin-left:0}}

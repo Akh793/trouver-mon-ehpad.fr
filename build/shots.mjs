@@ -1,0 +1,15 @@
+import pkg from '/home/claude/.npm-global/lib/node_modules/playwright/index.js'; const { chromium } = pkg;
+const b = await chromium.launch(); const p = await b.newPage({viewport:{width:1280,height:900}});
+await p.goto('http://127.0.0.1:8899/index.html',{waitUntil:'networkidle'});
+await p.click('#consent-refuse').catch(()=>{});
+await p.fill('#cp','69003'); await p.fill('#revenus','1600'); await p.fill('#epargne','30000'); await p.waitForTimeout(2600);
+await p.evaluate(()=>document.querySelectorAll('.res')[0].click()); await p.waitForTimeout(400);
+await p.evaluate(()=>document.querySelector('#liste').scrollIntoView()); await p.waitForTimeout(400);
+await p.screenshot({path:'final-liste.png'});
+await p.evaluate(()=>document.getElementById('bande-route').scrollIntoView()); await p.waitForTimeout(500);
+await p.screenshot({path:'final-route.png'});
+await p.evaluate(()=>document.getElementById('bande-sources').scrollIntoView()); await p.waitForTimeout(400);
+await p.screenshot({path:'final-sources.png'});
+await p.evaluate(()=>document.getElementById('bande-carte').scrollIntoView()); await p.waitForTimeout(1200);
+await p.screenshot({path:'final-carte.png'});
+await b.close(); console.log('captures ok');

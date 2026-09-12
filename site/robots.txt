@@ -1,0 +1,33 @@
+# trouver-mon-ehpad.fr — accès ouvert, y compris aux robots des moteurs de réponse.
+User-agent: *
+Allow: /
+
+# Assistants et moteurs de réponse : explicitement autorisés
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+# Les combinaisons de filtres du calculateur sont utiles à l'utilisateur, pas aux moteurs :
+# elles ne créent aucune page distincte et ne doivent pas être explorées.
+Disallow: /*?
+Allow: /$
+
+# Les fichiers de données sont publics : ils peuvent être explorés.
+Sitemap: https://trouver-mon-ehpad.fr/sitemap.xml

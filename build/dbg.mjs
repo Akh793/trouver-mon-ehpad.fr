@@ -1,0 +1,16 @@
+import pkg from '/home/claude/.npm-global/lib/node_modules/playwright/index.js'; const { chromium } = pkg;
+const b = await chromium.launch(); const p = await b.newPage();
+p.on('console', m => console.log('C:', m.type(), m.text().slice(0,200)));
+p.on('pageerror', e => console.log('PE:', e.message));
+p.on('requestfailed', r => console.log('RF:', r.url()));
+await p.goto('http://127.0.0.1:8899/index.html', { waitUntil: 'networkidle' });
+await p.fill('#cp','69003'); await p.waitForTimeout(1500);
+console.log('commune:', await p.textContent('#commune'));
+console.log('dd hidden:', await p.getAttribute('#cp-dd','hidden'));
+console.log('ME_BBOX 69?', await p.evaluate(()=> !!(window.ME_BBOX&&window.ME_BBOX['69'])));
+console.log('ME_DEP 69?', await p.evaluate(()=> JSON.stringify((window.ME_DEP||{})['69']||null).slice(0,200)));
+await p.fill('#revenus','1600'); await p.waitForTimeout(2000);
+console.log('resultats hidden:', await p.getAttribute('#resultats','hidden'));
+console.log('titre:', await p.textContent('#res-titre'));
+console.log('items:', await p.evaluate(()=>document.querySelectorAll('#liste .item').length));
+await b.close();

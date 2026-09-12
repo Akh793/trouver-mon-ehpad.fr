@@ -1,0 +1,13 @@
+import pkg from '/home/claude/.npm-global/lib/node_modules/playwright/index.js'; const { chromium } = pkg;
+const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+const b = await chromium.launch({ proxy: proxy ? { server: proxy, bypass: '127.0.0.1,localhost' } : undefined, args:['--ignore-certificate-errors'] });
+const p = await b.newPage({ viewport:{width:1280,height:900}, ignoreHTTPSErrors:true });
+let ok=0, ko=0;
+p.on('response', r => { if (r.url().includes('geopf')) (r.status()===200?ok++:ko++); });
+await p.goto('http://127.0.0.1:8899/index.html', { waitUntil:'domcontentloaded' });
+await p.fill('#cp','69003'); await p.fill('#revenus','1600'); await p.waitForTimeout(4000);
+await p.evaluate(()=>document.getElementById('bande-carte').scrollIntoView());
+await p.waitForTimeout(4000);
+console.log('tuiles 200:',ok,'| erreurs:',ko);
+await p.screenshot({ path:'shot-tuiles.png' });
+await b.close();

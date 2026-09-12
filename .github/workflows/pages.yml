@@ -1,0 +1,63 @@
+# Publication de trouver-mon-ehpad.fr sur GitHub Pages.
+# Seul le dossier « site » est mis en ligne : « build » (scripts et données de travail) reste privé au dépôt.
+name: Publier le site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:          # permet de republier à la main depuis l'onglet Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Les mentions légales doivent être complètes
+        run: |
+          if grep -rq "À COMPLÉTER" site/*.html; then
+            echo "::error::Les mentions légales contiennent encore « À COMPLÉTER ». La loi pour la confiance dans l'économie numérique (article 6 III) impose d'identifier l'éditeur avant toute mise en ligne."
+            grep -rn "À COMPLÉTER" site/*.html
+            exit 1
+          fi
+
+      - name: Le domaine des adresses canoniques doit correspondre au CNAME
+        run: |
+          domaine=$(tr -d '\n\r' < site/CNAME)
+          attendu="https://$domaine/"
+          trouve=$(grep -o 'rel="canonical" href="[^"]*"' site/index.html | head -1 | sed 's/.*href="//;s/"$//')
+          echo "CNAME : $domaine · canonique : $trouve"
+          [ "$trouve" = "$attendu" ] || { echo "::error::L'adresse canonique ne correspond pas au domaine servi."; exit 1; }
+
+      - name: Pas de fichier de travail dans le dossier publié
+        run: |
+          ! ls site/*.v*.js site/*.bak 2>/dev/null | grep . || { echo "::error::Des fichiers de travail traînent dans site/."; exit 1; }
+
+      - name: Compter ce qui sera publié
+        run: |
+          echo "pages HTML : $(find site -name '*.html' | wc -l)"
+          echo "poids : $(du -sh site | cut -f1)"
+
+  publier:
+    needs: verifier
+    environment:
+      name: github-pages
+      url: ${{ steps.deploiement.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploiement
+        uses: actions/deploy-pages@v4
