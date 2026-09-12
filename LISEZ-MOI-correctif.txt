@@ -1,0 +1,29 @@
+CORRECTIF — « &nbsp; » affiche en toutes lettres dans les questions frequentes
+
+CE QUI N'ALLAIT PAS
+  Les questions des FAQ contiennent une entite HTML &nbsp; (espace insecable avant
+  le point d'interrogation, regle typographique francaise). La fonction qui prepare
+  le texte echappait le caractere « & » en « &amp; » : « France&nbsp;? » devenait
+  « France&amp;nbsp;? », que le navigateur affiche tel quel.
+  3 290 occurrences, sur 1 097 pages.
+
+  Meme cause, deuxieme consequence : l'entite brute partait aussi dans les donnees
+  structurees lues par Google, ou elle n'a aucun sens.
+
+CE QUI A ETE CORRIGE
+  build/seo/pieces.py    les entites sont resolues en vrais caracteres AVANT
+                         l'echappement ; les donnees structurees recoivent du
+                         texte nu (ni balise, ni entite, ni espace insecable).
+  build/build_site.py    meme durcissement pour la FAQ de l'accueil.
+  Les pages concernees sont deja regenerees dans cette archive.
+
+A EXTRAIRE DIRECTEMENT DANS :
+  C:\Users\rival\Desktop\Ehpad\V7\trouver-mon-ehpad
+
+ENSUITE, dans PowerShell :
+  cd C:\Users\rival\Desktop\Ehpad\V7\trouver-mon-ehpad
+  git add .
+  git commit -m "correctif entites HTML dans les FAQ"
+  git push
+
+  Rien a relancer : les pages sont deja regenerees.

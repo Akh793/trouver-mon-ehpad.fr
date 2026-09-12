@@ -9,11 +9,18 @@ _data = json.dumps(os.path.join(os.path.abspath(SITE), 'data.js').replace('\\', 
 faq = json.loads(subprocess.check_output(['node','-e',
   "global.window={};require(%s);console.log(JSON.stringify(window.FAQ))" % _data]).decode())
 
-def esc(s): return html.escape(s, quote=False)
+def esc(s):
+  """Échappe un texte pouvant déjà contenir des entités HTML : on les résout d'abord,
+  sinon « &nbsp; » ressortirait en « &amp;nbsp; », affiché littéralement par le navigateur."""
+  return html.escape(html.unescape(s), quote=False)
+
+def nu(s):
+  """Texte nu pour les données structurées : ni entité, ni espace insécable."""
+  return re.sub(r'\s+', ' ', html.unescape(s).replace('\u00a0', ' ')).strip()
 faq_html = '\n'.join(
   '<details class="faq-i"%s><summary><span>%s</span></summary><p>%s</p></details>' % (' open' if i==0 else '', esc(q), esc(a))
   for i,(q,a) in enumerate(faq))
-faq_ld = ',\n      '.join(json.dumps({"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}}, ensure_ascii=False) for q,a in faq)
+faq_ld = ',\n      '.join(json.dumps({"@type":"Question","name":nu(q),"acceptedAnswer":{"@type":"Answer","text":nu(a)}}, ensure_ascii=False) for q,a in faq)
 
 tpl = open('index.template.html', encoding='utf-8').read()
 css = '\n'.join([open('vendor_leaflet.css', encoding='utf-8').read()]) if os.path.exists('vendor_leaflet.css') else ''

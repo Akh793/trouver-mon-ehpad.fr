@@ -64,17 +64,31 @@ def qa(paires):
     if not paires: return '', None
     h = ['<section><h2>Questions fréquentes</h2><div class="qa">']
     for q, a in paires:
-        h.append(f'<details><summary><span>{esc(q)}</span></summary><p>{a}</p></details>')
+        h.append(f'<details><summary><span>{esc_ent(q)}</span></summary><p>{a}</p></details>')
     h.append('</div></section>')
     ld = {"@type": "FAQPage", "mainEntity": [
-        {"@type": "Question", "name": q,
+        {"@type": "Question", "name": _txt(q),
          "acceptedAnswer": {"@type": "Answer", "text": _txt(a)}} for q, a in paires]}
     return ''.join(h), ld
 
 
-def _txt(html):
-    import re
-    return re.sub(r'<[^>]+>', '', html).replace('&nbsp;', ' ').strip()
+def esc_ent(s):
+    """Échappe un texte qui contient déjà des entités HTML (« &nbsp; » notamment).
+
+    esc() transforme « & » en « &amp; » : appliqué tel quel à « France&nbsp;? », il produit
+    « &amp;nbsp; », que le navigateur affiche littéralement. On résout donc les entités en
+    vrais caractères AVANT d'échapper — l'espace insécable reste un espace insécable."""
+    import html as _h
+    return esc(_h.unescape(s))
+
+
+def _txt(html_str):
+    """Texte nu, pour les données structurées : ni balise, ni entité, ni espace insécable.
+    Google lit ces chaînes telles quelles — « &nbsp; » y serait affiché en toutes lettres."""
+    import re, html as _h
+    t = re.sub(r'<[^>]+>', ' ', html_str)          # les balises deviennent des espaces
+    t = _h.unescape(t).replace('\u00a0', ' ')      # entités résolues, insécables normalisés
+    return re.sub(r'\s+', ' ', t).strip()
 
 
 SOURCES_PRIX = (f'<b>Sources.</b> Tarifs et places : Caisse nationale de solidarité pour l’autonomie (CNSA), '
