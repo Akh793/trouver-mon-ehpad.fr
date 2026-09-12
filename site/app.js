@@ -256,10 +256,18 @@
 
     let ash = null;
     if (e[C.ash] === 1 || e[C.ash] === 2) {
-      const partParent = Math.max(0, R - gardeMini - reserveConjoint);
       const prixAsh = e[C.pa] != null ? e[C.pa] * mois * nbRes : null;
-      ash = { partParent, gardeMini, reserveConjoint, prixAsh,
-        reste: Math.max(0, (prixAsh != null ? prixAsh : heberg) - partParent), aConfirmer: e[C.ash] === 2 };
+      // Sous aide sociale, l'établissement facture son tarif « aide sociale », pas son tarif
+      // commercial. Sans cette ligne, le lecteur ne peut pas rapprocher les montants affichés.
+      const prixRetenu = prixAsh != null ? prixAsh : heberg;
+      // Le résident contribue à hauteur de 90 % de ses ressources — mais jamais au-delà du prix :
+      // on ne paie pas plus que ce qui est facturé.
+      const partMax = Math.max(0, R - gardeMini - reserveConjoint);
+      const partParent = Math.min(partMax, prixRetenu);
+      const garde = Math.max(0, R - partParent - reserveConjoint);
+      const reste = Math.max(0, prixRetenu - partParent);
+      ash = { partParent, gardeMini, garde, reserveConjoint, prixAsh, prixRetenu,
+        prixEstime: prixAsh == null, reste, aConfirmer: e[C.ash] === 2 };
     }
 
     // répartition entre les enfants et coût net après impôt
@@ -763,13 +771,26 @@
             <p class="f-note">Le département peut payer la différence. C’est l’aide sociale à
             l’hébergement. Elle n’est possible que dans un établissement habilité — celui-ci l’est.</p>
             ${r.ash.aConfirmer ? '<p class="warn">Habilitation à vérifier : le répertoire officiel indique « non habilité », alors que l’établissement déclare un tarif « aide sociale ». Appelez-le pour savoir si une place habilitée est libre.</p>' : ''}
-            <div class="ln"><span>Votre parent verse sur ses propres ressources</span><b>${euro(r.ash.partParent)}/mois</b></div>
-            <div class="ln"><span>Il lui reste, pour ses dépenses personnelles</span><b>${euro(r.ash.gardeMini)}/mois</b></div>
+            <div class="ln"><span>Prix facturé dans ce cadre</span><b>${euro(r.ash.prixRetenu)}/mois</b></div>
+            <p class="f-note">${r.ash.prixEstime
+              ? 'Cet établissement n’a pas communiqué son tarif «&nbsp;aide sociale&nbsp;». Le calcul retient son tarif d’hébergement habituel : le vrai montant, fixé par le département, sera souvent plus bas.'
+              : `Ce n’est pas le tarif affiché plus haut&nbsp;: sous aide sociale, le prix est fixé par le département${r.ash.prixRetenu < r.heberg ? `, ici ${euro(r.heberg - r.ash.prixRetenu)} de moins par mois que le tarif habituel` : ''}.`}</p>
+            <div class="ln"><span>Votre parent verse sur ses propres ressources</span><b>− ${euro(r.ash.partParent)}/mois</b></div>
+            <p class="f-note">${r.ash.reste > 0
+              ? `Le département prend 90&nbsp;% de ses ressources, en lui laissant au minimum ${euro(BAREME.ashResteMiniEur)} par mois${r.ash.gardeMini <= BAREME.ashResteMiniEur * r.nbRes + 0.01 ? '&nbsp;— c’est ce plancher qui s’applique ici' : ''}.`
+              : 'Il ne verse que le prix facturé&nbsp;: la règle des 90&nbsp;% est un plafond, pas un forfait.'}</p>
+            <div class="ln"><span>Il lui reste, pour ses dépenses personnelles</span><b>${euro(r.ash.garde)}/mois</b></div>
             ${r.ash.reserveConjoint ? `<div class="ln"><span>Son conjoint resté à domicile garde</span><b>${euro(r.ash.reserveConjoint)}/mois</b></div>` : ''}
             <div class="ln tot"><span><b>Le département avance</b></span><b>${euro(r.ash.reste)}/mois</b></div>
-            <p class="att">Ce que le département avance lui sera remboursé sur la succession. Il peut
-            aussi demander une participation aux enfants. Ce n’est donc pas une aide gratuite&nbsp;:
-            c’est une avance. <a href="/aides-ehpad/aide-sociale-hebergement/">Ce qu’il faut savoir avant de la demander</a></p>
+            ${r.ash.reste > 0
+              ? `<p class="f-note">Soit <b>${euro(r.ash.reste * 12)}</b> par an, <b>${euro(r.ash.reste * 36)}</b> sur trois ans.
+                 C’est cette somme, cumulée sur toute la durée du séjour, que le département réclamera à la succession.</p>`
+              : `<p class="f-note">Les ressources de votre parent couvrent ce prix&nbsp;: le département n’avance rien,
+                 et il n’y a donc rien à récupérer sur la succession. L’aide sociale reste utile pour une raison&nbsp;:
+                 elle oblige l’établissement à appliquer ce tarif-là.</p>`}
+            <p class="att">Le département peut aussi demander une participation aux enfants, et aux
+            gendres et belles-filles. Aucun barème national n’existe&nbsp;: c’est lui, ou le juge, qui
+            fixe les montants. <a href="/aides-ehpad/aide-sociale-hebergement/">Ce qu’il faut savoir avant de demander l’aide sociale</a></p>
           </div>` : ''}
         ${o.prix ? '<h4>L’évolution du tarif</h4>' + blocPrix(o.prix) : ''}
         <p class="f-src">Tarifs déclarés par l’établissement à la Caisse nationale de solidarité pour l’autonomie${e[C.maj] ? ', mis à jour ' + mfr(e[C.maj]) : ''}.</p>`;
@@ -1790,6 +1811,19 @@
         calcule(E, { ...base, revenus: 6000 }).couleur === 'vert'
         && calcule(E, { ...base, revenus: 1500, epargne: 400000 }).couleur === 'orange'
         && calcule(E, { ...base, revenus: 1000 }).couleur === 'rouge'],
+      ['Aide sociale : la contribution ne dépasse jamais le prix facturé', () => {
+        // l'établissement E déclare un tarif aide sociale (colonne pa) de 80 €/jour
+        const r = calcule(E, { ...base, revenus: 6000 });
+        return r.ash && Math.abs(r.ash.partParent - r.ash.prixRetenu) < 0.01 && r.ash.reste === 0;
+      }],
+      ['Aide sociale : ce qui reste au résident = ressources − contribution', () => {
+        const r = calcule(E, { ...base, revenus: 6000 });
+        return r.ash && Math.abs(r.ash.garde - (6000 - r.ash.partParent)) < 0.01;
+      }],
+      ['Aide sociale : les trois lignes se rejoignent', () => {
+        const r = calcule(E, { ...base, revenus: 900 });
+        return r.ash && Math.abs(r.ash.partParent + r.ash.reste - r.ash.prixRetenu) < 0.01;
+      }],
       ['Scénario ASH : minimum de 125 € conservé', () => {
         const r = calcule(E, { ...base, revenus: 800 });
         return r.ash && Math.abs(r.ash.gardeMini - 125) < 0.01;
