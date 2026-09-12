@@ -222,9 +222,9 @@
     const mois = M(), nbRes = s.deuxResidents ? 2 : 1;
     const pj = s.chambre === 'cd' ? (e[C.pcd] || e[C.p]) : (e[C.p] || e[C.pcd]);
     const notes = [];
-    if (pj == null) return { prixConnu: false, notes: ['Cet établissement n’a pas déclaré de prix à la CNSA : le reste à charge ne peut pas être calculé.'] };
-    if (s.chambre === 'cd' && e[C.pcd] == null) notes.push('Pas de prix de chambre double déclaré : le calcul utilise le prix de la chambre seule.');
-    if (s.gir === '?') notes.push('GIR inconnu : le calcul utilise le tarif GIR 3-4, à titre indicatif.');
+    if (pj == null) return { prixConnu: false, notes: ['Cet établissement n’a pas communiqué son prix. Impossible de calculer ce qu’il vous coûterait : appelez-le pour le connaître.'] };
+    if (s.chambre === 'cd' && e[C.pcd] == null) notes.push('Cet établissement n’a pas communiqué de prix pour les chambres doubles. Le calcul utilise celui d’une chambre seule — le vrai prix sera sans doute différent.');
+    if (s.gir === '?') notes.push('Le niveau d’autonomie n’est pas connu. Le calcul retient un niveau moyen (GIR 3-4) : le montant réel dépendra de l’évaluation faite par le médecin du département.');
 
     const heberg = pj * mois * nbRes;
     const tg = tarifGir(e, s.gir), t56 = e[C.t56];
@@ -233,9 +233,9 @@
       dependance = tg * mois * nbRes;
       const r = apaEtablissement(tg * mois, t56 * mois, ressourcesTotales(s), s.couple || s.deuxResidents);
       apa = r.apa * nbRes; apaConnue = true;
-      if (Math.abs(tg - t56) < 0.01) notes.push('Cet établissement déclare le même tarif dépendance pour tous les niveaux d’autonomie : l’allocation personnalisée d’autonomie ressort alors à zéro dans le calcul. Demandez-lui le tarif qui s’appliquera réellement.');
+      if (Math.abs(tg - t56) < 0.01) notes.push('Cet établissement facture la même somme quel que soit le niveau d’autonomie. Dans ce cas, l’aide du département (l’APA) tombe mécaniquement à zéro dans notre calcul. Appelez-le : le tarif réellement appliqué est probablement différent.');
     } else {
-      notes.push('Tarifs dépendance non déclarés : seule la partie hébergement est calculée.');
+      notes.push('Cet établissement n’a pas communiqué le prix de l’aide au quotidien. Seul le logement est calculé ici : la facture réelle sera plus élevée.');
     }
 
     const apl = Math.max(0, s.aideLogement || 0);
@@ -525,16 +525,51 @@
     const r = o.r;
     if (!r.prixConnu) return `<p class="muted">${esc(r.notes[0])}</p>`;
     const l = (lib, val, cls) => `<div class="ln ${cls || ''}"><span>${lib}</span><b>${val}</b></div>`;
-    const n = r.nbRes > 1 ? ' × 2 résidents' : '';
-    let h = '';
-    h += l(`Hébergement (${euro2(r.pj)}/jour × ${String(M()).replace('.', ',')} jours${n})`, euro(r.heberg));
+    const n = r.nbRes > 1 ? ' (pour deux résidents)' : '';
+    const gir = girEffectif(s.gir) === '12' ? '1-2' : girEffectif(s.gir) === '34' ? '3-4' : '5-6';
+
+    // ── ce que l'établissement facture
+    let h = '<h4 class="f-t1">Ce que l’établissement facture</h4>';
+    h += l(`Le logement, les repas, le ménage${n}`, euro(r.heberg) + '/mois');
+    h += `<p class="f-note">${euro2(r.pj)} par jour × ${String(M()).replace('.', ',')} jours.</p>`;
     if (r.apaConnue) {
-      h += l('Tarif dépendance GIR ' + (girEffectif(s.gir) === '12' ? '1-2' : girEffectif(s.gir) === '34' ? '3-4' : '5-6') + (s.gir === '?' ? ' (estimé)' : '') + n, euro(r.dependance));
-      h += l('− APA en établissement (versée à l’établissement)', '− ' + euro(r.apa), 'moins');
+      h += l(`L’aide aux gestes du quotidien${n}`, euro(r.dependance) + '/mois');
+      h += `<p class="f-note">Se lever, se laver, s’habiller, manger. Le montant dépend du niveau
+        d’autonomie&nbsp;: ici le GIR&nbsp;${gir}${s.gir === '?' ? ', retenu faute de mieux' : ''}.</p>`;
+      h += l('<b>Total facturé</b>', '<b>' + euro(r.total) + '/mois</b>', 'sstot');
     }
-    if (r.apl > 0) h += l('− Aide au logement notifiée', '− ' + euro(r.apl), 'moins');
-    if (r.ir > 0) h += l(`− Réduction d’impôt (25 %, plafond ${euro(BAREME.irPlafond * r.nbRes)}/an)`, '− jusqu’à ' + euro(r.ir), 'moins');
-    h += l('<b>Reste à charge estimé</b>', '<b>' + euro(r.rac) + '/mois</b>', 'tot');
+
+    // ── ce que les aides retirent
+    const aides = [];
+    if (r.apaConnue && r.apa > 0) aides.push([
+      'L’allocation personnalisée d’autonomie (APA)', r.apa,
+      'Versée par le département directement à l’établissement. Vous ne la touchez pas&nbsp;: elle vient en déduction de la facture.']);
+    if (r.apl > 0) aides.push([
+      'L’aide au logement', r.apl,
+      'Versée par la caisse d’allocations familiales. Il faut la demander&nbsp;: elle n’est jamais automatique.']);
+    if (r.ir > 0) aides.push([
+      'La réduction d’impôt', r.ir,
+      `25 % des frais, jusqu’à ${euro(BAREME.irPlafond * r.nbRes)} par an. Elle arrive l’année suivante, pas chaque mois — ici elle est ramenée au mois pour comparer.`]);
+
+    if (aides.length) {
+      h += '<h4 class="f-t1">Ce que les aides retirent</h4>';
+      aides.forEach(([lib, val, note]) => {
+        h += l('− ' + lib, '− ' + euro(val) + '/mois', 'moins');
+        h += `<p class="f-note">${note}</p>`;
+      });
+    } else if (r.apaConnue) {
+      h += '<h4 class="f-t1">Ce que les aides retirent</h4>';
+      h += r.notes.length
+        ? '<p class="f-note">Aucune aide n’a pu être déduite, pour la raison suivante&nbsp;:</p>'
+        : `<p class="f-note">Aucune aide n’a pu être déduite. Les ressources indiquées dépassent
+           les plafonds, ou aucune aide n’a été saisie.</p>`;
+    }
+    // les avertissements se lisent ici, au moment où ils expliquent quelque chose
+    h += r.notes.map((x) => `<p class="warn">${esc(x)}</p>`).join('');
+
+    h += l('<b>Ce qu’il reste à payer</b>', '<b>' + euro(r.rac) + '/mois</b>', 'tot');
+    h += `<p class="f-note">C’est ce que votre parent, et au besoin sa famille, devront financer
+      chaque mois sur leurs ressources et leur épargne.</p>`;
     return h;
   }
 
@@ -542,11 +577,17 @@
     const f = r.famille;
     if (!f) return '';
     return `<div class="fam-box">
-      <b>Si les enfants complètent</b>
-      <div class="ln"><span>Ce qui n’est pas couvert par les ressources de votre parent</span><b>${euro(f.total)}/mois</b></div>
-      <div class="ln"><span>Part de chacun, à parts égales</span><b>${euro(f.part)}/mois</b></div>
-      <div class="ln tot"><span><b>Coût réel pour chaque enfant après déduction fiscale</b></span><b>${euro(f.net)}/mois</b></div>
-      <p class="muted">La pension alimentaire versée à un parent dans le besoin se déduit du revenu imposable, sans plafond, sur justificatifs — versements directs à l’EHPAD compris. Le calcul applique la tranche d’imposition que vous avez choisie. Le parent doit déclarer la somme reçue. Il n’existe aucun barème national de répartition : le conseil départemental, ou le juge, tranche.</p>
+      <b>Si la famille complète</b>
+      <p class="f-note">Ce que les ressources de votre parent ne couvrent pas, partagé entre ses enfants.</p>
+      <div class="ln"><span>Il manque chaque mois</span><b>${euro(f.total)}/mois</b></div>
+      <div class="ln"><span>Part de chaque enfant, à parts égales</span><b>${euro(f.part)}/mois</b></div>
+      <div class="ln tot"><span><b>Ce que cela coûte vraiment à chacun</b></span><b>${euro(f.net)}/mois</b></div>
+      <p class="f-note">Le dernier chiffre tient compte des impôts&nbsp;: cette somme se déduit du revenu
+      imposable de l’enfant qui la verse, sans plafond, sur justificatifs — y compris s’il paie
+      l’EHPAD directement. En échange, le parent doit la déclarer.</p>
+      <p class="f-note">Le partage à parts égales est une hypothèse de travail. Aucun barème national
+      n’existe&nbsp;: c’est le département, ou à défaut le juge, qui fixe la part de chacun selon les
+      revenus et les charges.</p>
     </div>`;
   }
 
@@ -651,7 +692,7 @@
     const e = o.e, r = o.r, p = perso();
     const gros = !r.prixConnu ? 'Tarif non déclaré' : euro(p ? r.rac : r.total);
     const lib = !r.prixConnu ? 'l’établissement ne l’a pas communiqué à la CNSA'
-      : (p ? 'resteraient à financer chaque mois' : 'tarif mensuel, avant les aides');
+      : (p ? 'à payer chaque mois, une fois les aides déduites' : 'prix affiché, avant les aides');
     return `<div class="f-top">
         <div><h3>${esc(nom(e))}</h3><p class="f-loc">${esc(e[C.ville])} · ${nbfr(+o.dist.toFixed(1))} km de votre point de départ</p></div>
         <button type="button" class="f-close" data-fermer aria-label="Fermer la fiche">×</button>
@@ -659,15 +700,18 @@
       <div class="f-prix">
         <div class="gros" style="color:${r.prixConnu ? (p ? COULEUR[r.couleur] : 'var(--ink)') : 'var(--mut2)'}">${gros}</div>
         <p class="lib">${lib}</p>
-        ${r.prixConnu && p ? `<p class="ctx">Tarif de l’établissement ${euro(r.total)}${r.aides >= 1 ? ` · aides estimées −${euro(r.aides)}` : ' · aucune aide n’a pu être déduite'}</p>` : ''}
-        ${r.prixConnu && !p ? '<p class="ctx">Indiquez la retraite de votre parent pour voir ce qui resterait réellement à payer.</p>' : ''}
+        ${r.prixConnu && p ? (r.aides >= 1
+          ? `<p class="ctx">L’établissement facture ${euro(r.total)} · les aides en retirent ${euro(r.aides)}</p>`
+          : `<p class="ctx">L’établissement facture ${euro(r.total)}, et aucune aide n’a pu être déduite${r.notes.length ? ' — la raison est expliquée dans l’onglet «&nbsp;Prix &amp; aides&nbsp;»' : ''}.</p>`) : ''}
+        ${r.prixConnu && !p ? '<p class="ctx">Indiquez la retraite de votre parent, en haut de page, pour voir ce qui resterait vraiment à payer.</p>' : ''}
         ${ecartMediane(o)}
       </div>
       <div class="f-faits">
-        ${fait(e[C.cap] ? e[C.cap] + ' places' : 'Non publiée', 'capacité (2020)')}
-        ${fait(ASH_ETAT[e[C.ash]] ? ASH_ETAT[e[C.ash]].txt : 'Non publiée', 'aide sociale')}
-        ${fait(e[C.statut] != null ? STATUTS[e[C.statut]] : 'Non publié', 'statut')}
-        ${fait(e[C.hasN] || 'Non publiée', 'évaluation (A à D)')}
+        ${fait(e[C.cap] ? e[C.cap] : '—', e[C.cap] ? 'places dans l’établissement' : 'nombre de places non publié')}
+        ${fait(e[C.ash] === 1 ? 'Oui' : e[C.ash] === 2 ? 'À vérifier' : e[C.ash] === 0 ? 'Non' : '—',
+               'accepte l’aide sociale du département')}
+        ${fait(e[C.statut] != null ? STATUTS[e[C.statut]] : '—', 'qui gère l’établissement')}
+        ${fait(e[C.hasN] || '—', e[C.hasN] ? 'note officielle de qualité, de A à D' : 'pas encore évalué')}
       </div>
       <div class="f-cta print-hide">
         ${p ? '<button type="button" class="btn" data-modif>Modifier ma situation</button>'
@@ -682,6 +726,22 @@
   }
 
   function fait(val, lib) { return `<div><b>${esc(val)}</b><span>${esc(lib)}</span></div>`; }
+
+  /** Une phrase, en français, sur ce que ce reste à charge veut dire pour cette famille.
+      Aucun chiffre n'y est inventé : tout vient du calcul déjà affiché. */
+  function resumeSimple(o) {
+    const r = o.r, dispo = state.revenus + (state.autres || 0);
+    if (r.rac <= dispo) {
+      return `Les ressources de votre parent (${euro(dispo)}/mois) couvrent cette somme.`;
+    }
+    const manque = r.rac - dispo;
+    if (state.epargne > 0 && r.moisEpargne !== Infinity && r.moisEpargne >= 12) {
+      return `Il manque ${euro(manque)} chaque mois. L’épargne déclarée y pourvoirait environ
+        ${Math.floor(r.moisEpargne)} mois.`;
+    }
+    return `Il manque ${euro(manque)} chaque mois : au-delà des ressources de votre parent.
+      Les pistes — famille, aide sociale — sont détaillées dans l’onglet « Prix &amp; aides ».`;
+  }
 
   /** Situer le tarif dans son contexte local — seulement si le calcul est fiable. */
   function ecartMediane(o) {
@@ -698,14 +758,18 @@
     const e = o.e, r = o.r;
     if (k === 'prix') {
       return `${detailHtml(o, s)}
-        ${r.notes.map((n) => `<p class="warn">${esc(n)}</p>`).join('')}
         ${blocFamille(r)}
-        ${r.ash ? `<div class="scenario"><b>Si l’aide sociale à l’hébergement est accordée</b>
-            ${r.ash.aConfirmer ? '<p class="warn">Habilitation à confirmer : le répertoire officiel indique « non habilité » alors que l’établissement déclare un tarif « aide sociale ». Demandez-lui si une place habilitée est disponible.</p>' : ''}
-            <div class="ln"><span>Votre parent verse</span><b>${euro(r.ash.partParent)}/mois</b></div>
-            <div class="ln"><span>Il conserve</span><b>${euro(r.ash.gardeMini)}/mois</b></div>
-            ${r.ash.reserveConjoint ? `<div class="ln"><span>Réservé au conjoint resté à domicile</span><b>${euro(r.ash.reserveConjoint)}/mois</b></div>` : ''}
-            <div class="ln"><span>Reste à financer par le département et, selon sa pratique, par les enfants</span><b>${euro(r.ash.reste)}/mois</b></div>
+        ${r.ash ? `<div class="scenario"><b>Et si les ressources ne suffisent pas&nbsp;?</b>
+            <p class="f-note">Le département peut payer la différence. C’est l’aide sociale à
+            l’hébergement. Elle n’est possible que dans un établissement habilité — celui-ci l’est.</p>
+            ${r.ash.aConfirmer ? '<p class="warn">Habilitation à vérifier : le répertoire officiel indique « non habilité », alors que l’établissement déclare un tarif « aide sociale ». Appelez-le pour savoir si une place habilitée est libre.</p>' : ''}
+            <div class="ln"><span>Votre parent verse sur ses propres ressources</span><b>${euro(r.ash.partParent)}/mois</b></div>
+            <div class="ln"><span>Il lui reste, pour ses dépenses personnelles</span><b>${euro(r.ash.gardeMini)}/mois</b></div>
+            ${r.ash.reserveConjoint ? `<div class="ln"><span>Son conjoint resté à domicile garde</span><b>${euro(r.ash.reserveConjoint)}/mois</b></div>` : ''}
+            <div class="ln tot"><span><b>Le département avance</b></span><b>${euro(r.ash.reste)}/mois</b></div>
+            <p class="att">Ce que le département avance lui sera remboursé sur la succession. Il peut
+            aussi demander une participation aux enfants. Ce n’est donc pas une aide gratuite&nbsp;:
+            c’est une avance. <a href="/aides-ehpad/aide-sociale-hebergement/">Ce qu’il faut savoir avant de la demander</a></p>
           </div>` : ''}
         ${o.prix ? '<h4>L’évolution du tarif</h4>' + blocPrix(o.prix) : ''}
         <p class="f-src">Tarifs déclarés par l’établissement à la Caisse nationale de solidarité pour l’autonomie${e[C.maj] ? ', mis à jour ' + mfr(e[C.maj]) : ''}.</p>`;
@@ -745,20 +809,22 @@
         ${e[C.ashsrc] ? ' Habilitation à l’aide sociale : ' + esc(ASH_SRC[e[C.ashsrc]]) + '.' : ''}
         ${e[C.statutsrc] ? ' Statut : ' + esc(STATUT_SRC[e[C.statutsrc]]) + '.' : ''}</p>`;
     }
-    // onglet « essentiel »
+    // onglet « essentiel » : de quoi se faire une opinion en dix secondes
     const l = [];
     if (pro()) l.push(`<h4 style="margin-top:0">Ce qui est vérifiable</h4>${compatibilites(o, s)}`);
-    l.push(`<div class="ln"><span>Distance</span><b>${nbfr(+o.dist.toFixed(1))} km</b></div>`);
-    if (r.prixConnu) l.push(`<div class="ln"><span>Tarif d’hébergement</span><b>${euro2(r.pj)}/jour</b></div>`);
-    if (r.apaConnue) l.push(`<div class="ln"><span>Allocation personnalisée d’autonomie estimée</span><b>${euro(r.apa)}/mois</b></div>`);
-    if (o.prix) l.push(`<div class="ln"><span>Évolution du tarif depuis ${o.prix.d}</span><b class="${o.prix.e < 0 ? 'vert' : 'rouge'}">${pct(o.prix.e)}</b></div>`);
-    if (r.dispoEst) l.push(`<div class="ln"><span>Places libres pour 100, dans ce type d’établissement</span><b>${nbfr(r.dispoEst.libres100)}</b></div>`);
+    l.push(`<div class="ln"><span>À quelle distance de votre point de départ</span><b>${nbfr(+o.dist.toFixed(1))} km</b></div>`);
+    if (r.prixConnu) l.push(`<div class="ln"><span>Prix du logement, par jour</span><b>${euro2(r.pj)}</b></div>`);
+    if (r.apaConnue && r.apa > 0) l.push(`<div class="ln"><span>Aide du département versée à l’établissement</span><b>${euro(r.apa)}/mois</b></div>`);
+    if (o.prix) l.push(`<div class="ln"><span>De combien le prix a augmenté depuis ${o.prix.d}</span><b class="${o.prix.e < 0 ? 'vert' : 'rouge'}">${pct(o.prix.e)}</b></div>`);
+    if (r.dispoEst) l.push(`<div class="ln"><span>Places qui se libèrent chaque année, sur 100</span><b>${nbfr(r.dispoEst.libres100)}</b></div>`);
     if (r.moisEpargne !== Infinity && r.trou > 0 && state.epargne > 0)
-      l.push(`<div class="ln"><span>Durée que couvrirait l’épargne</span><b>${Math.floor(r.moisEpargne)} mois</b></div>`);
-    return l.join('') +
+      l.push(`<div class="ln"><span>Combien de temps l’épargne tiendrait</span><b>${Math.floor(r.moisEpargne)} mois</b></div>`);
+    const tete = r.prixConnu && perso()
+      ? `<p class="f-resume">${resumeSimple(o)}</p>` : '';
+    return tete + l.join('') +
       r.notes.map((n) => `<p class="warn">${esc(n)}</p>`).join('') +
-      (r.ash && r.ash.aConfirmer ? '<p class="warn">Habilitation à l’aide sociale à confirmer auprès de l’établissement.</p>' : '') +
-      '<p class="f-src">Tarifs : CNSA. Identité et habilitation : répertoire FINESS. Évaluation : Haute Autorité de santé. Le détail figure dans les autres onglets.</p>';
+      (r.ash && r.ash.aConfirmer ? '<p class="warn">L’habilitation à l’aide sociale est à vérifier auprès de l’établissement.</p>' : '') +
+      '<p class="f-src">Prix : Caisse nationale de solidarité pour l’autonomie. Identité et habilitation : répertoire FINESS. Évaluation : Haute Autorité de santé. Le détail est dans les autres onglets.</p>';
   }
 
   /* ---------- Contexte départemental ---------- */

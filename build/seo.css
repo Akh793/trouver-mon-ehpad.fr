@@ -87,7 +87,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
 /* encadrés */
 .note{margin-top:1rem;background:var(--ti-bl);border-radius:var(--r2);padding:.8rem 1rem;font-size:.88rem;color:var(--txt2)}
 .note b{color:var(--ink)}
-.att{margin-top:1rem;background:var(--ti-or);border-radius:var(--r2);padding:.8rem 1rem;font-size:.85rem;color:#7a4a00}
+.att{margin-top:1rem;background:var(--ti-or);border-radius:var(--r2);padding:.8rem 1rem;font-size:.85rem;color:var(--sur-or)}
 .def{margin-top:.8rem;font-size:.85rem;color:var(--mut);background:var(--surf);border-left:3px solid var(--bl);padding:.5rem .8rem}
 
 /* liens de maillage */
