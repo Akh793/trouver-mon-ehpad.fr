@@ -216,8 +216,8 @@ PAGES = [
 <h2>Éditeur</h2>
 <p>Trouver mon EHPAD est un site édité à titre personnel, sans but lucratif.</p>
 <ul>
-<li><b>Éditeur et directeur de la publication</b> : À COMPLÉTER — nom et prénom</li>
-<li><b>Adresse</b> : À COMPLÉTER — adresse postale</li>
+<li><b>Éditeur et directeur de la publication</b> : David RIVAL</li>
+<li><b>Adresse</b> : non publiée — éditeur non professionnel, identité complète communiquée à l’hébergeur</li>
 <li><b>Contact</b> : <a href="mailto:contact@trouver-mon-ehpad.fr">contact@trouver-mon-ehpad.fr</a></li>
 </ul>
 <p class="fil">Ces trois mentions sont exigées par l’article 6 III de la loi pour la confiance dans l’économie numérique. Un éditeur non professionnel peut ne rendre publics que son nom et son adresse de courrier électronique, à condition d’avoir communiqué son identité complète à l’hébergeur.</p>
