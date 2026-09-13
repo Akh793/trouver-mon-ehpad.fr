@@ -672,6 +672,23 @@ body.fige{overflow:hidden}
 .tb-btn:hover,.tb-icon:hover{border-color:var(--bl-t);color:var(--bl-t);transform:translateY(-1px)}
 .tb-btn svg{width:.7rem;height:.7rem;transition:transform .2s}
 .tb-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+/* Ambre, et non corail : le corail est réservé à l'action principale du site.
+   Deux boutons pleins de même teinte se disputeraient le regard. */
+.tb-avis{background:var(--orange);color:#fff;border:0;border-radius:999px;font:inherit;font-size:.85rem;
+  font-weight:600;padding:.6rem 1.1rem;min-height:38px;display:inline-flex;align-items:center;
+  text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(224,138,0,.3);
+  transition:transform .15s,box-shadow .15s}
+.tb-avis:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,138,0,.42)}
+/* Dans la navigation d'accueil, même couleur mais en pastille discrète : cette
+   rangée est une liste de liens, pas une barre d'actions. */
+.nav-avis{background:var(--ti-or);color:var(--sur-or);border-radius:999px;
+  padding:.15rem .7rem;font-weight:600}
+.nav-avis:hover{background:var(--orange);color:#fff}
+@media (hover:none){.tb-avis:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){.tb-avis{transition:none}.tb-avis:hover{transform:none}}
+/* Sous 860 px, la barre ne peut plus porter les deux boutons sans tronquer ses
+   libellés : celui-ci s'efface, et « Vos retours » reste dans le menu Naviguer. */
+@media (max-width:860px){.tb-avis{display:none}}
 .tb-cta{background:var(--co);color:#fff;border:0;border-radius:999px;font:inherit;font-size:.85rem;
   font-weight:600;padding:.6rem 1.2rem;min-height:38px;display:inline-flex;align-items:center;
   text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(255,99,71,.32);

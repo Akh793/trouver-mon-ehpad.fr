@@ -1,0 +1,10 @@
+import pkg from '/home/claude/.npm-global/lib/node_modules/playwright/index.js'; const { chromium } = pkg;
+const b = await chromium.launch(); const p = await b.newPage();
+const out=[]; p.on('console', m=>out.push(m.text()));
+await p.goto('http://127.0.0.1:8899/index.html', { waitUntil:'domcontentloaded' });
+await p.waitForTimeout(2500);
+await p.evaluate(()=>window.runTests());
+const der = out.filter(t=>/tests OK/.test(t)).pop();
+console.log(der);
+console.log('ÉCHECS :'); out.filter(t=>t.startsWith('❌')).forEach(t=>console.log('  ',t));
+await b.close();
