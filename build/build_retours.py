@@ -58,7 +58,7 @@ Ce qui vous a servi, ce qui vous a manqué, ce qui vous a induit en erreur : éc
 
 <h2>Ce que les visiteurs ont écrit</h2>
 <div id="r-liste" class="r-liste"><p class="muted">Chargement des messages…</p></div>
-<p class="f-src">Les messages sont écrits par des visiteurs et publiés sans relecture préalable.
+<p class="f-src" style="max-width:46rem;margin-inline:auto">Les messages sont écrits par des visiteurs et publiés sans relecture préalable.
 Ils n’engagent qu’eux et n’ont pas été vérifiés. Un message vous paraît inexact, diffamatoire, ou
 révèle l’identité de quelqu’un&nbsp;? Utilisez le lien «&nbsp;Signaler&nbsp;» qui l’accompagne, ou écrivez à
 <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Signalement%20d%27un%20message">contact@trouver-mon-ehpad.fr</a>&nbsp;:
@@ -136,12 +136,24 @@ SCRIPT = """
 """
 
 STYLE = """
-.lead{font-size:1.05rem;color:var(--mut);max-width:60ch}
-.avert{margin:1.4rem 0;padding:1rem 1.2rem;border-radius:var(--r2);background:var(--ti-or);
-  border:1px solid var(--bd2);font-size:.9rem;line-height:1.5;max-width:66ch}
-.avert p{margin:0 0 .6rem} .avert p:last-child{margin-bottom:0}
-#form-retour{max-width:40rem;margin-top:.8rem}
+/* Ces règles ne valent que pour cette page : elles sont écrites dans son corps,
+   pas dans la feuille partagée. */
+.page{margin-inline:auto;max-width:62rem}
+/* Le header garde toute la largeur : le bouton de thème y vit, et il doit rester
+   au bord droit de la fenêtre. Seul son contenu textuel est centré. */
+#layout header{text-align:center}
+#layout header .fil{display:block}
+.lead{font-size:1.05rem;color:var(--mut);max-width:62ch;margin-inline:auto;text-align:center}
+/* Trois mises en garde côte à côte plutôt qu'empilées : même texte, trois fois
+   moins de hauteur, et chacune se lit d'un coup d'œil. */
+.avert{margin:1.6rem auto;padding:1.1rem 1.3rem;border-radius:var(--r2);background:var(--ti-or);
+  border:1px solid var(--bd2);font-size:.88rem;line-height:1.5;
+  display:grid;gap:1rem 1.6rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
+.avert p{margin:0}
+.page h2{text-align:center}
+#form-retour{max-width:40rem;margin:.8rem auto 0}
 #form-retour .fld{margin-bottom:1rem}
+#form-retour button{display:block;margin-inline:auto}
 #form-retour textarea{width:100%;border:1.5px solid var(--bd);border-radius:var(--r2);
   background:var(--surf);padding:.7rem .9rem;font:inherit;font-size:1rem;color:inherit;margin-top:.3rem;resize:vertical}
 #form-retour textarea:focus{outline:none;border-color:var(--bl-t);box-shadow:0 0 0 4px rgba(37,72,255,.14)}
@@ -149,10 +161,10 @@ STYLE = """
 /* Piège à robots : hors écran, hors tabulation, hors lecteur d'écran.
    Préféré à un captcha, qui ajouterait un service tiers sur la page. */
 .piege{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.r-etat{margin-top:.8rem;padding:.6rem .9rem;border-radius:var(--r2);font-size:.9rem;max-width:40rem}
+.r-etat{margin:.8rem auto 0;padding:.6rem .9rem;border-radius:var(--r2);font-size:.9rem;max-width:40rem;text-align:center}
 .r-etat.ok{background:var(--ti-ve);color:var(--sur-ve)}
 .r-etat.err{background:var(--ti-ro);color:var(--sur-ro)}
-.r-liste{margin-top:.8rem;display:grid;gap:.8rem;max-width:46rem}
+.r-liste{margin-top:.8rem;display:grid;gap:.8rem;max-width:46rem;margin-inline:auto}
 .r-m{border:1px solid var(--bd2);border-left:4px solid var(--bd);border-radius:var(--r2);padding:.8rem 1rem;background:var(--surf)}
 .r-h{margin:0 0 .4rem;font-size:.8rem;color:var(--mut2)}
 .r-sig{color:var(--mut2);text-decoration:underline}

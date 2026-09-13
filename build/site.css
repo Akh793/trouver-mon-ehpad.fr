@@ -105,7 +105,14 @@ h1 em{margin-right:.09em}
 .head-side{flex:0 0 auto;max-width:24rem;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;font-size:.85rem;color:var(--mut)}
 .head-side a{font-weight:500;text-decoration:none}
 /* le bouton de thème vit aussi dans l'en-tête statique : accessible sans avoir à défiler */
-.head-act{display:flex;align-items:center;gap:.6rem}
+/* Aligné à droite explicitement : sur l'accueil, le parent .head-side le tirait
+   déjà de ce côté, ce qui masquait l'absence de règle ici. Les pages annexes,
+   elles, n'ont pas ce parent — le bouton de thème y partait à gauche. */
+.head-act{display:flex;align-items:center;justify-content:flex-end;gap:.6rem}
+/* Le bouton de thème est le dernier élément de la ligne, donc le plus à droite,
+   sur l'accueil comme sur les pages annexes. L'ordre visuel seul change :
+   l'ordre de tabulation suit le document, où le bouton vient en premier. */
+.head-act .tb-icon{order:2}
 .head-act .tb-icon{width:32px;height:32px}
 .head-act .tb-icon svg{width:.95rem;height:.95rem}
 .head-side a:hover{color:var(--bl-t);text-decoration:underline;text-underline-offset:4px}
