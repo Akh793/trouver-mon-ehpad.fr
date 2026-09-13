@@ -23,24 +23,13 @@ CORPS = """
 <p class="lead">Ce site est fait pour des familles qui cherchent une place, souvent dans l’urgence.
 Ce qui vous a servi, ce qui vous a manqué, ce qui vous a induit en erreur : écrivez-le ici.</p>
 
-<div class="avert">
-  <p><b>Cette page est la seule du site qui transmette quelque chose.</b> Le calculateur, lui, travaille
-  entièrement dans votre navigateur. Ici, votre message part sur un serveur pour être lu.</p>
-  <p><b>N’écrivez pas de données personnelles</b> — ni les vôtres, ni celles d’un proche : pas de nom
-  de résident, pas d’état de santé, pas de ressources, pas d’adresse ni de numéro de téléphone.
-  Pour une situation particulière, écrivez plutôt à <a href="mailto:contact@trouver-mon-ehpad.fr">contact@trouver-mon-ehpad.fr</a>.</p>
-  <p><b>Votre message apparaît aussitôt.</b> Il n’est pas relu avant. En retour, tout message peut être
-  retiré : celui qui met en cause un établissement nommément, celui qui permet d’identifier une personne —
-  un résident, un proche, un salarié — et tout contenu manifestement illicite. Chaque message porte un
-  lien pour le signaler.</p>
-</div>
-
 <h2>Écrire un message</h2>
 <form id="form-retour" novalidate>
   <div class="fld">
     <label for="r-message">Votre message</label>
     <textarea id="r-message" rows="6" maxlength="1500" required
       placeholder="Ce qui vous a aidé, ce qui manquait, ce qui n’était pas clair…"></textarea>
+    <p class="fld-h fld-garde"><b>N’écrivez pas de données personnelles</b> — ni les vôtres, ni celles d’un proche.</p>
     <p class="fld-h"><span id="r-reste">1500</span> caractères restants.</p>
   </div>
   <div class="fld">
@@ -58,11 +47,17 @@ Ce qui vous a servi, ce qui vous a manqué, ce qui vous a induit en erreur : éc
 
 <h2>Ce que les visiteurs ont écrit</h2>
 <div id="r-liste" class="r-liste"><p class="muted">Chargement des messages…</p></div>
-<p class="f-src" style="max-width:46rem;margin-inline:auto">Les messages sont écrits par des visiteurs et publiés sans relecture préalable.
-Ils n’engagent qu’eux et n’ont pas été vérifiés. Un message vous paraît inexact, diffamatoire, ou
-révèle l’identité de quelqu’un&nbsp;? Utilisez le lien «&nbsp;Signaler&nbsp;» qui l’accompagne, ou écrivez à
-<a href="mailto:contact@trouver-mon-ehpad.fr?subject=Signalement%20d%27un%20message">contact@trouver-mon-ehpad.fr</a>&nbsp;:
-il sera retiré s’il doit l’être.</p>
+<div class="avert">
+  <p><b>Cette page est la seule du site qui transmette quelque chose.</b> Le calculateur, lui, travaille
+  entièrement dans votre navigateur. Ici, votre message part sur un serveur pour être lu.</p>
+  <p><b>N’écrivez pas de données personnelles</b> — ni les vôtres, ni celles d’un proche : pas de nom
+  de résident, pas d’état de santé, pas de ressources, pas d’adresse ni de numéro de téléphone.
+  Pour une situation particulière, écrivez plutôt à <a href="mailto:contact@trouver-mon-ehpad.fr">contact@trouver-mon-ehpad.fr</a>.</p>
+  <p><b>Votre message apparaît aussitôt.</b> Il n’est pas relu avant. En retour, tout message peut être
+  retiré : celui qui met en cause un établissement nommément, celui qui permet d’identifier une personne —
+  un résident, un proche, un salarié — et tout contenu manifestement illicite. Chaque message porte un
+  lien pour le signaler.</p>
+</div>
 """
 
 SCRIPT = """
@@ -143,10 +138,10 @@ STYLE = """
    au bord droit de la fenêtre. Seul son contenu textuel est centré. */
 #layout header{text-align:center}
 #layout header .fil{display:block}
-.lead{font-size:1.05rem;color:var(--mut);max-width:62ch;margin-inline:auto;text-align:center}
+.lead{font-size:1.05rem;color:var(--mut);max-width:76ch;margin-inline:auto;text-align:center}
 /* Trois mises en garde côte à côte plutôt qu'empilées : même texte, trois fois
    moins de hauteur, et chacune se lit d'un coup d'œil. */
-.avert{margin:1.6rem auto;padding:1.1rem 1.3rem;border-radius:var(--r2);background:var(--ti-or);
+.avert{margin:2.4rem auto 0;padding:1.1rem 1.3rem;border-radius:var(--r2);background:var(--ti-or);
   border:1px solid var(--bd2);font-size:.88rem;line-height:1.5;
   display:grid;gap:1rem 1.6rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
 .avert p{margin:0}
@@ -158,6 +153,9 @@ STYLE = """
   background:var(--surf);padding:.7rem .9rem;font:inherit;font-size:1rem;color:inherit;margin-top:.3rem;resize:vertical}
 #form-retour textarea:focus{outline:none;border-color:var(--bl-t);box-shadow:0 0 0 4px rgba(37,72,255,.14)}
 .opt{font-weight:400;color:var(--mut2)}
+/* la seule mise en garde qui doit être lue avant l’envoi, et non après */
+.fld-garde{margin-top:.45rem;color:var(--sur-or)}
+.fld-garde b{color:inherit}
 /* Piège à robots : hors écran, hors tabulation, hors lecteur d'écran.
    Préféré à un captcha, qui ajouterait un service tiers sur la page. */
 .piege{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
