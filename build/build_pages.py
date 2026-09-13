@@ -28,8 +28,8 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
 <meta name="theme-color" content="#2548FF">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 {jsonld}
 <style>
 {font}
@@ -87,7 +87,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
   <p>© 2026 Trouver mon EHPAD — gratuit, sans publicité, sans partenariat avec des établissements.</p>
 </footer>
 </div>
-<script src="assets/pages.js" defer></script>
+<script src="/assets/pages.js" defer></script>
 </body>
 </html>
 """
