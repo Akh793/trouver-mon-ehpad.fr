@@ -524,6 +524,12 @@
       if (k === 'dist') return a.dist - b.dist;
       if (k === 'prix') return (a.r.pj ?? 1e9) - (b.r.pj ?? 1e9);
       if (k === 'has') { const o = { A: 0, B: 1, C: 2, D: 3 }; return (o[a.e[C.hasN]] ?? 9) - (o[b.e[C.hasN]] ?? 9) || a.dist - b.dist; }
+      // « Les aides » remonte les établissements habilités à l'aide sociale, puis
+      // départage par reste à charge. Aucun établissement n'est retiré de la liste.
+      if (k === 'ash') {
+        const o = (x) => (x.e[C.ash] === 1 ? 0 : x.e[C.ash] === 2 ? 1 : 2);
+        return o(a) - o(b) || (a.r.rac ?? 1e9) - (b.r.rac ?? 1e9);
+      }
       // le tri « places libres estimées » a été retiré : aucune source ne donne la disponibilité réelle
       if (k === 'evol') return (a.prix?.e ?? 1e9) - (b.prix?.e ?? 1e9);
       return (a.r.rac ?? 1e9) - (b.r.rac ?? 1e9);
@@ -876,8 +882,9 @@
         et elle n’est pas remboursée. Elle arrive l’année suivante, jamais chaque mois.</p>`;
     } else if (r.fisc && !r.fisc.applicable) {
       h += `<p class="f-note">Une réduction d’impôt de 25&nbsp;% existe pour les personnes imposables.
-        Indiquez-le dans «&nbsp;Préciser la situation&nbsp;» pour voir ce qu’elle représenterait.</p>`;
+        Indiquez-le dans «&nbsp;Préciser ma situation&nbsp;» pour voir ce qu’elle représenterait.</p>`;
     }
+    h += ecartMediane(o);
     return h;
   }
 
@@ -911,19 +918,24 @@
     const fav = state.favoris.indexOf(fin) >= 0;
     const cmp = state.compare.indexOf(fin) >= 0;
     let montant, lib, second = '';
-    if (!r.prixConnu) { montant = 'Tarif non déclaré'; lib = ''; }
+    if (!r.prixConnu) { montant = 'Tarif non renseigné'; lib = ''; }
     else if (p) {
-      montant = euro(r.rac); lib = 'à financer / mois';
+      montant = euro(r.decaisse); lib = r.depConnue ? 'budget estimé / mois' : 'calcul incomplet / mois';
+      // « Aucune aide » n'est vrai que si le calcul a pu en chercher une. Quand le
+      // régime supprime l'APA, ou quand la part dépendance manque, ce n'est pas
+      // l'absence d'aide qu'on observe, c'est l'absence d'information.
       second = r.aides >= 1
-        ? `<span class="tarif">Tarif&nbsp;: ${euro(r.total)} · aides −${euro(r.aides)}</span>`
-        : `<span class="tarif">Tarif&nbsp;: ${euro(r.total)} · aucune aide déduite</span>`;
+        ? `<span class="tarif">Facture&nbsp;: ${euro(r.facture)} · aides −${euro(r.aides)}</span>`
+        : r.reg === 'exp'
+          ? `<span class="tarif">Facture&nbsp;: ${euro(r.facture)} · forfait inclus</span>`
+          : `<span class="tarif">Facture&nbsp;: ${euro(r.facture)}</span>`;
       // Un montant ne doit jamais paraître plus sûr que les données qui le produisent.
       if (!r.depConnue) second += '<span class="tarif t-reserve">hors aide au quotidien, non déclarée</span>';
       else if (r.depDouteuse) second += '<span class="tarif t-reserve">tarifs dépendance à confirmer</span>';
       else if (r.girSuppose) second += '<span class="tarif t-reserve">niveau d’autonomie supposé</span>';
       if (r.chambreSupposee) second += '<span class="tarif t-reserve">tarif de chambre double non déclaré</span>';
     } else {
-      montant = euro(r.total); lib = 'tarif / mois';
+      montant = euro(r.facture); lib = 'tarif / mois';
       second = '<span class="tarif">avant les aides</span>';
     }
     const badges = [];
@@ -1010,37 +1022,40 @@
 
   function ficheHtml(o, s) {
     const e = o.e, r = o.r, p = perso();
-    const gros = !r.prixConnu ? 'Tarif non déclaré' : euro(p ? r.rac : r.total);
-    const lib = !r.prixConnu ? 'l’établissement ne l’a pas communiqué à la CNSA'
-      : (p ? 'à payer chaque mois, une fois les aides déduites' : 'prix affiché, avant les aides');
+    const gros = !r.prixConnu ? 'Tarif non renseigné' : euro(p ? r.decaisse : r.facture) + ' / mois';
+    const lib = !r.prixConnu ? 'Non communiqué par l’établissement'
+      : p ? (r.depConnue ? 'Budget estimé' : 'Calcul incomplet')
+          : 'Tarif avant aides';
     return `<div class="f-top">
-        <div><h3>${esc(nom(e))}</h3><p class="f-loc">${esc(e[C.ville])} · ${nbfr(+o.dist.toFixed(1))} km de votre point de départ</p></div>
+        <div><h3>${esc(nom(e))}</h3><p class="f-loc">${esc(e[C.ville])} · à ${nbfr(+o.dist.toFixed(1))} km à vol d’oiseau du lieu recherché</p></div>
         <button type="button" class="f-close" data-fermer aria-label="Fermer la fiche">×</button>
       </div>
       <div class="f-prix">
         <div class="gros" style="color:${r.prixConnu ? (p ? COULEUR[r.couleur] : 'var(--ink)') : 'var(--mut2)'}">${gros}</div>
         <p class="lib">${lib}</p>
-        ${r.prixConnu && p ? (r.aides >= 1
-          ? `<p class="ctx">L’établissement facture ${euro(r.total)} · les aides en retirent ${euro(r.aides)}</p>`
-          : r.reg === 'exp'
-            ? `<p class="ctx">L’établissement facture ${euro(r.total)}. Dans ce territoire, l’APA en établissement
-               n’existe plus&nbsp;: elle est remplacée par la participation forfaitaire déjà comprise dans ce montant.</p>`
-            : `<p class="ctx">L’établissement facture ${euro(r.total)}, et aucune aide n’a pu être déduite${r.notes.length ? ' — la raison est expliquée dans l’onglet «&nbsp;Prix &amp; aides&nbsp;»' : ''}.</p>`) : ''}
-        ${r.prixConnu && !p ? `<p class="ctx">Indiquez ${mot('retraite')}, en haut de page, pour voir ce qui resterait vraiment à payer.</p>` : ''}
-        ${ecartMediane(o)}
+        ${r.prixConnu && p ? `<p class="ctx">${!r.depConnue
+            ? 'La part «&nbsp;aide au quotidien&nbsp;» n’est pas déclarée&nbsp;: le budget réel sera plus élevé.'
+            : r.aides >= 1
+              ? `Aides déduites&nbsp;: ${euro(r.aides)}. Hors frais d’entrée et dépenses personnelles.`
+              : r.reg === 'exp'
+                ? 'Forfait d’aide au quotidien inclus. Hors frais d’entrée et dépenses personnelles.'
+                : 'Aucune aide déduite au vu des ressources indiquées. Hors frais d’entrée et dépenses personnelles.'}</p>` : ''}
+        ${r.prixConnu && !p ? `<p class="ctx">Indiquez ${mot('retraite')}, en haut de page, pour estimer le budget.</p>` : ''}
+        ${r.prixConnu && p && r.trou > 0 ? `<p class="f-manque"><b>À compléter&nbsp;: ${euro(r.trou)} / mois</b><br>
+          Après les revenus renseignés${state.epargne > 0 && r.moisEpargne !== Infinity && r.moisEpargne >= 1
+            ? `, et hors épargne (elle y pourvoirait environ ${Math.floor(r.moisEpargne)} mois)` : ''}.</p>` : ''}
       </div>
       <div class="f-faits">
-        ${fait(e[C.cap] ? e[C.cap] : '—', e[C.cap] ? 'places dans l’établissement' : 'nombre de places non publié')}
-        ${fait(e[C.ash] === 1 ? 'Oui' : e[C.ash] === 2 ? 'À vérifier' : e[C.ash] === 0 ? 'Non' : '—',
-               'accepte l’aide sociale du département')}
-        ${fait(e[C.statut] != null ? STATUTS[e[C.statut]] : '—', 'qui gère l’établissement')}
-        ${fait(e[C.hasN] || '—', e[C.hasN] ? 'note officielle de qualité, de A à D' : 'pas encore évalué')}
+        ${fait(ashEtat(e), 'Aide sociale')}
+        ${fait(e[C.hasN] || 'Non publiée', 'Évaluation publiée')}
+        ${fait(e[C.statut] != null ? STATUTS[e[C.statut]] : 'Non renseigné', 'Statut')}
       </div>
+      <p class="f-dispo-l">Disponibilités&nbsp;: contactez l’établissement.</p>
       <div class="f-cta print-hide">
-        ${p ? '<button type="button" class="btn" data-modif>Modifier ma situation</button>'
-            : '<button type="button" class="btn" data-modif>Estimer mon reste à charge</button>'}
+        ${e[C.tel] ? `<a class="btn" href="tel:${esc(String(e[C.tel]).replace(/\D/g, ''))}" data-tel>Appeler l’établissement</a>` : ''}
+        <button type="button" class="cta-s mini2" data-modif>${p ? 'Modifier ma situation' : 'Estimer le budget'}</button>
         <button type="button" class="cta-s mini2" data-cmp="${e[C.fin]}">${libCmp(state.compare.indexOf(e[C.fin]) >= 0)}</button>
-        <button type="button" class="cta-s mini2 fav" data-fav="${e[C.fin]}">${state.favoris.indexOf(e[C.fin]) >= 0 ? '♥ Gardé' : '♡ Garder'}</button>
+        <button type="button" class="cta-s mini2 fav" data-fav="${e[C.fin]}" aria-label="${state.favoris.indexOf(e[C.fin]) >= 0 ? 'Retirer des favoris' : 'Garder pour plus tard'}">${state.favoris.indexOf(e[C.fin]) >= 0 ? '♥ Gardé' : '♡ Garder'}</button>
       </div>
       <div class="f-onglets" role="tablist">
         ${ONGLETS.map(([k, t]) => `<button type="button" role="tab" data-onglet="${k}" aria-selected="${k === ongletActif}">${t}</button>`).join('')}
@@ -1050,31 +1065,52 @@
 
   function fait(val, lib) { return `<div><b>${esc(val)}</b><span>${esc(lib)}</span></div>`; }
 
+  /* L'habilitation à l'aide sociale porte sur un NOMBRE DE PLACES, pas sur
+     l'établissement entier, et elle n'ouvre aucun droit par elle-même : le
+     département décide dossier par dossier. Un « Oui » sec laisserait croire
+     l'inverse. Les quatre états sont rédigés ici, et nulle part ailleurs. */
+  const ASH_LIB = {
+    1: 'Oui, sous conditions',
+    2: 'À confirmer',
+    0: 'Non',
+  };
+  const ASH_NOTE = {
+    1: 'Certaines places sont habilitées. L’accord dépend du département et de la place proposée.',
+    2: 'Le répertoire et le tarif déclaré se contredisent. À vérifier auprès de l’établissement.',
+    0: 'Établissement non habilité. Une exception existe après plusieurs années de séjour payé : à voir avec le département.',
+  };
+  const ashEtat = (e) => (ASH_LIB[e[C.ash]] || 'Non renseigné');
+  const ashNote = (e) => (ASH_NOTE[e[C.ash]] || 'Information absente du répertoire.');
+
   /** Une phrase, en français, sur ce que ce reste à charge veut dire pour cette famille.
       Aucun chiffre n'y est inventé : tout vient du calcul déjà affiché. */
+  /** Une phrase sur ce que le budget veut dire pour cette situation.
+      Le complément vient de `r.trou`, la seule définition du moteur : il préserve
+      un minimum de reste à vivre, ce qu'une simple soustraction « budget − revenus »
+      ignorait — d'où deux chiffres différents affichés sur le même écran. */
   function resumeSimple(o) {
-    const r = o.r, dispo = state.revenus + (state.autres || 0);
-    if (r.rac <= dispo) {
-      return `${mot('resMaj')} (${euro(dispo)}/mois) couvrent cette somme.`;
-    }
-    const manque = r.rac - dispo;
+    const r = o.r;
+    if (r.trou <= 0) return `Les ressources renseignées couvrent ce budget.`;
+    const bouton = '<button type="button" class="mini2 f-lien-fin" data-onglet="prix">Voir les financements</button>';
     if (state.epargne > 0 && r.moisEpargne !== Infinity && r.moisEpargne >= 12) {
-      return `Il manque ${euro(manque)} chaque mois. L’épargne déclarée y pourvoirait environ
-        ${Math.floor(r.moisEpargne)} mois.`;
+      return `L’épargne renseignée couvrirait ce complément environ ${Math.floor(r.moisEpargne)} mois. ` + bouton;
     }
-    return `Il manque ${euro(manque)} chaque mois : au-delà ${pourMoi() ? 'de vos ressources' : 'des ressources de votre parent'}.
-      Les pistes — famille, aide sociale — sont détaillées dans l’onglet « Prix &amp; aides ».`;
+    return bouton;
   }
 
   /** Situer le tarif dans son contexte local — seulement si le calcul est fiable. */
+  /** Situe la facture dans la sélection. Ce n'est pas un indicateur de qualité :
+      un tarif bas peut refléter un prix maîtrisé comme un service réduit. */
   function ecartMediane(o) {
     if (!o.r.prixConnu) return '';
     const avec = dernier.filter((x) => x.r.prixConnu);
     if (avec.length < 5) return '';
-    const med = avec.map((x) => x.r.total).sort((a, b) => a - b)[Math.floor(avec.length / 2)];
-    const d = o.r.total - med;
-    if (Math.abs(d) < 20) return '<p class="ctx">Tarif proche de la médiane de votre sélection.</p>';
-    return `<p class="ctx">${euro(Math.abs(d))} ${d < 0 ? 'sous' : 'au-dessus de'} la médiane des ${avec.length} établissements de votre sélection.</p>`;
+    const med = avec.map((x) => x.r.facture).sort((a, b) => a - b)[Math.floor(avec.length / 2)];
+    const d = o.r.facture - med;
+    const base = `<p class="f-note">Prix médian comparé&nbsp;: ${euro(med)} sur ${avec.length} établissements
+      de la sélection ayant déclaré un tarif.`;
+    if (Math.abs(d) < 20) return base + ' Cette facture en est proche.</p>';
+    return base + ` Cette facture est <b>${euro(Math.abs(d))} ${d < 0 ? 'en dessous' : 'au-dessus'}</b>.</p>`;
   }
 
   function ongletHtml(k, o, s) {
@@ -1082,6 +1118,9 @@
     if (k === 'prix') {
       return `${detailHtml(o, s)}
         ${blocFamille(r)}
+        <h4 class="f-t1">Aide sociale</h4>
+        <div class="ln"><span>État de l’habilitation</span><b>${esc(ashEtat(e))}</b></div>
+        <p class="f-note">${esc(ashNote(e))}</p>
         ${r.ash ? `<div class="scenario"><b>Et si les ressources ne suffisent pas&nbsp;?</b>
             <p class="f-note">Le département peut payer la différence. C’est l’aide sociale à
             l’hébergement. Elle n’est possible que dans un établissement habilité — celui-ci l’est.</p>
@@ -1114,8 +1153,7 @@
             ${r.ash.reserveConjoint ? `<div class="ln"><span>Son conjoint resté à domicile garde</span><b>${euro(r.ash.reserveConjoint)}/mois</b></div>` : ''}
             <div class="ln tot"><span><b>Le département avance</b></span><b>${euro(r.ash.reste)}/mois</b></div>
             ${r.ash.reste > 0
-              ? `<p class="f-note">Ce montant s’accumule tant que dure le séjour, à raison de
-                 <b>${euro((r.ash.reste / M()) * joursAnnee())} par an</b> au rythme actuel. Le département peut en
+              ? `<p class="f-note">Ce montant s’accumule tant que dure le séjour. Le département peut en
                  demander tout ou partie&nbsp;: aux enfants au titre de l’obligation alimentaire pendant
                  le séjour, et à la succession ensuite.</p>
                  <p class="att">Ce n’est pas une créance calculable d’avance. Elle dépend de la durée réelle
@@ -1197,23 +1235,18 @@
     // onglet « essentiel » : de quoi se faire une opinion en dix secondes
     const l = [];
     if (pro()) l.push(`<h4 style="margin-top:0">Ce qui est vérifiable</h4>${compatibilites(o, s)}`);
-    l.push(`<div class="ln"><span>À quelle distance de votre point de départ</span><b>${nbfr(+o.dist.toFixed(1))} km</b></div>`);
-    if (r.prixConnu) l.push(`<div class="ln"><span>Prix du logement, par jour</span><b>${euro2(r.pj)}</b></div>`);
-    if (r.apaConnue && r.apa > 0) l.push(`<div class="ln"><span>Aide du département versée à l’établissement</span><b>${euro(r.apa)}/mois</b></div>`);
-    if (o.prix) l.push(`<div class="ln"><span>De combien le prix a augmenté depuis ${o.prix.d}</span><b class="${o.prix.e < 0 ? 'vert' : 'rouge'}">${pct(o.prix.e)}</b></div>`);
+    if (r.prixConnu) l.push(`<div class="ln"><span>Hébergement</span><b>${euro2(r.pj)}/jour</b>${e[C.maj] ? `<i class="ln-d">tarif ${mfr(e[C.maj])}</i>` : ''}</div>`);
     l.push(`<div class="ln"><span>Aide au quotidien</span><b>${r.reg === 'exp'
-      ? 'forfait de ' + euro2(r.pfJour) + '/jour'
-      : r.reg === 'inconnu' ? 'régime à confirmer' : 'selon le niveau d’autonomie'}</b></div>`);
-    l.push('<p class="f-note">Disponibilité&nbsp;: aucune source publique ne donne les places libres d’un établissement. '
-      + 'À demander directement.</p>');
-    if (r.moisEpargne !== Infinity && r.trou > 0 && state.epargne > 0)
-      l.push(`<div class="ln"><span>Combien de temps l’épargne tiendrait</span><b>${Math.floor(r.moisEpargne)} mois</b></div>`);
+      ? euro2(r.pfJour) + '/jour, forfait'
+      : r.reg === 'inconnu' ? 'régime à confirmer' : 'selon le GIR'}</b></div>`);
+    if (r.apaConnue && r.apa > 0) l.push(`<div class="ln"><span>APA versée à l’établissement</span><b>− ${euro(r.apa)}/mois</b></div>`);
+    if (o.prix) l.push(`<div class="ln"><span>Évolution du tarif ${o.prix.d}–${o.prix.f}</span><b class="${o.prix.e < 0 ? 'vert' : 'rouge'}">${pct(o.prix.e)}</b></div>`);
+    if (e[C.cap]) l.push(`<div class="ln"><span>Capacité</span><b>${nbfr(e[C.cap])} places</b><i class="ln-d">ne dit rien des places libres</i></div>`);
     const tete = r.prixConnu && perso()
       ? `<p class="f-resume">${resumeSimple(o)}</p>` : '';
     return tete + l.join('') +
       r.notes.map((n) => `<p class="warn">${esc(n)}</p>`).join('') +
-      (r.ash && r.ash.aConfirmer ? '<p class="warn">L’habilitation à l’aide sociale est à vérifier auprès de l’établissement.</p>' : '') +
-      '<p class="f-src">Prix : Caisse nationale de solidarité pour l’autonomie. Identité et habilitation : répertoire FINESS. Évaluation : Haute Autorité de santé. Le détail est dans les autres onglets.</p>';
+      '<p class="f-src"><a href="notre-methodologie.html">Sources et dates</a> — tarifs CNSA, identité FINESS, évaluation HAS.</p>';
   }
 
   /* ---------- Contexte départemental ---------- */
@@ -1382,7 +1415,9 @@
     keys.push('contrat');
     if (s.proprietaire) keys.push('logement');
     if (s.mode === 'pro') keys.push('pro');
-    return keys.map((k, i) => {
+    // Trois démarches ouvertes, le reste replié : dérouler dix articles complets
+    // après chaque recherche noie l'action à faire en premier.
+    const carte = (k, i) => {
       const rm = ROADMAPS[k];
       return `<article class="step">
         <div class="step-h"><span class="n">${i + 1}</span><h3>${esc(rm.title)}</h3></div>
@@ -1394,7 +1429,14 @@
         ${rm.checklist ? `<details class="chk"><summary>Les questions à poser pendant la visite (à imprimer)</summary><ul>${rm.checklist.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></details>` : ''}
         ${rm.warnings.length ? `<div class="piege">${rm.warnings.map(esc).join('<br>')}</div>` : ''}
       </article>`;
-    }).join('');
+    };
+    const tete = keys.slice(0, 3).map(carte).join('');
+    const reste = keys.slice(3);
+    return tete + (reste.length
+      ? `<details class="bloc-plus route-plus"><summary><b>Toutes les démarches</b>
+          <span>— ${reste.length} autre${reste.length > 1 ? 's' : ''} étape${reste.length > 1 ? 's' : ''}</span></summary>
+          ${reste.map((k, i) => carte(k, i + 3)).join('')}</details>`
+      : '');
   }
 
   /* ---------- Partage ---------- */
@@ -1473,18 +1515,28 @@
     const maxi = avecPrix.length ? Math.max(...avecPrix.map(val)) : null;
     const rouges = p ? avecPrix.filter((o) => o.r.couleur === 'rouge').length : 0;
 
-    $('res-titre').textContent = `${list.length} EHPAD à ${s.rayon} km ${de(s.commune.nom)}`;
-    $('res-chiffre').textContent = med != null ? euro(med) : '—';
-    $('res-sous').innerHTML = med == null
-      ? 'aucun établissement de cette sélection n’a déclaré son tarif'
-      : p
-        ? `reste à charge médian pour ${mot('titre')} · de <b>${euro(mini)}</b> à <b>${euro(maxi)}</b> par mois${rouges ? ` · <b>${rouges}</b> hors de portée sans aide sociale ni aide de la famille` : ''}`
-        : `tarif médian, avant les aides · de <b>${euro(mini)}</b> à <b>${euro(maxi)}</b> par mois · <b>indiquez ${mot('retraite')}</b> pour voir ce qui resterait à payer`;
+    // Le nombre d'établissements devient le chiffre de tête : c'est lui le résultat
+    // de la recherche. La médiane le suit comme repère, jamais comme un prix.
+    $('res-titre').textContent = 'Les EHPAD dans cette zone';
+    $('res-chiffre').textContent = `${list.length} établissement${list.length > 1 ? 's' : ''}`;
+    const sansTarif = list.length - avecPrix.length;
+    if (med == null) {
+      $('res-sous').innerHTML = `à ${s.rayon} km ${esc(de(s.commune.nom))} · aucun n’a déclaré son tarif`;
+    } else {
+      // Le mot dit ce que le chiffre mesure : un tarif affiché, ou un budget calculé.
+      const lib = p ? 'Budget médian estimé' : 'Prix médian de la sélection';
+      $('res-sous').innerHTML = `à ${s.rayon} km ${esc(de(s.commune.nom))}`
+        + ` · <b>${lib}&nbsp;: ${euro(med)}</b>/mois, de ${euro(mini)} à ${euro(maxi)}`
+        + ` sur ${avecPrix.length} établissement${avecPrix.length > 1 ? 's' : ''} comparable${avecPrix.length > 1 ? 's' : ''}`
+        + (sansTarif ? ` · ${sansTarif} sans tarif déclaré` : '')
+        + (p && rouges ? ` · <b>${rouges}</b> au-delà des ressources renseignées` : '')
+        + (p ? '' : ` · <b>indiquez ${mot('retraite')}</b> pour estimer le budget`);
+    }
     $('res-recap').textContent = recapTexte(s);
     $('action-rouge').hidden = !(rouges > 0 && !s.ashOnly);
     $('barre-n').textContent = list.length
       ? `${list.length} établissement${list.length > 1 ? 's' : ''}${list.length > state.nbAffiches ? ` · ${Math.min(state.nbAffiches, list.length)} affichés` : ''}`
-      : 'aucun résultat';
+      : 'Aucun établissement ne correspond à ces critères.';
 
     dessineCarte(list, s);
     majListe(list, s);
@@ -1494,7 +1546,9 @@
     majCompare();
     if (state.selection && !list.some((o) => o.e[C.fin] === state.selection)) ferme();
     else if (state.selection) majFiche();
-    $('perf').textContent = (performance.now() - t0).toFixed(0) + ' ms';
+    // Le temps de calcul s'adresse au développement, pas à la personne qui cherche
+    // un établissement : il reste mesuré, plus affiché.
+    const perf = $('perf'); if (perf) perf.textContent = (performance.now() - t0).toFixed(0) + ' ms';
     $('export-btn').hidden = s.mode !== 'pro';
   }
 
@@ -1829,16 +1883,18 @@
   function normalise() {
     if (!state.couple) { state.deuxResidents = false; state.conjointDomicile = false; }
     if (state.deuxResidents) state.conjointDomicile = false;
+    // Le filtre sur l'aide sociale a son propre contrôle, et lui seul.
     state.ashOnly = state.besoinAsh === 'oui';
-    if (state.priorite === 'ash') { state.tri = 'rac'; state.besoinAsh = 'oui'; state.ashOnly = true; }
-    else if (state.priorite) state.tri = state.priorite;
+    // La priorité ordonne, elle ne retire rien : elle annonçait un tri et posait un
+    // filtre, de sorte que des établissements disparaissaient sans explication.
+    if (state.priorite) state.tri = state.priorite;
   }
 
   /* Le titre parle à celui qui est là : une famille, ou un professionnel qui accompagne.
      Le HTML livré porte la version famille — c'est elle qui est indexée. */
   // pas de <br> forcé ici : la coupure dépend de la largeur, « text-wrap:balance » équilibre les lignes
-  const H1_PRO = 'Trouvez les EHPAD <em class="bl">adaptés</em> aux personnes que vous <em class="co">accompagnez</em>.';
-  const SUB_PRO = 'Identifiez rapidement les établissements compatibles avec le budget, la localisation et les aides disponibles, puis constituez votre liste de démarches.<br><span class="sub2">Les calculs sont ceux du parcours famille&nbsp;: reste à charge réel, APA, aide sociale à l’hébergement, habilitation, évolution du prix depuis 2018.</span>';
+  const H1_PRO = 'Comparez les EHPAD<br><span class="h1-l2">pour les personnes <em class="co">accompagnées</em></span>';
+  const SUB_PRO = 'Comparez les budgets estimés et préparez une liste de démarches.<br><span class="sub2">Mêmes calculs que le parcours famille.</span>';
   const h1El = document.querySelector('header h1'), subEl = document.querySelector('header .sub');
   const H1_FAM = h1El ? h1El.innerHTML : '', SUB_FAM = subEl ? subEl.innerHTML : '';
   function majTitre() {
@@ -2098,10 +2154,8 @@
     let ok = false;
     try { await navigator.clipboard.writeText(url); ok = true; } catch (e) {}
     const quoi = avec
-      ? 'Il contient la situation saisie — ressources, épargne, niveau d’autonomie — en clair : '
-        + 'l’adresse est encodée, pas chiffrée. Ne l’envoyez qu’à des personnes concernées.'
-      : 'Il rouvre la recherche (commune, rayon, filtres) sans aucune information sur les ressources '
-        + `ni sur ${mot('autonomie')}.`;
+      ? 'Les destinataires pourront lire les revenus et le niveau d’autonomie ajoutés au lien.'
+      : 'Il rouvre la recherche seule : ni revenus, ni niveau d’autonomie.';
     $('share-msg').textContent = (ok ? 'Lien copié. ' : 'Lien prêt dans la barre d’adresse. ') + quoi;
     $('share-msg').hidden = false;
     setTimeout(() => { $('share-msg').hidden = true; }, 14000);
@@ -2178,27 +2232,21 @@
 
   /** Réécrit les libellés de la page selon la personne concernée. Aucun calcul n'en dépend. */
   function majPourQui() {
-    // Le titre change de tournure, pas seulement de mot : « coûtera vraiment à vous »
-    // ne se dit pas. Deux phrases complètes, chacune correcte.
-    const h1 = $('h1-titre');
-    if (h1) {
-      h1.innerHTML = pourMoi()
-        ? 'Ce que l’EHPAD vous coûtera<br><span class="h1-l2"><em class="bl">vraiment</em>, <em class="co">chaque mois</em></span>'
-        : 'Ce que l’EHPAD coûtera<br><span class="h1-l2"><em class="bl">vraiment</em> à <em class="co">votre parent</em></span>';
-    }
+    // Le titre est neutre : il n'a plus à être réécrit selon la personne concernée.
     const t = {
-      'lbl-revenus': pourMoi() ? 'Vos retraites et pensions' : 'Retraites et pensions du parent',
-      'lbl-situation': pourMoi() ? 'Votre situation' : 'La situation de votre parent',
-      'nav-situation': pourMoi() ? 'Votre situation' : 'La situation de votre parent',
-      'lbl-gir': pourMoi() ? 'Votre niveau de dépendance (GIR)' : 'Niveau de dépendance (GIR)',
+      'lbl-revenus': pourMoi() ? 'Vos retraites et pensions par mois' : 'Retraites et pensions du proche, par mois',
+      'lbl-situation': 'Estimer le budget',
+      'nav-situation': 'Estimer le budget',
+      'lbl-gir': 'Niveau d’autonomie connu (GIR)',
       'lbl-couple': pourMoi() ? 'Vivez-vous en couple ?' : 'Vit-il ou elle en couple ?',
       'lbl-proprio': pourMoi() ? 'Êtes-vous propriétaire de votre logement ?' : 'Est-il ou elle propriétaire de son logement ?',
+      'lbl-impot': pourMoi() ? 'Payez-vous l’impôt sur le revenu ?' : 'Paie-t-il ou elle l’impôt sur le revenu ?',
+      'lbl-enfants': 'Simuler une participation des enfants',
     };
     Object.keys(t).forEach((id) => { const el = $(id); if (el) el.textContent = t[id]; });
     const v = $('v-s');
-    if (v) v.textContent = 'Les établissements autour de vous s’affichent aussitôt. Indiquez ensuite '
-      + (pourMoi() ? 'votre retraite' : 'la retraite de votre parent')
-      + ' : chaque tarif devient le montant qui resterait réellement à payer.';
+    if (v) v.textContent = 'Les établissements s’affichent aussitôt, avec leur tarif. '
+      + 'Précisez ensuite votre situation pour estimer le budget mensuel.';
   }
 
   /** Ce que les données ne couvrent pas, dit en clair et recalculé à chaque build.

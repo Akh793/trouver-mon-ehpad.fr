@@ -705,6 +705,18 @@ body.fige{overflow:hidden}
 
 /* identifiant national, visible seulement quand un professionnel travaille */
 /* Le numéro reste un lien, pas un bouton : il agit hors de la page. */
+/* Le complément à financer se lit avec le budget, pas trois écrans plus bas. */
+.f-manque{margin-top:.7rem;padding:.6rem .8rem;border-radius:var(--r2);
+  background:var(--ti-or);color:var(--sur-or);font-size:.86rem;line-height:1.4}
+.f-manque b{font-size:1rem}
+.f-dispo-l{margin-top:.6rem;font-size:.82rem;color:var(--mut)}
+/* précision attachée à une ligne de calcul : elle se lit avec elle, pas ailleurs */
+.ln-d{display:block;font-style:normal;font-size:.72rem;color:var(--mut2);font-weight:400;margin-top:.1rem}
+.f-lien-fin{margin-top:.3rem}
+/* le segment « pour qui » vit dans l'en-tête de bande : sans largeur minimale,
+   ses libellés y sont rognés (« Moi-mê… ») */
+.fld-pq{min-width:16rem}
+.fld-pq .seg button{white-space:nowrap}
 .res-tel{color:var(--bl-t);border-color:var(--bd-bl2,var(--bd));text-decoration:none;
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .res-tel:hover{background:var(--ti-bl);border-color:var(--bl-t)}
