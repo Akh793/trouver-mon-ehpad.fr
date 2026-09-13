@@ -116,8 +116,13 @@ h1 em{margin-right:.09em}
 
 /* gap:0 — sinon l'espace du flex s'ajoute à celui du texte et « La situation de  votre
    parent » se retrouve avec un trou. Seule la pastille numérotée est écartée. */
-h2{font-size:clamp(1.5rem,3.4vw,2.25rem);display:flex;align-items:center;gap:0;flex-wrap:wrap}
-h2 .n{width:2.4rem;height:2.4rem;margin-right:.7rem;flex:0 0 auto;border-radius:999px;background:var(--bl);color:#fff;display:grid;place-items:center;font-size:1.05rem}
+/* Pas de flex ici : il ferait de chaque nœud un item et supprimerait les espaces
+   entre le texte nu et les <em> — « Parcourirsans calculer ». */
+h2{font-size:clamp(1.5rem,3.4vw,2.25rem);line-height:1.2}
+/* La pastille s'aligne seule sur la ligne de texte : elle est le seul élément qui
+   demandait un alignement, pas le titre entier. */
+h2 .n{width:2.4rem;height:2.4rem;margin-right:.7rem;border-radius:999px;background:var(--bl);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem;vertical-align:-.55rem}
 h3{font-size:1.05rem}
 .s-head{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
 .s-head-r{display:flex;align-items:center;gap:1rem}
