@@ -536,8 +536,8 @@ body.fige{overflow:hidden}
 @media (max-width:560px){.share-opt{align-items:flex-start}.share-opt input{margin-top:.15rem}}
 .res-b{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;align-items:center}
 .res-b .badge{font-size:.68rem;padding:.12rem .5rem}
-.res-act{grid-column:1 / -1;display:flex;gap:.4rem;margin-top:.55rem;align-items:center}
-.mini2{border:1.5px solid var(--bd);background:var(--surf);border-radius:999px;font:inherit;font-size:.74rem;font-weight:600;padding:.34rem .75rem;cursor:pointer;color:var(--mut);display:inline-flex;gap:.3rem;align-items:center;min-height:36px}
+.res-act{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.55rem;align-items:center}
+.mini2{border:1.5px solid var(--bd);background:var(--surf);border-radius:999px;font:inherit;font-size:.74rem;font-weight:600;padding:.34rem .75rem;cursor:pointer;color:var(--mut);display:inline-flex;gap:.3rem;align-items:center;min-height:36px;flex:0 0 auto;white-space:nowrap}
 .mini2:hover{border-color:var(--bl-t);color:var(--bl-t)}
 .mini2.on{background:var(--bl);border-color:var(--bl-t);color:#fff}
 .mini2.fav.on{background:var(--co);border-color:var(--co)}
@@ -704,6 +704,10 @@ body.fige{overflow:hidden}
 .pro-b-a .btn-w{box-shadow:0 2px 8px rgba(37,72,255,.18)}
 
 /* identifiant national, visible seulement quand un professionnel travaille */
+/* Le numéro reste un lien, pas un bouton : il agit hors de la page. */
+.res-tel{color:var(--bl-t);border-color:var(--bd-bl2,var(--bd));text-decoration:none;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.res-tel:hover{background:var(--ti-bl);border-color:var(--bl-t)}
 .res-fin{font-size:.68rem;color:var(--mut2);font-variant-numeric:tabular-nums;letter-spacing:.02em;white-space:nowrap;margin-left:auto;cursor:help}
 .res-dem{grid-column:1 / -1;margin-top:.45rem;font-size:.75rem;color:var(--sur-bl);background:var(--ti-bl);border-radius:.5rem;padding:.35rem .6rem}
 .res-dem b{font-weight:600}

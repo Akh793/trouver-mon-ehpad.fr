@@ -230,6 +230,8 @@
   const dfr = (d) => (d ? String(d).slice(0, 10).split('-').reverse().join('/') : '');
   const mfr = (m) => { if (!m) return ''; const [y, mo] = String(m).split('-'); return `${mo}/${y}`; };
   const nom = (e) => (e[C.nom] || '').replace(/\s+/g, ' ').trim();
+  /** 0478602323 → 04 78 60 23 23 : un numéro se lit par paires, et se compose mieux. */
+  const telFr = (t) => String(t || '').replace(/\D/g, '').replace(/(\d\d)(?=\d)/g, '$1 ');
   /** « de Lyon » mais « d’Assieu » : l'élision, sinon la phrase sonne faux. */
   const de = (v) => (/^[aeiouyàâéèêëîïôöûüh]/i.test(v || '') ? 'd’' : 'de ') + v;
 
@@ -942,6 +944,8 @@
         <button type="button" class="mini2" data-voir="${fin}">Voir la fiche</button>
         <button type="button" class="mini2 ${cmp ? 'on' : ''}" data-cmp="${fin}" aria-pressed="${cmp}">${libCmp(cmp)}</button>
         <button type="button" class="mini2 fav ${fav ? 'on' : ''}" data-fav="${fin}" aria-pressed="${fav}" title="Garder pour plus tard">${fav ? '♥ Gardé' : '♡ Garder'}</button>
+        ${e[C.tel] ? `<a class="mini2 res-tel" data-tel href="tel:${esc(String(e[C.tel]).replace(/\D/g, ''))}"
+             title="Seul l’établissement peut dire si une place est libre">☎ ${esc(telFr(e[C.tel]))}</a>` : ''}
         ${pro() ? `<span class="res-fin" title="Identifiant national de l’établissement, utilisé par les administrations et les professionnels">FINESS ${esc(fin)}</span>` : ''}
       </div>
       ${pro() && cmp ? `<p class="res-dem">${demLigne(fin)}</p>` : ''}
@@ -1940,6 +1944,10 @@
     }
     const sortie = t.closest('[data-sortie]');
     if (sortie) { elargit(sortie.dataset.sortie); return; }
+    // Le lien téléphone vit dans une carte cliquable : sans cette interception,
+    // le clic composerait le numéro ET ouvrirait la fiche derrière.
+    const tel = t.closest('[data-tel]');
+    if (tel) { e.stopPropagation(); evt('tel_clicked', {}); return; }
     const carte = t.closest('.res');
     if (carte) { selectionne(carte.dataset.fin); return; }
   });
