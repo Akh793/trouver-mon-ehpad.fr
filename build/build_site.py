@@ -9,13 +9,21 @@ _data = json.dumps(os.path.join(os.path.abspath(SITE), 'data.js').replace('\\', 
 faq = json.loads(subprocess.check_output(['node','-e',
   "global.window={};require(%s);console.log(JSON.stringify(window.FAQ))" % _data]).decode())
 
+# Un seul balisage est admis dans une réponse : un lien interne. Tout le reste est
+# échappé. Sans cette liste blanche, la balise <a> d'une réponse ressortait telle
+# quelle à l'écran — « <a href="…">Les conditions</a> » affiché en toutes lettres.
+LIEN = re.compile(r'&lt;a href="(/[^"&<>]*)"&gt;([^&<>]+)&lt;/a&gt;')
+
 def esc(s):
   """Échappe un texte pouvant déjà contenir des entités HTML : on les résout d'abord,
-  sinon « &nbsp; » ressortirait en « &amp;nbsp; », affiché littéralement par le navigateur."""
-  return html.escape(html.unescape(s), quote=False)
+  sinon « &nbsp; » ressortirait en « &amp;nbsp; », affiché littéralement par le navigateur.
+  Les liens internes sont ensuite rétablis, eux seuls."""
+  return LIEN.sub(r'<a href="\1">\2</a>', html.escape(html.unescape(s), quote=False))
 
 def nu(s):
-  """Texte nu pour les données structurées : ni entité, ni espace insécable."""
+  """Texte nu pour les données structurées : ni entité, ni espace insécable.
+  Le lien est conservé : Google admet <a> dans un Answer.text, et le retirer
+  laissait « Les conditions. » en fragment orphelin, sans rien à désigner."""
   return re.sub(r'\s+', ' ', html.unescape(s).replace('\u00a0', ' ')).strip()
 faq_html = '\n'.join(
   '<details class="faq-i"%s><summary><span>%s</span></summary><p>%s</p></details>' % (' open' if i==0 else '', esc(q), esc(a))

@@ -271,7 +271,7 @@ window.FAQ = [
   ['Comment connaître les places disponibles ?',
    'Contactez l’établissement. Aucune base publique ne publie les places libres, et ce site n’en estime aucune. Le numéro figure sur chaque fiche.'],
   ['Que faire si les revenus ne suffisent pas ?',
-   'Des aides et une participation familiale sont possibles selon la situation. L’aide sociale dépend d’une décision du département et peut être récupérée sur la succession. <a href="/aides-ehpad/aide-sociale-hebergement/">Les conditions</a>'],
+   'Des aides et une participation familiale sont possibles selon la situation. L’aide sociale dépend d’une décision du département et peut être récupérée sur la succession. <a href="/aides-ehpad/aide-sociale-hebergement/">Les conditions</a>.'],
   ['Le service est-il gratuit, et mes réponses sont-elles enregistrées ?',
    'Le service est gratuit, sans inscription. Vos réponses restent dans ce navigateur, sur votre appareil. Si vous les ajoutez à un lien partagé, ses destinataires pourront les lire.'],
 ];
