@@ -17,7 +17,7 @@ CSS = open('site.css', encoding='utf-8').read()
 # Adresse du point de réception. À remplacer après le déploiement du Worker
 # (voir worker/LISEZMOI.md). Tant qu'elle vaut cette valeur, le formulaire
 # affiche que l'envoi n'est pas encore actif plutôt que d'échouer en silence.
-API = 'https://retours-tme.VOTRE-SOUS-DOMAINE.workers.dev'
+API = 'https://retours-tme.trouver-mon-ehpad.workers.dev'
 
 CORPS = """
 <p class="lead">Ce site est fait pour des familles qui cherchent une place, souvent dans l’urgence.
