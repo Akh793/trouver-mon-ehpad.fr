@@ -355,10 +355,10 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
           <div class="t-a print-hide">
             <button type="button" id="action-rouge" hidden class="btn-w">Voir seulement les établissements habilités à l’aide sociale</button>
             <button type="button" id="share-btn" class="btn-sec">🔗 Copier le lien</button>
-            <label class="share-opt"><input type="checkbox" id="share-situation">
-              Joindre la situation saisie (ressources, autonomie) — le lien n’est pas chiffré</label>
           </div>
         </div>
+        <label class="share-opt print-hide"><input type="checkbox" id="share-situation">
+          <span>Joindre la situation saisie au lien — il est encodé, pas chiffré</span></label>
         <p class="t-share" id="share-msg" hidden role="status"></p>
         <details class="t-det print-hide">
           <summary id="res-recap-r">Voir la situation retenue pour ce calcul</summary>

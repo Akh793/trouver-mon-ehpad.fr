@@ -334,7 +334,7 @@ input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:none
 .fil a{color:var(--mut);text-decoration:none}
 
 /* ---------- v2 : actions de la carte de synthèse ---------- */
-.t-a{margin-top:1.1rem;display:flex;flex-wrap:wrap;gap:.6rem}
+.t-a{margin-top:1.1rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
 .btn-w{border:0;border-radius:999px;background:var(--surf);color:var(--bl-t);font:inherit;font-weight:600;font-size:.85rem;padding:.6rem 1.1rem;cursor:pointer;box-shadow:0 4px 12px rgba(var(--om),.18)}
 .btn-w:hover{background:var(--ti-bl)}
 #total-card .btn-sec{margin-left:0;background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
@@ -483,9 +483,13 @@ body.fige{overflow:hidden}
 .res-m .tarif{display:block;font-size:.72rem;color:var(--mut2);margin-top:.25rem;white-space:normal}
 /* réserve portée par un montant : elle doit se lire avec lui, pas ailleurs */
 .res-m .t-reserve{color:var(--sur-or);font-style:italic;margin-top:.1rem}
-/* option de partage : la case doit se lire avec le bouton, pas ailleurs */
-.share-opt{display:flex;gap:.4rem;align-items:flex-start;font-size:.76rem;color:var(--mut);max-width:34ch;line-height:1.35;cursor:pointer}
-.share-opt input{margin-top:.15rem;flex:0 0 auto}
+/* option de partage : posée SOUS les boutons, jamais dans leur rangée flex —
+   un texte multiligne y étirerait les boutons voisins sur toute sa hauteur. */
+.share-opt{display:flex;gap:.5rem;align-items:center;margin-top:.8rem;
+  font-size:.78rem;line-height:1.3;color:rgba(255,255,255,.82);cursor:pointer}
+.share-opt input{flex:0 0 auto;width:1rem;height:1rem;margin:0;padding:0;border:0;accent-color:#fff;cursor:pointer}  /* input{width:100%} est global : sans width:auto la case occupe toute la ligne */
+.share-opt:hover{color:#fff}
+@media (max-width:560px){.share-opt{align-items:flex-start}.share-opt input{margin-top:.15rem}}
 .res-b{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;align-items:center}
 .res-b .badge{font-size:.68rem;padding:.12rem .5rem}
 .res-act{grid-column:1 / -1;display:flex;gap:.4rem;margin-top:.55rem;align-items:center}
