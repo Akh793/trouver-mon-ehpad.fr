@@ -29,6 +29,26 @@ out = (tpl.replace('{FONTFACE}', open('fontface.css', encoding='utf-8').read())
           .replace('{LEAFLETCSS}', leaflet)
           .replace('{SITECSS}', open('site.css', encoding='utf-8').read())
           .replace('{FAQ_HTML}', faq_html)
-          .replace('[FAQ_JSONLD]', '\n      ' + faq_ld + '\n    '))
+          # Le gabarit porte « "mainEntity": [FAQ_JSONLD] » : les crochets sont ceux du
+          # tableau JSON. Les remplacer avec le marqueur produisait « "mainEntity": {…},{…} »,
+          # un JSON-LD invalide qu'aucun moteur ne lisait. On ne remplace que le marqueur.
+          .replace('FAQ_JSONLD', '\n      ' + faq_ld + '\n    '))
 open(SITE + '/index.html', 'w', encoding='utf-8').write(out)
 print('index.html écrit :', len(out.encode()), 'octets ;', len(faq), 'questions synchronisées')
+
+# --- contrôle : tout bloc de données structurées doit être du JSON valide.
+# Sans ce contrôle, une virgule de trop passe en production sans bruit.
+_erreurs = 0
+for _i, _b in enumerate(re.findall(r'<script type="application/ld\+json">(.*?)</script>', out, re.S)):
+    try:
+        _d = json.loads(_b)
+    except ValueError as _e:
+        print('JSON-LD invalide (bloc %d) : %s' % (_i, _e)); _erreurs += 1
+        continue
+    _g = _d.get('@graph') if isinstance(_d, dict) else None
+    for _n in (_g or [_d]):
+        if _n.get('@type') == 'FAQPage' and not isinstance(_n.get('mainEntity'), list):
+            print('JSON-LD : mainEntity d’une FAQPage doit être un tableau'); _erreurs += 1
+if _erreurs:
+    raise SystemExit('%d anomalie(s) de données structurées : index.html non publiable.' % _erreurs)
+print('données structurées : %d bloc(s) JSON-LD valides' % len(re.findall(r'application/ld\+json', out)))

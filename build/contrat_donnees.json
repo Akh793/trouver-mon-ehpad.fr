@@ -1,0 +1,317 @@
+{
+ "version": "1.0",
+ "etabli_le": "2026-09-12",
+ "objet": "Définition de chaque champ servi au navigateur (site/data/dep/ehpad-*.js), de son unité, de sa portée, de sa source, de sa date d'observation et de ses limites. Toute ligne du tableau compact suit l'ordre de build/cols_v2.json.",
+ "etats_possibles": {
+  "declare": "Valeur telle que l'établissement ou l'administration l'a déclarée. Non vérifiée par nos soins.",
+  "calcule": "Valeur produite par nos scripts à partir d'autres champs. Reproductible.",
+  "hypothese": "Valeur retenue faute de mieux, explicitement signalée comme telle dans l'interface.",
+  "ancien": "Valeur dont la date d'observation dépasse le seuil de fraîcheur du champ.",
+  "manquant": "Aucune valeur disponible. Représenté par null, jamais par 0 ni par une chaîne vide.",
+  "non_applicable": "Le champ n'a pas de sens pour cet établissement (ex. tarif GIR dans un territoire d'expérimentation).",
+  "contradictoire": "Deux sources donnent des valeurs incompatibles. Le conflit est signalé, pas arbitré silencieusement.",
+  "a_confirmer": "Valeur plausible mais dont un contrôle a échoué. L'interface demande vérification auprès de l'établissement."
+ },
+ "champs": {
+  "fin": {
+   "libelle": "Numéro FINESS géographique",
+   "unite": "code à 9 caractères",
+   "portee": "Identifie le SITE d'implantation, pas la personne morale gestionnaire (celle-ci porte un FINESS juridique distinct, champ pm). Deux établissements d'un même groupe ont deux FINESS géographiques.",
+   "source": "Répertoire FINESS, data.gouv.fr",
+   "format": "Deux caractères de département (chiffres, ou 2A / 2B pour la Corse) suivis de sept chiffres. La règle « neuf chiffres » est fausse : elle rejette à tort les 30 établissements corses.",
+   "etat": "declare",
+   "limites": "Un établissement fermé peut rester au répertoire plusieurs mois."
+  },
+  "nom": {
+   "libelle": "Raison sociale du site",
+   "source": "FINESS",
+   "etat": "declare",
+   "limites": "Casse et abréviations telles que déclarées ; certains noms sont obsolètes après changement de gestionnaire."
+  },
+  "cp": {
+   "libelle": "Code postal",
+   "source": "FINESS",
+   "etat": "declare",
+   "limites": "Un code postal ne détermine pas la commune : il ne peut pas servir à déduire le régime de financement. Les codes CEDEX ne correspondent à aucune commune."
+  },
+  "ville": {
+   "libelle": "Commune d'implantation",
+   "source": "FINESS",
+   "etat": "declare",
+   "limites": "Libellé libre, parfois vide, parfois suffixé « Cedex ». Sert à l'affichage, jamais au calcul."
+  },
+  "lat": {
+   "libelle": "Latitude",
+   "unite": "degrés décimaux WGS84",
+   "source": "FINESS, géocodage Base Adresse Nationale en secours",
+   "etat": "declare ou calcule",
+   "limites": "Voir approx : une position peut être le centre de la commune et non l'adresse. Une position à deux décimales ou moins vaut environ 1 km de précision."
+  },
+  "lon": {
+   "libelle": "Longitude",
+   "unite": "degrés décimaux WGS84",
+   "source": "idem lat",
+   "etat": "declare ou calcule",
+   "limites": "idem lat"
+  },
+  "p": {
+   "libelle": "Prix journalier d'hébergement permanent, chambre seule",
+   "unite": "€ par jour",
+   "portee": "Tarif hors aide sociale, hors dépendance, hors prestations facultatives.",
+   "source": "Caisse nationale de solidarité pour l'autonomie (CNSA), portail des prix",
+   "date_observation": "champ maj",
+   "etat": "declare",
+   "limites": "Déclaratif, non opposable. Ne comprend ni le linge, ni le téléphone, ni la coiffure lorsque ceux-ci sont facturés en supplément."
+  },
+  "pcd": {
+   "libelle": "Prix journalier, chambre double",
+   "unite": "€ par jour",
+   "source": "CNSA",
+   "etat": "declare",
+   "limites": "Rarement renseigné. Un établissement peut ne proposer que des chambres doubles."
+  },
+  "pa": {
+   "libelle": "Prix journalier au titre de l'aide sociale à l'hébergement",
+   "unite": "€ par jour",
+   "portee": "Tarif arrêté par le conseil départemental pour les places habilitées.",
+   "source": "CNSA",
+   "etat": "declare",
+   "limites": "Peut exister sans prix ordinaire, et inversement. Le département peut le réviser en cours d'année."
+  },
+  "t12": {
+   "libelle": "Tarif dépendance GIR 1-2",
+   "unite": "€ par jour",
+   "source": "CNSA",
+   "etat": "declare ou non_applicable",
+   "limites": "Dans les territoires d'expérimentation (reg = exp), ce champ porte la participation forfaitaire et non un tarif GIR : il n'y est pas interprétable comme un tarif dépendance."
+  },
+  "t34": {
+   "libelle": "Tarif dépendance GIR 3-4",
+   "unite": "€ par jour",
+   "source": "CNSA",
+   "etat": "declare ou non_applicable",
+   "limites": "idem t12"
+  },
+  "t56": {
+   "libelle": "Tarif dépendance GIR 5-6, ticket modérateur",
+   "unite": "€ par jour",
+   "source": "CNSA",
+   "etat": "declare ou non_applicable",
+   "limites": "idem t12"
+  },
+  "maj": {
+   "libelle": "Mois de la déclaration de prix",
+   "unite": "AAAA-MM",
+   "source": "CNSA",
+   "etat": "declare",
+   "limites": "Date de DÉCLARATION, pas d'entrée en vigueur du tarif. Une déclaration de plus de douze mois est signalée dans l'interface."
+  },
+  "temp": {
+   "libelle": "Prix journalier d'hébergement temporaire",
+   "unite": "€ par jour",
+   "source": "CNSA",
+   "etat": "declare",
+   "limites": "Régime distinct : l'hébergement temporaire n'ouvre pas les mêmes droits que le permanent, et il est exclu de l'expérimentation de fusion."
+  },
+  "linge": {
+   "libelle": "Entretien du linge compris dans le prix",
+   "unite": "booléen",
+   "source": "CNSA",
+   "etat": "declare",
+   "limites": "Un champ vide signifie « non déclaré », jamais « non compris »."
+  },
+  "lingeU": {
+   "libelle": "Supplément entretien du linge",
+   "unite": "€ par mois",
+   "source": "CNSA",
+   "etat": "declare",
+   "limites": "idem linge"
+  },
+  "nIncl": {
+   "libelle": "Nombre de prestations déclarées comprises",
+   "unite": "compte",
+   "source": "CNSA",
+   "etat": "calcule",
+   "limites": "Compte les prestations DÉCLARÉES comprises. Une prestation non citée n'est pas « non comprise » : elle est non renseignée."
+  },
+  "nSus": {
+   "libelle": "Nombre de prestations déclarées en supplément",
+   "unite": "compte",
+   "source": "CNSA",
+   "etat": "calcule",
+   "limites": "idem nIncl"
+  },
+  "inclTxt": {
+   "libelle": "Liste des prestations comprises",
+   "source": "CNSA",
+   "etat": "declare"
+  },
+  "susTxt": {
+   "libelle": "Liste des prestations en supplément",
+   "source": "CNSA",
+   "etat": "declare"
+  },
+  "ash": {
+   "libelle": "Habilitation à l'aide sociale à l'hébergement",
+   "unite": "0 non, 1 oui, 2 à confirmer",
+   "source": "FINESS pour l'habilitation, CNSA pour le tarif ASH déclaré",
+   "etat": "declare ou contradictoire",
+   "limites": "La valeur 2 est l'état contradictoire : le répertoire dit « non habilité » alors qu'un tarif aide sociale est déclaré. L'habilitation porte sur un NOMBRE DE PLACES, pas sur l'établissement entier : une place habilitée peut ne pas être libre."
+  },
+  "ashsrc": {
+   "libelle": "Origine de la valeur ash",
+   "etat": "calcule"
+  },
+  "statut": {
+   "libelle": "Statut juridique du gestionnaire",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "statutsrc": {
+   "libelle": "Origine de la valeur statut",
+   "etat": "calcule"
+  },
+  "cap": {
+   "libelle": "Capacité installée en hébergement permanent",
+   "unite": "places",
+   "source": "FINESS",
+   "etat": "declare",
+   "limites": "Capacité AUTORISÉE et installée au répertoire, jamais un nombre de places libres. Renseignée pour une partie seulement des établissements."
+  },
+  "p2020": {
+   "libelle": "Prix journalier d'hébergement observé en 2020",
+   "unite": "€ par jour",
+   "source": "CNSA, publication 2020 retraitée",
+   "date_observation": "2020",
+   "etat": "declare",
+   "limites": "Sert uniquement à l'évolution de prix. Comparable au champ p seulement si le type de chambre et le périmètre des prestations n'ont pas changé — ce que la source ne permet pas de vérifier."
+  },
+  "hasN": {
+   "libelle": "Note de l'évaluation Haute Autorité de santé",
+   "unite": "A à D",
+   "source": "HAS",
+   "etat": "declare",
+   "limites": "Portée par le rapport d'évaluation d'un établissement à une date donnée ; les campagnes sont étalées dans le temps, donc les notes ne sont pas contemporaines entre elles."
+  },
+  "hasD": {
+   "libelle": "Date de l'évaluation HAS",
+   "unite": "AAAA-MM-JJ",
+   "source": "HAS",
+   "etat": "declare",
+   "limites": "Une date postérieure à aujourd'hui indique une visite programmée ou une erreur de saisie : elle est signalée, pas affichée comme un résultat."
+  },
+  "hasO": {
+   "libelle": "Organisme évaluateur",
+   "source": "HAS",
+   "etat": "declare",
+   "limites": "Choisi et rémunéré par l'établissement évalué : ce n'est pas un contrôle indépendant de l'établissement."
+  },
+  "hasM": {
+   "libelle": "Moyenne des objectifs de l'évaluation",
+   "unite": "score sur 100",
+   "source": "HAS",
+   "etat": "declare",
+   "limites": "Moyenne d'objectifs hétérogènes : deux établissements de même moyenne peuvent différer fortement critère à critère."
+  },
+  "hasC": {
+   "libelle": "Scores par chapitre (personne, professionnels, établissement)",
+   "unite": "trois scores sur 4",
+   "source": "HAS",
+   "etat": "declare",
+   "limites": "Tableau de trois valeurs dans cet ordre ; un tableau incomplet est possible."
+  },
+  "hasCI": {
+   "libelle": "Critères impératifs atteints",
+   "unite": "compte sur 18",
+   "source": "HAS",
+   "etat": "declare",
+   "limites": "Le dénominateur est de 18 critères impératifs. Un pourcentage calculé sur un autre dénominateur serait faux."
+  },
+  "alim": {
+   "libelle": "Résultat du dernier contrôle d'hygiène alimentaire",
+   "source": "Alim'confiance, ministère de l'Agriculture",
+   "etat": "declare ou hypothese",
+   "limites": "Appariement par SIRET quand il est disponible, sinon par nom et commune : un appariement par nom peut se tromper d'établissement. Le champ n'est retenu que si l'appariement est jugé sûr. Un établissement sans contrôle publié n'est pas un établissement sans problème."
+  },
+  "tel": {
+   "libelle": "Téléphone",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "adr": {
+   "libelle": "Adresse postale",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "pm": {
+   "libelle": "FINESS juridique de la personne morale gestionnaire",
+   "source": "FINESS",
+   "etat": "declare",
+   "limites": "Distinct du FINESS géographique : c'est l'entité qui signe les contrats, pas le lieu où vit le résident."
+  },
+  "siren": {
+   "libelle": "SIREN du gestionnaire",
+   "source": "FINESS / INSEE",
+   "etat": "declare"
+  },
+  "ouv": {
+   "libelle": "Date d'ouverture au répertoire",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "approx": {
+   "libelle": "Position approchée",
+   "unite": "booléen",
+   "source": "calcul interne",
+   "etat": "calcule",
+   "limites": "Vaut vrai lorsque la position provient du centre de la commune et non de l'adresse : l'établissement n'est alors pas là où le point est affiché."
+  },
+  "mft": {
+   "libelle": "Mode de tarification",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "mftlib": {
+   "libelle": "Libellé du mode de tarification",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "tarif": {
+   "libelle": "Régime tarifaire déclaré",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "pui": {
+   "libelle": "Pharmacie à usage intérieur",
+   "unite": "booléen",
+   "source": "FINESS",
+   "etat": "declare"
+  },
+  "dens": {
+   "libelle": "Places pour 1 000 personnes de 75 ans et plus, dans le département",
+   "unite": "taux",
+   "portee": "DÉPARTEMENTAL, jamais propre à l'établissement.",
+   "source": "DREES",
+   "date_observation": "2024",
+   "etat": "calcule",
+   "limites": "Indicateur de contexte. Rattaché à la ligne de l'établissement pour des raisons de format, il ne le décrit pas."
+  },
+  "occ": {
+   "libelle": "Taux d'occupation moyen du segment",
+   "unite": "%",
+   "portee": "MOYENNE DE SEGMENT issue d'une enquête nationale, jamais le taux de cet établissement.",
+   "source": "DREES",
+   "date_observation": "2023",
+   "etat": "calcule",
+   "limites": "Ne permet aucune estimation de places libres pour un établissement donné : cette extrapolation a été retirée du produit."
+  },
+  "reg": {
+   "libelle": "Régime de financement de la dépendance",
+   "unite": "'exp', 'classique' ou 'inconnu'",
+   "portee": "Déduit du TERRITOIRE d'implantation (code commune INSEE, à défaut département), jamais des tarifs déclarés.",
+   "source": "build/regimes.json — arrêtés et instructions cités champ par champ",
+   "etat": "calcule",
+   "limites": "'inconnu' est renvoyé lorsque le territoire ne peut pas être tranché : Rhône sans code commune, puisque la Métropole de Lyon expérimente et le département du Rhône non. Certains établissements sont exclus de l'expérimentation sans qu'une liste soit publiée (hébergement temporaire, accueil de jour, petites unités de vie dérogatoires, établissements rattachés à un autre département) : le régime affiché peut être faux pour eux."
+  }
+ }
+}

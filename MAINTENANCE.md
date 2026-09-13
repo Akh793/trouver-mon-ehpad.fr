@@ -270,13 +270,17 @@ Toujours dans cet ordre, depuis `build/` :
 |---|---|---|---|---|
 | 1 | `python3 build_data.py` | sources brutes | `merged.json` | socle v1, 7 417 EHPAD |
 | 2 | `python3 build_data_v2.py` | `merged.json` + audit | `merged_v2.json` | `habilités 6081 \| non habilités 1142 \| à confirmer 194 \| inconnu 0` · `tarification P:3972 G:3369 V:47` · `Alim + 181 → 1012` · `densité connue : 7414 \| occupation : 6602` |
-| 3 | `python3 split_data_v2.py` | `merged_v2.json` | `../site/data/**` | `statut complété par code juridique : 806` · `départements : 101 \| total 7417` · `couples code postal / commune : 35493` · `séries de prix : 7255` · `prix médian France : 73.62` |
+| 3 | `python3 split_data_v2.py` | `merged_v2.json`, `regimes.json`, `metropole_lyon.json` | `../site/data/**` + le bloc `COUVERTURE` de `site/data.js` | `régime de financement : {'classique': 5800, 'exp': 1617}` · `coordonnées Lambert-93 converties : 18` · `départements : 101 \| total 7417` · `séries de prix : 7255` · `prix médian France : 73.62` · `couverture écrite dans data.js` |
+| 3bis | `python3 controles.py` | `../site/data/dep/*.js` | rien (rapport) | **aucune ligne `[BLOQUANT]` suivie d'un nombre de cas.** Sinon, ne pas publier : le script sort en code 1 |
 | 4 | `python3 build_site.py` | `index.template.html`, `site.css`, `fontface.css`, `vendor/*.css`, `site/data.js` | `../site/index.html` | `index.html écrit : ~79 700 octets ; 5 questions synchronisées` |
 | 5 | `python3 build_pages.py` | `site.css`, `fontface.css` | 4 pages annexes | `pages annexes générées : [...]` |
 | 6 | `python3 seo/build_seo.py` | `merged_v2.json`, `communes_geo.json`, `audit/*.json`, `site.css`, `seo.css` | `../site/ehpad/**`, pages nationales, guides, sitemaps | `villes avec page : 985 \| fiches établissement : 6778 \| départements : 101` · `redirections … : 3667` · `→ 7901 pages écrites` |
 
-L'étape 1 n'est à relancer que si les sources brutes changent ; les étapes 2 → 5 sont rejouables
-seules et sans risque. **Si un chiffre de la colonne de droite change, c'est que les données ont
+L'étape 1 n'est à relancer que si les sources brutes changent ; les étapes 2 → 6 sont rejouables
+seules et sans risque. **L'étape 3bis n'est pas facultative** : elle relit les fichiers réellement
+servis au navigateur et refuse la publication sur une anomalie bloquante. `python3 controles.py --ref`
+enregistre l'état courant comme référence de couverture, ce qui permet au contrôle suivant de détecter
+une perte de champs entre deux imports. Ne l'exécuter qu'après avoir vérifié le rapport. **Si un chiffre de la colonne de droite change, c'est que les données ont
 bougé : comprendre pourquoi avant de publier.** Un écart normal (nouvelle publication CNSA) se voit
 sur un seul indicateur ; un écart sur tous signale une source mal téléchargée.
 
@@ -742,11 +746,58 @@ identifiant est vide, aucune mesure d'audience ne part.
 
 ---
 
+## 11 bis. Les règles nationales dont dépend le calcul
+
+Trois fichiers portent les règles, séparément du code, pour qu'une évolution réglementaire
+se corrige sans relire le moteur.
+
+| Fichier | Ce qu'il contient | Quand le rouvrir |
+|---|---|---|
+| `build/regimes.json` | Expérimentation de fusion des financements soins et dépendance : les 23 territoires, les montants successifs de la participation forfaitaire avec leur source, les exclusions connues, la date de fin annoncée et son incertitude | À chaque changement de montant, d'échéance ou de périmètre |
+| `build/regime.py` | Déduit le régime d'un établissement de son **territoire** (code commune INSEE, à défaut département) ; jamais de ses tarifs déclarés. Autotest : `python3 regime.py` doit afficher 8/8 | Si un territoire entre ou sort de l'expérimentation |
+| `build/metropole_lyon.json` | Les 58 codes commune de la Métropole de Lyon, récupérés de `geo.api.gouv.fr/epcis/200046977/communes` | En cas de fusion de communes |
+| `site/data.js` → `window.BAREME` | Seuils APA, taux et plafond de la réduction d'impôt, minimums de l'aide sociale | À chaque revalorisation |
+
+**Le piège à ne jamais retomber dedans.** Dans les territoires d'expérimentation, le fichier CNSA
+inscrit la participation forfaitaire dans les colonnes de tarif GIR : les trois tarifs y sont égaux.
+Il est tentant d'en déduire le régime. C'est faux dans les deux sens — un établissement de droit
+commun peut déclarer trois tarifs identiques (le contrôle `gir.egaux_hors_exp` les compte), et la
+valeur déclarée est en retard d'une publication. Le moteur retient donc le **montant national en
+vigueur à la date du calcul**, avec sa source, et signale l'écart avec la valeur déclarée.
+
+Le Rhône est le cas limite : la Métropole de Lyon expérimente, le département du Rhône non. Les
+distinguer exige le **code commune**, jamais le code postal. Sans code commune, `regime.py` renvoie
+`inconnu`, et le moteur s'abstient de chiffrer l'aide au quotidien plutôt que de deviner.
+
+---
+
+## 11 ter. Le contrat de données
+
+`build/contrat_donnees.json` décrit les 46 colonnes servies au navigateur : libellé, unité,
+**portée** (l'établissement ? le segment ? le département ?), source, état possible et limites.
+Il sert de référence commune au moteur, aux pages de contenu et aux contrôles.
+
+Trois définitions à ne pas perdre de vue :
+
+- **`fin`** est le FINESS **géographique** — le site — et non le FINESS juridique de la personne
+  morale gestionnaire (`pm`). Son format est deux caractères de département, chiffres **ou `2A`/`2B`
+  pour la Corse**, puis sept chiffres. La règle « neuf chiffres » est fausse et rejette 30 établissements
+  corses parfaitement valides. En outre-mer, tous les FINESS commencent par `970`, quel que soit le
+  département : le préfixe n'y indique rien.
+- **`occ`** est une **moyenne de segment** issue d'une enquête nationale. Elle ne décrit pas
+  l'établissement sur la ligne duquel elle figure, et aucun nombre de places libres ne peut en être
+  déduit. L'extrapolation qui existait jusqu'en v2.4 a été retirée.
+- un champ vide signifie **non déclaré**, jamais « non » : une prestation non citée n'est pas une
+  prestation non facturée.
+
+---
+
 ## 12. Journal des versions
 
 | Version | Date | Contenu |
 |---|---|---|
 | 1.0 | 10/09/2026 | Première version : 7 417 EHPAD, calcul du reste à charge, carte, aide sociale, mode d'emploi, mode professionnel |
+| 2.5 | 12/09/2026 | **Régime de financement de la dépendance** (46ᵉ colonne `reg`) : l'expérimentation de fusion soins/dépendance est modélisée pour les 1 617 établissements des 23 territoires — APA en établissement supprimée, participation forfaitaire de 6,16 €/jour retenue au montant national en vigueur avec sa source, et non à la valeur déclarée à la CNSA, en retard d'une publication. Le régime vient du **territoire** (code commune INSEE), jamais des tarifs déclarés : `regimes.json`, `regime.py`, `metropole_lyon.json` · **Trois montants séparés** là où il n'y en avait qu'un : ce que l'établissement facture, ce qu'il faut décaisser chaque mois, et l'avantage fiscal — annuel, différé, plafonné, retiré du calcul mensuel où il minorait le reste à charge de 25 % · **Couples** : les ressources du conjoint ont leur propre champ ; le barème APA divise les ressources **du ménage**, non celles du résident seul (l'APA était surestimée) · **Aide sociale** : la part « aide au quotidien » reste due et apparaît enfin, avec le reste à vivre qu'elle absorbe ; la créance successorale cesse d'être présentée comme calculable · **Extrapolations de places libres retirées** (tri, colonne du comparateur, export, fiche) au profit des questions à poser et du numéro à appeler · **18 établissements en coordonnées Lambert-93** convertis (`lambert93.py`, pur Python, 4/4 aux cas de contrôle) : ils étaient hors de toute recherche par rayon · **Contrôles automatiques** (`controles.py`, 3bis de la chaîne) : 20 contrôles bloquants ou d'alerte sur les données publiées, référence de couverture, sortie en erreur si anomalie bloquante · **Contrat de données** (`contrat_donnees.json`, 46 champs) · **Bloc `COUVERTURE`** réécrit à chaque build et affiché en clair : ce que le site ne sait pas · **JSON-LD de l'accueil réparé** (`mainEntity` d'une `FAQPage` n'était pas un tableau : le bloc entier était invalide) et validé au build · **Partage** : la recherche part seule par défaut, la situation financière et le GIR seulement sur demande, avec la mention que le lien est encodé et non chiffré · **Export CSV** : injection de formule neutralisée, en-têtes réalignés, en-tête de provenance daté et rejouable · **Parcours « pour qui »** : un choix explicite proche / soi-même reformule l'interface · **Cas limites** : ressources sans retraite, GIR inconnu resté inconnu et signalé sur le montant, chambre double sans tarif, accueil temporaire traité comme un autre régime · **Convention annuelle corrigée** : 30,5 × 12 = 366, les montants annuels se comptent en jours réels · **Historique de prix** : la courbe s'interrompt aux années manquantes (elle les reliait en affirmant le contraire), l'écart à l'inflation est en **points**, la comparabilité est explicitée · **Contenus administratifs** : conditions d'âge et de résidence de l'ASH, règle des cinq ans en établissement non habilité, domicile de secours, habilitation par places, anecdote CAF ramenée à ce qu'elle est, déploiement régional de ViaTrajectoire · **63 tests** (37 → 63) |
 | 2.4 | 11/09/2026 | **Thème clair / sombre** : toute la palette passée en variables CSS, un seul bloc `[data-theme="dark"]` qui ne redéfinit que des variables — aucune règle de mise en page dupliquée · bascule mémorisée, `prefers-color-scheme` suivi tant que rien n'est choisi, thème posé avant le premier rendu (pas de clignotement blanc) · bleu de texte éclairci pour tenir le contraste (2,8:1 → 7,3:1), fond de carte IGN inversé par filtre, impression toujours claire · deux boutons de bascule, un dans l'en-tête et un dans la barre · **barre de défilement** révélée au-delà de 260 px : logo, menu « Naviguer », bouton de thème, appel à l'action et liseré de progression, sur l'accueil, les 7 903 pages de contenu et les pages annexes · mesure une fois par image, `transform` et `opacity` seulement, barre cachée hors du parcours clavier, hauteur réelle publiée dans `--tb-h` pour que la barre de résultats s'y colle · **en-tête d'accueil** : titre sur deux lignes de 390 à 1 440 px (la colonne de repères descend d'elle-même sous 34 rem plutôt que de comprimer le titre), chapô sorti de la colonne de gauche pour occuper toute la largeur — une phrase par ligne jusqu'à 900 px |
 | 2.3 | 11/09/2026 | **Mode professionnel repensé** : entrée discrète par `/professionnels/` et `/?pro=1` à la place de la bascule Famille/Pro · titre et chapô adaptés à celui qui accompagne · bandeau de contexte avec « Mes recherches » et retour au parcours famille · sélection devenue **liste de démarches** (12 établissements, 8 états, note libre) reportée sur les cartes de résultat · bloc « Ce qui est vérifiable » sur la fiche, en ✓ / · / ? — toujours aucun score global · numéro FINESS visible en contexte professionnel · export CSV conservé mais ramené au pied du tiroir · **recherches enregistrées** (`mon_ehpad_dossiers_v1`, 20 max) qui retiennent la zone, les critères et les démarches, **jamais les ressources ni une identité** · 6 nouveaux événements `pro_*` sans donnée personnelle · deux pages de contenu `/professionnels/` et `/professionnels/assistant-social/`, liées depuis le pied de page et depuis l'aide sociale à l'hébergement · aucune promesse de disponibilité réelle ni de compatibilité médicale · **accueil** : chapô raccourci, colonne de repères (accès professionnel, « Qui sommes-nous ? », date de mise à jour) placée à droite du texte d'introduction, et léger relief au survol des blocs de contenu — `transform` et `box-shadow` seulement, jamais sur les cartes de résultat, neutralisé sur écran tactile et si l'utilisateur demande moins d'animations · **trois correctifs de carte et de barre** : la légende décrit désormais ce qui est réellement dessiné (bleu « tarif déclaré » tant que les ressources ne sont pas saisies, l'échelle de reste à charge ensuite, plus le point de départ et les pastilles de regroupement, qui comptent des établissements et ne disent rien du prix) · les boutons « Carte / Fiche » se dimensionnent sur leur texte et ne se coupent plus en « Ca… » · le bouton correspondant au panneau affiché est allumé dès le premier rendu, alors que les deux restaient éteints jusqu'au premier clic |
 | 2.2 | 11/09/2026 | **Mise en ligne préparée** : workflow GitHub Pages avec garde-fous, `CNAME`, `.nojekyll`, `.gitignore`, `README.md`, `DEPLOIEMENT.md`, mentions légales complétées (hébergeur GitHub, licences relevées, propriété intellectuelle) · **Refonte du parcours** : espace de travail en deux volets (liste à gauche, carte ou fiche à droite), cartes de résultat réduites à quatre informations, fiche en quatre onglets, reste à charge devenu l'information principale · exploration possible **sans remplir sa situation** (le tarif s'affiche, le reste à charge apparaît dès que la retraite est saisie) · comparateur permanent avec barre flottante, tableau et « uniquement les différences » · panneau glissant à deux hauteurs sur mobile, avec retour à la position exacte dans la liste · liste paginée par 15 · filtres en tiroir avec compteur et pastilles de retrait · question « avez-vous besoin de l'aide sociale ? » à trois réponses dont « je ne sais pas » · favoris · état vide avec sorties proposées · « rechercher dans cette zone » en déplaçant la carte · survol croisé liste ↔ carte · historique du navigateur et adresses `#e=` · 10 événements de mesure |
@@ -756,4 +807,4 @@ identifiant est vide, aucune mesure d'audience ne part.
 ---
 
 *Un chiffre de ce fichier ne correspond plus à ce que produit un script ? Le script fait foi :
-ce document décrit l'état du 11/09/2026.*
+ce document décrit l'état du 12/09/2026.*

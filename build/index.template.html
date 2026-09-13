@@ -8,11 +8,11 @@
 if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
 if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 <title>Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD, sur une carte</title>
-<meta name="description" content="Calculateur gratuit du reste à charge en EHPAD : prix réel après APA, aide au logement et réduction d’impôt, pour les 7 417 EHPAD français. Carte, évolution du prix depuis 2018, places qui se libèrent, aide sociale à l’hébergement, part de chaque enfant et mode d’emploi des démarches.">
+<meta name="description" content="Calculateur gratuit du reste à charge en EHPAD : ce que l’établissement facture, ce qu’il faut sortir chaque mois après APA et aide au logement, et la réduction d’impôt à part. 7 417 EHPAD français, carte, évolution du prix depuis 2018, aide sociale à l’hébergement, part de chaque enfant et mode d’emploi des démarches.">
 <link rel="canonical" href="https://trouver-mon-ehpad.fr/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta property="og:title" content="Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD, sur une carte">
-<meta property="og:description" content="Ce que coûtera vraiment un EHPAD à votre parent, après APA, aide au logement et réduction d’impôt : 7 417 établissements, prix officiels CNSA, évolution du prix depuis 2018, qualité HAS, habilitation à l’aide sociale.">
+<meta property="og:description" content="Ce que coûtera vraiment un EHPAD à votre parent, après APA et aide au logement : 7 417 établissements, prix officiels CNSA, évolution du prix depuis 2018, qualité HAS, habilitation à l’aide sociale.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://trouver-mon-ehpad.fr/">
 <meta property="og:locale" content="fr_FR">
@@ -50,13 +50,13 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
         "Reste à charge mensuel calculé pour 7 417 EHPAD français, après APA en établissement, aide au logement et réduction d’impôt",
         "Carte interactive : l’étiquette de chaque établissement est le montant calculé pour votre parent, pas le prix affiché",
         "Évolution du prix de la chambre de 2018 à 2025, établissement par établissement, comparée à l’inflation INSEE",
-        "Places qui se libèrent : taux d’occupation du segment et rythme de rotation, faute de base publique des places disponibles",
+        "Disponibilité : aucune base publique ne donne les places libres d’un établissement — le site ne l’estime pas, il donne les questions à poser et le numéro à appeler",
         "Part de chaque enfant si la famille complète, et coût réel après déduction fiscale de la pension alimentaire",
         "Couple hébergé à deux, conjoint resté à domicile, autres revenus : les situations que les simulateurs ignorent",
         "Scénario aide sociale à l’hébergement : ce que verse le résident, ce qui reste au département et aux obligés alimentaires",
         "Pratique départementale de l’ASH : recours sur succession, personnes sollicitées au titre de l’obligation alimentaire",
         "Qualité : note d’évaluation A à D de la Haute Autorité de santé, critères impératifs atteints, hygiène alimentaire Alim’confiance",
-        "Lien de partage : la simulation se rouvre à l’identique chez les frères et sœurs, sans aucun nom transmis",
+        "Lien de partage : la recherche se rouvre à l’identique chez les frères et sœurs, sans ressources ni niveau d’autonomie transmis, sauf demande explicite",
         "Comparaison de trois établissements, fiche imprimable et mode d’emploi des démarches",
         "Mode professionnel : export CSV pour les services sociaux, CCAS et mandataires judiciaires",
         "Une page par région, département, ville et établissement : tarifs, comparaison locale et évolution depuis 2018, consultables sans lancer de recherche",
@@ -115,7 +115,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
         <div class="tb-nav-wrap">
           <button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
           <nav id="tb-menu" class="tb-menu" hidden aria-label="Navigation rapide">
-            <a href="#bande-situation">La situation de votre parent</a>
+            <a href="#bande-situation" id="nav-situation">La situation de votre parent</a>
             <a href="#bande-carte">La carte des restes à charge</a>
             <a href="#bande-route">Votre mode d’emploi</a>
             <a href="#bande-faq">Questions fréquentes</a>
@@ -139,7 +139,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
   <header>
     <div class="head-row">
       <div>
-        <h1>Ce que l’EHPAD coûtera<br><span class="h1-l2"><em class="bl">vraiment</em> à <em class="co">votre parent</em></span></h1>
+        <h1 id="h1-titre">Ce que l’EHPAD coûtera<br><span class="h1-l2"><em class="bl">vraiment</em> à <em class="co">votre parent</em></span></h1>
       </div>
       <div class="head-side print-hide">
         <a href="/professionnels/" class="lien-pro">Vous accompagnez des personnes âgées&nbsp;?<b>Espace professionnel</b></a>
@@ -165,7 +165,14 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
   <!-- ============ BANDE 1 : LA SITUATION ============ -->
   <section id="bande-situation">
     <div class="s-head">
-      <h2><span class="n">1</span> La situation de <em class="bl">votre parent</em></h2>
+      <h2><span class="n">1</span> <span id="lbl-situation">La situation de votre parent</span></h2>
+      <div class="fld fld-pq">
+        <label>Pour qui faites-vous cette recherche&nbsp;?</label>
+        <div class="seg" data-seg="pourQui:proche,moi" role="group" aria-label="Pour qui">
+          <button type="button">Un proche</button><button type="button">Moi-même</button>
+        </div>
+        <p class="fld-h">Cela ne change rien au calcul, seulement la façon dont les questions sont posées.</p>
+      </div>
       <div class="s-head-r">
         <button type="button" id="reset-btn" class="lien">Effacer mes réponses</button>
       </div>
@@ -201,14 +208,14 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
         <p class="fld-h">Au-delà de 40 résultats, la carte regroupe les établissements.</p>
       </div>
       <div class="fld">
-        <label>Niveau de dépendance (GIR)</label>
+        <label id="lbl-gir">Niveau de dépendance (GIR)</label>
         <div class="seg seg4" data-seg="gir:12,34,56,?" role="group" aria-label="Groupe iso-ressources">
           <button type="button">GIR 1-2</button><button type="button">GIR 3-4</button><button type="button">GIR 5-6</button><button type="button">Je ne sais pas</button>
         </div>
         <p class="fld-h">Le GIR est notifié par le département. Il fixe le tarif dépendance facturé.</p>
       </div>
       <div class="fld">
-        <label for="revenus">Retraites et pensions du parent</label>
+        <label for="revenus" id="lbl-revenus">Retraites et pensions du parent</label>
         <div class="in-eur"><input id="revenus" inputmode="numeric" placeholder="1 600"><span>€/mois</span></div>
         <p class="fld-h">Un seul chiffre rond. C’est l’entrée de l’APA et de l’aide sociale.</p>
       </div>
@@ -258,11 +265,16 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
         <p class="fld-h">Si oui, la réduction d’impôt de 25 % est déduite (plafond 2 500 € par an et par personne hébergée).</p>
       </div>
       <div class="fld">
-        <label>Vit-il ou elle en couple ?</label>
+        <label id="lbl-couple">Vit-il ou elle en couple ?</label>
         <div class="seg" data-seg="couple:false,true" role="group" aria-label="En couple">
           <button type="button">Non</button><button type="button">Oui</button>
         </div>
-        <p class="fld-h">En couple, les ressources du ménage sont divisées par deux pour l’APA.</p>
+        <p class="fld-h">En couple, le barème de l’APA retient les ressources du ménage divisées par deux. Indiquez celles du conjoint ci-dessous.</p>
+      </div>
+      <div class="fld" id="fld-revconj" hidden>
+        <label for="revconj">Retraites et pensions du conjoint</label>
+        <div class="in-eur"><input id="revconj" inputmode="numeric" placeholder="0"><span>€/mois</span></div>
+        <p class="fld-h">À saisir à part : le barème de l’APA divise par deux les ressources <b>du couple</b>, pas celles du résident seul. Sans ce chiffre, l’aide calculée est trop élevée.</p>
       </div>
       <div class="fld" id="fld-deuxres" hidden>
         <label>Les deux sont-ils hébergés en EHPAD ?</label>
@@ -279,7 +291,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
         <p class="fld-h">En aide sociale, le conjoint resté chez lui doit conserver au moins 1 043,59 € par mois : le département ne peut pas descendre en dessous.</p>
       </div>
       <div class="fld">
-        <label>Est-il ou elle propriétaire de son logement ?</label>
+        <label id="lbl-proprio">Est-il ou elle propriétaire de son logement ?</label>
         <div class="seg" data-seg="proprietaire:false,true" role="group" aria-label="Propriétaire">
           <button type="button">Non</button><button type="button">Oui</button>
         </div>
@@ -328,7 +340,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
 
     <div id="vide" class="vide">
       <p class="v-t">Commencez par le <em class="bl">code postal</em></p>
-      <p class="v-s">Les établissements autour de vous s’affichent aussitôt. Indiquez ensuite la retraite de votre parent&nbsp;: chaque tarif devient le montant qui resterait réellement à payer.</p>
+      <p class="v-s" id="v-s">Les établissements autour de vous s’affichent aussitôt. Indiquez ensuite la retraite de votre parent : chaque tarif devient le montant qui resterait réellement à payer.</p>
     </div>
 
     <div id="resultats" hidden>
@@ -343,6 +355,8 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
           <div class="t-a print-hide">
             <button type="button" id="action-rouge" hidden class="btn-w">Voir seulement les établissements habilités à l’aide sociale</button>
             <button type="button" id="share-btn" class="btn-sec">🔗 Copier le lien</button>
+            <label class="share-opt"><input type="checkbox" id="share-situation">
+              Joindre la situation saisie (ressources, autonomie) — le lien n’est pas chiffré</label>
           </div>
         </div>
         <p class="t-share" id="share-msg" hidden role="status"></p>
@@ -375,7 +389,6 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
                 <option value="dist">Distance</option>
                 <option value="prix">Tarif affiché</option>
                 <option value="has">Qualité</option>
-                <option value="marge">Places libres estimées</option>
                 <option value="evol">Tarif qui a le moins augmenté</option>
               </select>
               <button type="button" id="fav-btn" class="btn-f" hidden aria-pressed="false">♥<span id="fav-n"></span></button>
@@ -523,6 +536,10 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
         <tbody id="infl-table"></tbody>
       </table>
     </div>
+
+    <h3 class="h3b">Ce que ce site ne sait pas</h3>
+    <p class="src-n">Chiffres recalculés à chaque mise à jour des données, jamais saisis à la main.</p>
+    <ul id="couverture" class="non-sim"></ul>
 
     <h3 class="h3b">Ce que ce site ne calcule pas, et pourquoi</h3>
     <ul id="non-simule" class="non-sim"></ul>

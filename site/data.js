@@ -5,8 +5,8 @@
    ===================================================================== */
 
 window.META = {
-  version: '2.2',
-  lastVerified: '2026-09-11',
+  version: '2.5',
+  lastVerified: '2026-09-12',
   month: 30.5,
   monthNote: 'Les prix publiés par la CNSA sont journaliers. Nous les multiplions par 30,5 jours (moyenne d’un mois). La CNSA communique parfois sur 30 jours : l’écart est d’environ 1,7 %.',
 };
@@ -44,9 +44,20 @@ window.SEUILS = {
    Le taux d'occupation de chaque établissement vient de son segment
    (statut juridique × densité de la commune) : il est stocké dans les données.
    La rotation est calculée : sorties définitives 2023 ÷ places installées 2023. */
+/* La rotation servait à extrapoler un nombre de places libres par établissement.
+   Cette extrapolation a été retirée : une moyenne de segment ne dit rien d'un
+   établissement un jour donné. Les constantes sont conservées comme repères
+   sectoriels, sans être utilisées par le calcul. */
 window.ROTATION = { 0: 0.359, 1: 0.366, 2: 0.480, FR: 0.388 };
 window.OCCUPATION_FR = 93.95;
 window.DELAI_ATTENTE = 'Un mois ou moins pour 55 % des personnes entrées en établissement en 2023 (DREES).';
+
+/* ---------- Couverture des données — RECALCULÉE À CHAQUE BUILD ----------
+   Ne pas modifier à la main : le bloc entre les deux marques est réécrit par
+   build/split_data_v2.py. Ces chiffres disent ce que le site NE SAIT PAS. */
+/* @couverture:debut */
+window.COUVERTURE = {"date": "2026-09-12", "total": 7417, "prix": 5794, "dependance": 6081, "has": 4815, "capacite": 5307, "position": 7350, "positionApprochee": 151, "tel": 7346, "exp": 1617, "classique": 5800, "regimeInconnu": 0, "ashHabilite": 6081, "ashAConfirmer": 194};
+/* @couverture:fin */
 
 /* ---------- Inflation (INSEE, moyenne annuelle) ---------- */
 window.INFLATION = { 2019: 1.1, 2020: 0.5, 2021: 1.6, 2022: 5.2, 2023: 4.9, 2024: 2.0, 2025: 0.9 };
@@ -83,7 +94,7 @@ window.TARIF_SOINS = {
 /* ---------- Ce que le site ne simule pas, et pourquoi ---------- */
 window.NON_SIMULE = [
   { t: 'Les places réellement disponibles',
-    d: 'Neuf pistes testées, aucune ouverte : ViaTrajectoire n’a pas d’API publique, l’annuaire officiel interdit son API aux robots, le tableau de bord de la performance médico-sociale est réservé aux professionnels. Nous affichons à la place le taux d’occupation du segment et le rythme auquel des places se libèrent, tous deux issus de l’enquête EHPA 2023 de la DREES.' },
+    d: 'Neuf pistes testées, aucune ouverte : ViaTrajectoire n’a pas d’API publique, l’annuaire officiel interdit son API aux robots, le tableau de bord de la performance médico-sociale est réservé aux professionnels. Nous n’affichons donc aucune estimation de places libres : une moyenne de segment ne dit rien d’un établissement un jour donné. À la place, la fiche donne les questions précises à poser à l’établissement et son numéro de téléphone.' },
   { t: 'Le taux d’encadrement, l’absentéisme et la rotation du personnel par établissement',
     d: 'Publiés depuis août 2026 sur le portail officiel, mais pas en données ouvertes. Nous donnons la moyenne départementale (Badiane 2023) et un lien vers la fiche officielle.' },
   { t: 'Le barème de l’obligation alimentaire',
@@ -92,6 +103,10 @@ window.NON_SIMULE = [
     d: 'Il dépend du conventionnement de l’établissement, absent des données ouvertes. Demandez-le, puis saisissez le montant notifié.' },
   { t: 'La capacité à jour de chaque établissement',
     d: 'Les capacités figurent dans FINESS mais sans la nomenclature qui dirait s’il s’agit de l’autorisé ou de l’installé : trois règles d’agrégation testées donnent des écarts de −12 % à +56 %. Nous utilisons donc la capacité déclarée à la CNSA en 2020, en le disant.' },
+  { t: 'Les frais du premier mois',
+    d: 'Dépôt de garantie (souvent trente jours d’hébergement), frais de dossier, éventuel préavis du logement quitté, déménagement, mobilier : rien de cela n’est publié dans une base, et rien n’entre dans le montant mensuel affiché ici. Demandez-en le détail chiffré avant de signer le contrat de séjour.' },
+  { t: 'Les dépenses personnelles du quotidien',
+    d: 'Mutuelle, coiffeur, pédicure, téléphone, télévision, protections non comprises, transports et consultations non prises en charge. Elles se règlent sur le reste à vivre, et une partie des établissements les facturent en supplément : la fiche indique les prestations déclarées comprises et celles déclarées en supplément, mais un champ vide signifie « non déclaré », jamais « non facturé ».' },
   { t: 'Les avis de familles',
     d: 'Modérer des avis sur des établissements accueillant des personnes vulnérables demande des moyens qu’un site gratuit n’a pas.' },
 ];
@@ -103,7 +118,7 @@ window.SOURCES = [
   { cat: 'Identité, adresse, habilitation et tarification', what: 'Nom, adresse géocodée, téléphone, date d’ouverture, gestionnaire, et le mode de fixation tarifaire dont le libellé officiel indique l’habilitation à l’aide sociale et le tarif de soins (global ou partiel, avec ou sans pharmacie à usage intérieur).', src: 'Agence du numérique en santé — FINESS (extraction du fichier des établissements et FINESS+ Structures)', url: 'https://www.data.gouv.fr/datasets/finess-extraction-du-fichier-des-etablissements/', note: '6 081 établissements habilités à l’aide sociale, 1 142 non habilités, 194 dont l’habilitation est à confirmer (le libellé FINESS et la déclaration CNSA divergent).' },
   { cat: 'Qualité', what: 'Note d’évaluation A à D, cotations des trois chapitres (« La personne », « Les professionnels », « L’ESSMS »), nombre de critères impératifs atteints sur 18, date de l’évaluation et organisme évaluateur.', src: 'Haute Autorité de santé — Résultats d’évaluation des ESSMS', url: 'https://www.data.gouv.fr/datasets/resultats-devaluation-des-etablissements-et-services-sociaux-et-medico-sociaux-essms/', note: '4 815 EHPAD évalués sur 7 417. L’organisme évaluateur est choisi et rémunéré par l’établissement : c’est pourquoi nous affichons son nom.' },
   { cat: 'Hygiène alimentaire', what: 'Résultat de la dernière inspection sanitaire de la cuisine, sa date et la suite donnée.', src: 'Direction générale de l’alimentation — Alim’confiance', url: 'https://dgal.opendatasoft.com/explore/dataset/export_alimconfiance/', note: '1 012 établissements appariés (SIRET, puis SIREN et commune quand un seul établissement correspond). L’absence de résultat ne signifie pas mauvaise note : seules 2 357 inspections en établissement médico-social sont publiées.' },
-  { cat: 'Occupation et rotation', what: 'Taux d’occupation du segment auquel appartient l’établissement (statut juridique × densité de la commune) et rythme auquel des places se libèrent, calculé à partir des sorties définitives de l’année.', src: 'DREES — enquête EHPA 2023 (publiée le 04/11/2025) et Études et Résultats n° 1351', url: 'https://data.drees.solidarites-sante.gouv.fr/explore/dataset/587_l-enquete-aupres-des-etablissements-d-hebergement-pour-personnes-agees-ehpa/', note: 'Taux d’occupation national 94 % ; rotation 38,8 % par an. Ce sont des moyennes de segment : elles ne disent pas si une place est libre dans cet établissement aujourd’hui.' },
+  { cat: 'Occupation du secteur', what: 'Taux d’occupation moyen du segment auquel appartient l’établissement (statut juridique × densité de la commune). Repère sectoriel affiché comme tel : aucun nombre de places libres n’en est déduit pour un établissement.', src: 'DREES — enquête EHPA 2023 (publiée le 04/11/2025) et Études et Résultats n° 1351', url: 'https://data.drees.solidarites-sante.gouv.fr/explore/dataset/587_l-enquete-aupres-des-etablissements-d-hebergement-pour-personnes-agees-ehpa/', note: 'Moyennes nationales issues d’une enquête : elles ne disent pas si une place est libre dans cet établissement aujourd’hui, et ce site n’en tire aucune estimation.' },
   { cat: 'Contexte départemental', what: 'Places installées, places habilitées à l’aide sociale, résidents, ETP par résident, part des places occupées par un bénéficiaire de l’ASH, taux d’équipement.', src: 'DREES — Badiane 2023 et Indicateurs sociaux départementaux 2024', url: 'https://www.data.gouv.fr/datasets/datadrees-badiane/', note: 'France entière : 612 292 places, dont 74,7 % habilitées à l’aide sociale, 0,671 ETP par résident.' },
   { cat: 'Aide sociale : pratique de votre département', what: 'Recours sur succession, personnes sollicitées au titre de l’obligation alimentaire, prise en charge du GIR 5-6, charges déductibles.', src: 'DREES — Modalités départementales de gestion de l’ASH', url: 'https://www.data.gouv.fr/datasets/les-modalites-departementales-de-gestion-de-lash-des-personnes-agees/', note: 'Enquête portant sur 2018, dernière publiée. Depuis, la loi du 8 avril 2024 a dispensé les petits-enfants de l’obligation alimentaire : la règle nationale prime sur la pratique déclarée en 2018.' },
   { cat: 'Statut, habilitation et capacité (historique)', what: 'Statut juridique en clair, capacité installée et prix 2020.', src: 'CNSA — données retraitées 2018-2020', url: 'https://www.data.gouv.fr/datasets/prix-hebergement-et-tarifs-dependance-des-ehpad/', note: 'Fichier arrêté en 2020 : la capacité affichée date de 2020. Ce jeu ne déclare pas de licence.' },
@@ -142,28 +157,36 @@ window.ROADMAPS = {
     title: 'Déposer un dossier unique sur ViaTrajectoire',
     when: 'En parallèle des demandes d’aide, dès que la décision d’entrée est prise.',
     steps: [
-      'Créez le dossier sur ViaTrajectoire (volet grand âge) : un seul dossier, envoyé à autant d’établissements que vous le souhaitez.',
+      'Vérifiez que votre région utilise ViaTrajectoire : le déploiement est régional, et quelques départements passent encore par un dossier papier national (Cerfa 14732). L’établissement vous dira lequel il accepte.',
+      'Créez le dossier sur ViaTrajectoire (volet grand âge) : un seul dossier, envoyé à autant d’établissements que vous le souhaitez parmi ceux qui y sont inscrits.',
       'Faites remplir le volet médical par le médecin traitant.',
       'Sélectionnez les établissements de votre liste — le plateau de comparaison de cette page vous donne leurs coordonnées.',
     ],
     docs: ['Compte ViaTrajectoire', 'Volet médical rempli par le médecin', 'Coordonnées des établissements visés'],
-    warnings: ['Aucun site, celui-ci compris, ne connaît les places réellement disponibles : elles ne sont publiées nulle part. Le délai d’attente national est d’un mois ou moins pour 55 % des personnes entrées en 2023.'],
+    warnings: [
+      'Aucun site, celui-ci compris, ne connaît les places réellement disponibles : elles ne sont publiées nulle part. Seul l’établissement peut le dire.',
+      'Le délai d’un mois ou moins concerne 55 % des personnes entrées en 2023 (DREES, enquête EHPA) : c’est une statistique nationale sur des entrées passées, pas une prévision pour votre dossier.',
+    ],
   },
   apl: {
     title: 'Demander l’aide au logement (APL ou ALS)',
-    when: 'Dans le mois qui suit l’entrée : l’aide n’est pas rétroactive au-delà.',
+    when: 'Dès l’entrée. L’aide n’est pas rétroactive : elle part du dépôt de la demande, pas de l’entrée.',
     steps: [
       'Demandez à l’établissement s’il est conventionné : si oui, c’est l’APL ; sinon, c’est l’ALS.',
       'Déposez la demande auprès de la CAF ou de la MSA.',
       'Reportez le montant notifié dans le champ « aide au logement » de cette page pour affiner le calcul.',
     ],
     docs: ['Attestation de résidence délivrée par l’EHPAD', 'Ressources du parent', 'Relevé d’identité bancaire'],
-    warnings: ['Piège vérifié : la demande en ligne ne fonctionne pas pour les situations d’EHPAD — la CAF l’a confirmé le 31/01/2025 à un usager. Réclamez le formulaire papier.'],
+    warnings: [
+      'Le parcours en ligne n’accepte pas toujours l’hébergement en EHPAD : plusieurs usagers rapportent avoir dû passer par le formulaire papier. Ce n’est pas une règle nationale que nous ayons pu vérifier auprès de la CNAF — si le formulaire en ligne bloque, demandez le formulaire papier à votre caisse plutôt que de renoncer.',
+      'Une aide au logement est notifiée POUR un établissement précis. Changer d’établissement suppose une nouvelle demande, et le montant peut être différent : ne reportez pas le même chiffre d’un EHPAD à l’autre.',
+    ],
   },
   ash: {
     title: 'Demander l’aide sociale à l’hébergement (ASH)',
-    when: 'Quand les ressources et l’épargne ne couvrent pas la facture — uniquement dans un établissement habilité à l’aide sociale.',
+    when: 'Quand les ressources et l’épargne ne couvrent pas la facture. Il faut avoir 65 ans, ou 60 ans si l’on est reconnu inapte au travail, et résider en France de manière stable et régulière.',
     steps: [
+      'Vérifiez auprès de l’établissement qu’une place habilitée à l’aide sociale est disponible : l’habilitation porte sur un nombre de places, pas sur l’établissement entier.',
       'Déposez le dossier au CCAS de la commune de résidence du parent, ou à la mairie, qui le transmet au conseil départemental.',
       'Le département examine toutes les ressources du parent, puis sollicite les obligés alimentaires selon sa propre pratique.',
       'La décision fixe la part du parent, celle des enfants et celle du département.',
@@ -172,7 +195,10 @@ window.ROADMAPS = {
     warnings: [
       'Votre parent conserve au moins 10 % de ses ressources, et jamais moins de 125 € par mois. Si son conjoint reste à domicile, celui-ci conserve au moins 1 043,59 € par mois.',
       'Les petits-enfants ne sont plus sollicités depuis la loi du 8 avril 2024. Les enfants, gendres et belles-filles peuvent l’être.',
-      'L’aide versée est récupérable sur la succession, sur les donations des dix années précédant ou suivant la demande, et en cas de retour à meilleure fortune. Les sommes versées par les enfants, elles, ne le sont pas.',
+      'L’aide versée est récupérable sur la part d’actif net de la succession, sur les donations des dix années précédant ou suivant la demande, et en cas de retour à meilleure fortune. Les sommes versées par les enfants, elles, ne le sont pas.',
+      'Dans un établissement NON habilité, l’aide reste possible après un séjour payé sur ses propres ressources : cinq ans dans la plupart des départements, parfois moins. Le département fixe alors un tarif forfaitaire. Demandez la règle appliquée chez vous : elle figure au règlement départemental d’aide sociale.',
+      'Le département compétent est celui du domicile de secours, acquis par trois mois de résidence habituelle. L’entrée en établissement n’en fait pas acquérir un nouveau : c’est donc le département d’avant l’entrée qui instruit, même si l’EHPAD est ailleurs.',
+      'L’aide sociale ne couvre que l’hébergement. La part « aide au quotidien » reste due par le résident, et se prélève sur le peu que la règle des 90 % lui laisse.',
     ],
   },
   impot: {
@@ -239,13 +265,13 @@ window.ROADMAPS = {
 /* ---------- Questions fréquentes (texte identique au balisage FAQPage) ---------- */
 window.FAQ = [
   ['Comment calculer le reste à charge d’un EHPAD en 2026 ?',
-   'Le reste à charge se calcule en quatre lignes. On additionne d’abord le prix de l’hébergement et le tarif dépendance correspondant au GIR du résident, tous deux publiés par la CNSA pour chaque établissement. On retire ensuite l’APA en établissement : jusqu’à 2 846,77 € de ressources mensuelles, le résident ne paie que le tarif GIR 5-6 ; entre 2 846,77 € et 4 379,64 €, sa participation augmente progressivement ; au-delà, elle est plafonnée à 80 % de l’écart entre son tarif GIR et le tarif GIR 5-6. On retire l’aide au logement notifiée par la CAF ou la MSA. On retire enfin la réduction d’impôt de 25 % des frais restants, plafonnée à 10 000 € de dépenses par an et par personne hébergée, si le résident est imposable. Sur trouver-mon-ehpad.fr, ce calcul est fait pour chaque établissement de votre rayon de recherche et affiché directement sur la carte, à la place du prix affiché.'],
+   'Le calcul se lit en trois temps, qu’il ne faut pas confondre. D’abord la facture de l’établissement : le prix de l’hébergement, plus la part « aide au quotidien ». Dans la plupart des départements, cette part est le tarif dépendance du GIR du résident, et le conseil départemental en prend une partie à sa charge au titre de l’APA : jusqu’à 2 846,77 € de ressources mensuelles, le résident ne paie que le tarif GIR 5-6 ; entre 2 846,77 € et 4 379,64 €, sa participation augmente progressivement ; au-delà, elle est plafonnée à 80 % de l’écart entre son tarif GIR et le tarif GIR 5-6. Dans vingt-trois territoires qui expérimentent depuis le 1er juillet 2025 la fusion des financements soins et dépendance, ce mécanisme n’existe plus : l’APA en établissement y est supprimée et remplacée par une participation forfaitaire de 6,16 € par jour en 2026, identique pour tous quels que soient le GIR et les ressources. Ensuite la trésorerie : ce qu’il faut sortir chaque mois, une fois retirées les aides versées à l’établissement et l’aide au logement. Enfin, et séparément, la fiscalité : une réduction d’impôt de 25 % des frais restants, plafonnée à 10 000 € de dépenses par an et par personne hébergée. Elle arrive l’année suivante, elle ne peut pas dépasser l’impôt réellement dû et elle n’est pas remboursée : elle ne diminue donc jamais la somme à payer chaque mois. Sur trouver-mon-ehpad.fr, ces trois montants sont affichés séparément pour chaque établissement de votre rayon de recherche.'],
   ['Qui paie quand la retraite ne suffit pas : les enfants, le département ou la maison ?',
-   'Les trois peuvent être appelés, dans cet ordre. Le résident paie d’abord : en aide sociale à l’hébergement, il conserve au moins 10 % de ses ressources et jamais moins de 125 € par mois, et son conjoint resté à domicile conserve au moins 1 043,59 € par mois. Les enfants, les gendres et les belles-filles sont ensuite sollicités au titre de l’obligation alimentaire — les petits-enfants en sont dispensés depuis la loi du 8 avril 2024. Il n’existe aucun barème national : c’est le conseil départemental, ou à défaut le juge aux affaires familiales, qui fixe la part de chacun ; la participation moyenne constatée par la DREES est de 270 € par mois. Ce que les enfants versent se déduit de leur revenu imposable, sans plafond, sur justificatifs. Le département complète enfin, uniquement si l’établissement est habilité à l’aide sociale, et il peut récupérer les sommes versées sur la succession du résident, sur ses donations des dix ans précédant ou suivant la demande, et en cas de retour à meilleure fortune. Les sommes versées par les enfants, elles, ne sont pas récupérables.'],
+   'Les trois peuvent être appelés, dans cet ordre. Le résident paie d’abord : en aide sociale à l’hébergement, il conserve au moins 10 % de ses ressources et jamais moins de 125 € par mois, et son conjoint resté à domicile conserve au moins 1 043,59 € par mois. Attention : l’aide sociale ne couvre que l’hébergement. La part « aide au quotidien » reste à la charge du résident, et elle se prélève sur le peu qui lui reste. Les enfants, les gendres et les belles-filles sont ensuite sollicités au titre de l’obligation alimentaire — les petits-enfants en sont dispensés depuis la loi du 8 avril 2024. Il n’existe aucun barème national : c’est le conseil départemental, ou à défaut le juge aux affaires familiales, qui fixe la part de chacun, et les parts sont souvent inégales. Ce que les enfants versent se déduit de leur revenu imposable, sans plafond, sur justificatifs ; le parent doit en contrepartie le déclarer comme un revenu. Le département complète enfin, uniquement si l’établissement est habilité à l’aide sociale, et il peut récupérer les sommes versées sur la succession du résident et, dans les conditions fixées par la loi, sur ses donations. Le total récupérable ne se calcule pas d’avance : il dépend de la durée réelle du séjour, de l’évolution des tarifs et des ressources, et de la consistance de la succession.'],
   ['Le prix d’un EHPAD augmente-t-il plus vite que l’inflation ?',
-   'Oui depuis 2024, et c’est mesurable établissement par établissement. En fusionnant les fichiers annuels de la CNSA de 2018 à 2025, le prix médian d’une chambre seule passe de 60,22 € à 73,41 € par jour, soit +20,5 % pour les établissements présents aux deux dates, contre +17,2 % d’inflation sur la même période : 65 % des établissements ont augmenté plus vite que le coût de la vie. Le détail par année est parlant : en 2022, les prix n’ont progressé que de 1,5 % quand l’inflation atteignait 5,2 %, puis ils ont rattrapé — +4,8 % en 2024 contre 2,0 % d’inflation, +3,2 % en 2025 contre 0,9 %. Environ 2,5 % des établissements ont baissé leur prix depuis 2018, surtout dans le privé commercial (7,3 %), qui est aussi le segment où les places libres sont les plus nombreuses. Chaque fiche de ce site affiche la courbe du prix de l’établissement et sa comparaison à l’inflation.'],
+   'Souvent, mais la comparaison demande des précautions. En rapprochant les fichiers annuels de la CNSA de 2018 à 2025, le prix médian d’une chambre seule progresse davantage que les 17,2 % d’inflation cumulée mesurés par l’INSEE sur la même période, pour une majorité d’établissements présents aux deux dates. Trois réserves valent d’être connues. Ces prix sont déclaratifs, et la déclaration n’est pas faite à la même date par tous. La comparaison suppose que l’objet comparé n’a pas changé — même type de chambre, même périmètre de prestations comprises — ce que la source ne permet pas de vérifier. Enfin, un établissement absent d’une publication annuelle crée une rupture de série que nous signalons plutôt que de la combler. Chaque fiche de ce site affiche la courbe du prix de l’établissement, ses années manquantes, et sa comparaison à l’inflation en points de pourcentage.'],
   ['Comment savoir s’il reste des places dans un EHPAD ?',
-   'Aucune base publique ne publie les places réellement disponibles : ViaTrajectoire, qui détient l’information, la réserve aux professionnels, et le tableau de bord de la performance médico-sociale n’est pas ouvert. Ce que l’on peut dire avec des chiffres officiels, c’est le taux d’occupation du segment auquel appartient l’établissement et le rythme auquel des places s’y libèrent. Fin 2023, les EHPAD accueillaient 94 résidents pour 100 places installées, mais avec de gros écarts : 89 pour 100 dans le privé commercial en commune dense, 97 pour 100 dans l’associatif en zone de densité intermédiaire. Surtout, 38,8 % des places changent d’occupant chaque année : dans un établissement de 80 places, une place se libère en moyenne tous les douze jours, et environ 650 places se libèrent chaque jour en France. Le délai d’attente entre le dépôt du dossier et l’entrée a été d’un mois ou moins pour 55 % des personnes entrées en 2023. La seule démarche utile reste le dossier unique ViaTrajectoire.'],
+   'En appelant l’établissement. Aucune base publique ne publie les places réellement disponibles : ViaTrajectoire, qui détient l’information, la réserve aux professionnels de santé et du secteur social, et le tableau de bord de la performance médico-sociale n’est pas ouvert. Ce site n’estime donc aucune disponibilité : un taux d’occupation moyen de segment, mesuré par enquête au niveau national, ne dit rien d’un établissement donné un jour donné, et en tirer un nombre de places libres serait inventer une information. Les questions utiles à poser au téléphone sont précises : une place est-elle libre aujourd’hui et pour quelle date d’entrée, s’agit-il d’une place habilitée à l’aide sociale, quelle chambre est proposée et à quel tarif exact, combien de personnes sont inscrites avant nous, quelles pièces faut-il fournir et sous quel délai. Chaque fiche de ce site affiche ces questions et le numéro de l’établissement. La démarche administrative, elle, passe par le dossier unique ViaTrajectoire.'],
   ['Le site est-il gratuit et que fait-il de mes données ?',
-   'Trouver-mon-ehpad.fr est gratuit, sans inscription, sans publicité et sans partenariat avec des établissements — un modèle rémunéré par les EHPAD orienterait mécaniquement vers le privé commercial, à l’inverse de ce que fait cette carte. Le calcul s’exécute entièrement dans votre navigateur : les ressources, l’épargne et la situation de votre parent ne sont ni transmises ni enregistrées, et le site ne demande ni nom, ni adresse, ni numéro de téléphone. Le lien de partage que vous pouvez copier ne contient que des nombres, jamais un nom. Chaque chiffre affiché cite sa source et sa date. Les montants sont des estimations : le GIR, l’APA et l’ASH sont notifiés par le conseil départemental, et seule sa décision fait foi.'],
+   'Trouver-mon-ehpad.fr est gratuit, sans inscription, sans publicité et sans partenariat avec des établissements — un modèle rémunéré par les EHPAD orienterait mécaniquement vers le privé commercial, à l’inverse de ce que fait cette carte. Le calcul s’exécute entièrement dans votre navigateur : les ressources, l’épargne et la situation de votre parent ne sont ni transmises ni enregistrées sur un serveur, et le site ne demande ni nom, ni adresse, ni numéro de téléphone. Le lien de partage ne contient, par défaut, que votre recherche : commune, rayon et filtres. Vous pouvez y joindre la situation saisie en cochant une case — sachez alors que l’adresse est encodée, pas chiffrée : toute personne qui reçoit le lien peut en lire le contenu, y compris le niveau d’autonomie, qui est une donnée de santé. Chaque chiffre affiché cite sa source et sa date. Les montants sont des estimations : le GIR, l’APA et l’aide sociale sont notifiés par le conseil départemental, et seule sa décision fait foi.'],
 ];

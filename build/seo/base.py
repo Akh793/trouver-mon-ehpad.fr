@@ -18,6 +18,15 @@ CNSA_MAJ = 'janvier 2026'         # dernier fichier de prix publié par la CNSA
 # ---------------------------------------------------------------- chargement
 def charge():
     rows = json.load(open(os.path.join(B, 'merged_v2.json'), encoding='utf-8'))
+    # Régime de financement de la dépendance, déduit du territoire d'implantation par
+    # le même module que les données servies au calculateur : les pages et le moteur
+    # ne peuvent donc pas diverger.
+    import sys as _sys
+    if B not in _sys.path:
+        _sys.path.insert(0, B)
+    import regime as _regime
+    _R = _regime.Regimes()
+    _PF = _R.participation()
     com = json.load(open(os.path.join(B, 'communes_geo.json'), encoding='utf-8'))
     arm = json.load(open(os.path.join(B, 'arm.json'), encoding='utf-8'))
     serie = json.load(open(os.path.join(B, 'audit', 'serie_par_etab.json'), encoding='utf-8'))
@@ -29,6 +38,8 @@ def charge():
         r['ville_nom'] = c['nom'] if c else titre(r['ville'])
         r['dep'] = dep_of(r['insee'], r['cp'])
         r['serie'] = serie_calculee(serie.get(r['fin']))
+        r['reg'] = _R.pour(insee=r.get('insee'), cp=r.get('cp'))
+        r['pf'] = _PF
     return rows, communes
 
 ANNEES = ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025']

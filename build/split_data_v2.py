@@ -51,7 +51,34 @@ def dep_of(insee, cp):
 COLS = ['fin', 'nom', 'cp', 'ville', 'lat', 'lon', 'p', 'pcd', 'pa', 't12', 't34', 't56', 'maj', 'temp',
         'linge', 'lingeU', 'nIncl', 'nSus', 'inclTxt', 'susTxt', 'ash', 'ashsrc', 'statut', 'statutsrc',
         'cap', 'p2020', 'hasN', 'hasD', 'hasO', 'hasM', 'hasC', 'hasCI', 'alim', 'tel', 'adr', 'pm',
-        'siren', 'ouv', 'approx', 'mft', 'mftlib', 'tarif', 'pui', 'dens', 'occ']
+        'siren', 'ouv', 'approx', 'mft', 'mftlib', 'tarif', 'pui', 'dens', 'occ',
+        'reg']   # régime de financement de la dépendance : 'exp', 'classique' ou 'inconnu'
+# --- régime de financement, déduit du TERRITOIRE (jamais des tarifs déclarés)
+import regime as _regime
+_R = _regime.Regimes()
+_compte = collections.Counter()
+for r in rows:
+    r['reg'] = _R.pour(insee=r.get('insee'), cp=r.get('cp'))
+    _compte[r['reg']] += 1
+print('régime de financement :', dict(_compte))
+
+# --- coordonnées : certaines sources livrent du Lambert-93 sans le dire.
+# Non converties, ces lignes placent l'établissement hors de la Terre : il disparaît
+# de la carte et de toute recherche par rayon, silencieusement.
+import lambert93 as _l93
+_conv = 0
+for r in rows:
+    la, lo = r.get('lat'), r.get('lon')
+    if la is None or lo is None:
+        continue
+    if _l93.est_lambert93(la, lo):
+        # dans ces lignes, 'lat' porte le nord et 'lon' l'est
+        r['lat'], r['lon'] = _l93.vers_wgs84(float(lo), float(la))
+        r['lat'] = round(r['lat'], 6)
+        r['lon'] = round(r['lon'], 6)
+        _conv += 1
+print('coordonnées Lambert-93 converties :', _conv)
+
 byd = collections.defaultdict(list)
 for r in rows:
     byd[dep_of(r['insee'], r['cp'])].append([r.get(c) for c in COLS])
@@ -161,3 +188,38 @@ PCT['FR'] = [round(q[0], 2), round(statistics.median(allp), 2), round(q[2], 2), 
 open(f'{OUT}/prix-reference.js', 'w', encoding='utf-8').write('window.ME_PCT=%s;' % json.dumps(PCT, separators=(',', ':')))
 print('prix médian France :', PCT['FR'][1], '€/jour sur', PCT['FR'][3], 'établissements')
 json.dump(COLS, open('cols_v2.json', 'w'))
+
+# --- couverture des données : ce que le site ne sait pas, recalculé à chaque build.
+# Ce bloc est écrit DANS site/data.js, entre deux marques, pour qu'aucun de ces
+# chiffres ne soit jamais saisi ni figé à la main.
+import datetime as _dt, re as _re
+_n = len(rows)
+_couv = {
+    'date': _dt.date.today().isoformat(),
+    'total': _n,
+    'prix': sum(1 for r in rows if r.get('p') is not None or r.get('pcd') is not None),
+    'dependance': sum(1 for r in rows if r.get('t56') is not None),
+    'has': sum(1 for r in rows if r.get('hasN')),
+    'capacite': sum(1 for r in rows if r.get('cap')),
+    'position': sum(1 for r in rows if r.get('lat') is not None and r.get('lon') is not None),
+    'positionApprochee': sum(1 for r in rows if r.get('approx')),
+    'tel': sum(1 for r in rows if r.get('tel')),
+    'exp': sum(1 for r in rows if r.get('reg') == 'exp'),
+    'classique': sum(1 for r in rows if r.get('reg') == 'classique'),
+    'regimeInconnu': sum(1 for r in rows if r.get('reg') == 'inconnu'),
+    'ashHabilite': sum(1 for r in rows if r.get('ash') == 1),
+    'ashAConfirmer': sum(1 for r in rows if r.get('ash') == 2),
+}
+_p = '../site/data.js'
+_s = open(_p, encoding='utf-8').read()
+_bloc = '/* @couverture:debut */\nwindow.COUVERTURE = %s;\n/* @couverture:fin */' % json.dumps(
+    _couv, ensure_ascii=False, separators=(', ', ': '))
+_s2, _nb = _re.subn(r'/\* @couverture:debut \*/.*?/\* @couverture:fin \*/', lambda m: _bloc, _s, flags=_re.S)
+# On teste le NOMBRE de substitutions, pas l'égalité des textes : deux builds successifs
+# sans changement de couverture produisent le même fichier, ce qui n'est pas une erreur.
+if _nb == 0:
+    raise SystemExit('marques @couverture absentes de site/data.js : couverture non mise à jour')
+else:
+    open(_p, 'w', encoding='utf-8').write(_s2)
+    print('couverture écrite dans data.js : %d établissements, %d avec prix, %d sans position'
+          % (_n, _couv['prix'], _n - _couv['position']))

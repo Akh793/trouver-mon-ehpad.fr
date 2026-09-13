@@ -66,7 +66,16 @@ def bloc_tarifs(r, ctx):
         l.append(f'<li>Hébergement, chambre double&nbsp;: {eur2(r["pcd"])} par jour, soit environ {eur(mois_eur(r["pcd"]))} par mois.</li>')
     if r['pa'] and r['ash'] in (1, 2):
         l.append(f'<li>Tarif « aide sociale »&nbsp;: {eur2(r["pa"])} par jour. C’est le tarif appliqué quand le département prend le relais.</li>')
-    if r['t12'] and r['t56'] and abs(r['t12'] - r['t56']) > 0.01:
+    if r.get('reg') == 'exp':
+        pf = r.get('pf') or {}
+        m = pf.get('montant_jour') or 0
+        l.append('<li><b>Aide au quotidien&nbsp;: participation forfaitaire</b> de '
+                 f'{eur2(m)} par jour, soit environ {eur(mois_eur(m))} par mois. '
+                 'Cette commune fait partie des territoires qui expérimentent, depuis le 1<sup>er</sup> juillet 2025, '
+                 'la fusion des financements soins et dépendance&nbsp;: il n’y a plus de tarif par GIR, plus de '
+                 'participation qui augmente avec les ressources, et l’allocation personnalisée d’autonomie en '
+                 'établissement y est supprimée. Le montant est le même pour tous les résidents.</li>')
+    elif r['t12'] and r['t56'] and abs(r['t12'] - r['t56']) > 0.01:
         l.append(f'<li>Tarif dépendance&nbsp;: de {eur2(r["t56"])} par jour pour une perte d’autonomie légère à '
                  f'{eur2(r["t12"])} pour une perte d’autonomie lourde. C’est la part largement couverte par '
                  f'l’allocation personnalisée d’autonomie, versée par le département.</li>')
@@ -156,18 +165,18 @@ def fiche(ctx, ecrire, r, voisins):
 <p class="f-adr">{esc(adr)}{f' · <a href="tel:{esc(tel)}">{esc(tel_aff)}</a>' if tel_aff else ''}</p>
 </div>
 {cta(lien, 'Estimer mon reste à charge', 'seo_establishment_to_calculator',
-     'Le calculateur s’ouvre avec cet établissement déjà sélectionné. Il déduit l’allocation personnalisée d’autonomie, l’aide au logement et la réduction d’impôt.')}
+     'Le calculateur s’ouvre avec cet établissement déjà sélectionné : il sépare ce que l’établissement facture, ce qu’il faut sortir chaque mois après aides, et l’avantage fiscal de l’année suivante.')}
 
 <section><h2>Les tarifs</h2>
 {bloc_tarifs(r, ctx)}
 {comp}
-{explique_heberg()}</section>
+{explique_heberg(r.get('reg'))}</section>
 
 {bloc_evolution(r)}
 
 <section><h2>Payer moins&nbsp;: les aides possibles</h2>
 {bloc_ash(r)}
-<p>Dans tous les cas, trois aides viennent réduire la facture avant l’aide sociale&nbsp;: <a href="/aides-ehpad/apa/">l’allocation personnalisée d’autonomie</a>, qui couvre une grande partie du tarif dépendance ; <a href="/aides-ehpad/aide-au-logement/">l’aide au logement</a>, si l’établissement est conventionné ; et <a href="/aides-ehpad/reduction-impot/">la réduction d’impôt</a> de 25 % des frais restants, si la personne est imposable.</p></section>
+<p>{"Ici, l’allocation personnalisée d’autonomie en établissement est supprimée : la participation forfaitaire en tient lieu. Reste " if r.get('reg') == 'exp' else "Avant l’aide sociale, deux aides réduisent la facture : " }<a href="/aides-ehpad/apa/">{"" if r.get('reg') == 'exp' else "l’allocation personnalisée d’autonomie, qui couvre une grande partie du tarif dépendance"}</a>{"" if r.get('reg') == 'exp' else " ; "}<a href="/aides-ehpad/aide-au-logement/">l’aide au logement</a>, si l’établissement est conventionné. <a href="/aides-ehpad/reduction-impot/">La réduction d’impôt</a> de 25 % des frais restants, elle, n’arrive que l’année suivante et seulement si la personne paie de l’impôt : elle n’allège aucune mensualité.</p></section>
 
 <section><h2>La qualité&nbsp;: ce que disent les contrôles</h2>
 {bloc_qualite(r)}

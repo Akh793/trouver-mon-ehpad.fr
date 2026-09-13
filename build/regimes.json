@@ -1,0 +1,103 @@
+{
+  "_lisez_moi": "Référentiel des régimes de financement de la dépendance en EHPAD. Chaque valeur porte sa source et sa date. Vérifié le 2026-09-12. Ne pas modifier sans mettre à jour 'verifie_le' et la source correspondante.",
+  "verifie_le": "2026-09-12",
+
+  "classique": {
+    "code": "classique",
+    "libelle": "Régime de droit commun",
+    "facturation_dependance": "tarif dépendance du GIR, moins l'allocation personnalisée d'autonomie (APA) versée par le département",
+    "note_usager": "Le résident paie au minimum le tarif dépendance GIR 5-6. Au-delà, sa participation augmente avec ses ressources, selon un barème national."
+  },
+
+  "experimentation_fusion": {
+    "code": "exp",
+    "libelle": "Expérimentation de fusion des financements soins et dépendance",
+    "debut": "2025-07-01",
+    "fin_annoncee": "2026-12-31",
+    "fin_incertaine": true,
+    "note_fin": "L'instruction DGCS et les ARS annoncent le 31/12/2026 ; la page CNSA en ligne indique le 31/12/2027. Un amendement de prolongation a été adopté en commission à l'Assemblée nationale le 31/10/2025. Le contenu définitif de la LFSS 2026 (loi n° 2025-1403 du 30/12/2025) n'a pas pu être vérifié article par article : Légifrance bloque l'accès automatisé.",
+
+    "facturation_dependance": "participation journalière forfaitaire, identique quel que soit le GIR",
+    "apa_etablissement": "supprimée dans ces territoires et remplacée par un forfait global unique versé à l'établissement par l'assurance maladie",
+    "note_usager": "Dans ce territoire, le résident ne paie plus un tarif qui dépend de son GIR ni une participation qui augmente avec ses ressources : il paie une somme forfaitaire par jour, la même pour tous.",
+
+    "participation_forfaitaire": [
+      {
+        "debut": "2025-07-01",
+        "fin": "2025-12-31",
+        "montant_jour": 6.10,
+        "source": "Arrêté du 6 juin 2025, NOR TSSA2516495A, JO du 17/06/2025",
+        "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000051745516"
+      },
+      {
+        "debut": "2026-01-01",
+        "fin": null,
+        "montant_jour": 6.16,
+        "source": "Instruction DGCS/SD5B/DSS/SD1A/CNSA/DFO/2026/80 du 16 juin 2026, annexe 4. Le montant résulte de l'indexation prévue à l'article 3 du décret n° 2025-168 du 20 février 2025, et non d'un nouvel arrêté.",
+        "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-06/SFHA2613214J.pdf",
+        "reserve": "Aucun arrêté 2026 n'a été trouvé sur Légifrance. Le montant est confirmé par trois sources concordantes (portail gouvernemental, instruction DGCS, FHF) mais sa base juridique est l'indexation, pas un arrêté."
+      }
+    ],
+
+    "protection_residents": {
+      "regle": "Un résident qui payait moins que la participation forfaitaire au 30/06/2025 conserve son montant antérieur. Un résident qui payait davantage voit sa participation ramenée au forfait.",
+      "source": "E de l'article 79 de la loi n° 2023-1250 du 26 décembre 2023",
+      "consequence_calcul": "Le site ne connaît pas la date d'entrée ni le montant antérieur d'un résident déjà hébergé : le calcul vaut pour une entrée nouvelle."
+    },
+
+    "exclusions": {
+      "hebergement_temporaire": "hors expérimentation — relève de l'APA à domicile, compétence du département",
+      "accueil_de_jour": "hors expérimentation — relève de l'APA à domicile, compétence du département",
+      "puv_tarification_derogatoire": "hors périmètre",
+      "etablissements_rattaches_autre_departement": "Un EHPAD implanté dans un territoire expérimentateur mais rattaché budgétairement à une autre collectivité reste au régime classique. Aucune liste nominative n'est publiée : ces établissements ne sont pas détectables automatiquement."
+    },
+
+    "aide_sociale": {
+      "regle": "La participation forfaitaire peut être prise en charge au titre de l'aide sociale à l'hébergement, dans les mêmes conditions qu'auparavant. Aucune nouvelle demande d'admission à l'aide sociale n'est nécessaire pour les résidents déjà bénéficiaires.",
+      "source": "Instruction DGCS du 27 mai 2025, annexe 4"
+    },
+
+    "territoires": [
+      { "code": "11",  "nom": "Aude",                  "type": "departement" },
+      { "code": "15",  "nom": "Cantal",                "type": "departement" },
+      { "code": "17",  "nom": "Charente-Maritime",     "type": "departement" },
+      { "code": "19",  "nom": "Corrèze",               "type": "departement" },
+      { "code": "22",  "nom": "Côtes-d'Armor",         "type": "departement" },
+      { "code": "23",  "nom": "Creuse",                "type": "departement" },
+      { "code": "29",  "nom": "Finistère",             "type": "departement" },
+      { "code": "31",  "nom": "Haute-Garonne",         "type": "departement" },
+      { "code": "40",  "nom": "Landes",                "type": "departement" },
+      { "code": "46",  "nom": "Lot",                   "type": "departement" },
+      { "code": "47",  "nom": "Lot-et-Garonne",        "type": "departement" },
+      { "code": "49",  "nom": "Maine-et-Loire",        "type": "departement" },
+      { "code": "52",  "nom": "Haute-Marne",           "type": "departement" },
+      { "code": "53",  "nom": "Mayenne",               "type": "departement" },
+      { "code": "56",  "nom": "Morbihan",              "type": "departement" },
+      { "code": "58",  "nom": "Nièvre",                "type": "departement" },
+      { "code": "62",  "nom": "Pas-de-Calais",         "type": "departement" },
+      { "code": "66",  "nom": "Pyrénées-Orientales",   "type": "departement" },
+      { "code": "69M", "nom": "Métropole de Lyon",     "type": "metropole",
+        "note": "Seule la Métropole de Lyon participe. Le département du Rhône (69) n'y participe pas. La distinction se fait par code commune INSEE, jamais par code postal." },
+      { "code": "73",  "nom": "Savoie",                "type": "departement" },
+      { "code": "93",  "nom": "Seine-Saint-Denis",     "type": "departement" },
+      { "code": "973", "nom": "Guyane",                "type": "departement" },
+      { "code": "974", "nom": "La Réunion",            "type": "departement" }
+    ],
+
+    "sources": [
+      { "titre": "Financement des EHPAD : une expérimentation dans 23 départements",
+        "url": "https://www.pour-les-personnes-agees.gouv.fr/actualites/financement-des-ehpad-une-experimentation-dans-23-departements",
+        "maj": "2026-02-03" },
+      { "titre": "CNSA — Réforme de la tarification des EHPAD",
+        "url": "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad" },
+      { "titre": "Article 79 de la loi n° 2023-1250 du 26 décembre 2023 (LFSS 2024), modifié par l'article 82 de la loi n° 2025-199 du 28 février 2025",
+        "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000051269481" },
+      { "titre": "Décret n° 2025-168 du 20 février 2025",
+        "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000051234074" },
+      { "titre": "Instruction DGCS/SD5B/DSS/SD1A/CNSA/DFO/2026/80 du 16 juin 2026, annexe 4",
+        "url": "https://bulletins-officiels.social.gouv.fr/sites/textes-officiels/files/2026-06/SFHA2613214J.pdf" }
+    ],
+
+    "avertissement_methode": "Le régime est déduit du territoire d'implantation, jamais des tarifs déclarés. Une égalité des trois tarifs GIR n'est PAS une preuve d'appartenance à l'expérimentation : elle se rencontre aussi dans 42 % des EHPAD du Rhône hors Métropole, territoire non expérimentateur (mesuré sur les données du 12/09/2026)."
+  }
+}

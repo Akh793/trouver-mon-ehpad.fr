@@ -105,10 +105,15 @@ def sources(txt=None):
     return f'<p class="src-bloc">{txt or SOURCES_PRIX}</p>'
 
 
-def explique_heberg():
-    return ('<p class="def">Le <b>tarif d’hébergement</b> est la part de la facture qui couvre la chambre, '
-            'les repas, le ménage et l’animation. Il est payé par le résident et sa famille. '
-            'S’y ajoute un <b>tarif dépendance</b>, qui dépend du niveau de perte d’autonomie et qui est '
+def explique_heberg(reg=None):
+    base = ('<p class="def">Le <b>tarif d’hébergement</b> est la part de la facture qui couvre la chambre, '
+            'les repas, le ménage et l’animation. Il est payé par le résident et sa famille. ')
+    if reg == 'exp':
+        return (base + 'S’y ajoute ici une <b>participation forfaitaire</b> à l’aide au quotidien&nbsp;: un montant '
+                'journalier identique pour tous, sans tarif par GIR et sans allocation personnalisée d’autonomie, '
+                'cette commune relevant de l’expérimentation de fusion des financements soins et dépendance. '
+                'Le reste à charge réel est donc rarement égal au prix affiché.</p>')
+    return (base + 'S’y ajoute un <b>tarif dépendance</b>, qui dépend du niveau de perte d’autonomie et qui est '
             'en grande partie pris en charge par l’allocation personnalisée d’autonomie (APA), versée par le '
             'département. Le reste à charge réel est donc rarement égal au prix affiché.</p>')
 

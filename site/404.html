@@ -508,6 +508,11 @@ body.fige{overflow:hidden}
 .res-m b{display:block;font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:-.02em}
 .res-m small{display:block;font-size:.68rem;color:var(--mut2);margin-top:.1rem}
 .res-m .tarif{display:block;font-size:.72rem;color:var(--mut2);margin-top:.25rem;white-space:normal}
+/* réserve portée par un montant : elle doit se lire avec lui, pas ailleurs */
+.res-m .t-reserve{color:var(--sur-or);font-style:italic;margin-top:.1rem}
+/* option de partage : la case doit se lire avec le bouton, pas ailleurs */
+.share-opt{display:flex;gap:.4rem;align-items:flex-start;font-size:.76rem;color:var(--mut);max-width:34ch;line-height:1.35;cursor:pointer}
+.share-opt input{margin-top:.15rem;flex:0 0 auto}
 .res-b{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;align-items:center}
 .res-b .badge{font-size:.68rem;padding:.12rem .5rem}
 .res-act{grid-column:1 / -1;display:flex;gap:.4rem;margin-top:.55rem;align-items:center}
@@ -548,6 +553,15 @@ body.fige{overflow:hidden}
 .f-t1:first-child{margin-top:.2rem!important}
 .f-note{font-size:.78rem;color:var(--mut);line-height:1.5;margin:.15rem 0 .7rem;padding-left:.1rem}
 .f-note a{color:var(--bl-t)}
+.q-app{list-style:none;margin:.5rem 0 0;display:grid;gap:.35rem}
+.q-app li{font-size:.82rem;line-height:1.45;padding-left:1rem;position:relative}
+.q-app li::before{content:'—';position:absolute;left:0;color:var(--mut2)}
+.q-tel{margin-top:.7rem}
+.q-tel a{display:inline-block;background:var(--ti-bl);color:var(--bl-t);border-radius:999px;padding:.4rem .9rem;font-size:.82rem;font-weight:600;text-decoration:none}
+.f-hyp{margin-top:.7rem}
+.f-hyp summary{font-size:.8rem;color:var(--mut);font-weight:600;cursor:pointer;list-style:none;padding:.35rem 0}
+.f-hyp summary::-webkit-details-marker{display:none}
+.f-hyp summary::after{content:' ▾'}
 .f-resume{font-size:.88rem;line-height:1.5;background:var(--bg);border-left:3px solid var(--bl);border-radius:.5rem;padding:.6rem .8rem;margin-bottom:.9rem}
 .ln.sstot{border-top:1px solid var(--bd2);margin-top:.2rem;padding-top:.45rem}
 .f-faits b{font-size:1.05rem}

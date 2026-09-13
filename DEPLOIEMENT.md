@@ -35,7 +35,8 @@ git remote add origin git@github.com:VOTRE-COMPTE/trouver-mon-ehpad.git
 git push -u origin main
 ```
 
-Le premier push transfère environ 120 Mo et 12 000 fichiers : comptez quelques minutes.
+Le premier push transfère environ 15 Mo pour 11 988 fichiers : git compresse les 236 Mo du
+dossier en différentiel, les pages de contenu se ressemblant beaucoup. Comptez une à deux minutes.
 Le dépôt peut être public ou privé — GitHub Pages fonctionne avec les deux sur un compte gratuit.
 
 ---
@@ -48,9 +49,18 @@ Dans **Settings → Pages** du dépôt :
 |---|---|
 | Source | **GitHub Actions** (et non « Deploy from a branch ») |
 | Custom domain | `trouver-mon-ehpad.fr` |
-| Enforce HTTPS | coché, dès que le certificat est émis (quelques minutes) |
+| Enforce HTTPS | coché, dès que la case est disponible (jusqu'à 24 h après) |
 
-Le fichier `site/CNAME` porte déjà le domaine : GitHub le reprend automatiquement.
+> ⚠️ **Le fichier `site/CNAME` ne configure rien.** GitHub le lit uniquement quand on publie
+> « depuis une branche ». Avec un workflow GitHub Actions — c'est notre cas — la documentation
+> précise qu'aucun fichier `CNAME` n'est créé et qu'un fichier existant **est ignoré**.
+> Le domaine doit donc être saisi dans **Settings → Pages → Custom domain**, et nulle part ailleurs.
+> Le fichier reste utile au garde-fou du workflow, qui vérifie que les adresses canoniques des
+> pages correspondent bien au domaine visé.
+
+> ⚠️ **L'ordre compte.** Saisir le domaine dans Settings **avant** de créer les enregistrements DNS.
+> GitHub l'écrit explicitement : configurer le DNS sans avoir déclaré le domaine côté GitHub permet
+> à quelqu'un d'autre d'héberger un site sur l'un de vos sous-domaines.
 
 ### DNS à créer chez votre registrar
 
@@ -63,13 +73,24 @@ Pour le domaine racine `trouver-mon-ehpad.fr`, quatre enregistrements **A** :
 185.199.111.153
 ```
 
-et, pour `www`, un **CNAME** vers `VOTRE-COMPTE.github.io.`
+et quatre enregistrements **AAAA** (IPv6), recommandés par GitHub en complément :
 
-> ⚠️ Ces adresses sont celles publiées par GitHub pour les domaines apex.
-> Vérifiez-les dans la documentation GitHub Pages le jour de la bascule : elles peuvent changer.
+```
+2606:50c0:8000::153
+2606:50c0:8001::153
+2606:50c0:8002::153
+2606:50c0:8003::153
+```
 
-La propagation prend de quelques minutes à 24 heures. Tant qu'elle n'est pas faite, le site reste
-accessible sur `VOTRE-COMPTE.github.io/trouver-mon-ehpad/` — **mais en partie cassé** : tous les
+et, pour `www`, un **CNAME** vers `VOTRE-COMPTE.github.io` — jamais une adresse IP.
+
+> ⚠️ Ces valeurs sont celles publiées par GitHub pour les domaines apex. Vérifiez-les dans la
+> documentation GitHub Pages le jour de la bascule : elles peuvent changer.
+> <https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site>
+
+La propagation prend jusqu'à 24 heures, et le certificat HTTPS jusqu'à une heure après la
+configuration du domaine. La case « Enforce HTTPS » peut n'être disponible qu'au bout de 24 heures. Tant qu'elle n'est pas faite, le site reste
+accessible sur `VOTRE-COMPTE.github.io/<nom-du-dépôt>/` — **mais en partie cassé** : tous les
 liens internes sont absolus et supposent un site servi à la racine d'un domaine. C'est normal, et
 cela se résout dès que le domaine pointe.
 
