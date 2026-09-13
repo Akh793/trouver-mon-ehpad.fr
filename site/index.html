@@ -965,7 +965,11 @@ h3{font-size:1.05rem}
    champs flottaient dans le même bandeau blanc et rien ne les séparait. */
 .grid4 .fld,.grid3 .fld{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);
   padding:.9rem .9rem 1rem;transition:transform .16s ease-out,box-shadow .16s ease-out,border-color .16s ease-out}
-.grid4 .fld label,.grid3 .fld label{color:var(--ink);font-size:.88rem}
+.grid4 .fld label,.grid3 .fld label{color:var(--ink);font-size:.88rem;
+  /* deux lignes réservées : sans elles, un libellé long décale son champ vers le
+     bas et la rangée se lit en escalier. Aucun libellé ne dépasse deux lignes
+     entre 700 et 1 440 px — la réserve couvre donc toutes les largeurs. */
+  line-height:1.25;min-height:2.5em;display:flex;align-items:flex-start}
 .grid4 .fld .fld-h,.grid3 .fld .fld-h{margin-top:.45rem}
 /* Le relief au survol : décalage, ombre et 1 % d'agrandissement. Jamais de
    rotation — elle désalignerait la grille et flouterait le texte des champs. */
@@ -993,9 +997,9 @@ select{cursor:pointer;-webkit-appearance:none;appearance:none;
      libellé le plus long passe dessous et se coupe en plein mot */
   padding-right:2.4rem;font-size:.94rem;text-overflow:ellipsis;background-image:linear-gradient(45deg,transparent 50%,var(--mut2) 50%),linear-gradient(135deg,var(--mut2) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat}
 input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:none;border-color:var(--bl-t);box-shadow:0 0 0 4px rgba(37,72,255,.14)}
-.in-eur{position:relative}
-.in-eur span{position:absolute;right:.8rem;top:50%;transform:translateY(-25%);color:var(--mut2);font-size:.9rem}
-.in-eur input{padding-right:3.4rem}
+.in-eur{position:relative;margin-top:.3rem}
+.in-eur span{position:absolute;right:.8rem;top:50%;transform:translateY(-50%);color:var(--mut2);font-size:.9rem}  /* -25 % compensait l'ancienne marge du champ ; sans elle, c'est -50 % qui centre */
+.in-eur input{padding-right:3.4rem;margin-top:0}
 .fld-h{font-size:.75rem;color:var(--mut2);margin-top:.3rem;line-height:1.35}
 .fld-ok{font-size:.78rem;color:var(--bl-t);font-weight:600;min-height:1.1rem;margin-top:.2rem}
 .dd{position:absolute;z-index:1200;left:0;right:0;top:100%;max-height:14rem;overflow:auto;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);box-shadow:0 10px 25px rgba(var(--om),.12)}
