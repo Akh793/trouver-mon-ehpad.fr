@@ -1,0 +1,12 @@
+name = "retours-tme"
+main = "index.js"
+compatibility_date = "2026-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "retours-tme"
+database_id = "A_REMPLACER_PAR_L_ID_RENVOYE_A_LA_CREATION"
+
+# Ménage quotidien : effacement des empreintes et des messages refusés anciens.
+[triggers]
+crons = ["30 3 * * *"]

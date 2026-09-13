@@ -195,7 +195,7 @@ def sitemaps():
     groupes = collections.defaultdict(list, groupes)
     # pages institutionnelles existantes
     groupes['pages'] += [('/', 1.0), ('/notre-methodologie.html', 0.6),
-                         ('/qui-sommes-nous.html', 0.4)]
+                         ('/qui-sommes-nous.html', 0.4), ('/retours/', 0.4)]
     index = []
     for t, lst in sorted(groupes.items()):
         morceaux = [lst[i:i + 2000] for i in range(0, len(lst), 2000)] or [[]]
