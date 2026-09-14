@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 """Gabarit commun des pages de contenu : en-tête, fil d'Ariane, pied de page, données structurées."""
-import json
+import json, os, sys
 from base import DOMAINE, MARQUE, CONTACT, MAJ, MAJ_ISO, esc
+# mesure.py vit dans build/, un cran au-dessus de seo/ : une seule adresse
+# de service pour les trois gabarits, sinon ils divergent en silence.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import mesure
+MESURE = mesure.extrait()
 
 AMORCE_THEME = """<script>/* Thème : appliqué avant le premier rendu, sinon la page clignote en blanc. */
 (function(){try{var k='mon_ehpad_theme',t=localStorage.getItem(k);
@@ -42,10 +47,12 @@ TOPBAR = """<div id="topbar" class="topbar print-hide">
 <hr>
 <a href="/notre-methodologie.html">Notre méthodologie</a>
 <a href="/qui-sommes-nous.html">Qui sommes-nous&nbsp;?</a>
+<a href="/comparer-devis-ehpad/" class="menu-devis">Comparer vos devis</a>
 <a href="/retours/">Vos retours</a>
 </nav>
 </div>
 <button type="button" id="theme-btn" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button>
+<a href="/comparer-devis-ehpad/" class="tb-devis">Comparer vos devis</a>
 <a href="/retours/" class="tb-avis">Vos retours</a>
 <a href="/" class="tb-cta" data-ev="seo_topbar_to_calculator">Calculer mon reste à charge</a>
 </div>
@@ -161,6 +168,7 @@ def page(url, titre, description, corps, ariane, ld_extra=None, robots='index, f
 </main>
 {PIED}
 {BANDEAU}
+{MESURE}
 </body>
 </html>
 """

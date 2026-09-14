@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """Génère les pages annexes : même gabarit, CSS inliné, aucun JS hors bandeau de consentement."""
 import os
+import mesure
 SITE = '../site'
 FONT = open('fontface.css', encoding='utf-8').read()
 CSS = open('site.css', encoding='utf-8').read()
+MESURE = mesure.extrait()
 
 HEAD = """<!DOCTYPE html>
 <html lang="fr">
@@ -53,10 +55,12 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
 <hr>
 <a href="/notre-methodologie.html">Notre méthodologie</a>
 <a href="/qui-sommes-nous.html">Qui sommes-nous&nbsp;?</a>
+<a href="/comparer-devis-ehpad/" class="menu-devis">Comparer vos devis</a>
 <a href="/retours/">Vos retours</a>
 </nav>
 </div>
 <button type="button" id="theme-btn" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button>
+<a href="/comparer-devis-ehpad/" class="tb-devis">Comparer vos devis</a>
 <a href="/retours/" class="tb-avis">Vos retours</a>
 <a href="/" class="tb-cta">Calculer mon reste à charge</a>
 </div>
@@ -88,6 +92,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
 </footer>
 </div>
 <script src="/assets/pages.js" defer></script>
+{mesure}
 </body>
 </html>
 """
@@ -278,10 +283,10 @@ NOTFOUND = """
 for p in PAGES:
     html = HEAD.format(title=p['title'], desc=p['desc'], slug=p['slug'], robots=p['robots'],
                        h1=p['h1'], body=p['body'], font=FONT, css=CSS,
-                       jsonld=crumb(p['h1'], p['slug']))
+                       jsonld=crumb(p['h1'], p['slug']), mesure=MESURE)
     open(os.path.join(SITE, p['file']), 'w', encoding='utf-8').write(html)
 
 open(os.path.join(SITE, '404.html'), 'w', encoding='utf-8').write(
     HEAD.format(title='Page introuvable | Trouver mon EHPAD', desc='Cette page n’existe pas.', slug='404.html',
-                robots='noindex, follow', h1='Page introuvable', body=NOTFOUND, font=FONT, css=CSS, jsonld=''))
+                robots='noindex, follow', h1='Page introuvable', body=NOTFOUND, font=FONT, css=CSS, jsonld='', mesure=MESURE))
 print('pages annexes générées :', [p['file'] for p in PAGES] + ['404.html'])

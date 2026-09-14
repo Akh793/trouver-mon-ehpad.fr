@@ -179,7 +179,8 @@ def main():
         desc='Écrivez ce qui vous a aidé et ce qui vous a manqué sur trouver-mon-ehpad.fr. '
              'Les messages sont lus avant publication.',
         slug='retours/', robots='index, follow', h1='Vos retours',
-        body=corps, font=FONT, css=CSS, jsonld=bp.crumb('Vos retours', 'retours/'))
+        body=corps, font=FONT, css=CSS, jsonld=bp.crumb('Vos retours', 'retours/'),
+        mesure=bp.MESURE)
     os.makedirs(os.path.join(SITE, 'retours'), exist_ok=True)
     open(os.path.join(SITE, 'retours', 'index.html'), 'w', encoding='utf-8').write(html)
     print('page /retours/ écrite :', len(html.encode()), 'octets ;',

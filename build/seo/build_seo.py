@@ -194,7 +194,8 @@ def sitemaps():
     groupes = {t: sorted(d.items()) for t, d in groupes.items()}
     groupes = collections.defaultdict(list, groupes)
     # pages institutionnelles existantes
-    groupes['pages'] += [('/', 1.0), ('/notre-methodologie.html', 0.6),
+    groupes['pages'] += [('/', 1.0), ('/comparer-devis-ehpad/', 0.8),
+                         ('/notre-methodologie.html', 0.6),
                          ('/qui-sommes-nous.html', 0.4), ('/retours/', 0.4)]
     index = []
     for t, lst in sorted(groupes.items()):

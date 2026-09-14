@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* Thème : appliqué avant le premier rendu, sinon la page clignote en blanc. */
+(function(){try{var k='mon_ehpad_theme',t=localStorage.getItem(k);
+if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<title>Comparer vos devis d’EHPAD, poste par poste | Trouver mon EHPAD</title>
+<meta name="description" content="Recopiez les lignes de vos devis d’EHPAD : le coût mensuel réel, tout compris, et ce que chaque établissement inclut ou facture en plus. Gratuit, sans inscription, rien n’est envoyé.">
+<link rel="canonical" href="https://trouver-mon-ehpad.fr/comparer-devis-ehpad/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Comparer vos devis d’EHPAD, poste par poste | Trouver mon EHPAD">
+<meta property="og:description" content="Recopiez les lignes de vos devis d’EHPAD : le coût mensuel réel, tout compris, et ce que chaque établissement inclut ou facture en plus. Gratuit, sans inscription, rien n’est envoyé.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://trouver-mon-ehpad.fr/comparer-devis-ehpad/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Trouver mon EHPAD">
+<meta property="og:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta name="theme-color" content="#2548FF">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://trouver-mon-ehpad.fr/"},{"@type":"ListItem","position":2,"name":"Comparer vos devis","item":"https://trouver-mon-ehpad.fr/comparer-devis-ehpad/"}]}</script>
+<style>
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url(/assets/fonts/inter-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url(/assets/fonts/inter-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/poppins-600-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/poppins-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/poppins-700-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/poppins-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* ---------- Mon EHPAD — feuille de style (inlinée dans la page, aucune requête bloquante) ---------- */
+:root{
+  /* --- marque : identique dans les deux thèmes --- */
+  --bl:#2548FF;--co:#FF6347;--r:1.5rem;--r2:1rem;
+  --bl-t:#2548FF;       /* le bleu quand il sert de couleur de TEXTE (aplats : --bl) */
+  /* --- surfaces et textes : c'est tout ce que le thème sombre redéfinit --- */
+  --pg:#fff;            /* fond de page */
+  --surf:#fff;          /* cartes, panneaux, champs */
+  --bg:#F8F9FA;         /* surface secondaire */
+  --ink:#0f172a;--txt2:#334155;--mut:#475569;--mut2:#64748b;
+  --bd:#e2e8f0;--bd2:#f1f5f9;--bd-bl:#dbe3ff;
+  /* teintes d'état et couleurs de texte associées */
+  --ti-bl:#eef2ff;--ti-bl2:#f6f8ff;--ti-co2:#fff6f4;--bd-co:#ffc9bd;--ti-ve:#e8f6f0;--ti-or:#fdf3e2;--ti-ro:#fdebee;
+  --ti-gr:#f1f5f9;--ti-seg:#eef1f5;
+  --sur-ve:#0b6b4a;--sur-or:#a35d00;--sur-ro:#a11b30;--sur-bl:#1e3a8a;--sur-co:#b8321a;
+  --bd-bl2:#c7d2fe;
+  --vert:#0f8a5f;--orange:#e08a00;--rouge:#d1344b;--ve-btn:#0b6b4a;
+  --om:15,23,42;        /* base des ombres */
+  --om0:0,0,0;
+  --carte:grayscale(0%) contrast(100%);   /* filtre appliqué au fond de carte */
+  --tb-h:0px;           /* hauteur de la barre de défilement, posée par le script quand elle est là */
+  color-scheme:light;
+}
+/* ================= THÈME SOMBRE =================
+   Un seul bloc : on ne redéfinit que des variables. Aucune règle de mise en page
+   n'est dupliquée, donc rien ne peut diverger entre les deux thèmes.
+   Le bleu et le corail de la marque ne changent pas ; seuls les fonds, les textes
+   et les teintes d'état sont réaccordés pour rester lisibles sur fond sombre. */
+[data-theme="dark"]{
+  --pg:#0d1117;         /* fond de page */
+  --surf:#161b25;       /* cartes, panneaux, champs */
+  --bg:#1b2230;         /* surface secondaire */
+  --ink:#e8edf5;--txt2:#c3ccda;--mut:#a3aec0;--mut2:#8b97ab;
+  --bd:#2c3545;--bd2:#232b39;--bd-bl:#2f3d6b;
+  /* teintes d'état : mêmes rôles, assombries — le texte associé est éclairci */
+  --ti-bl:#1a2340;--ti-bl2:#171f36;--ti-co2:#31201c;--bd-co:#7c4a3c;--ti-ve:#11291f;--ti-or:#2b2113;--ti-ro:#2e1820;
+  --ti-gr:#1f2634;--ti-seg:#1f2634;
+  --bl-t:#8ba4ff;       /* le bleu de marque n'a que 2,8:1 sur fond sombre — éclairci pour le texte */
+  --sur-ve:#5fd3a3;--sur-or:#e8b25c;--sur-ro:#f08a9c;--sur-bl:#9db4ff;--sur-co:#ff9b86;
+  --bd-bl2:#39477a;
+  /* les trois couleurs de reste à charge : éclaircies pour tenir le contraste */
+  --vert:#3fbf8c;--orange:#f0a93a;--rouge:#f2647c;--ve-btn:#16785a;
+  --om:0,0,0;--om0:0,0,0;
+  --carte:brightness(.78) contrast(1.08) saturate(.85) hue-rotate(175deg) invert(1);
+  color-scheme:dark;
+}
+
+/* #total-card est un aplat bleu dans les deux thèmes : ce qui s'y pose doit rester clair. */
+[data-theme="dark"] #total-card{--surf:#fff;--ink:#0f172a;--mut:#475569;--bd:#e2e8f0;--ti-bl:#eef2ff;--bl-t:#2548FF}
+
+/* Le fond de carte de l'IGN est une image : on ne peut pas le recolorer, on l'inverse. */
+[data-theme="dark"] .leaflet-tile-pane{filter:var(--carte)}
+[data-theme="dark"] .leaflet-control-zoom a{background:var(--surf);color:var(--ink);border-color:var(--bd)}
+[data-theme="dark"] .leaflet-control-attribution{background:rgba(22,27,37,.85);color:var(--mut2)}
+[data-theme="dark"] .leaflet-control-attribution a{color:var(--sur-bl)}
+[data-theme="dark"] .me-lbl{background:var(--surf);color:var(--ink);border-color:var(--bd)}
+
+/* Champs de formulaire : le navigateur ne suit pas toujours color-scheme sur les selects. */
+[data-theme="dark"] input,[data-theme="dark"] select,[data-theme="dark"] textarea{
+  background-color:var(--surf);color:var(--ink);border-color:var(--bd)}
+[data-theme="dark"] ::placeholder{color:var(--mut2);opacity:1}
+
+/* L'impression reste toujours claire : on n'imprime pas du blanc sur du noir. */
+@media print{
+  :root,[data-theme="dark"]{
+    --pg:#fff;--surf:#fff;--bg:#F8F9FA;--ink:#0f172a;--txt2:#334155;--mut:#475569;--mut2:#64748b;
+    --bd:#e2e8f0;--bd2:#f1f5f9;--bd-bl:#dbe3ff;
+    --ti-bl:#eef2ff;--ti-bl2:#f6f8ff;--ti-ve:#e8f6f0;--ti-or:#fdf3e2;--ti-ro:#fdebee;
+    --ti-gr:#f1f5f9;--ti-seg:#eef1f5;
+    --sur-ve:#0b6b4a;--sur-or:#a35d00;--sur-ro:#a11b30;--sur-bl:#1e3a8a;
+    --vert:#0f8a5f;--orange:#e08a00;--rouge:#d1344b;--om:15,23,42;--om0:0,0,0;--bl-t:#2548FF;
+    color-scheme:light}
+  [data-theme="dark"] .leaflet-tile-pane{filter:none}
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--pg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);line-height:1.55;font-size:16px}
+img{max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3,h4{font-family:Poppins,Inter,sans-serif;font-weight:700;line-height:1.15;letter-spacing:-.02em}
+em.bl,em.co{font-style:italic;font-weight:700}
+em.bl{color:var(--bl-t)}em.co{color:var(--co)}
+.skip{position:absolute;left:-9999px;top:0;background:var(--surf);color:var(--bl-t);padding:.7rem 1rem;border-radius:0 0 .8rem 0;font-weight:600;z-index:3000}
+.skip:focus{left:0}
+main{display:flex;flex-direction:column;gap:3rem}
+@media (max-width:640px){main{gap:2.2rem}}
+#layout{--pad:1.25rem;max-width:min(1180px,100%);margin:0 auto;padding:2.5rem var(--pad) 5rem;display:flex;flex-direction:column;gap:3rem;overflow-x:clip}
+
+/* en-tête */
+h1{font-size:clamp(1.7rem,5.2vw,3.6rem);text-wrap:balance;letter-spacing:-.012em}
+/* les italiques penchent : sans ce recul elles butent sur le mot suivant */
+h1 em{margin-right:.09em}
+/* la seconde ligne du titre est décalée, comme une reprise de souffle */
+.h1-l2{display:inline-block;margin-left:clamp(.5rem,3vw,2.6rem)}
+.h1-pro{font-size:clamp(1.5rem,3.9vw,2.6rem)}
+.sub{margin-top:1rem;color:var(--mut);font-size:clamp(1rem,1.6vw,1.2rem)}
+/* le chapô occupe toute la largeur : deux phrases, deux lignes, sans césure mal placée */
+.sub2{font-size:clamp(.95rem,1.35vw,1.08rem)}
+/* le titre à gauche, les repères de service à sa droite — ils ne passent dessous que faute de place */
+.head-row{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between;align-items:flex-start}
+/* sous 34rem le titre passerait à trois lignes : la colonne de repères descend d’elle-même */
+.head-row>div:first-child{flex:1 1 34rem;min-width:min(100%,34rem)}
+.head-side{flex:0 0 auto;max-width:24rem;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;font-size:.85rem;color:var(--mut)}
+.head-side a{font-weight:500;text-decoration:none}
+/* le bouton de thème vit aussi dans l'en-tête statique : accessible sans avoir à défiler */
+/* Aligné à droite explicitement : sur l'accueil, le parent .head-side le tirait
+   déjà de ce côté, ce qui masquait l'absence de règle ici. Les pages annexes,
+   elles, n'ont pas ce parent — le bouton de thème y partait à gauche. */
+.head-act{display:flex;align-items:center;justify-content:flex-end;gap:.6rem}
+/* Le bouton de thème est le dernier élément de la ligne, donc le plus à droite,
+   sur l'accueil comme sur les pages annexes. L'ordre visuel seul change :
+   l'ordre de tabulation suit le document, où le bouton vient en premier. */
+.head-act .tb-icon{order:2}
+.head-act .tb-icon{width:32px;height:32px}
+.head-act .tb-icon svg{width:.95rem;height:.95rem}
+.head-side a:hover{color:var(--bl-t);text-decoration:underline;text-underline-offset:4px}
+.perf{color:var(--mut2);font-size:.75rem}
+.nav{margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;font-size:.9rem;font-weight:500;color:var(--mut)}
+.nav a{text-decoration:none}
+.nav a:hover{color:var(--bl-t)}
+
+/* gap:0 — sinon l'espace du flex s'ajoute à celui du texte et « La situation de  votre
+   parent » se retrouve avec un trou. Seule la pastille numérotée est écartée. */
+/* Un titre sans pastille reste un bloc de texte ordinaire : ni flex ni grille, qui
+   feraient de chaque nœud un item séparé et supprimeraient les espaces entre le
+   texte nu et les <em> — « Parcourirsans calculer ». */
+h2{font-size:clamp(1.5rem,3.4vw,2.25rem);line-height:1.2}
+/* Un titre numéroté prend deux colonnes : la pastille, puis TOUT le texte dans une
+   seule cellule — ses espaces internes sont donc préservés, et ses lignes suivantes
+   s'alignent sur la première au lieu de repartir sous la pastille. */
+h2:has(.n){display:grid;grid-template-columns:auto minmax(0,1fr);gap:.7rem;align-items:center}
+h2 .t{min-width:0}
+/* Pas de décalage en rem : la taille du titre varie avec la largeur (clamp), donc
+   une valeur fixe ne peut être juste qu'à une seule largeur. C'est la grille qui
+   aligne, et la pastille garde sa taille propre. */
+h2 .n{width:2.4rem;height:2.4rem;flex:0 0 auto;border-radius:999px;background:var(--bl);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem}
+/* Repli pour un navigateur sans :has() — le titre reste lisible, la pastille sur sa ligne. */
+@supports not selector(:has(*)){ h2 .n{margin-right:.7rem;vertical-align:-.5rem} }
+h3{font-size:1.05rem}
+.s-head{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.s-head-r{display:flex;align-items:center;gap:1rem}
+.s-int{margin-top:.6rem;color:var(--mut);font-size:.95rem;max-width:80ch}
+.s-sub{margin-top:1.6rem;font-weight:600;font-size:.95rem}
+.prio-fld{margin-top:2.2rem}
+.s-sub span{color:var(--mut2);font-weight:400}
+.s-priv{margin-top:1rem;font-size:.8rem;color:var(--mut2)}
+.s-foot{margin-top:1.2rem;font-size:.8rem;color:var(--mut)}
+.h3b{margin-top:2rem;font-size:1.15rem}
+
+/* bande 1 */
+#bande-situation{background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r);padding:1.6rem;box-shadow:0 10px 15px -3px rgba(var(--om0),.05)}
+#bande-situation.pro{border-color:rgba(255,99,71,.4)}
+.mode-note{margin-top:.8rem;font-size:.9rem;color:var(--mut)}
+.grid4{margin-top:1.4rem;display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+/* Chaque critère de recherche occupe sa propre surface : sans elle, les quatre
+   champs flottaient dans le même bandeau blanc et rien ne les séparait. */
+.grid4 .fld,.grid3 .fld{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);
+  padding:.9rem .9rem 1rem;transition:transform .16s ease-out,box-shadow .16s ease-out,border-color .16s ease-out}
+.grid4 .fld label,.grid3 .fld label{color:var(--ink);font-size:.88rem;
+  /* deux lignes réservées : sans elles, un libellé long décale son champ vers le
+     bas et la rangée se lit en escalier. Aucun libellé ne dépasse deux lignes
+     entre 700 et 1 440 px — la réserve couvre donc toutes les largeurs. */
+  line-height:1.25;min-height:2.5em;display:flex;align-items:flex-start}
+.grid4 .fld .fld-h,.grid3 .fld .fld-h{margin-top:.45rem}
+/* Le relief au survol : décalage, ombre et 1 % d'agrandissement. Jamais de
+   rotation — elle désalignerait la grille et flouterait le texte des champs. */
+@media (hover:hover){
+  .grid4 .fld:hover,.grid3 .fld:hover{transform:translateY(-3px) scale(1.01);
+    box-shadow:0 10px 24px rgba(37,72,255,.13);border-color:var(--bl-t)}
+  .grid4 .fld:hover label,.grid3 .fld:hover label{color:var(--bl-t)}
+}
+/* Dès qu'on saisit, plus aucun mouvement : le champ ne doit pas flotter sous le
+   curseur. Le z-index garde la liste des communes au-dessus des cellules voisines,
+   qu'un transform ferait passer devant elle. */
+.grid4 .fld:focus-within,.grid3 .fld:focus-within{transform:none;z-index:20;
+  border-color:var(--bl-t);box-shadow:0 6px 18px rgba(37,72,255,.10)}
+.grid4 .fld:focus-within label,.grid3 .fld:focus-within label{color:var(--bl-t)}
+@media (prefers-reduced-motion:reduce){
+  .grid4 .fld,.grid3 .fld{transition:none}
+  .grid4 .fld:hover,.grid3 .fld:hover{transform:none}
+}
+.grid3{margin-top:.8rem;display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.fld{position:relative;min-width:0}
+.fld label{font-size:.85rem;font-weight:600;color:var(--mut);display:block}
+input,select{width:100%;border:1.5px solid var(--bd);border-radius:var(--r2);background:var(--surf);padding:.7rem .9rem;font:inherit;font-size:1rem;color:inherit;margin-top:.3rem}
+select{cursor:pointer;-webkit-appearance:none;appearance:none;
+  /* la flèche est dessinée en fond à 18 px du bord : sans cette gouttière, le
+     libellé le plus long passe dessous et se coupe en plein mot */
+  padding-right:2.4rem;font-size:.94rem;text-overflow:ellipsis;background-image:linear-gradient(45deg,transparent 50%,var(--mut2) 50%),linear-gradient(135deg,var(--mut2) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:none;border-color:var(--bl-t);box-shadow:0 0 0 4px rgba(37,72,255,.14)}
+.in-eur{position:relative;margin-top:.3rem}
+.in-eur span{position:absolute;right:.8rem;top:50%;transform:translateY(-50%);color:var(--mut2);font-size:.9rem}  /* -25 % compensait l'ancienne marge du champ ; sans elle, c'est -50 % qui centre */
+.in-eur input{padding-right:3.4rem;margin-top:0}
+.fld-h{font-size:.75rem;color:var(--mut2);margin-top:.3rem;line-height:1.35}
+.fld-ok{font-size:.78rem;color:var(--bl-t);font-weight:600;min-height:1.1rem;margin-top:.2rem}
+.dd{position:absolute;z-index:1200;left:0;right:0;top:100%;max-height:14rem;overflow:auto;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);box-shadow:0 10px 25px rgba(var(--om),.12)}
+.dd button{display:block;width:100%;text-align:left;padding:.55rem .9rem;border:0;background:none;font:inherit;font-size:.9rem;cursor:pointer}
+.dd button:hover{background:var(--ti-bl)}
+.muted{color:var(--mut2)}
+
+.seg{display:flex;background:var(--ti-seg);border-radius:999px;padding:4px;gap:2px;margin-top:.3rem}
+.seg button{flex:1 1 0;min-width:0;border:0;background:none;font:inherit;font-size:.8rem;font-weight:600;color:var(--mut);padding:.55rem .3rem;min-height:36px;border-radius:999px;cursor:pointer;transition:background .18s,color .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg button.on{background:var(--bl);color:#fff;box-shadow:0 4px 12px rgba(37,72,255,.28)}
+.seg-mode button.on{background:var(--co);box-shadow:0 4px 12px rgba(255,99,71,.32)}
+.seg-mode{min-width:14.5rem}
+.seg4 button{font-size:.72rem;padding:.5rem .25rem;white-space:normal;line-height:1.15;min-height:38px}
+.lien{border:0;background:none;font:inherit;font-size:.78rem;color:var(--mut2);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.lien:hover{color:var(--co)}
+
+.gir-box{margin-top:1rem;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);padding:1rem}
+.gir-q{margin-top:.6rem;display:grid;gap:.4rem}
+.gir-q label{display:flex;gap:.5rem;align-items:flex-start;font-size:.88rem}
+.gir-q input{width:auto;margin:.25rem 0 0}
+
+.filtres{margin-top:1.4rem;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2)}
+.filtres summary{cursor:pointer;padding:.8rem 1rem;font-weight:600;font-size:.9rem;list-style:none}
+.filtres summary::-webkit-details-marker{display:none}
+.filtres summary::after{content:'▾';float:right;color:var(--bl-t)}
+.filtres-in{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;padding:0 1rem 1rem}
+.filtres-in label{display:flex;gap:.45rem;align-items:center;font-size:.85rem}
+.filtres-in input{width:auto;margin:0}
+
+/* bande 2 */
+.vide{margin-top:1.4rem;background:var(--bg);border:1px dashed var(--bd);border-radius:var(--r);padding:2.5rem 1.2rem;text-align:center}
+.v-t{font-family:Poppins,Inter,sans-serif;font-weight:600;font-size:1.2rem}
+.v-s{color:var(--mut2);font-size:.9rem;margin-top:.5rem;max-width:60ch;margin-inline:auto}
+#total-card{margin-top:1.4rem;background:var(--bl);color:#fff;border-radius:var(--r);padding:1.8rem;position:relative;overflow:hidden;box-shadow:0 25px 50px -12px rgba(37,72,255,.3)}
+#total-card::before{content:'';position:absolute;right:-4rem;top:-4rem;width:18rem;height:18rem;border-radius:999px;background:rgba(255,255,255,.1)}
+#total-card::after{content:'';position:absolute;left:-3rem;bottom:-5rem;width:14rem;height:14rem;border-radius:999px;background:rgba(255,99,71,.22)}
+#total-card>*{position:relative;z-index:1}
+.t-l{font-size:.95rem;color:rgba(255,255,255,.85)}
+.t-m{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:clamp(2.4rem,7vw,4rem);line-height:1;margin-top:.5rem;letter-spacing:-.03em}
+.t-s{margin-top:.8rem;color:rgba(255,255,255,.92);font-size:1rem;max-width:70ch}
+.t-r{margin-top:.7rem;color:rgba(255,255,255,.75);font-size:.85rem;max-width:80ch}
+.t-d{margin-top:.9rem;color:rgba(255,255,255,.82);font-size:.75rem;max-width:80ch}
+
+.map-wrap{position:relative;margin-top:1.2rem;border:1px solid var(--bd2);border-radius:var(--r);overflow:hidden;box-shadow:0 10px 15px -3px rgba(var(--om0),.05)}
+.zone-btn{position:absolute;left:50%;top:.7rem;transform:translateX(-50%);z-index:800;border:0;border-radius:999px;background:var(--surf);color:var(--bl-t);font:inherit;font-size:.82rem;font-weight:600;padding:.5rem 1.1rem;cursor:pointer;box-shadow:0 4px 14px rgba(var(--om),.25);min-height:36px}
+.zone-btn:hover{background:var(--ti-bl)}
+#map{height:min(62vh,520px);width:100%;background:var(--ti-seg)}
+.tile-warn{padding:.6rem 1rem;font-size:.78rem;color:var(--sur-or);background:var(--ti-or);border-top:1px solid var(--bd2)}
+.legende{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;padding:.7rem 1rem;font-size:.78rem;color:var(--mut);background:var(--surf);border-top:1px solid var(--bd2)}
+.legende i{display:inline-block;width:.65rem;height:.65rem;border-radius:999px;margin-right:.35rem;vertical-align:-1px}
+.legende i.depart{background:var(--surf);border:3px solid var(--bl)}
+.legende i.groupe{width:1.15rem;height:1.15rem;background:var(--bl);color:#fff;font:600 .62rem Inter,sans-serif;text-align:center;line-height:1.15rem;box-shadow:0 0 0 3px rgba(37,72,255,.22);vertical-align:-3px;margin-right:.5rem}
+.me-lbl{background:var(--surf);border:1.5px solid var(--bl);color:var(--bl-t);font-weight:700;font-size:.72rem;border-radius:999px;padding:1px 7px;box-shadow:0 2px 6px rgba(var(--om),.15)}
+.me-lbl::before{display:none}
+.leaflet-container{font:inherit}
+
+/* regroupements : couleur neutre, pour ne pas entrer en conflit avec le code couleur du reste à charge */
+.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{background:rgba(37,72,255,.22)}
+.marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{background:#2548FF;color:#fff}
+.marker-cluster div{font:600 12px Inter,sans-serif}
+.contexte{margin-top:1rem;background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r2);padding:1rem;font-size:.9rem}
+.contexte .muted{font-size:.82rem;margin-top:.4rem}
+.liste-head{margin-top:1.4rem;display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;font-size:.85rem;font-weight:600;color:var(--mut)}
+.liste-head select{width:auto;margin:0}
+.btn{border:0;border-radius:999px;background:var(--co);color:#fff;font:inherit;font-weight:600;font-size:.9rem;padding:.75rem 1.4rem;cursor:pointer;box-shadow:0 10px 15px -3px rgba(255,99,71,.3)}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:scale(.98)}
+.btn-sec{margin-left:auto;border:1.5px solid var(--bd);border-radius:999px;background:var(--surf);font:inherit;font-size:.82rem;font-weight:600;padding:.5rem 1rem;cursor:pointer}
+.btn-sec:hover{border-color:var(--bl-t);color:var(--bl-t)}
+
+.liste{margin-top:1rem;display:grid;gap:.9rem;align-items:start;grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+.item{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);padding:1.1rem;box-shadow:0 4px 12px rgba(var(--om),.05);break-inside:avoid}
+.item.sansprix{opacity:.8}
+.item.vise{border-color:var(--co);box-shadow:0 0 0 3px rgba(255,99,71,.18),0 4px 12px rgba(var(--om),.05)}
+.item-h{display:flex;gap:.8rem;justify-content:space-between;align-items:flex-start}
+.item-h h3{font-size:1rem;line-height:1.3}
+.item-h .muted{font-size:.78rem;margin-top:.25rem}
+.item-m{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1.35rem;white-space:nowrap;text-align:right}
+.item-m small{font-size:.7rem;font-weight:600;display:block;color:var(--mut2)}
+.badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+.badge{display:inline-flex;align-items:center;padding:.18rem .6rem;border-radius:999px;font-size:.7rem;font-weight:600}
+.b-vert{background:var(--ti-ve);color:var(--sur-ve)}.b-orange{background:var(--ti-or);color:var(--sur-or)}.b-rouge{background:var(--ti-ro);color:var(--sur-ro)}
+.b-bleu{background:var(--ti-bl);color:var(--bl-t)}.b-gris{background:var(--ti-gr);color:var(--mut2)}.b-slate{background:var(--ti-gr);color:var(--txt2)}
+.b-coral{background:var(--co);color:#fff;box-shadow:0 4px 12px rgba(255,99,71,.3)}
+.det{margin-top:.8rem;border-top:1px solid var(--bd2);padding-top:.6rem}
+.bloc-plus{margin-top:2rem}
+.bloc-plus>summary{cursor:pointer;list-style:none;padding:.7rem 0;font-size:.95rem;display:inline-flex;align-items:center;gap:.4rem}
+.bloc-plus>summary::-webkit-details-marker{display:none}
+.bloc-plus>summary::before{content:'▸';color:var(--bl-t);transition:transform .18s;display:inline-block}
+.bloc-plus[open]>summary::before{transform:rotate(90deg)}
+.bloc-plus>summary span{color:var(--mut);font-weight:400}
+.bloc-plus[open]>summary{margin-bottom:.4rem}
+.det summary{cursor:pointer;font-size:.82rem;font-weight:600;color:var(--bl-t);list-style:none}
+.det summary::-webkit-details-marker{display:none}
+.det summary::after{content:' ▾'}
+.det-in{margin-top:.7rem}
+.ln{display:flex;justify-content:space-between;gap:1rem;font-size:.82rem;padding:.25rem 0;border-bottom:1px dashed var(--bd2)}
+.ln span{color:var(--mut)}
+.ln>b{white-space:nowrap}
+.ln.moins b{color:var(--vert)}
+.ln.tot{border-bottom:0;border-top:1.5px solid var(--ink);margin-top:.3rem;padding-top:.45rem;font-size:.95rem}
+.warn{margin-top:.5rem;font-size:.78rem;color:var(--sur-or);background:var(--ti-or);border-radius:.6rem;padding:.4rem .6rem}
+.att{margin-top:.7rem;font-size:.78rem;line-height:1.5;color:var(--sur-or);background:var(--ti-or);border-radius:.6rem;padding:.5rem .7rem}
+.att a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.scenario{margin-top:.8rem;background:var(--bg);border-radius:.8rem;padding:.7rem .8rem;font-size:.82rem}
+.scenario b{font-size:.85rem}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
+.chip{background:var(--ti-gr);color:var(--mut);border-radius:999px;padding:.15rem .55rem;font-size:.7rem}
+.chip-warn{background:var(--ti-or);color:var(--sur-or)}
+.src{margin-top:.7rem;font-size:.72rem;color:var(--mut2);line-height:1.45}
+.liens{margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.2rem .9rem;font-size:.72rem}
+.liens a{color:var(--bl-t);text-decoration:underline;text-underline-offset:3px}
+.item-f{margin-top:.8rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.mini{border:1.5px solid var(--bd);background:var(--surf);border-radius:999px;font:inherit;font-size:.75rem;font-weight:600;padding:.32rem .8rem;cursor:pointer}
+.mini:hover{border-color:var(--bl-t);color:var(--bl-t)}
+.finess{font-size:.68rem;color:var(--mut2)}
+
+.cmp-wrap{margin-top:1.4rem;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);padding:1.1rem;box-shadow:0 4px 12px rgba(var(--om),.05)}
+.cmp-scroll{overflow-x:auto;margin-top:.7rem}
+.cmp{width:100%;border-collapse:collapse;font-size:.82rem;min-width:520px}
+.cmp th{text-align:left;color:var(--mut);font-weight:600;padding:.4rem .6rem;border-bottom:1px solid var(--bd2);vertical-align:top;width:11rem}
+.cmp td{padding:.4rem .6rem;border-bottom:1px solid var(--bd2);vertical-align:top}
+.x{border:0;background:none;color:var(--mut2);cursor:pointer;font-size:1.2rem;line-height:1;min-width:34px;min-height:34px}
+.x:hover{color:var(--co)}
+
+/* bande 3 */
+.route-wrap{margin-top:1.4rem;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);padding:1.4rem;box-shadow:0 10px 15px -3px rgba(var(--om0),.05)}
+#route{display:grid;gap:1rem}
+.step{background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r2);padding:1.1rem;break-inside:avoid}
+.step-h{display:flex;align-items:center;gap:.7rem}
+.step-h .n{width:2rem;height:2rem;flex:0 0 auto;border-radius:999px;background:var(--co);color:#fff;display:grid;place-items:center;font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:.9rem}
+.step h3{font-size:1rem}
+.quand{margin-top:.5rem;font-size:.84rem;font-weight:600;color:var(--bl-t)}
+.step-g{margin-top:.8rem;display:grid;gap:.8rem 2rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.step-g .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut2)}
+.step-g ol,.step-g ul{margin-top:.35rem;padding-left:1.1rem;font-size:.85rem;color:var(--txt2);display:grid;gap:.25rem}
+.step-g ul{list-style:none;padding-left:0}
+.step-g ul li::before{content:'• ';color:var(--co)}
+.piege{margin-top:.8rem;background:rgba(255,99,71,.1);color:var(--sur-co);border-radius:.7rem;padding:.6rem .8rem;font-size:.82rem}
+
+/* bande 4 / 5 / 6 */
+.src-grid{margin-top:1rem;display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.src-card{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);padding:1.1rem}
+.src-card h3{font-size:.95rem}
+.src-card p{margin-top:.4rem;font-size:.82rem;color:var(--mut)}
+.src-l{font-size:.75rem;color:var(--mut)}
+.src-l a{color:var(--bl-t);text-decoration:underline;text-underline-offset:3px}
+.src-n{font-size:.75rem;color:var(--sur-or)}
+.non-sim{margin-top:.8rem;display:grid;gap:.6rem;list-style:none}
+.non-sim li{font-size:.85rem;color:var(--mut);background:var(--bg);border-radius:var(--r2);padding:.7rem .9rem}
+.faq{margin-top:1.2rem;display:grid;gap:.8rem}
+.faq details{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);padding:1.1rem}
+.faq summary{cursor:pointer;font-family:Poppins,Inter,sans-serif;font-weight:600;font-size:1rem;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'▾';color:var(--bl-t)}
+.faq p{margin-top:.7rem;font-size:.9rem;color:var(--mut)}
+.guides{margin-top:1.2rem;display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.g-card{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);padding:1.1rem;text-decoration:none;box-shadow:0 4px 12px rgba(var(--om),.05);display:block}
+.g-card:hover{background:var(--bg)}
+.g-card b{font-family:Poppins,Inter,sans-serif}
+.g-card span{display:block;margin-top:.35rem;font-size:.85rem;color:var(--mut)}
+
+#site-footer{border-top:1px solid var(--bd);background:var(--bg);border-radius:var(--r) var(--r) 0 0;margin:0 calc(-1 * var(--pad)) -5rem;padding:2rem var(--pad);display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center}
+#site-footer nav{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;font-size:.85rem;font-weight:500;color:var(--mut)}
+#site-footer a{text-decoration:none}
+#site-footer a:hover{color:var(--bl-t)}
+#site-footer p{font-size:.75rem;color:var(--mut2)}
+
+#consent-banner{position:fixed;inset:auto 0 0 0;z-index:2000;padding:1rem}
+.cb{max-width:48rem;margin:0 auto;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 25px 50px -12px rgba(var(--om),.25);padding:1.2rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.cb p{flex:1 1 20rem;font-size:.85rem;color:var(--txt2)}
+.cb a{color:var(--bl-t);text-decoration:underline}
+.cb-b{display:flex;flex-direction:column;gap:.5rem;align-items:center}
+
+/* fiches secondaires (méthodologie, mentions, qui sommes-nous) */
+.page{max-width:52rem}
+.page h2{margin-top:2rem;font-size:1.5rem}
+.page h3{margin-top:1.4rem;font-size:1.05rem}
+.page p,.page li{margin-top:.7rem;color:var(--txt2);font-size:.95rem}
+.page ul,.page ol{padding-left:1.2rem}
+.page a{color:var(--bl-t);text-decoration:underline;text-underline-offset:3px}
+.fil{font-size:.8rem;color:var(--mut2)}
+.fil a{color:var(--mut);text-decoration:none}
+
+/* ---------- v2 : actions de la carte de synthèse ---------- */
+.t-a{margin-top:1.1rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.btn-w{border:0;border-radius:999px;background:var(--surf);color:var(--bl-t);font:inherit;font-weight:600;font-size:.85rem;padding:.6rem 1.1rem;cursor:pointer;box-shadow:0 4px 12px rgba(var(--om),.18)}
+.btn-w:hover{background:var(--ti-bl)}
+#total-card .btn-sec{margin-left:0;background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+#total-card .btn-sec:hover{background:rgba(255,255,255,.12);color:#fff;border-color:#fff}
+.t-share{margin-top:.7rem;font-size:.82rem;color:#fff;background:rgba(255,255,255,.16);border-radius:.7rem;padding:.5rem .8rem;max-width:60ch}
+
+/* ---------- v2 : évolution du prix ---------- */
+.prix-box{margin-top:.8rem;background:var(--surf);border:1px solid var(--bd2);border-radius:.8rem;padding:.7rem .8rem}
+.prix-h{display:flex;align-items:center;gap:.7rem;font-size:.85rem;flex-wrap:wrap}
+.spark{width:132px;height:34px;flex:0 0 auto}
+.prix-h b{font-family:Poppins,Inter,sans-serif;font-size:1rem}
+.vert{color:var(--vert)}
+.rouge{color:var(--rouge)}
+.prix-s{margin-top:.4rem;font-size:.78rem;color:var(--mut)}
+.prix-n{margin-top:.25rem;font-size:.72rem;color:var(--mut2)}
+
+/* ---------- v2 : places qui se libèrent ---------- */
+.dispo-box{margin-top:.8rem;background:var(--ti-bl);border-radius:.8rem;padding:.7rem .8rem;font-size:.82rem}
+.dispo-box b{font-size:.85rem}
+.dispo-box p{margin-top:.35rem;color:var(--txt2)}
+.dispo-box .muted{font-size:.74rem;margin-top:.4rem}
+
+/* ---------- v2 : participation de la famille ---------- */
+.fam-box{margin-top:.8rem;background:rgba(255,99,71,.08);border-radius:.8rem;padding:.7rem .8rem}
+.fam-box>b{font-size:.85rem}
+.fam-box .ln{border-bottom-color:rgba(255,99,71,.25)}
+.fam-box .ln.tot{border-top-color:var(--co)}
+.fam-box .muted{font-size:.72rem;margin-top:.5rem;line-height:1.45}
+
+/* ---------- v2 : questions de visite ---------- */
+.chk{margin-top:.8rem;background:var(--surf);border:1px solid var(--bd2);border-radius:.8rem;padding:.6rem .8rem}
+.chk summary{cursor:pointer;font-size:.82rem;font-weight:600;color:var(--bl-t);list-style:none}
+.chk summary::-webkit-details-marker{display:none}
+.chk summary::after{content:' \25BE'}
+.chk ul{margin-top:.5rem;padding-left:1.1rem;font-size:.82rem;color:var(--txt2);display:grid;gap:.25rem}
+
+/* ---------- v2 : table d'inflation ---------- */
+.infl-wrap{margin-top:.8rem;overflow-x:auto}
+.infl{border-collapse:collapse;font-size:.85rem;min-width:18rem}
+.infl caption{text-align:left;font-size:.78rem;color:var(--mut2);padding-bottom:.4rem}
+.infl th,.infl td{text-align:left;padding:.35rem .9rem .35rem 0;border-bottom:1px solid var(--bd2)}
+.infl th{color:var(--mut);font-weight:600}
+.infl td:last-child{font-variant-numeric:tabular-nums}
+
+/* ---------- v2 : infobulle de la carte ---------- */
+.pop{min-width:15rem;max-width:20rem}
+.pop-h{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:.95rem;line-height:1.25}
+.pop-s{font-size:.75rem;color:var(--mut2);margin-top:.15rem}
+.pop-m{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1.25rem;margin-top:.4rem}
+.pop .mini{margin-top:.7rem}
+.leaflet-popup-content{margin:.9rem 1rem}
+
+
+/* ---------- survol : un léger relief, rien de plus ----------
+   Seules `transform` et `box-shadow` sont animées : le navigateur les traite sur
+   le compositeur, sans recalculer la mise en page. Aucune animation sur les cartes
+   de résultat, qui peuvent être nombreuses et se redessinent à chaque filtre. */
+.item,.step,.src-card,.non-sim li,.f-faits div,.prix-box,.dispo-box,.fam-box{
+  transition:transform .16s ease-out,box-shadow .16s ease-out,border-color .16s ease-out}
+.item:hover,.step:hover,.src-card:hover,.non-sim li:hover,.f-faits div:hover,
+.prix-box:hover,.dispo-box:hover,.fam-box:hover{
+  transform:translateY(-2px);box-shadow:0 8px 20px rgba(var(--om),.08);border-color:var(--bd)}
+.src-card:hover,.item:hover{border-color:var(--bd-bl2)}
+/* un lien-carte réagit un peu plus franchement : c'est cliquable */
+.lien-pro,.mini2,.btn-f,.chips-actifs button{transition:transform .14s ease-out,box-shadow .14s ease-out,border-color .14s ease-out,background .14s ease-out,color .14s ease-out}
+.lien-pro:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,72,255,.12)}
+.mini2:hover,.btn-f:hover{transform:translateY(-1px)}
+@media (prefers-reduced-motion:reduce){
+  .item,.step,.src-card,.non-sim li,.f-faits div,.prix-box,.dispo-box,.fam-box,
+  .lien-pro,.mini2,.btn-f,.chips-actifs button{transition:none}
+  .item:hover,.step:hover,.src-card:hover,.non-sim li:hover,.f-faits div:hover,
+  .prix-box:hover,.dispo-box:hover,.fam-box:hover,.lien-pro:hover,.mini2:hover,.btn-f:hover{transform:none}
+}
+/* sur écran tactile, le survol n'existe pas : on n'y laisse aucun état collant */
+@media (hover:none){
+  .item:hover,.step:hover,.src-card:hover,.non-sim li:hover,.f-faits div:hover,
+  .prix-box:hover,.dispo-box:hover,.fam-box:hover,.lien-pro:hover,.mini2:hover,.btn-f:hover{
+    transform:none}
+  .item:hover,.src-card:hover{box-shadow:0 4px 12px rgba(var(--om),.05)}
+}
+
+/* ================= ESPACE DE COMPARAISON (liste + fiche) ================= */
+/* en-tête compact dès que l'utilisateur explore : le bandeau ne mange plus l'écran */
+body.explore h1{font-size:clamp(1.5rem,3vw,2.1rem)}
+body.explore header .sub{display:none}
+body.explore #layout{padding-top:1.4rem}
+body.fige{overflow:hidden}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* synthèse compacte */
+.t-row{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:flex-start}
+.t-det{margin-top:.9rem}
+.t-det summary{cursor:pointer;font-size:.8rem;color:rgba(255,255,255,.8);list-style:none;padding:.45rem 0;min-height:34px;display:flex;align-items:center;gap:.3rem}
+.t-det summary::-webkit-details-marker{display:none}
+.t-det summary::after{content:' ▾'}
+.t-det summary:hover{color:#fff}
+#total-card{padding:1.4rem 1.6rem}
+.t-m{font-size:clamp(2rem,5.5vw,3.1rem)}
+
+/* grille à deux colonnes */
+.atelier{margin-top:1.2rem;display:grid;gap:1.2rem;grid-template-columns:minmax(0,1fr);min-width:0}
+.col-liste{min-width:0}
+@media (min-width:1040px){
+  .atelier{grid-template-columns:minmax(0,1fr) minmax(380px,42%);align-items:start}
+  /* hauteur fixe : basculer de la carte à la fiche ne fait jamais bouger la page */
+  .col-detail{position:sticky;top:.8rem;height:calc(100vh - 1.6rem);display:flex;flex-direction:column}
+  .col-detail .pan{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+  .col-detail .map-wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:0}
+  #map{flex:1 1 auto;min-height:0;height:auto}
+  #pan-fiche{overflow:auto;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);box-shadow:0 10px 15px -3px rgba(var(--om0),.05)}
+  .col-liste{min-width:0}
+}
+
+/* barre de liste */
+.barre{position:sticky;top:var(--tb-h,0px);z-index:900;background:var(--surf);border-bottom:1px solid var(--bd2);padding:.5rem 0;display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center;justify-content:space-between}
+.barre-n{font-weight:600;font-size:.9rem}
+.barre-r{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-left:auto}
+.barre select{width:auto;margin:0;padding:.4rem 2rem .4rem .6rem;font-size:.82rem;border-radius:999px}
+.seg-vue{margin-top:0;padding:3px;flex:0 0 auto}
+/* ces deux boutons se dimensionnent sur leur texte : ils ne sont pas la variable
+   d'ajustement de la barre, sinon « Carte » se coupe en « Ca… » dès que la place manque */
+.seg-vue button{flex:0 0 auto;font-size:.78rem;padding:.45rem .9rem;min-height:34px;overflow:visible;text-overflow:clip}
+.btn-f{border:1.5px solid var(--bd);background:var(--surf);border-radius:999px;font:inherit;font-size:.82rem;font-weight:600;padding:.45rem 1rem;cursor:pointer;display:inline-flex;gap:.4rem;align-items:center;min-height:36px}
+.btn-f:hover{border-color:var(--bl-t);color:var(--bl-t)}
+.btn-f span{background:var(--bl);color:#fff;border-radius:999px;font-size:.7rem;padding:0 .4rem;min-width:1.1rem;text-align:center}
+.btn-f.on{background:var(--co);border-color:var(--co);color:#fff}
+.btn-f.on span{background:var(--surf);color:var(--co)}
+.chips-actifs{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+.chips-actifs button{border:1px solid var(--bd);background:var(--bg);border-radius:999px;font:inherit;font-size:.75rem;padding:.3rem .7rem;cursor:pointer;color:var(--mut);min-height:32px}
+.chips-actifs button:hover{border-color:var(--co);color:var(--co)}
+.liste-pied{margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.liste-pied .btn-sec{margin-left:0}
+
+/* cartes de résultat compactes */
+.liste{margin-top:.8rem;display:grid;gap:.6rem;grid-template-columns:1fr}
+.res{position:relative;display:grid;grid-template-columns:1fr auto;gap:.2rem 1rem;background:var(--surf);border:1px solid var(--bd2);border-left:4px solid transparent;border-radius:var(--r2);padding:.8rem .9rem;cursor:pointer;transition:transform .16s ease-out,border-color .15s,box-shadow .15s,background .15s;break-inside:avoid}
+/* L'ancienne consigne excluait toute animation ici. `transform` et `box-shadow`
+   étant composées sans recalcul de mise en page, et la liste étant paginée par
+   quinze, le coût est nul. Le relief reste gris : le bleu est réservé à la
+   sélection, qui a son propre état juste en dessous. */
+.res:hover,.res.survol{border-color:var(--bd);background:var(--bg)}
+@media (hover:hover){
+  .res:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(var(--om),.10);border-color:var(--mut2)}
+  .res:hover .res-n{color:var(--ink)}
+}
+/* `.survol` vient du pointeur posé sur la carte, pas sur cette ligne : on change
+   la couleur, jamais la position — rien ne doit bouger là où personne ne pointe. */
+@media (prefers-reduced-motion:reduce){ .res:hover{transform:none} }
+.res:focus-visible{outline:none;border-color:var(--bl-t);box-shadow:0 0 0 3px rgba(37,72,255,.16)}
+.res[aria-current="true"]{border-color:var(--bl-t);border-left-color:var(--bl-t);background:var(--ti-bl2);box-shadow:0 4px 14px rgba(37,72,255,.12)}
+@media (hover:hover){
+  .res[aria-current="true"]:hover{border-color:var(--bl-t);box-shadow:0 10px 24px rgba(37,72,255,.18)}
+}
+.res-n{font-family:Poppins,Inter,sans-serif;font-weight:600;font-size:.98rem;line-height:1.25;grid-column:1}
+.res-l{grid-column:1;font-size:.78rem;color:var(--mut2);margin-top:.1rem}
+.res-m{grid-column:2;grid-row:1 / span 2;text-align:right;white-space:nowrap}
+.res-m b{display:block;font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1.3rem;line-height:1.1;letter-spacing:-.02em}
+.res-m small{display:block;font-size:.68rem;color:var(--mut2);margin-top:.1rem}
+.res-m .tarif{display:block;font-size:.72rem;color:var(--mut2);margin-top:.25rem;white-space:normal}
+/* réserve portée par un montant : elle doit se lire avec lui, pas ailleurs */
+.res-m .t-reserve{color:var(--sur-or);font-style:italic;margin-top:.1rem}
+/* option de partage : posée SOUS les boutons, jamais dans leur rangée flex —
+   un texte multiligne y étirerait les boutons voisins sur toute sa hauteur. */
+.share-opt{display:flex;gap:.5rem;align-items:center;margin-top:.8rem;
+  font-size:.78rem;line-height:1.3;color:rgba(255,255,255,.82);cursor:pointer}
+.share-opt input{flex:0 0 auto;width:1rem;height:1rem;margin:0;padding:0;border:0;accent-color:#fff;cursor:pointer}  /* input{width:100%} est global : sans width:auto la case occupe toute la ligne */
+.share-opt:hover{color:#fff}
+@media (max-width:560px){.share-opt{align-items:flex-start}.share-opt input{margin-top:.15rem}}
+.res-b{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem;align-items:center}
+.res-b .badge{font-size:.68rem;padding:.12rem .5rem}
+.res-act{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.55rem;align-items:center}
+.mini2{border:1.5px solid var(--bd);background:var(--surf);border-radius:999px;font:inherit;font-size:.74rem;font-weight:600;padding:.34rem .75rem;cursor:pointer;color:var(--mut);display:inline-flex;gap:.3rem;align-items:center;min-height:36px;flex:0 0 auto;white-space:nowrap}
+.mini2:hover{border-color:var(--bl-t);color:var(--bl-t)}
+.mini2.on{background:var(--bl);border-color:var(--bl-t);color:#fff}
+.mini2.fav.on{background:var(--co);border-color:var(--co)}
+.res-pourquoi{grid-column:1 / -1;margin-top:.5rem;font-size:.75rem;color:var(--sur-ve);background:var(--ti-ve);border-radius:.5rem;padding:.35rem .6rem}
+.res.sansprix .res-m b{color:var(--mut2);font-size:.9rem}
+
+/* fiche de détail */
+.fiche{padding:1.1rem}
+.f-top{display:flex;justify-content:space-between;gap:.8rem;align-items:flex-start}
+.f-top h3{font-size:1.15rem;line-height:1.25}
+.f-close{border:0;background:none;font-size:1.4rem;line-height:1;color:var(--mut2);cursor:pointer;padding:.1rem .3rem;min-height:32px}
+.f-close:hover{color:var(--co)}
+.f-loc{font-size:.8rem;color:var(--mut2);margin-top:.2rem}
+.f-prix{margin-top:.9rem;background:var(--bg);border-radius:var(--r2);padding:.9rem 1rem}
+.f-prix .gros{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:2rem;line-height:1;letter-spacing:-.02em}
+.f-prix .lib{font-size:.78rem;color:var(--mut);margin-top:.25rem}
+.f-prix .ctx{font-size:.78rem;color:var(--mut);margin-top:.5rem}
+.f-faits{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.6rem;margin-top:.9rem}
+.f-faits div{background:var(--surf);border:1px solid var(--bd2);border-radius:.7rem;padding:.5rem .7rem}
+.f-faits b{display:block;font-size:.92rem;font-weight:600}
+.f-faits span{display:block;font-size:.7rem;color:var(--mut2);margin-top:.1rem}
+.f-cta{margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.f-cta .btn{font-size:.85rem;padding:.6rem 1.1rem}
+.f-onglets{display:flex;gap:.2rem;margin-top:1rem;border-bottom:1px solid var(--bd2);overflow-x:auto}
+.f-onglets button{border:0;background:none;font:inherit;font-size:.85rem;font-weight:600;color:var(--mut);padding:.5rem .7rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;min-height:40px}
+.f-onglets button[aria-selected="true"]{color:var(--bl-t);border-bottom-color:var(--bl-t)}
+.f-panneau{padding-top:.8rem}
+.f-panneau .ln{font-size:.85rem}
+.f-panneau h4{font-size:.85rem;margin-top:1rem;color:var(--mut)}
+.f-src{margin-top:1rem;font-size:.72rem;color:var(--mut2);line-height:1.45;border-top:1px solid var(--bd2);padding-top:.6rem}
+/* ---------- fiche : la lecture d'un néophyte ----------
+   Chaque montant est suivi d'une phrase courte qui dit d'où il vient. */
+.f-t1{font-size:.75rem!important;text-transform:uppercase;letter-spacing:.05em;color:var(--mut2)!important;margin-top:1.3rem!important;padding-bottom:.3rem;border-bottom:1px solid var(--bd2)}
+.f-t1:first-child{margin-top:.2rem!important}
+.f-note{font-size:.78rem;color:var(--mut);line-height:1.5;margin:.15rem 0 .7rem;padding-left:.1rem}
+.f-note a{color:var(--bl-t)}
+.q-app{list-style:none;margin:.5rem 0 0;display:grid;gap:.35rem}
+.q-app li{font-size:.82rem;line-height:1.45;padding-left:1rem;position:relative}
+.q-app li::before{content:'—';position:absolute;left:0;color:var(--mut2)}
+.q-tel{margin-top:.7rem}
+.q-tel a{display:inline-block;background:var(--ti-bl);color:var(--bl-t);border-radius:999px;padding:.4rem .9rem;font-size:.82rem;font-weight:600;text-decoration:none}
+.f-hyp{margin-top:.7rem}
+.f-hyp summary{font-size:.8rem;color:var(--mut);font-weight:600;cursor:pointer;list-style:none;padding:.35rem 0}
+.f-hyp summary::-webkit-details-marker{display:none}
+.f-hyp summary::after{content:' ▾'}
+.f-resume{font-size:.88rem;line-height:1.5;background:var(--bg);border-left:3px solid var(--bl);border-radius:.5rem;padding:.6rem .8rem;margin-bottom:.9rem}
+.ln.sstot{border-top:1px solid var(--bd2);margin-top:.2rem;padding-top:.45rem}
+.f-faits b{font-size:1.05rem}
+.f-faits span{line-height:1.3}
+
+/* panneau de filtres et comparaison */
+.drawer,.cmp-drawer{position:fixed;inset:0;z-index:2500;background:rgba(var(--om),.35);display:flex;justify-content:flex-end}
+.cmp-drawer{align-items:flex-end;justify-content:center}
+.drawer-in{background:var(--surf);width:min(26rem,100%);height:100%;display:flex;flex-direction:column;box-shadow:-10px 0 30px rgba(var(--om),.2);animation:glisse .18s ease-out}
+.cmp-in{background:var(--surf);width:min(64rem,100%);max-height:88vh;border-radius:var(--r) var(--r) 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 30px rgba(var(--om),.2);animation:monte .2s ease-out}
+@keyframes glisse{from{transform:translateX(100%)}to{transform:none}}
+@keyframes monte{from{transform:translateY(100%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.drawer-in,.cmp-in{animation:none}}
+.drawer-h{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.2rem;border-bottom:1px solid var(--bd2)}
+.drawer-h h3{font-size:1.05rem}
+.cmp-h-r{display:flex;gap:1rem;align-items:center}
+.drawer-b{flex:1 1 auto;overflow:auto;padding:1rem 1.2rem}
+.drawer-f{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.9rem 1.2rem;border-top:1px solid var(--bd2)}
+.q-lbl{font-weight:600;font-size:.88rem;margin-top:1.2rem}
+.q-lbl:first-child{margin-top:0}
+.chk-l{display:flex;gap:.5rem;align-items:flex-start;font-size:.86rem;margin-top:.5rem;cursor:pointer;min-height:32px;padding:.15rem 0}
+.chk-l input{width:auto;margin:.15rem 0 0}
+
+/* barre de comparaison */
+.cmp-barre{position:fixed;left:50%;transform:translateX(-50%);bottom:1rem;z-index:2000;background:var(--ink);color:#fff;border-radius:999px;padding:.6rem .7rem .6rem 1.2rem;display:flex;gap:1rem;align-items:center;box-shadow:0 12px 28px rgba(var(--om),.3);font-size:.88rem;max-width:calc(100% - 2rem)}
+.cmp-barre .lien{color:rgba(255,255,255,.7)}
+.cmp-barre .lien:hover{color:#fff}
+.cmp-barre .btn{background:var(--co);padding:.5rem 1.1rem;font-size:.85rem}
+.cmp-b{display:flex;gap:.8rem;align-items:center}
+.cmp-scroll{flex:1 1 auto;overflow:auto;padding:0 1.2rem 1rem}
+.cmp th{position:sticky;left:0;background:var(--surf);z-index:1}
+
+/* ================= BARRE DE DÉFILEMENT =================
+   Apparaît quand on descend, disparaît en haut de page. Elle n'anime que
+   `transform` et `opacity` : le navigateur les traite sur le compositeur,
+   sans recalculer la mise en page à chaque pixel de défilement. */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:2400;
+  background:color-mix(in srgb,var(--pg) 88%,transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--bd2);
+  transform:translateY(-100%);opacity:0;pointer-events:none;
+  /* `visibility` sort aussi la barre du parcours au clavier tant qu'elle est cachée */
+  visibility:hidden;
+  transition:transform .28s cubic-bezier(.22,.61,.36,1),opacity .2s ease-out,visibility 0s linear .28s}
+.topbar.on{transform:none;opacity:1;pointer-events:auto;visibility:visible;transition-delay:0s,0s,0s}
+@supports not (backdrop-filter:blur(1px)){.topbar{background:var(--pg)}}
+.topbar-in{max-width:min(1180px,100%);margin:0 auto;padding:.55rem 1.25rem;
+  display:flex;align-items:center;gap:1rem;justify-content:space-between}
+.tb-logo{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.02em;
+  text-decoration:none;color:var(--ink);white-space:nowrap}
+.tb-logo span{color:var(--bl-t);font-style:italic}
+.tb-r{display:flex;align-items:center;gap:.5rem;margin-left:auto}
+
+/* les commandes : même grammaire que le reste du site, en plus compact */
+.tb-btn,.tb-icon{border:1.5px solid var(--bd);background:var(--surf);color:var(--ink);
+  font:inherit;font-size:.82rem;font-weight:600;border-radius:999px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
+  transition:border-color .15s,color .15s,background .15s,transform .15s}
+.tb-btn{padding:.45rem .9rem;min-height:38px}
+.tb-icon{width:38px;height:38px;padding:0;line-height:1}
+.tb-icon svg{width:1.05rem;height:1.05rem;display:block}
+/* une seule icône à la fois — spécificité alignée sur « .tb-icon svg » ci-dessus */
+.tb-icon .ico-soleil{display:none}
+[data-theme="dark"] .tb-icon .ico-lune{display:none}
+[data-theme="dark"] .tb-icon .ico-soleil{display:block}
+.tb-btn:hover,.tb-icon:hover{border-color:var(--bl-t);color:var(--bl-t);transform:translateY(-1px)}
+.tb-btn svg{width:.7rem;height:.7rem;transition:transform .2s}
+.tb-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+/* Ambre, et non corail : le corail est réservé à l'action principale du site.
+   Deux boutons pleins de même teinte se disputeraient le regard. */
+.tb-avis{background:var(--orange);color:#fff;border:0;border-radius:999px;font:inherit;font-size:.85rem;
+  font-weight:600;padding:.6rem 1.1rem;min-height:38px;display:inline-flex;align-items:center;
+  text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(224,138,0,.3);
+  transition:transform .15s,box-shadow .15s}
+.tb-avis:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,138,0,.42)}
+/* Dans la navigation d'accueil, même couleur mais en pastille discrète : cette
+   rangée est une liste de liens, pas une barre d'actions. */
+.nav-avis{background:var(--ti-or);color:var(--sur-or);border-radius:999px;
+  padding:.15rem .7rem;font-weight:600}
+.nav .nav-avis:hover,.nav-avis:hover{background:var(--sur-or);color:#fff}
+@media (hover:none){.tb-avis:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){.tb-avis{transition:none}.tb-avis:hover{transform:none}}
+/* Sous 860 px, la barre ne peut plus porter les deux boutons sans tronquer ses
+   libellés : celui-ci s'efface, et « Vos retours » reste dans le menu Naviguer. */
+@media (max-width:860px){.tb-avis{display:none}}
+.tb-cta{background:var(--co);color:#fff;border:0;border-radius:999px;font:inherit;font-size:.85rem;
+  font-weight:600;padding:.6rem 1.2rem;min-height:38px;display:inline-flex;align-items:center;
+  text-decoration:none;white-space:nowrap;box-shadow:0 4px 14px rgba(255,99,71,.32);
+  transition:transform .15s,box-shadow .15s}
+.tb-cta:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(255,99,71,.42)}
+
+/* le menu « Naviguer » */
+.tb-nav-wrap{position:relative}
+.tb-menu{position:absolute;right:0;top:calc(100% + .5rem);min-width:15rem;background:var(--surf);
+  border:1px solid var(--bd);border-radius:var(--r2);box-shadow:0 16px 40px rgba(var(--om),.16);
+  padding:.4rem;display:grid;gap:1px;z-index:10}
+.tb-menu a{display:block;padding:.55rem .7rem;border-radius:.6rem;font-size:.85rem;
+  text-decoration:none;color:var(--txt2)}
+.tb-menu a:hover,.tb-menu a:focus-visible{background:var(--ti-bl);color:var(--bl-t);outline:none}
+.tb-menu hr{border:0;border-top:1px solid var(--bd2);margin:.3rem .4rem}
+
+/* le liseré de progression : une seule transformation, aucune reprise de mise en page */
+.tb-prog{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:transparent;overflow:hidden}
+.tb-prog i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:0 50%;
+  background:linear-gradient(90deg,var(--bl),var(--co));will-change:transform}
+
+@media (max-width:720px){
+  .topbar-in{padding:.5rem 1rem;gap:.5rem}
+  .tb-cta{padding:.55rem .9rem;font-size:.8rem}
+  .tb-btn span{display:none}          /* « Naviguer » devient une simple flèche */
+  .tb-btn{padding:.45rem .6rem}
+  .tb-menu{position:fixed;left:1rem;right:1rem;top:auto;min-width:0}
+}
+@media (max-width:420px){.tb-logo span{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .topbar{transition:opacity .15s linear}
+  .topbar,.topbar.on{transform:none}
+  .tb-btn:hover,.tb-icon:hover,.tb-cta:hover{transform:none}
+}
+@media print{.topbar{display:none!important}}
+
+/* ================= MODE PROFESSIONNEL ================= */
+/* entrée discrète dans l'en-tête : une proposition, pas un choix imposé */
+.lien-pro{display:block;text-align:right;font-size:.78rem;line-height:1.35;color:var(--mut2);text-decoration:none;border:1px solid var(--bd);border-radius:var(--r2);padding:.45rem .8rem;background:var(--surf)}
+.lien-pro b{display:block;color:var(--bl-t);font-weight:600;font-size:.84rem}
+.lien-pro b::after{content:' →';font-weight:400}
+.lien-pro:hover{border-color:var(--bl-t);text-decoration:none}
+.lien-pro:hover b{text-decoration:underline;text-underline-offset:3px}
+
+/* bandeau de contexte, affiché uniquement en mode professionnel */
+.pro-bandeau{margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;background:var(--ti-bl2);border:1px solid var(--bd-bl);border-left:4px solid var(--bl);border-radius:var(--r2);padding:1rem 1.2rem}
+.pro-b-t{min-width:0;flex:1 1 26rem}
+.pro-b-h{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--bl-t)}
+.pro-b-s{margin-top:.3rem;font-size:.92rem;color:var(--txt2);max-width:70ch}
+.pro-b-a{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.pro-b-a .btn-w{box-shadow:0 2px 8px rgba(37,72,255,.18)}
+
+/* identifiant national, visible seulement quand un professionnel travaille */
+/* Le numéro reste un lien, pas un bouton : il agit hors de la page. */
+/* Le complément à financer se lit avec le budget, pas trois écrans plus bas. */
+.f-manque{margin-top:.7rem;padding:.6rem .8rem;border-radius:var(--r2);
+  background:var(--ti-or);color:var(--sur-or);font-size:.86rem;line-height:1.4}
+.f-manque b{font-size:1rem}
+.f-dispo-l{margin-top:.6rem;font-size:.82rem;color:var(--mut)}
+/* précision attachée à une ligne de calcul : elle se lit avec elle, pas ailleurs */
+.ln-d{display:block;font-style:normal;font-size:.72rem;color:var(--mut2);font-weight:400;margin-top:.1rem}
+.f-lien-fin{margin-top:.3rem}
+/* le segment « pour qui » vit dans l'en-tête de bande : sans largeur minimale,
+   ses libellés y sont rognés (« Moi-mê… ») */
+.fld-pq{min-width:16rem}
+.fld-pq .seg button{white-space:nowrap}
+.res-tel{color:var(--bl-t);border-color:var(--bd-bl2,var(--bd));text-decoration:none;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.res-tel:hover{background:var(--ti-bl);border-color:var(--bl-t)}
+.res-fin{font-size:.68rem;color:var(--mut2);font-variant-numeric:tabular-nums;letter-spacing:.02em;white-space:nowrap;margin-left:auto;cursor:help}
+.res-dem{grid-column:1 / -1;margin-top:.45rem;font-size:.75rem;color:var(--sur-bl);background:var(--ti-bl);border-radius:.5rem;padding:.35rem .6rem}
+.res-dem b{font-weight:600}
+
+/* ce qui est vérifiable, dans la fiche : jamais un score opaque */
+.compat{list-style:none;margin-top:.5rem;display:grid;gap:.3rem}
+.compat li{font-size:.82rem;display:flex;gap:.5rem;align-items:flex-start;line-height:1.4}
+.compat li i{flex:0 0 1rem;font-style:normal;font-weight:700;text-align:center;color:var(--mut2)}
+.compat li.oui i{color:var(--vert)}
+.compat li.non i{color:var(--rouge)}
+.compat li.inc{color:var(--mut)}
+.dem-t .non{color:var(--mut2)}
+
+/* liste de démarches */
+.dem-t{width:100%;border-collapse:collapse;font-size:.85rem}
+.dem-t th,.dem-t td{padding:.55rem .6rem;border-bottom:1px solid var(--bd2);text-align:left;vertical-align:top}
+.dem-t th{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut2);font-weight:600;white-space:nowrap}
+.dem-t .num{text-align:right}
+.dem-t td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.dem-t .dem-e{font-weight:600;line-height:1.3}
+.dem-t .dem-f{display:block;font-size:.7rem;color:var(--mut2);font-weight:400;margin-top:.1rem}
+.dem-s{width:100%;min-width:11rem;margin:0;padding:.4rem 1.9rem .4rem .6rem;font-size:.8rem;border-radius:.6rem}
+.dem-n{width:100%;min-width:11rem;margin:.35rem 0 0;padding:.4rem .6rem;font-size:.8rem;border-radius:.6rem}
+.dem-t td.dem-x{text-align:right;white-space:nowrap}
+.dem-t a[href^="tel:"],.dem-t .finess{white-space:nowrap}
+.dem-t .x{font-size:1.1rem;line-height:1;color:var(--mut2)}
+.cmp-f-r{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+
+/* mes recherches */
+.dossiers{margin-top:1.2rem;display:grid;gap:.5rem}
+.dossiers .dos{border:1px solid var(--bd2);border-radius:var(--r2);padding:.7rem .8rem;display:flex;gap:.6rem;justify-content:space-between;align-items:flex-start}
+.dossiers .dos-n{font-weight:600;font-size:.9rem;line-height:1.25}
+.dossiers .dos-m{font-size:.72rem;color:var(--mut2);margin-top:.15rem}
+.dossiers .dos-a{display:flex;flex-direction:column;gap:.3rem;align-items:flex-end;flex:0 0 auto}
+.dossiers .dos-a button{min-height:32px}
+.dossiers .vide{font-size:.85rem;color:var(--mut2)}
+
+@media (max-width:720px){
+  .pro-bandeau{padding:.9rem 1rem}
+  .pro-b-a{width:100%}
+  .pro-b-a .btn-w{flex:1 1 auto}
+  /* le tableau des démarches devient une pile de fiches : plus de défilement latéral */
+  .dem-t,.dem-t tbody,.dem-t tr,.dem-t td{display:block;width:100%}
+  .dem-t thead{display:none}
+  .dem-t tr{border:1px solid var(--bd2);border-radius:var(--r2);padding:.7rem .8rem;margin-bottom:.6rem}
+  .dem-t td{border:0;padding:.15rem 0;text-align:left}
+  .dem-t td.num{text-align:left}
+  .dem-t td[data-l]::before{content:attr(data-l) ' : ';font-size:.72rem;color:var(--mut2)}
+}
+
+/* ---------- mobile : la fiche devient un panneau glissant ---------- */
+@media (max-width:1039px){
+  .col-detail{display:contents}
+  .res{grid-template-columns:minmax(0,1fr) auto}
+  .res-m{max-width:42vw}
+  #pan-carte{order:-1}
+  .atelier{display:flex;flex-direction:column}
+  .atelier[data-vue="fiche"] #pan-carte{display:none}
+  #map{height:min(48vh,420px)}
+  #pan-fiche{position:fixed;left:0;right:0;bottom:0;z-index:2200;background:var(--surf);border-radius:1.1rem 1.1rem 0 0;box-shadow:0 -10px 30px rgba(var(--om),.25);max-height:92vh;height:42vh;display:flex;flex-direction:column;transition:height .22s ease-out}
+  #pan-fiche.plein{height:92vh}
+  #pan-fiche .fiche{overflow:auto;flex:1 1 auto;-webkit-overflow-scrolling:touch}
+  .sheet-poignee{flex:0 0 auto;height:1.6rem;display:grid;place-items:center;cursor:grab;touch-action:none}
+  .sheet-poignee::before{content:'';width:2.6rem;height:.28rem;border-radius:999px;background:var(--bd)}
+  body.sheet .cmp-barre{display:none}
+  @media (prefers-reduced-motion:reduce){#pan-fiche{transition:none}}
+}
+@media (min-width:1040px){.sheet-poignee{display:none}}
+
+@media (max-width:640px){
+  #layout{--pad:1rem;padding:1.6rem var(--pad) 4rem;gap:2.2rem}
+  #bande-situation{padding:1.1rem}
+  .head-side{align-items:flex-start;max-width:none}
+  .lien-pro{text-align:left;align-self:stretch}
+  .item-m{font-size:1.15rem}
+}
+
+/* ---------- impression : bandes 2 et 3 seulement ---------- */
+@media print{
+  @page{margin:12mm}
+  body{background:var(--surf)}
+  #bande-situation,#vide,#route-vide,.perf,.pro-bandeau,.lien-pro,#bande-sources,#bande-faq,#bande-guides,#bande-explorer,#site-footer,#consent-banner,.print-hide,.tile-warn,.legende,.t-a,.t-share,.infl-wrap,.res-act,.f-cta,.f-onglets,.sheet-poignee{display:none!important}
+  #layout{max-width:none;padding:0;gap:1rem}
+  #total-card{background:#2548FF!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;box-shadow:none}
+  .map-wrap{box-shadow:none}
+  #map{height:110mm}
+  .liste{grid-template-columns:1fr 1fr}
+  .atelier{display:block}
+  .col-detail{position:static;max-height:none}
+  #pan-fiche{position:static;height:auto;max-height:none;box-shadow:none;border:1px solid #ddd;border-radius:0;margin-top:8mm}
+  #pan-fiche[hidden]{display:none}
+  .f-panneau{display:block!important}
+  .barre{display:none!important}
+  .prix-box,.dispo-box,.fam-box{break-inside:avoid}
+  .chk[open] ul{display:grid}
+  .item,.step,.cmp-wrap{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+  .det[open] .det-in{display:block}
+  a{text-decoration:none;color:inherit}
+}
+
+/* Le survol d'une carte reprend l'accent de sa section : bleu là où le titre
+   l'est, corail dans « Parcourir sans calculer ». Sans cela toutes les cartes
+   du site réagissaient du même gris, et rien ne rattachait la carte survolée
+   à la bande où elle se trouve. La teinte reste très pâle : c'est un repère
+   de survol, pas une sélection. */
+.g-card{transition:background .16s ease-out,border-color .16s ease-out,box-shadow .16s ease-out}
+#bande-guides .g-card:hover,#bande-sources .g-card:hover,
+#bande-sources .non-sim li:hover,.src-card:hover{
+  background:var(--ti-bl2);border-color:var(--bd-bl2);box-shadow:0 6px 16px rgba(37,72,255,.10)}
+#bande-explorer .g-card:hover{
+  background:var(--ti-co2);border-color:var(--bd-co);box-shadow:0 6px 16px rgba(255,99,71,.12)}
+@media (prefers-reduced-motion:reduce){.g-card{transition:none}}
+
+/* Bouton « Comparer vos devis ». Vert profond : distinct de l'ambre de « Vos
+   retours » et du corail de l'action principale, et 6,6:1 sous du blanc. */
+.nav-devis,.tb-devis{background:var(--ve-btn);color:#fff;border-radius:999px;font-weight:600;
+  text-decoration:none;white-space:nowrap;transition:transform .14s ease-out,box-shadow .14s ease-out,filter .14s}
+.nav-devis{padding:.2rem .8rem;box-shadow:0 2px 8px rgba(11,107,74,.28)}
+.nav .nav-devis:hover,.nav-devis:hover,.tb-devis:hover{color:#fff;filter:brightness(1.12);
+  transform:translateY(-1px);box-shadow:0 6px 16px rgba(11,107,74,.38)}
+.tb-devis{padding:.5rem 1rem;font-size:.85rem;box-shadow:0 4px 14px rgba(11,107,74,.26)}
+.tb-menu a.menu-devis{color:var(--ve-btn);font-weight:600}
+@media (max-width:1180px){.tb-devis{display:none}}
+@media (hover:none){.nav-devis:hover,.tb-devis:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){.nav-devis,.tb-devis{transition:none}
+  .nav-devis:hover,.tb-devis:hover{transform:none}}
+
+</style>
+</head>
+<body>
+<div id="topbar" class="topbar print-hide">
+<div class="topbar-in">
+<a class="tb-logo" href="/">Trouver mon <span>EHPAD</span></a>
+<div class="tb-r">
+<div class="tb-nav-wrap">
+<button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
+<nav id="tb-menu" class="tb-menu" hidden aria-label="Navigation rapide">
+<a href="/">Le calculateur</a>
+<a href="/ehpad/">Les EHPAD en France</a>
+<a href="/prix-ehpad/">Prix des EHPAD</a>
+<a href="/aides-ehpad/">Aides financières</a>
+<a href="/guides/">Guides</a>
+<a href="/professionnels/">Espace professionnel</a>
+<hr>
+<a href="/notre-methodologie.html">Notre méthodologie</a>
+<a href="/qui-sommes-nous.html">Qui sommes-nous&nbsp;?</a>
+<a href="/comparer-devis-ehpad/" class="menu-devis">Comparer vos devis</a>
+<a href="/retours/">Vos retours</a>
+</nav>
+</div>
+<button type="button" id="theme-btn" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button>
+<a href="/comparer-devis-ehpad/" class="tb-devis">Comparer vos devis</a>
+<a href="/retours/" class="tb-avis">Vos retours</a>
+<a href="/" class="tb-cta">Calculer mon reste à charge</a>
+</div>
+</div>
+<div class="tb-prog" aria-hidden="true"><i id="tb-prog"></i></div>
+</div>
+<div id="layout">
+<header>
+  <div class="head-act"><button type="button" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button></div>
+  <p class="fil"><a href="/">Accueil</a> › Comparer vos devis</p>
+  <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-top:.6rem">Comparer vos devis</h1>
+</header>
+<section class="page">
+
+<p class="lead">Vous avez reçu deux ou trois devis et vous n’arrivez pas à savoir lequel coûte
+le moins cher&nbsp;? C’est normal&nbsp;: aucun modèle de devis n’est imposé aux EHPAD, chacun présente
+ses prix à sa façon. Recopiez les lignes ici, on les remet dans le même ordre.</p>
+
+<div class="dv-promesse">
+  <div><b>Rien ne sort de votre appareil.</b><span>Aucun document à envoyer, aucun compte, aucun serveur. Le calcul se fait dans votre navigateur.</span></div>
+  <div><b>7 champs suffisent.</b><span>Le reste est facultatif et affine la comparaison. Vous pouvez vous arrêter quand vous voulez.</span></div>
+  <div><b>Rien n’est inventé.</b><span>Ce qui n’est pas écrit sur votre devis reste marqué « non indiqué », jamais compté comme zéro.</span></div>
+</div>
+
+<!-- ============ LES ONGLETS DE DEVIS ============ -->
+<div class="dv-barre" role="tablist" aria-label="Vos devis">
+  <div id="dv-onglets" class="dv-onglets"></div>
+  <button type="button" id="dv-add" class="dv-add">+ Ajouter un devis</button>
+</div>
+
+<!-- ============ LE FORMULAIRE ============ -->
+<form id="dv-form" novalidate>
+
+<!-- ---------- Étape 1 ---------- -->
+<section class="et" data-et="1">
+  <h2><span class="n">1</span><span class="t">L’essentiel</span></h2>
+  <p class="et-i">Les six lignes qui suffisent à comparer honnêtement. Tout est sur la première page de votre devis.</p>
+
+  <div class="ch">
+    <label for="dv-nom">Nom de l’établissement</label>
+    <input id="dv-nom" type="text" autocomplete="off" placeholder="Résidence Les Tilleuls">
+    <p class="ai">Pour vous y retrouver dans la comparaison.</p>
+  </div>
+
+  <div class="g2">
+    <div class="ch">
+      <label for="dv-cp">Code postal de l’établissement</label>
+      <input id="dv-cp" type="text" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="69003">
+      <p class="ai" id="dv-cp-a">Sert à savoir quelles règles de dépendance s’appliquent chez lui.</p>
+    </div>
+    <div class="ch" id="dv-etab-ch" hidden>
+      <label for="dv-etab">Lequel est-ce&nbsp;?</label>
+      <select id="dv-etab"><option value="">Choisir dans la liste…</option></select>
+      <p class="ai">Facultatif. Permet d’afficher ce que l’établissement a déclaré publiquement.</p>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="ch">
+      <label for="dv-date">Date du devis</label>
+      <input id="dv-date" type="date">
+      <p class="ai" id="dv-date-a">Les tarifs changent au 1<sup>er</sup> janvier.</p>
+    </div>
+    <div class="ch">
+      <label>Type de séjour</label>
+      <div class="seg" role="radiogroup" aria-label="Type de séjour">
+        <button type="button" data-f="sejour" data-v="perm" role="radio" aria-checked="true" class="on">Définitif</button>
+        <button type="button" data-f="sejour" data-v="temp" role="radio" aria-checked="false">Temporaire</button>
+      </div>
+      <p class="ai">Un séjour temporaire ne dépasse pas 90 jours par an.</p>
+    </div>
+  </div>
+
+  <div class="ch">
+    <label>Type de chambre</label>
+    <div class="seg" role="radiogroup" aria-label="Type de chambre">
+      <button type="button" data-f="chambre" data-v="cs" role="radio" aria-checked="true" class="on">Individuelle</button>
+      <button type="button" data-f="chambre" data-v="cd" role="radio" aria-checked="false">Partagée</button>
+    </div>
+    <p class="ai">Une chambre partagée coûte 3 à 7&nbsp;€ de moins par jour. Comparer l’une à l’autre fausse tout.</p>
+  </div>
+
+  <div class="ch ch-gros">
+    <label for="dv-heb">Prix de l’hébergement écrit sur le devis</label>
+    <div class="mt">
+      <label class="in-eur"><span class="sr">Montant</span>
+        <input id="dv-heb" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+      <div class="seg seg-p" role="radiogroup" aria-label="Unité du prix">
+        <button type="button" data-f="hebU" data-v="j" role="radio" aria-checked="true" class="on">par jour</button>
+        <button type="button" data-f="hebU" data-v="m" role="radio" aria-checked="false">par mois</button>
+      </div>
+    </div>
+    <p class="ai">Le montant tel qu’il est écrit, sans rien ajouter ni retrancher.</p>
+  </div>
+
+  <!-- LA question -->
+  <div class="ch ch-cle">
+    <div class="cle-h"><span class="cle-p" aria-hidden="true">?</span>
+      <div><label id="lab-incl">Ce montant comprend-il déjà la dépendance&nbsp;?</label>
+      <p class="ai">C’est la question qui fausse le plus les comparaisons. Certains devis affichent un
+      «&nbsp;prix de journée&nbsp;» tout compris, d’autres mettent la dépendance sur une ligne à part.
+      Entre les deux, l’écart atteint 200&nbsp;€ par mois — sans qu’aucun établissement soit plus cher.</p></div>
+    </div>
+    <div class="seg seg-v" role="radiogroup" aria-labelledby="lab-incl">
+      <button type="button" data-f="incl" data-v="non" role="radio" aria-checked="false">
+        <b>Non</b><span>La dépendance est sur une autre ligne</span></button>
+      <button type="button" data-f="incl" data-v="oui" role="radio" aria-checked="false">
+        <b>Oui</b><span>C’est un prix de journée tout compris</span></button>
+      <button type="button" data-f="incl" data-v="nsp" role="radio" aria-checked="true" class="on">
+        <b>Je ne sais pas</b><span>La page affichera une fourchette</span></button>
+    </div>
+  </div>
+
+  <!-- dépendance, régime classique -->
+  <div id="dv-dep-cl" class="ch-bloc">
+    <div class="g2">
+      <div class="ch">
+        <label for="dv-gir">Tarif dépendance du GIR de la personne</label>
+        <label class="in-eur"><span class="sr">Montant par jour</span>
+          <input id="dv-gir" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+        <p class="ai">Par jour. Sur le devis&nbsp;: «&nbsp;GIR 1-2&nbsp;», «&nbsp;GIR 3-4&nbsp;» ou «&nbsp;GIR 5-6&nbsp;».</p>
+      </div>
+      <div class="ch">
+        <label for="dv-talon">Tarif «&nbsp;GIR 5-6&nbsp;»</label>
+        <label class="in-eur"><span class="sr">Montant par jour</span>
+          <input id="dv-talon" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+        <p class="ai">Par jour. Il reste toujours à votre charge, quel que soit le GIR.
+        Souvent appelé «&nbsp;ticket modérateur&nbsp;» ou «&nbsp;participation forfaitaire&nbsp;».</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- dépendance, régime expérimental -->
+  <div id="dv-dep-exp" class="ch-bloc" hidden>
+    <div class="dv-note dv-note-bl">
+      <b>Ici, la grille GIR n’existe plus.</b>
+      Ce territoire fait partie des 23 où les financements soins et dépendance ont été fusionnés
+      depuis le 1<sup>er</sup> juillet 2025. Tous les résidents paient la même somme par jour,
+      quel que soit leur GIR et quelles que soient leurs ressources.
+      Si votre devis affiche encore des tarifs GIR, signalez-le à l’établissement.
+    </div>
+    <div class="ch">
+      <label for="dv-forf">Participation forfaitaire</label>
+      <label class="in-eur"><span class="sr">Montant par jour</span>
+        <input id="dv-forf" type="number" min="0" step="0.01" inputmode="decimal"></label>
+      <p class="ai">Par jour. Pré-remplie au montant national 2026. Corrigez si votre devis diffère.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- Étape 2 ---------- -->
+<details class="et et-d" data-et="2">
+  <summary><h2><span class="n">2</span><span class="t">Ce qui est compris, ce qui est en plus</span></h2>
+    <span class="et-c" id="dv-c2">0 sur 9 renseignées</span></summary>
+  <div class="et-in">
+    <p class="et-i">Neuf prestations, celles-là précisément&nbsp;: c’est la liste que l’État demande
+    aux EHPAD de remplir chaque année. Laissez «&nbsp;non dit&nbsp;» si votre devis n’en parle pas —
+    c’est une information en soi.</p>
+    <div class="pr-grille"><div class="pr-l" data-p="hyg">
+  <div class="pr-n"><b>Produits d’hygiène</b><span>Savon, gel douche, shampoing, dentifrice</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Produits d’hygiène">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Produits d’hygiène</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="tel">
+  <div class="pr-n"><b>Téléphone en chambre</b><span>Mise à disposition du poste</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Téléphone en chambre">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Téléphone en chambre</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="ent">
+  <div class="pr-n"><b>Appels reçus</b><span>Les appels entrants</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Appels reçus">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Appels reçus</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="sor">
+  <div class="pr-n"><b>Appels passés</b><span>Les appels sortants</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Appels passés">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Appels passés</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="tv">
+  <div class="pr-n"><b>Télévision en chambre</b><span>Mise à disposition du poste</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Télévision en chambre">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Télévision en chambre</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="net">
+  <div class="pr-n"><b>Internet, wifi</b><span>Abonnement ou accès au réseau</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Internet, wifi">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Internet, wifi</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="coi">
+  <div class="pr-n"><b>Coiffure</b><span>Shampoing, coupe</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Coiffure">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Coiffure</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="est">
+  <div class="pr-n"><b>Soins esthétiques</b><span>Prestations de base</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Soins esthétiques">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Soins esthétiques</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div>
+<div class="pr-l" data-p="ped">
+  <div class="pr-n"><b>Pédicure</b><span>Hors prescription médicale</span></div>
+  <div class="seg seg-3" role="radiogroup" aria-label="Pédicure">
+    <button type="button" data-v="incl" role="radio" aria-checked="false">Incluse</button>
+    <button type="button" data-v="sus" role="radio" aria-checked="false">En plus</button>
+    <button type="button" data-v="nd" role="radio" aria-checked="true" class="on">Non dit</button>
+  </div>
+  <div class="pr-p" hidden>
+    <label class="in-eur"><span class="sr">Prix de Pédicure</span>
+      <input type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+    <select aria-label="Unité"><option value="m">par mois</option><option value="j">par jour</option><option value="u">à l’unité</option></select>
+  </div>
+</div></div>
+
+    <h3 class="so-t">Ce qui est obligatoirement compris, et ne doit jamais vous être facturé</h3>
+    <div class="so-grille"><div class="so-l"><b>Le logement</b><span>La chambre, la salle de bain, l’eau, l’électricité, le chauffage, l’entretien et le ménage.</span></div>
+<div class="so-l"><b>Les repas</b><span>Trois repas, un goûter, et une collation disponible la nuit.</span></div>
+<div class="so-l"><b>Le linge</b><span>Draps et serviettes fournis et lavés — et depuis 2023, le marquage et le lavage du linge personnel.</span></div>
+<div class="so-l"><b>La vie sociale</b><span>Les animations de l’établissement et l’organisation des sorties.</span></div>
+<div class="so-l"><b>L’administratif</b><span>La préparation de l’entrée, le contrat, les courriers pour vos dossiers d’aides.</span></div></div>
+    <p class="ai so-a">C’est le «&nbsp;socle de prestations&nbsp;», fixé par décret. Si l’une de ces
+    lignes apparaît en supplément sur votre devis, ce n’est pas normal.</p>
+
+    <div class="g2 g2-h">
+      <div class="ch"><label for="dv-repas">Repas d’un invité</label>
+        <label class="in-eur"><span class="sr">Prix</span>
+          <input id="dv-repas" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+        <p class="ai">Par repas. La ligne hors liste la plus fréquente.</p></div>
+      <div class="ch"><label for="dv-sup">Supplément de chambre</label>
+        <label class="in-eur"><span class="sr">Prix par mois</span>
+          <input id="dv-sup" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+        <p class="ai">Par mois. Chambre «&nbsp;confort&nbsp;», «&nbsp;prestige&nbsp;», terrasse, surface.</p></div>
+    </div>
+  </div>
+</details>
+
+<!-- ---------- Étape 3 ---------- -->
+<details class="et et-d" data-et="3">
+  <summary><h2><span class="n">3</span><span class="t">Les clauses qui coûtent cher plus tard</span></h2>
+    <span class="et-c" id="dv-c3">0 sur 3 renseignées</span></summary>
+  <div class="et-in">
+    <p class="et-i">Elles ne changent pas le prix affiché, mais elles changent la dépense de l’année.
+    Cherchez-les dans les articles du contrat de séjour.</p>
+    <div class="g2 g2-h">
+      <div class="ch"><label for="dv-resa">Chambre réservée pendant une absence</label>
+        <label class="in-eur"><span class="sr">Montant par jour</span>
+          <input id="dv-resa" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+        <p class="ai">Par jour. Ce que vous payez si la personne est hospitalisée ou part quelques jours.</p></div>
+      <div class="ch"><label for="dv-caution">Dépôt de garantie</label>
+        <label class="in-eur"><span class="sr">Montant</span>
+          <input id="dv-caution" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+        <p class="ai" id="dv-caution-a">Versé une seule fois, rendu au départ.</p></div>
+    </div>
+    <div class="ch"><label for="dv-deces">Facturation après un décès</label>
+      <div class="mt"><input id="dv-deces" type="number" min="0" max="60" step="1" inputmode="numeric" placeholder="0" class="in-jours">
+        <span class="un">jours facturés</span></div>
+      <p class="ai" id="dv-deces-a">La loi plafonne à 6 jours.</p></div>
+  </div>
+</details>
+</form>
+
+<!-- ============ LE RÉSULTAT ============ -->
+<section id="dv-sortie">
+  <h2><span class="n">4</span><span class="t">Ce que ça donne</span></h2>
+  <div id="dv-vide" class="dv-vide">
+    <p><b>Saisissez le prix d’hébergement d’au moins un devis</b> pour voir le total apparaître ici.</p>
+  </div>
+  <div id="dv-res" hidden></div>
+  <div id="dv-alerte"></div>
+</section>
+
+<div class="dv-fin">
+  <a class="btn" href="/">Estimer le reste à charge avec vos revenus</a>
+  <button type="button" id="dv-print" class="btn-sec">Imprimer pour le rendez-vous</button>
+  <button type="button" id="dv-raz" class="lien">Tout effacer</button>
+</div>
+
+<p class="f-src">Cette page ne reçoit aucun document et n’envoie rien&nbsp;: tout est calculé dans votre
+navigateur, et votre saisie ne quitte pas votre appareil. Les montants affichés sont ceux que vous
+recopiez&nbsp;; ils n’engagent que votre devis. Un devis est une proposition&nbsp;: le prix réellement dû
+est celui du contrat de séjour, fixé à la signature. <a href="/notre-methodologie.html">Notre méthodologie</a>.</p>
+<style>
+/* ===== Comparer vos devis — styles propres à la page ===== */
+/* #layout est un conteneur flex avec overflow-x:clip. Sans min-width:0, son
+   enfant grandit jusqu'à la largeur de son contenu — ici le tableau comparatif,
+   large de 34rem — et le débordement est CLIPPÉ au lieu de défiler : sur mobile
+   la moitié droite de la page disparaissait sans qu'aucune barre n'apparaisse. */
+.page,#layout main{max-width:min(72rem,100%);width:100%;margin-inline:auto;min-width:0}
+.lead{font-size:1.05rem;color:var(--mut);max-width:76ch;margin-inline:auto;text-align:center}
+
+/* --- les trois promesses, en tête --- */
+.dv-promesse{margin:1.6rem auto 0;display:grid;gap:.9rem 1.4rem;
+  grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.dv-promesse>div{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r2);
+  padding:.9rem 1.1rem;box-shadow:0 4px 12px rgba(var(--om),.05)}
+.dv-promesse b{display:block;font-family:Poppins,Inter,sans-serif;font-size:.95rem}
+.dv-promesse span{display:block;margin-top:.25rem;font-size:.85rem;color:var(--mut);line-height:1.5}
+
+/* --- barre d'onglets : un onglet par devis --- */
+.dv-barre{position:sticky;top:0;z-index:30;margin-top:2.2rem;padding:.6rem 0;
+  background:var(--pg);display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;
+  border-bottom:1px solid var(--bd2)}
+.dv-onglets{display:flex;gap:.4rem;flex-wrap:wrap;flex:1 1 auto;min-width:0}
+.dv-o{display:inline-flex;align-items:center;gap:.5rem;border:1.5px solid var(--bd);
+  background:var(--surf);color:var(--mut);border-radius:999px;padding:.45rem .5rem .45rem .95rem;
+  font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;
+  transition:border-color .14s,color .14s,background .14s,box-shadow .14s}
+.dv-o:hover{border-color:var(--bl-t);color:var(--bl-t)}
+.dv-o[aria-selected="true"]{background:var(--ti-bl);border-color:var(--bl);color:var(--bl-t);
+  box-shadow:0 2px 10px rgba(37,72,255,.14)}
+.dv-o .t{font-variant-numeric:tabular-nums;font-weight:400;color:var(--mut2);font-size:.82rem}
+.dv-o[aria-selected="true"] .t{color:var(--bl-t)}
+.dv-x{border:0;background:none;color:var(--mut2);font:inherit;font-size:1rem;line-height:1;
+  cursor:pointer;padding:.15rem .35rem;border-radius:999px}
+.dv-x:hover{background:var(--ti-ro);color:var(--sur-ro)}
+.dv-add{border:1.5px dashed var(--bd);background:none;color:var(--mut);border-radius:999px;
+  padding:.45rem 1rem;font:inherit;font-size:.86rem;font-weight:600;cursor:pointer;
+  transition:border-color .14s,color .14s}
+.dv-add:hover{border-color:var(--bl-t);color:var(--bl-t)}
+.dv-add[disabled]{opacity:.45;cursor:not-allowed}
+
+/* --- les étapes --- */
+.et{margin-top:2.4rem;background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);
+  padding:1.6rem;box-shadow:0 4px 12px rgba(var(--om),.05)}
+.et>h2,.et summary h2{margin:0}
+.et-i{margin-top:.5rem;color:var(--mut);font-size:.92rem;max-width:78ch}
+.et-d summary{list-style:none;cursor:pointer;display:flex;gap:1rem;align-items:center;
+  justify-content:space-between;flex-wrap:wrap}
+.et-d summary::-webkit-details-marker{display:none}
+.et-d summary::after{content:"";width:.6rem;height:.6rem;flex:0 0 auto;margin-left:auto;
+  border-right:2px solid var(--mut2);border-bottom:2px solid var(--mut2);
+  transform:rotate(45deg);transition:transform .18s ease-out}
+.et-d[open] summary::after{transform:rotate(-135deg)}
+.et-c{font-size:.82rem;color:var(--mut2);font-variant-numeric:tabular-nums;
+  background:var(--bg);border-radius:999px;padding:.2rem .7rem}
+.et-in{margin-top:1.2rem}
+
+/* --- champs --- */
+.ch{margin-top:1.3rem;min-width:0}
+.ch>label,.ch .cle-h label{display:block;font-size:.92rem;font-weight:600;color:var(--ink);margin-bottom:.4rem}
+.ch input[type=text],.ch input[type=date],.ch input[type=number],.ch select{
+  width:100%;border:1.5px solid var(--bd);border-radius:var(--r2);background:var(--surf);
+  padding:.65rem .85rem;font:inherit;font-size:1rem;color:inherit}
+.ch input:focus,.ch select:focus{outline:none;border-color:var(--bl-t);box-shadow:0 0 0 4px rgba(37,72,255,.14)}
+.ai{margin-top:.4rem;font-size:.82rem;color:var(--mut);line-height:1.5}
+.ai.warn{color:var(--sur-or)}
+.ai.bad{color:var(--sur-ro);font-weight:600}
+.g2{display:grid;gap:1rem 1.4rem;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));align-items:start}
+.g2-h{margin-top:1.3rem}
+.g2 .ch{margin-top:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.in-eur{position:relative;display:block}
+.in-eur::after{content:"€";position:absolute;right:.85rem;top:50%;transform:translateY(-50%);
+  color:var(--mut2);font-weight:600;pointer-events:none}
+.in-eur input{padding-right:2rem!important}
+.mt{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
+.mt .in-eur{flex:1 1 9rem}
+.in-jours{max-width:7rem}
+.un{font-size:.9rem;color:var(--mut)}
+.ch-gros input{font-size:1.15rem;font-weight:600}
+.ch-bloc{margin-top:1.3rem}
+
+/* --- interrupteurs segmentés --- */
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--bd2);border-radius:999px;padding:.2rem;gap:.15rem;flex-wrap:wrap}
+.seg button{border:0;background:none;color:var(--mut);font:inherit;font-size:.85rem;font-weight:600;
+  padding:.4rem .95rem;border-radius:999px;cursor:pointer;white-space:nowrap;flex:0 0 auto;
+  transition:background .14s,color .14s,box-shadow .14s}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--surf);color:var(--bl-t);box-shadow:0 1px 4px rgba(var(--om),.12)}
+.seg button:focus-visible{outline:2px solid var(--bl-t);outline-offset:2px}
+.seg-p{flex:0 0 auto}
+/* la question décisive : trois grandes cartes, pas trois petites pastilles */
+.ch-cle{background:var(--ti-bl2);border:1.5px solid var(--bd-bl);border-radius:var(--r2);padding:1.2rem}
+.cle-h{display:flex;gap:.9rem;align-items:flex-start}
+.cle-p{flex:0 0 auto;width:2rem;height:2rem;border-radius:999px;background:var(--bl);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+.seg-v{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));
+  background:none;border:0;padding:0;margin-top:1rem;width:100%}
+.seg-v button{background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--r2);
+  padding:.8rem .9rem;text-align:left;display:block}
+.seg-v button b{display:block;font-family:Poppins,Inter,sans-serif;font-size:.95rem;color:var(--ink)}
+.seg-v button span{display:block;margin-top:.2rem;font-size:.8rem;color:var(--mut);font-weight:400;line-height:1.45}
+.seg-v button.on{background:var(--ti-bl);border-color:var(--bl);box-shadow:0 4px 14px rgba(37,72,255,.16)}
+.seg-v button.on b{color:var(--bl-t)}
+
+/* --- prestations --- */
+.pr-grille{margin-top:1.1rem;display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
+/* Nom au-dessus, choix en dessous sur toute la largeur. Côte à côte, les trois
+   libellés se tronquaient et le nom de la prestation passait sur trois lignes. */
+.pr-l{background:var(--bg);border:1px solid var(--bd2);border-radius:var(--r2);padding:.8rem .9rem;
+  display:grid;gap:.6rem;grid-template-columns:minmax(0,1fr);align-content:space-between;
+  transition:border-color .14s,background .14s}
+/* hauteur réservée au nom : sans elle, les interrupteurs des cartes voisines
+   ne s'alignent pas dès qu'un libellé passe sur deux lignes. */
+.pr-n{min-height:3.2em}
+.pr-l:hover{border-color:var(--bd-bl2)}
+.pr-l.set{background:var(--surf);border-color:var(--bd-bl2)}
+.pr-n b{display:block;font-size:.92rem}
+.pr-n span{display:block;font-size:.78rem;color:var(--mut2);margin-top:.1rem}
+.pr-l .seg{width:100%;display:flex}
+.pr-l .seg button{flex:1 1 0;padding:.4rem .5rem;font-size:.82rem;text-align:center}
+.pr-l .seg button[data-v="sus"].on{color:var(--sur-or)}
+.pr-l .seg button[data-v="incl"].on{color:var(--sur-ve)}
+.pr-p{grid-column:1/-1;display:flex;gap:.6rem;align-items:center}
+.pr-p .in-eur{flex:1 1 7rem}
+.pr-p select{flex:0 0 auto;width:auto;border:1.5px solid var(--bd);border-radius:var(--r2);
+  background:var(--surf);padding:.5rem 2rem .5rem .7rem;font:inherit;font-size:.85rem;color:inherit}
+
+/* --- socle --- */
+.so-t{margin-top:2rem;font-size:.98rem}
+.so-grille{margin-top:.8rem;display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
+.so-l{background:var(--ti-ve);border:1px solid var(--bd2);border-radius:var(--r2);padding:.7rem .9rem}
+.so-l b{display:block;font-size:.88rem;color:var(--sur-ve)}
+.so-l span{display:block;margin-top:.2rem;font-size:.8rem;color:var(--txt2);line-height:1.5}
+.so-a{margin-top:.7rem}
+
+/* --- notes --- */
+.dv-note{margin:0 0 1.1rem;border-radius:var(--r2);padding:.9rem 1.1rem;font-size:.88rem;line-height:1.55}
+.dv-note b{display:block;font-family:Poppins,Inter,sans-serif;margin-bottom:.2rem}
+.dv-note-bl{background:var(--ti-bl);color:var(--sur-bl)}
+.dv-note-or{background:var(--ti-or);color:var(--sur-or)}
+.dv-note-ro{background:var(--ti-ro);color:var(--sur-ro)}
+
+/* --- sortie --- */
+#dv-sortie{margin-top:2.4rem}
+.dv-vide{margin-top:1rem;background:var(--bg);border:1px dashed var(--bd);border-radius:var(--r);
+  padding:2.2rem 1.2rem;text-align:center;color:var(--mut)}
+.dv-tot{margin-top:1.2rem;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.dv-c{background:var(--surf);border:1px solid var(--bd2);border-radius:var(--r);padding:1.2rem;
+  box-shadow:0 4px 12px rgba(var(--om),.05);transition:transform .16s ease-out,box-shadow .16s ease-out,border-color .16s}
+@media (hover:hover){.dv-c:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(var(--om),.10)}}
+.dv-c.min{border-color:var(--vert);box-shadow:0 0 0 2px rgba(15,138,95,.18),0 8px 20px rgba(var(--om),.08)}
+.dv-c-h{display:flex;gap:.6rem;align-items:baseline;justify-content:space-between}
+.dv-c-n{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1rem;min-width:0;overflow-wrap:anywhere}
+.dv-c-b{font-size:.72rem;font-weight:700;border-radius:999px;padding:.15rem .6rem;white-space:nowrap;
+  background:var(--ti-ve);color:var(--sur-ve)}
+.dv-m{margin-top:.6rem;font-family:Poppins,Inter,sans-serif;font-weight:700;
+  font-size:clamp(1.6rem,4vw,2.1rem);line-height:1.1;font-variant-numeric:tabular-nums}
+.dv-m small{display:block;font-size:.78rem;font-weight:600;color:var(--mut2);margin-top:.15rem}
+.dv-d{margin-top:.5rem;font-size:.82rem;font-weight:600}
+.dv-d.plus{color:var(--sur-ro)}
+.dv-d.egal{color:var(--mut2)}
+.dv-l{margin-top:.9rem;border-top:1px solid var(--bd2);padding-top:.7rem;display:grid;gap:.3rem;font-size:.85rem}
+.dv-l div{display:flex;justify-content:space-between;gap:1rem}
+.dv-l .k{color:var(--mut)}
+.dv-l .v{font-variant-numeric:tabular-nums;white-space:nowrap}
+.dv-l .v.nd{color:var(--mut2);font-style:italic}
+
+/* --- tableau comparatif --- */
+.dv-tab-w{margin-top:1.6rem;overflow-x:auto;min-width:0;max-width:100%}
+.dv-tab{border-collapse:collapse;width:100%;min-width:34rem;font-size:.88rem}
+.dv-tab th,.dv-tab td{padding:.55rem .8rem;border-bottom:1px solid var(--bd2);text-align:right;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.dv-tab th:first-child,.dv-tab td:first-child{text-align:left;white-space:normal;color:var(--mut)}
+.dv-tab thead th{font-size:.82rem;color:var(--ink);border-bottom:2px solid var(--bd)}
+.dv-tab tr.tot td{font-weight:700;border-top:2px solid var(--bd);border-bottom:0;font-size:.95rem}
+.dv-tab td.nd{color:var(--mut2);font-style:italic;font-weight:400}
+.dv-tab td.best{color:var(--sur-ve);font-weight:700}
+
+.dv-fin{margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;justify-content:center}
+.f-src{margin-top:2.4rem;max-width:78ch;margin-inline:auto}
+
+@media (max-width:640px){
+  .et{padding:1.1rem}
+  .dv-barre{position:static}
+}
+@media print{
+  .dv-barre,.dv-fin,.dv-promesse,#dv-vide,.et-d summary::after{display:none!important}
+  .et-d[open] .et-in{display:block}
+  .et{break-inside:avoid;box-shadow:none;border:1px solid #ddd}
+}
+</style>
+<script>
+(function () {
+  'use strict';
+  // Base de conversion : 365/12. Un mensuel « base 30 » et un mensuel « base 31 »
+  // diffèrent de 3,3 % — un écart né du seul choix de la base, pas des tarifs.
+  var JOURS = 365 / 12;
+  var FORFAIT_2026 = 6.16;   // participation forfaitaire, territoires en fusion
+  var MAX = 3;
+  var CLES_PRESTA = ['hyg','tel','ent','sor','tv','net','coi','est','ped'];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var eur = function (n) {
+    return n.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €';
+  };
+  var eur2 = function (n) {
+    return n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  };
+  var esc = function (t) {
+    return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  };
+  var num = function (v) { var n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n >= 0 ? n : null; };
+
+  function devisVide(i) {
+    var d = { nom: '', cp: '', fin: '', reg: '', decl: null, declMaj: '',
+              date: '', sejour: 'perm', chambre: 'cs',
+              heb: null, hebU: 'j', incl: 'nsp', gir: null, talon: null, forf: null,
+              repas: null, sup: null, resa: null, caution: null, deces: null, p: {} };
+    CLES_PRESTA.forEach(function (k) { d.p[k] = { e: 'nd', v: null, u: 'm' }; });
+    d.__n = i;
+    return d;
+  }
+
+  var etat = { liste: [devisVide(1)], actif: 0 };
+
+  /* ---------- Persistance : uniquement sur cet appareil, jamais ailleurs ---------- */
+  var CLE = 'me_devis_v1';
+  function sauve() {
+    try { localStorage.setItem(CLE, JSON.stringify({ liste: etat.liste, actif: etat.actif })); } catch (e) {}
+  }
+  function relit() {
+    try {
+      var d = JSON.parse(localStorage.getItem(CLE) || 'null');
+      if (d && Array.isArray(d.liste) && d.liste.length) {
+        // On repart d'un devis vide et on recopie les clés connues : un ancien
+        // format en mémoire ne doit pas casser la page.
+        etat.liste = d.liste.slice(0, MAX).map(function (x, i) {
+          var v = devisVide(i + 1);
+          Object.keys(v).forEach(function (k) { if (k !== 'p' && x[k] !== undefined) v[k] = x[k]; });
+          if (x.p) CLES_PRESTA.forEach(function (k) { if (x.p[k]) v.p[k] = x.p[k]; });
+          return v;
+        });
+        etat.actif = Math.min(d.actif || 0, etat.liste.length - 1);
+      }
+    } catch (e) {}
+  }
+
+  /* ---------- Régime de financement : déduit du territoire, jamais des tarifs ---------- */
+  var depsCharges = {};
+  function depsPourCp(cp) {
+    var p = String(cp || '');
+    if (p.indexOf('97') === 0 || p.indexOf('98') === 0) return [p.slice(0, 3)];
+    if (p.indexOf('20') === 0) return ['2A', '2B'];
+    return [p.slice(0, 2)];
+  }
+  function chargeDep(dep, apres) {
+    if (depsCharges[dep]) { apres(depsCharges[dep]); return; }
+    var s = document.createElement('script');
+    s.src = '/data/dep/ehpad-' + dep + '.js';
+    s.onload = function () { apres(depsCharges[dep] || []); };
+    s.onerror = function () { depsCharges[dep] = []; apres([]); };
+    document.head.appendChild(s);
+  }
+  // Les fichiers appellent ME.dep(code, lignes).
+  window.ME = window.ME || {};
+  window.ME.dep = function (code, lignes) { depsCharges[code] = lignes || []; };
+  // Colonnes utiles du format compact (voir contrat_donnees.json).
+  var C = { fin: 0, nom: 1, cp: 2, ville: 3, p: 6, t56: 11, maj: 12, reg: 45 };
+
+  /* ---------- Calcul ---------- */
+  function parJour(v, u) { return v == null ? null : (u === 'm' ? v / JOURS : v); }
+  function parMois(v, u) { return v == null ? null : (u === 'm' ? v : v * JOURS); }
+
+  function calcule(d) {
+    var r = { heb: null, dep: null, sus: 0, susNd: 0, total: null, incertain: false, manque: [] };
+    var hebJ = parJour(d.heb, d.hebU);
+    if (hebJ == null) { r.manque.push('le prix de l’hébergement'); return r; }
+
+    var exp = d.reg === 'exp';
+    var depJ = exp ? (d.forf != null ? d.forf : FORFAIT_2026)
+                   : (d.talon != null ? d.talon : null);
+
+    if (d.incl === 'oui') {
+      // Le devis annonce un prix tout compris : la dépendance est déjà dedans.
+      r.heb = hebJ * JOURS;
+      r.dep = 0;
+      r.inclus = true;
+    } else if (d.incl === 'non') {
+      r.heb = hebJ * JOURS;
+      r.dep = depJ != null ? depJ * JOURS : null;
+      if (depJ == null) r.manque.push('le tarif GIR 5-6');
+    } else {
+      // « Je ne sais pas » : on calcule les deux bornes plutôt que d'en choisir une.
+      r.heb = hebJ * JOURS;
+      r.dep = depJ != null ? depJ * JOURS : null;
+      r.incertain = true;
+      if (depJ == null) r.manque.push('le tarif GIR 5-6');
+    }
+
+    CLES_PRESTA.forEach(function (k) {
+      var p = d.p[k];
+      if (p.e !== 'sus') return;
+      if (p.v == null) { r.susNd++; return; }
+      r.sus += (p.u === 'j') ? p.v * JOURS : (p.u === 'm' ? p.v : 0); // « à l'unité » : non mensualisable
+    });
+    if (d.sup != null) r.sus += d.sup;
+
+    var base = r.heb + (r.dep || 0) + r.sus;
+    r.total = base;
+    if (r.incertain && r.dep) { r.bas = r.heb + r.sus; r.haut = base; }
+    return r;
+  }
+
+  /* ---------- Rendu des onglets ---------- */
+  function rendOnglets() {
+    var h = etat.liste.map(function (d, i) {
+      var c = calcule(d);
+      var t = c.total != null ? eur(Math.round(c.total)) : 'à remplir';
+      return '<button type="button" class="dv-o" role="tab" data-i="' + i + '"'
+        + ' aria-selected="' + (i === etat.actif) + '">'
+        + '<span>' + esc(d.nom || ('Devis ' + (i + 1))) + '</span>'
+        + '<span class="t">' + t + '</span>'
+        + (etat.liste.length > 1 ? '<span class="dv-x" role="button" tabindex="0" data-sup="' + i + '" aria-label="Retirer ce devis">×</span>' : '')
+        + '</button>';
+    }).join('');
+    $('dv-onglets').innerHTML = h;
+    $('dv-add').disabled = etat.liste.length >= MAX;
+  }
+
+  /* ---------- Rendu du formulaire depuis l'état ---------- */
+  function segChoisi(root, champ, val) {
+    root.querySelectorAll('[data-f="' + champ + '"]').forEach(function (b) {
+      var on = b.getAttribute('data-v') === val;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+  }
+
+  function rendForm() {
+    var d = etat.liste[etat.actif];
+    $('dv-nom').value = d.nom; $('dv-cp').value = d.cp; $('dv-date').value = d.date;
+    $('dv-heb').value = d.heb == null ? '' : d.heb;
+    $('dv-gir').value = d.gir == null ? '' : d.gir;
+    $('dv-talon').value = d.talon == null ? '' : d.talon;
+    $('dv-forf').value = d.forf == null ? FORFAIT_2026 : d.forf;
+    $('dv-repas').value = d.repas == null ? '' : d.repas;
+    $('dv-sup').value = d.sup == null ? '' : d.sup;
+    $('dv-resa').value = d.resa == null ? '' : d.resa;
+    $('dv-caution').value = d.caution == null ? '' : d.caution;
+    $('dv-deces').value = d.deces == null ? '' : d.deces;
+    var f = $('dv-form');
+    segChoisi(f, 'sejour', d.sejour); segChoisi(f, 'chambre', d.chambre);
+    segChoisi(f, 'hebU', d.hebU); segChoisi(f, 'incl', d.incl);
+
+    CLES_PRESTA.forEach(function (k) {
+      var l = f.querySelector('.pr-l[data-p="' + k + '"]');
+      var p = d.p[k];
+      l.querySelectorAll('.seg button').forEach(function (b) {
+        var on = b.getAttribute('data-v') === p.e;
+        b.classList.toggle('on', on); b.setAttribute('aria-checked', on ? 'true' : 'false');
+      });
+      l.classList.toggle('set', p.e !== 'nd');
+      l.querySelector('.pr-p').hidden = p.e !== 'sus';
+      l.querySelector('.pr-p input').value = p.v == null ? '' : p.v;
+      l.querySelector('.pr-p select').value = p.u;
+    });
+
+    var exp = d.reg === 'exp';
+    $('dv-dep-cl').hidden = exp;
+    $('dv-dep-exp').hidden = !exp;
+    majCompteurs(d);
+    majAides(d);
+  }
+
+  function majCompteurs(d) {
+    var n2 = CLES_PRESTA.filter(function (k) { return d.p[k].e !== 'nd'; }).length;
+    $('dv-c2').textContent = n2 + ' sur 9 renseignées';
+    var n3 = ['resa', 'caution', 'deces'].filter(function (k) { return d[k] != null; }).length;
+    $('dv-c3').textContent = n3 + ' sur 3 renseignées';
+  }
+
+  // Aides contextuelles qui réagissent à la saisie : elles disent ce qui cloche
+  // au moment où ça cloche, pas dans un message d'erreur à la fin.
+  function majAides(d) {
+    var a = $('dv-date-a'), an = new Date().getFullYear();
+    if (d.date) {
+      var y = +d.date.slice(0, 4);
+      if (y < an) { a.className = 'ai warn';
+        a.innerHTML = 'Ce devis date de ' + y + '. Les tarifs ont été revalorisés au 1<sup>er</sup> janvier : demandez-en un à jour.'; }
+      else { a.className = 'ai'; a.innerHTML = 'Les tarifs changent au 1<sup>er</sup> janvier.'; }
+    } else { a.className = 'ai'; a.innerHTML = 'Les tarifs changent au 1<sup>er</sup> janvier.'; }
+
+    var c = $('dv-caution-a');
+    var hebM = parMois(d.heb, d.hebU);
+    if (d.caution != null && hebM && d.caution > hebM * 1.02) {
+      c.className = 'ai bad';
+      c.textContent = 'Ce montant dépasse un mois d’hébergement (' + eur(Math.round(hebM))
+        + '). La loi plafonne le dépôt de garantie à un mois : à faire corriger.';
+    } else { c.className = 'ai'; c.textContent = 'Versé une seule fois, rendu au départ.'; }
+
+    var de = $('dv-deces-a');
+    if (d.deces != null && d.deces > 6) {
+      de.className = 'ai bad';
+      de.textContent = d.deces + ' jours dépassent le plafond légal de 6 jours. À faire corriger.';
+    } else { de.className = 'ai'; de.textContent = 'La loi plafonne à 6 jours.'; }
+  }
+
+  /* ---------- Recherche de l'établissement ---------- */
+  function majEtab(d) {
+    var deps = d.cp.length === 5 ? depsPourCp(d.cp) : [];
+    if (!deps.length) { $('dv-etab-ch').hidden = true; d.reg = ''; d.fin = ''; d.decl = null; rendForm(); return; }
+    var restants = deps.length, trouves = [];
+    deps.forEach(function (dep) {
+      chargeDep(dep, function (lignes) {
+        trouves = trouves.concat((lignes || []).filter(function (l) { return String(l[C.cp]) === d.cp; }));
+        if (--restants) return;
+        var sel = $('dv-etab');
+        if (!trouves.length) {
+          $('dv-etab-ch').hidden = true;
+          $('dv-cp-a').className = 'ai';
+          $('dv-cp-a').textContent = 'Aucun établissement connu à ce code postal. La comparaison reste possible.';
+          d.reg = ''; rendForm(); majSortie(); return;
+        }
+        trouves.sort(function (a, b) { return String(a[C.nom]).localeCompare(String(b[C.nom]), 'fr'); });
+        sel.innerHTML = '<option value="">Choisir dans la liste…</option>'
+          + trouves.map(function (l) {
+              return '<option value="' + esc(l[C.fin]) + '">' + esc(l[C.nom]) + '</option>'; }).join('');
+        sel.value = d.fin || '';
+        $('dv-etab-ch').hidden = false;
+        // Le régime vaut pour le territoire : on le prend dès qu'on a des
+        // établissements à ce code postal, même sans en avoir choisi un.
+        appliqueEtab(d, trouves, d.fin);
+      });
+    });
+  }
+
+  function appliqueEtab(d, lignes, fin) {
+    var l = fin ? lignes.filter(function (x) { return String(x[C.fin]) === String(fin); })[0] : null;
+    var ref = l || lignes[0];
+    d.reg = ref ? String(ref[C.reg] || '') : '';
+    if (l) { d.fin = String(l[C.fin]); d.decl = l[C.p]; d.declMaj = String(l[C.maj] || '');
+             if (d.talon == null && l[C.t56] != null) d.talon = l[C.t56]; }
+    else { d.fin = ''; d.decl = null; d.declMaj = ''; }
+    var a = $('dv-cp-a');
+    if (d.reg === 'exp') { a.className = 'ai'; a.innerHTML = 'Territoire où les financements soins et dépendance sont fusionnés&nbsp;: la grille GIR n’y existe plus.'; }
+    else if (d.reg) { a.className = 'ai'; a.textContent = 'Régime de droit commun : tarif dépendance selon le GIR.'; }
+    rendForm(); majSortie(); sauve();
+  }
+
+  /* ---------- Sortie ---------- */
+  function ligne(k, v, nd) {
+    return '<div><span class="k">' + k + '</span><span class="v' + (nd ? ' nd' : '') + '">' + v + '</span></div>';
+  }
+
+  function majSortie() {
+    var res = etat.liste.map(calcule);
+    var utiles = res.filter(function (r) { return r.total != null; });
+    $('dv-vide').hidden = utiles.length > 0;
+    $('dv-res').hidden = utiles.length === 0;
+    if (!utiles.length) { $('dv-alerte').innerHTML = ''; rendOnglets(); return; }
+
+    var mini = Math.min.apply(null, utiles.map(function (r) { return r.total; }));
+
+    var cartes = etat.liste.map(function (d, i) {
+      var r = res[i];
+      if (r.total == null) {
+        return '<div class="dv-c"><div class="dv-c-h"><span class="dv-c-n">'
+          + esc(d.nom || ('Devis ' + (i + 1))) + '</span></div>'
+          + '<p class="ai" style="margin-top:.8rem">Il manque ' + r.manque.join(' et ') + '.</p></div>';
+      }
+      var best = r.total === mini && utiles.length > 1;
+      var ec = r.total - mini;
+      var diff = utiles.length < 2 ? ''
+        : (best ? '<p class="dv-d">Le moins cher des devis saisis</p>'
+                : '<p class="dv-d plus">+ ' + eur(Math.round(ec)) + ' par mois, soit ' + eur(Math.round(ec * 12)) + ' sur un an</p>');
+      var det = ligne('Hébergement', eur2(r.heb))
+        + (r.inclus ? ligne('Dépendance', 'comprise dans le prix')
+                    : ligne('Dépendance à charge', r.dep == null ? 'non indiquée' : eur2(r.dep), r.dep == null))
+        + ligne('Prestations en plus', r.sus ? eur2(r.sus) : (r.susNd ? r.susNd + ' sans prix' : 'aucune déclarée'), !r.sus);
+      return '<div class="dv-c' + (best ? ' min' : '') + '">'
+        + '<div class="dv-c-h"><span class="dv-c-n">' + esc(d.nom || ('Devis ' + (i + 1))) + '</span>'
+        + (best ? '<span class="dv-c-b">le moins cher</span>' : '') + '</div>'
+        + '<p class="dv-m">' + eur(Math.round(r.total)) + '<small>par mois, tout compris, avant les aides</small></p>'
+        + diff + '<div class="dv-l">' + det + '</div></div>';
+    }).join('');
+
+    var lignesTab = [
+      ['Hébergement', function (r) { return r.heb; }],
+      ['Dépendance à charge', function (r) { return r.inclus ? 0 : r.dep; }],
+      ['Prestations en plus', function (r) { return r.sus || 0; },
+                              function (r) { return r.sus > 0 || r.susNd > 0; }]
+    ];
+    var tete = '<tr><th>Poste, par mois</th>' + etat.liste.map(function (d, i) {
+      return '<th>' + esc(d.nom || ('Devis ' + (i + 1))) + '</th>'; }).join('') + '</tr>';
+    var corps = lignesTab.map(function (L) {
+      var vals = res.map(L[1]);
+      var dispo = vals.filter(function (v) { return v != null; });
+      // Un montant n'est « le moins cher » que s'il est plus bas qu'un autre :
+      // surligner en vert des valeurs toutes égales — deux zéros, notamment —
+      // ferait passer une absence de déclaration pour un avantage.
+      var mn = (dispo.length > 1 && Math.min.apply(null, dispo) < Math.max.apply(null, dispo))
+             ? Math.min.apply(null, dispo) : null;
+      return '<tr><td>' + L[0] + '</td>' + vals.map(function (v, i) {
+        if (v == null) return '<td class="nd">non indiqué</td>';
+        if (L[2] && !v && !L[2](res[i])) return '<td class="nd">aucune</td>';
+        return '<td' + (mn != null && v === mn ? ' class="best"' : '') + '>' + eur2(v) + '</td>';
+      }).join('') + '</tr>';
+    }).join('');
+    var totaux = '<tr class="tot"><td>Total mensuel</td>' + res.map(function (r) {
+      if (r.total == null) return '<td class="nd">—</td>';
+      return '<td' + (r.total === mini && utiles.length > 1 ? ' class="best"' : '') + '>' + eur(Math.round(r.total)) + '</td>';
+    }).join('') + '</tr>';
+
+    $('dv-res').innerHTML = '<div class="dv-tot">' + cartes + '</div>'
+      + '<div class="dv-tab-w"><table class="dv-tab"><thead>' + tete + '</thead><tbody>'
+      + corps + totaux + '</tbody></table></div>';
+
+    $('dv-alerte').innerHTML = alertes(res);
+    rendOnglets();
+  }
+
+  // Ce qui empêche de comparer ces devis-là. Affiché au même niveau que le
+  // résultat : un écart entre deux périmètres différents n'est pas un écart de prix.
+  function alertes(res) {
+    var L = etat.liste, out = [];
+    var remplis = L.filter(function (d, i) { return res[i].total != null; });
+    if (remplis.length < 2) return '';
+
+    if (L.some(function (d, i) { return res[i].total != null && d.incl === 'nsp'; })) {
+      out.push(['or', 'Une réponse manque sur la dépendance',
+        'Pour au moins un devis, vous n’avez pas indiqué si le prix comprenait déjà la dépendance. '
+        + 'Tant que ce n’est pas tranché, le total peut être surestimé de l’équivalent du tarif GIR 5-6 — '
+        + 'de l’ordre de 180 à 200 € par mois.']);
+    }
+    var regs = {}; remplis.forEach(function (d) { regs[d.reg || 'inconnu'] = 1; });
+    if (regs.exp && (regs.classique || regs.inconnu)) {
+      out.push(['bl', 'Ces devis ne relèvent pas des mêmes règles',
+        'L’un est dans un territoire où soins et dépendance sont fusionnés — participation forfaitaire '
+        + 'identique pour tous — et l’autre dans le régime de droit commun, où la dépendance dépend du GIR '
+        + 'et des ressources. Les totaux se comparent, pas les lignes de dépendance.']);
+    }
+    var sej = {}; remplis.forEach(function (d) { sej[d.sejour] = 1; });
+    if (sej.perm && sej.temp) {
+      out.push(['ro', 'Un séjour définitif face à un séjour temporaire',
+        'Les barèmes d’aide ne sont pas les mêmes et l’aide sociale à l’hébergement est souvent refusée '
+        + 'en temporaire. Ces deux devis ne répondent pas au même besoin.']);
+    }
+    var ch = {}; remplis.forEach(function (d) { ch[d.chambre] = 1; });
+    if (ch.cs && ch.cd) {
+      out.push(['or', 'Une chambre individuelle face à une chambre partagée',
+        'L’écart mesuré entre les deux est de 3 à 7 € par jour. Il vient du type de chambre, pas de l’établissement.']);
+    }
+    var ds = remplis.map(function (d) { return d.date; }).filter(Boolean);
+    if (ds.length > 1) {
+      var t = ds.map(function (x) { return +new Date(x); });
+      if ((Math.max.apply(null, t) - Math.min.apply(null, t)) > 92 * 864e5) {
+        out.push(['or', 'Plus de trois mois séparent ces devis',
+          'Les tarifs sont revalorisés au 1er janvier, et le prix d’un nouvel entrant est fixé à la signature '
+          + 'du contrat. Demandez des devis de la même période.']);
+      }
+    }
+    if (!out.length) {
+      out.push(['bl', 'Ces devis sont comparables',
+        'Même type de séjour, même type de chambre, mêmes règles de dépendance, dates proches. '
+        + 'L’écart affiché est un vrai écart de prix.']);
+    }
+    return out.map(function (a) {
+      return '<div class="dv-note dv-note-' + a[0] + '" style="margin-top:1rem"><b>' + a[1] + '</b>' + a[2] + '</div>';
+    }).join('');
+  }
+
+  /* ---------- Écoutes ---------- */
+  function lie(id, champ, entier) {
+    var el = $(id);
+    if (!el) return;
+    el.addEventListener('input', function () {
+      var d = etat.liste[etat.actif];
+      d[champ] = el.value === '' ? null : (entier ? Math.round(num(el.value)) : num(el.value));
+      majAides(d); majCompteurs(d); majSortie(); sauve();
+    });
+  }
+
+  function init() {
+    relit();
+
+    $('dv-nom').addEventListener('input', function () {
+      etat.liste[etat.actif].nom = this.value.slice(0, 60); rendOnglets(); majSortie(); sauve();
+    });
+    $('dv-date').addEventListener('input', function () {
+      var d = etat.liste[etat.actif]; d.date = this.value; majAides(d); sauve();
+    });
+    $('dv-cp').addEventListener('input', function () {
+      var v = this.value.replace(/\D/g, '').slice(0, 5); this.value = v;
+      var d = etat.liste[etat.actif]; d.cp = v; d.fin = ''; majEtab(d); sauve();
+    });
+    $('dv-etab').addEventListener('change', function () {
+      var d = etat.liste[etat.actif], deps = depsPourCp(d.cp), tous = [];
+      deps.forEach(function (dep) { tous = tous.concat(depsCharges[dep] || []); });
+      appliqueEtab(d, tous.filter(function (l) { return String(l[C.cp]) === d.cp; }), this.value);
+    });
+
+    ['heb','gir','talon','forf','repas','sup','resa','caution'].forEach(function (k) { lie('dv-' + k, k); });
+    lie('dv-deces', 'deces', true);
+
+    // interrupteurs segmentés du formulaire
+    $('dv-form').addEventListener('click', function (e) {
+      var b = e.target.closest('.seg button'); if (!b) return;
+      var d = etat.liste[etat.actif];
+      var l = b.closest('.pr-l');
+      if (l) {
+        var k = l.getAttribute('data-p');
+        d.p[k].e = b.getAttribute('data-v');
+        if (d.p[k].e !== 'sus') d.p[k].v = null;
+        rendForm(); majSortie(); sauve();
+        if (d.p[k].e === 'sus') l.querySelector('.pr-p input').focus();
+        return;
+      }
+      var f = b.getAttribute('data-f'); if (!f) return;
+      d[f] = b.getAttribute('data-v');
+      rendForm(); majSortie(); sauve();
+    });
+    // prix et unité d'une prestation en sus
+    $('dv-form').addEventListener('input', function (e) {
+      var l = e.target.closest('.pr-l'); if (!l) return;
+      var d = etat.liste[etat.actif], k = l.getAttribute('data-p');
+      if (e.target.tagName === 'INPUT') d.p[k].v = e.target.value === '' ? null : num(e.target.value);
+      majSortie(); sauve();
+    });
+    $('dv-form').addEventListener('change', function (e) {
+      var l = e.target.closest('.pr-l'); if (!l || e.target.tagName !== 'SELECT') return;
+      etat.liste[etat.actif].p[l.getAttribute('data-p')].u = e.target.value;
+      majSortie(); sauve();
+    });
+
+    // onglets
+    $('dv-onglets').addEventListener('click', function (e) {
+      var x = e.target.closest('[data-sup]');
+      if (x) {
+        e.stopPropagation();
+        var j = +x.getAttribute('data-sup');
+        etat.liste.splice(j, 1);
+        if (!etat.liste.length) etat.liste = [devisVide(1)];
+        etat.actif = Math.min(etat.actif, etat.liste.length - 1);
+        rendOnglets(); rendForm(); majEtab(etat.liste[etat.actif]); majSortie(); sauve();
+        return;
+      }
+      var o = e.target.closest('.dv-o'); if (!o) return;
+      etat.actif = +o.getAttribute('data-i');
+      rendOnglets(); rendForm(); majEtab(etat.liste[etat.actif]); majSortie(); sauve();
+      window.scrollTo({ top: $('dv-form').offsetTop - 80, behavior: 'smooth' });
+    });
+    $('dv-add').addEventListener('click', function () {
+      if (etat.liste.length >= MAX) return;
+      etat.liste.push(devisVide(etat.liste.length + 1));
+      etat.actif = etat.liste.length - 1;
+      rendOnglets(); rendForm(); majSortie(); sauve();
+      $('dv-nom').focus();
+    });
+
+    $('dv-print').addEventListener('click', function () {
+      document.querySelectorAll('.et-d').forEach(function (d) { d.open = true; });
+      window.print();
+    });
+    $('dv-raz').addEventListener('click', function () {
+      etat.liste = [devisVide(1)]; etat.actif = 0;
+      try { localStorage.removeItem(CLE); } catch (e) {}
+      rendOnglets(); rendForm(); $('dv-etab-ch').hidden = true; majSortie();
+    });
+
+    rendOnglets(); rendForm(); majSortie();
+    if (etat.liste[etat.actif].cp) majEtab(etat.liste[etat.actif]);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+</section>
+<footer id="site-footer">
+  <nav aria-label="Pied de page">
+    <a href="/">Le calculateur</a>
+    <a href="/ehpad/">Les EHPAD en France</a>
+    <a href="/prix-ehpad/">Prix des EHPAD</a>
+    <a href="/aides-ehpad/">Aides financières</a>
+    <a href="/guides/">Guides</a>
+    <a href="notre-methodologie.html">Notre méthodologie</a>
+    <a href="qui-sommes-nous.html">Qui sommes-nous ?</a>
+    <a href="mentions-legales.html">Mentions légales</a>
+    <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Mon%20EHPAD%20%E2%80%94%20contact">Nous écrire</a>
+  </nav>
+  <p>© 2026 Trouver mon EHPAD — gratuit, sans publicité, sans partenariat avec des établissements.</p>
+</footer>
+</div>
+<script src="/assets/pages.js" defer></script>
+<!-- relevé d'audience : en attente du déploiement du Worker de mesure -->
+</body>
+</html>
