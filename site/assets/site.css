@@ -955,6 +955,23 @@ button.tb-sw .ico-soleil{display:block}
   .carte-mob[aria-pressed="true"]{border-color:var(--bl-t);color:var(--bl-t)}
   .atelier:not(.carte-on) #pan-carte{display:none}
 }
+/* Résultat : trois repères (le moins cher, le plus proche, le prix courant) au lieu d'une
+   fourchette qui se lisait comme une incertitude. Cliquer une tuile ouvre la fiche. */
+#res-chiffre.tuiles{font-family:inherit;font-size:1rem;font-weight:400;letter-spacing:0;line-height:1.35;margin-top:.7rem}
+.t-tuiles{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));max-width:56rem}
+.t-tuile{display:flex;flex-direction:column;gap:.2rem;text-align:left;font:inherit;color:#fff;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:.8rem 1rem;min-width:0}
+button.t-tuile{cursor:pointer;transition:background .15s,border-color .15s}
+button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2);border-color:#fff}
+.t-tl{font-size:.9rem;color:rgba(255,255,255,.88)}
+.t-tuile b{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.1;letter-spacing:-.02em}
+.t-tuile b small{font-size:.5em;font-weight:600;letter-spacing:0;margin-left:.15em}
+.t-ts{font-size:.85rem;color:rgba(255,255,255,.85);overflow-wrap:anywhere}
+@media (max-width:640px){.t-tuile{padding:.65rem .85rem}}
+/* la colonne du texte peut rétrécir : sans min-width:0, la grille des tuiles imposait sa
+   largeur « tout sur une ligne » et débordait de l'encadré sur mobile */
+.t-row>div:first-child{min-width:0;flex:1 1 20rem}
+@media (max-width:640px){.t-tuiles{grid-template-columns:minmax(0,1fr)}}
 
 /* ---------- Styles propres aux pages de contenu (villes, départements, fiches, guides) ---------- */
 .wrap{--pad:1.25rem;max-width:min(1080px,100%);margin:0 auto;padding:1.5rem var(--pad) 4rem;overflow-x:clip;display:block;gap:0}

@@ -62,13 +62,16 @@ for (const [w, h, nom, mob] of [[1366, 768, 'bureau', false], [390, 844, 'mobile
   await p.fill('#revenus', '1500'); await p.waitForTimeout(1200);
   const r2 = await p.evaluate(() => ({
     titre: document.getElementById('res-titre').textContent, chiffre: document.getElementById('res-chiffre').textContent,
+    tuiles: [...document.querySelectorAll('#res-chiffre .t-tuile')].map((x) => x.innerText.replace(/\s+/g, ' ')),
     sous: document.getElementById('res-sous').innerText, affiner: !document.getElementById('affiner-btn').hidden,
     carte1: (document.querySelector('#liste .res .manque') || {}).textContent,
     nom1: (document.querySelector('#liste .res .res-n') || {}).textContent,
     carteVisible: !!document.getElementById('pan-carte').offsetParent,
   }));
-  t('avec 1 500 € : le chiffre de tête dit ce qui manque', /il manquerait/.test(r2.titre) && /€ à .*€/.test(r2.chiffre), r2);
-  t('les 150 € laissés sont écrits', /150 €\/mois pour ses dépenses personnelles/.test(r2.sous), r2.sous);
+  t('avec 1 500 € : trois repères nommés (moins cher, plus proche, prix courant)', /il manquerait/.test(r2.titre)
+    && r2.tuiles.length === 3 && /^Le moins cher 744 €\/mois EHPAD Les Tilleuls Montluel · 17,8 km/.test(r2.tuiles[0])
+    && /^Le plus proche/.test(r2.tuiles[1]) && /^Prix courant de la zone/.test(r2.tuiles[2]) && !/€ à /.test(r2.chiffre), r2);
+  t('les 150 € gardés expliqués en une phrase', /on garde 150.€ pour ses dépenses personnelles.*il reste 1.350.€ pour payer l’EHPAD/.test(r2.sous), r2.sous);
   t('la carte de résultat dit ce qui manque', /^Il manque [\d  ]+ €\/mois/.test(r2.carte1 || ''), r2.carte1);
   t('noms en casse normale', r2.nom1 && r2.nom1 !== r2.nom1.toUpperCase(), r2.nom1);
   t('invite « affiner » après le premier budget', r2.affiner);

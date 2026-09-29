@@ -1581,35 +1581,44 @@
       $('res-sous').innerHTML = `Tarif médian ${euro(med)}/mois, de ${euro(mini)} à ${euro(maxi)}, avant les aides.<br>`
         + `<b>Indiquez ${mot('retraite')}</b> pour voir ce qui resterait à payer.<br><small>${zone}</small>`;
     } else {
+      // Trois repères plutôt qu'une fourchette : « 654 € à 3 445 € » se lisait comme une
+      // incertitude, alors que ce sont deux établissements différents. Le moins cher, le plus
+      // proche (premier critère de choix des familles) et le prix courant de la zone, chacun
+      // avec son nom : l'arbitrage prix / distance se voit d'un coup d'œil.
       const R = ressourcesTotales(s);
-      const couverts = avecPrix.filter((o) => !(o.r.trou > 0));
-      const manquent = avecPrix.filter((o) => o.r.trou > 0);
-      const tMin = manquent.length ? Math.min(...manquent.map((o) => o.r.trou)) : 0;
-      const tMax = manquent.length ? Math.max(...manquent.map((o) => o.r.trou)) : 0;
-      const ecart = tMin === tMax ? euro(tMin) : `${euro(tMin)} à ${euro(tMax)}`;
       const ref = avecPrix[0].r;
-      const tient = manquent.filter((o) => o.r.couleur === 'orange').length;
+      const dispo = Math.max(0, R - ref.gardeMini - ref.reserveConjoint);
+      const retraiteSeule = !(s.autres > 0) && !s.deuxResidents;
+      const libR = retraiteSeule ? 'de retraite' : 'de ressources';
+      const couverts = avecPrix.filter((o) => !(o.r.trou > 0));
+      const moinsCher = avecPrix.reduce((a, o) => (o.r.decaisse < a.r.decaisse ? o : a));
+      const proche = avecPrix.reduce((a, o) => (o.dist < a.dist ? o : a));
+      const trous = avecPrix.map((o) => o.r.trou || 0).sort((a, b) => a - b);
+      const tMed = trous[Math.floor(trous.length / 2)];
+      const montant = (t) => (t > 0 ? `${euro(t)}<small>/mois</small>` : 'Couvert');
+      const tuile = (o, lib) => `<button type="button" class="t-tuile" data-tuile="${o.e[C.fin]}">`
+        + `<span class="t-tl">${lib}</span><b>${montant(o.r.trou)}</b>`
+        + `<span class="t-ts">${esc(nom(o.e))} · ${nbfr(+o.dist.toFixed(1))} km</span></button>`;
+      const tuiles = [moinsCher === proche ? tuile(moinsCher, 'Le moins cher, et le plus proche')
+        : tuile(moinsCher, 'Le moins cher') + tuile(proche, 'Le plus proche')];
+      if (avecPrix.length >= 3) tuiles.push(`<div class="t-tuile"><span class="t-tl">Prix courant de la zone</span>`
+        + `<b>${montant(tMed)}</b><span class="t-ts">médiane des ${nbfr(avecPrix.length)} établissements avec tarif</span></div>`);
+      const manque = moinsCher.r.trou > 0 || proche.r.trou > 0 || tMed > 0;
+      $('res-titre').textContent = `Avec ${euro(R)} ${libR} par mois${manque ? ', il manquerait chaque mois :' : ' :'}`;
+      $('res-chiffre').classList.add('tuiles');
+      $('res-chiffre').innerHTML = `<div class="t-tuiles">${tuiles.join('')}</div>`;
       const l = [];
-      if (!manquent.length) {
-        $('res-titre').textContent = `Avec ${euro(R)} de ressources par mois`;
-        $('res-chiffre').textContent = `${nEt(couverts.length)} ${pl(couverts.length, 'couvert', 'couverts')}`;
-        l.push(`Budget estimé de ${euro(mini)} à ${euro(maxi)}/mois selon l’établissement, aides déduites.`);
-      } else if (!couverts.length) {
-        $('res-titre').textContent = `Avec ${euro(R)} de ressources par mois, il manquerait chaque mois`;
-        $('res-chiffre').textContent = ecart;
-        l.push(`Budget estimé de ${euro(mini)} à ${euro(maxi)}/mois selon l’établissement, aides déduites.`);
-      } else {
-        $('res-titre').textContent = `Avec ${euro(R)} de ressources par mois`;
-        $('res-chiffre').textContent = `${nEt(couverts.length)} ${pl(couverts.length, 'couvert', 'couverts')}`;
-        l.push(`Pour ${pl(manquent.length, 'l’autre', `les ${nbfr(manquent.length)} autres`)}, il manquerait ${ecart} par mois.`);
-      }
-      if (tient) l.push(`L’épargne indiquée couvrirait ce manque au moins 5 ans dans ${nEt(tient)}.`);
-      l.push(`Calcul fait en laissant ${euro(ref.gardeMini)}/mois pour ${mot('possessif')} dépenses personnelles`
-        + ` (10&nbsp;% des ressources, minimum ${euro(BAREME.ashResteMiniEur)})`
-        + (ref.reserveConjoint ? ` et ${euro(ref.reserveConjoint)} pour le conjoint à domicile` : '') + '.');
+      l.push(`Sur ${euro(R)} ${libR}, on garde ${euro(ref.gardeMini)} pour ${mot('possessif')} dépenses personnelles`
+        + (ref.reserveConjoint ? ` et ${euro(ref.reserveConjoint)} pour le conjoint resté à domicile` : '')
+        + `&nbsp;: il reste ${euro(dispo)} pour payer l’EHPAD.`);
+      if (couverts.length && couverts.length < avecPrix.length)
+        l.push(`${nbfr(couverts.length)} établissement${couverts.length > 1 ? 's sont couverts' : ' est couvert'} sur ${nbfr(avecPrix.length)}.`);
+      const tient = avecPrix.filter((o) => o.r.couleur === 'orange').length;
+      if (tient) l.push(`L’épargne indiquée couvrirait le manque au moins 5 ans dans ${nEt(tient)}.`);
       if (s.gir === '?') l.push('Autonomie non renseignée&nbsp;: calcul sur un GIR 3-4.');
       $('res-sous').innerHTML = l.join('<br>') + `<br><small>${zone}</small>`;
     }
+    if (!p || med == null) $('res-chiffre').classList.remove('tuiles');
     // mesure du parcours : résultats affichés, puis budget calculé
     if (window.ME_etape) { window.ME_etape('cp'); if (p) window.ME_etape('r'); }
     $('affiner-btn').hidden = !(p && !$('plus-situation').open);
@@ -2258,6 +2267,11 @@
     state.girNotif = null;
     state.gir = girDeGrille(state.girCases);
     render();
+  });
+  $('res-chiffre').addEventListener('click', (ev) => {
+    const t = ev.target.closest('[data-tuile]'); if (!t) return;
+    selectionne(t.dataset.tuile, { source: 'tuile' });
+    const el = $('item-' + t.dataset.tuile); if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
   });
   $('affiner-btn').addEventListener('click', () => {
     const d = $('plus-situation'); d.open = true;
