@@ -1296,10 +1296,9 @@ input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:none
 }
 
 /* ================= ESPACE DE COMPARAISON (liste + fiche) ================= */
-/* en-tête compact dès que l'utilisateur explore : le bandeau ne mange plus l'écran */
-body.explore h1{font-size:clamp(1.5rem,3vw,2.1rem)}
-body.explore header .sub{display:none}
-body.explore #layout{padding-top:1.4rem}
+/* L'en-tête ne change plus de taille quand les résultats apparaissent (29/09/2026) :
+   titre réduit, sous-titre masqué et marge resserrée faisaient sauter toute la page
+   pendant la saisie du code postal — le champ glissait sous le doigt. */
 body.fige{overflow:hidden}
 
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -1745,7 +1744,6 @@ button.tb-sw .ico-soleil{display:block}
    les pages de contenu, qui ne doivent pas bouger. */
 .sub-devis{margin-top:.5rem;font-size:.95rem;color:var(--mut)}
 .sub-devis a{color:var(--bl-t);font-weight:600;text-underline-offset:3px}
-body.explore header .sub-devis{display:none}
 .lien-pro{text-align:right;font-size:.85rem;font-weight:600;color:var(--bl-t);border:0;background:none;padding:0}
 .lien-pro::after{content:' →';font-weight:400}
 @media (max-width:640px){
@@ -1823,7 +1821,7 @@ body.explore header .sub-devis{display:none}
           <button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
           <nav id="tb-menu" class="tb-menu" hidden aria-label="Navigation rapide">
             <a href="#bande-situation" id="nav-situation">La situation de votre parent</a>
-            <a href="#bande-carte">La carte des restes à charge</a>
+            <a href="/">Accueil</a>
             <a href="/comparer-devis-ehpad/" class="menu-devis">Comparer vos devis</a>
             <a href="#bande-route">Votre mode d’emploi</a>
             <a href="#bande-faq">Questions fréquentes</a>
@@ -1833,7 +1831,6 @@ body.explore header .sub-devis{display:none}
             <a href="/aides-ehpad/">Aides financières</a>
             <a href="/guides/">Guides</a>
             <a href="/professionnels/">Espace professionnel</a>
-            <a href="notre-methodologie.html">Notre méthodologie</a>
             <a href="/retours/">Vos retours</a>
           </nav>
         </div>
@@ -2263,7 +2260,7 @@ body.explore header .sub-devis{display:none}
   <!-- ============ PIED DE PAGE ============ -->
   <footer id="site-footer" class="print-hide">
     <nav aria-label="Pied de page">
-      <a href="./">Le calculateur</a>
+      <a href="./">Accueil</a>
       <a href="/ehpad/">Les EHPAD en France</a>
       <a href="/prix-ehpad/">Prix des EHPAD</a>
       <a href="/aides-ehpad/">Aides financières</a>
