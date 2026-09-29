@@ -128,14 +128,17 @@ try{if(r){var h=new URL(r).hostname.replace(/^www\./,'');if(h!==location.hostnam
 function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(m?'&m=1':'')+(x||'');
  if(W.fetch){try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true,credentials:'omit'}).catch(function(){});return;}catch(e){}}
  try{if(N.sendBeacon)N.sendBeacon(q);}catch(e){}}
+var ok=0,E={},Q=[],dv=W.matchMedia&&W.matchMedia('(pointer: coarse)').matches?1:0;
+W.ME_etape=function(k){if(!/^(a|cp|r|f)$/.test(k)||E[k])return;E[k]=1;if(ok)env('e','&k='+k+'&d='+dv);else Q.push(k);};
 var fait=0,vis=0,tic;
 function engage(){if(fait)return;fait=1;clearInterval(tic);
  ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.removeEventListener(k,engage,true);});
  env('g');}
-function part(){
+function part(){ok=1;
  env('c','&e='+((!r||d)?1:0)+(d?'&r='+encodeURIComponent(d):''));
  ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.addEventListener(k,engage,{capture:true,passive:true});});
- tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);}
+ tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);
+ while(Q.length)env('e','&k='+Q.shift()+'&d='+dv);}
 function pret(){return !D.prerendering&&D.visibilityState==='visible';}
 if(pret())part();else{var f=function(){if(!pret())return;
  D.removeEventListener('visibilitychange',f);D.removeEventListener('prerenderingchange',f);part();};

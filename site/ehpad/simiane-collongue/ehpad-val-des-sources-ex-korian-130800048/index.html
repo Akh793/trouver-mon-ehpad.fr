@@ -109,7 +109,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
 <a class="lien-c" href="/ehpad/bouches-du-rhone/"><b>Les EHPAD dans les Bouches-du-Rhône</b><span>193 établissements, tarif médian 2 913 € par mois.</span></a>
 <a class="lien-c" href="/comparer-devis-ehpad/"><b>Comparer ses devis</b><span>Poste par poste, avec celui d’un autre établissement.</span></a>
 </div></section>
-<section><h2>Le même gestionnaire</h2><p>Lna Retraite gère aussi&nbsp;:</p><div class="puces"><a href="/ehpad/saint-priest-en-jarez/ehpad-la-mounardiere-420002578/">EHPAD La Mounardiere (Saint-Priest-en-Jarez)</a><a href="/ehpad/grezieu-la-varenne/ehpad-les-jardns-d-hestia-690801824/">EHPAD Les Jardns d'Hestia (Grézieu-la-Varenne)</a><a href="/ehpad/pollionnay/ehpad-les-aurelias-690802301/">EHPAD Les Aurelias (Pollionnay)</a><a href="/ehpad/moret-loing-et-orvanne/ets-hebergt-des-pers-ag-dependantes-residence-harmonie-770814804/">Ets Hebergt des Pers Ag Dependantes Residence Harmonie (Moret-Loing-et-Orvanne)</a><a href="/ehpad/yerres/etabl-hebergement-pers-agees-dependantes-residence-asphodia-910813583/">Etabl Hebergement Pers Agees Dependantes -Residence Asphodia (Yerres)</a><a href="/ehpad/la-queue-en-brie/ehpad-villa-caudacienne-940022205/">EHPAD Villa Caudacienne (La Queue-en-Brie)</a></div></section>
+<section><h2>Le même gestionnaire</h2><p>Lna Retraite gère aussi&nbsp;:</p><div class="puces"><a href="/ehpad/saint-priest-en-jarez/ehpad-la-mounardiere-420002578/">EHPAD La Mounardiere (Saint-Priest-en-Jarez)</a><a href="/ehpad/grezieu-la-varenne/ehpad-les-jardns-d-hestia-690801824/">EHPAD Les Jardns d'Hestia (Grézieu-la-Varenne)</a><a href="/ehpad/pollionnay/ehpad-les-aurelias-690802301/">EHPAD Les Aurelias (Pollionnay)</a><a href="/ehpad/moret-loing-et-orvanne/ets-hebergt-des-pers-ag-dependantes-residence-harmonie-770814804/">Ets Hebergt des Pers Ag Dependantes Residence Harmonie (Moret-Loing-et-Orvanne)</a><a href="/ehpad/yerres/etabl-hebergement-pers-agees-dependantes-residence-asphodia-910813583/">EHPAD Residence Asphodia (Yerres)</a><a href="/ehpad/la-queue-en-brie/ehpad-villa-caudacienne-940022205/">EHPAD Villa Caudacienne (La Queue-en-Brie)</a></div></section>
 <p class="guides-l"><b>Guides</b>&nbsp;: <a href="/guides/qui-paie-quand-la-retraite-ne-suffit-pas/">Quand la retraite ne suffit pas</a> · <a href="/guides/pourquoi-les-prix-varient/">Pourquoi les prix varient</a> · <a href="/guides/tarif-hebergement-et-tarif-dependance/">Hébergement et dépendance</a></p>
 <p class="src-bloc"><b>Comment cette page est produite.</b> Sources&nbsp;: tarifs déclarés à la CNSA en 09/2025&nbsp;; identité, gestionnaire et habilitation&nbsp;: répertoire FINESS&nbsp;; évaluation&nbsp;: Haute Autorité de santé, 24/09/2025&nbsp;; historique&nbsp;: fichiers annuels CNSA 2018-2025. Les calculs sont automatiques et identiques pour tous les établissements&nbsp;; personne n’a visité celui-ci. Responsable de la publication&nbsp;: <a href="/qui-sommes-nous.html#editeur">David Rival</a>. <a href="/notre-methodologie.html">Méthode</a> · <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Correction%20130800048">Signaler une erreur</a></p>
 </main>
@@ -154,14 +154,17 @@ try{if(r){var h=new URL(r).hostname.replace(/^www\./,'');if(h!==location.hostnam
 function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(m?'&m=1':'')+(x||'');
  if(W.fetch){try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true,credentials:'omit'}).catch(function(){});return;}catch(e){}}
  try{if(N.sendBeacon)N.sendBeacon(q);}catch(e){}}
+var ok=0,E={},Q=[],dv=W.matchMedia&&W.matchMedia('(pointer: coarse)').matches?1:0;
+W.ME_etape=function(k){if(!/^(a|cp|r|f)$/.test(k)||E[k])return;E[k]=1;if(ok)env('e','&k='+k+'&d='+dv);else Q.push(k);};
 var fait=0,vis=0,tic;
 function engage(){if(fait)return;fait=1;clearInterval(tic);
  ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.removeEventListener(k,engage,true);});
  env('g');}
-function part(){
+function part(){ok=1;
  env('c','&e='+((!r||d)?1:0)+(d?'&r='+encodeURIComponent(d):''));
  ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.addEventListener(k,engage,{capture:true,passive:true});});
- tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);}
+ tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);
+ while(Q.length)env('e','&k='+Q.shift()+'&d='+dv);}
 function pret(){return !D.prerendering&&D.visibilityState==='visible';}
 if(pret())part();else{var f=function(){if(!pret())return;
  D.removeEventListener('visibilitychange',f);D.removeEventListener('prerenderingchange',f);part();};

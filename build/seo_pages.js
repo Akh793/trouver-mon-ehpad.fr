@@ -31,6 +31,12 @@
   function pret() {
     var ban = document.getElementById('consent-banner');
     if (!ban) return;
+    // Aucun outil soumis à consentement n'est chargé sur ces pages (identifiant GTM vide) :
+    // ni bandeau, ni lien « Gérer les cookies ». Le relevé d'audience est sans cookie ni identifiant.
+    if (!window.ME_GTM_ID) {
+      document.querySelectorAll('[data-consent-open]').forEach(function (a) { a.hidden = true; });
+      return;
+    }
     if (!choix) ban.hidden = false;
     var ok = document.getElementById('consent-accept'), non = document.getElementById('consent-refuse');
     if (ok) ok.addEventListener('click', function () { ME_consent.set('granted'); ban.hidden = true; });

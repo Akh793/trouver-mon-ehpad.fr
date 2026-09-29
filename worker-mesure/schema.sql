@@ -50,6 +50,19 @@ CREATE TABLE IF NOT EXISTS pays (
   PRIMARY KEY (jour, code)
 );
 
+-- Parcours sur l'accueil (depuis le 29/09/2026) : étapes atteintes pendant un chargement.
+--   a  = arrivée · cp = résultats affichés · r = budget calculé · f = fiche ouverte.
+-- appareil : 1 = écran tactile (pointer: coarse), 0 = souris. Rien d'autre : ni montant,
+-- ni commune, ni réponse. Même classement humain / robot que les vues.
+CREATE TABLE IF NOT EXISTS etapes (
+  jour     TEXT    NOT NULL,
+  etape    TEXT    NOT NULL,
+  appareil INTEGER NOT NULL DEFAULT 0,
+  classe   INTEGER NOT NULL DEFAULT 0,
+  n        INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (jour, etape, appareil, classe)
+);
+
 -- Aucun index secondaire, volontairement. Toutes les lectures filtrent sur
 -- « jour >= ? », que la clé primaire (jour en tête) sert déjà. Chez D1, chaque
 -- index touché par une écriture compte une ligne écrite de plus, et le quota

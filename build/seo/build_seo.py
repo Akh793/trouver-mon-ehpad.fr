@@ -177,9 +177,15 @@ def main():
     print(f"→ {len(URLS)} pages écrites")
 
 
+# Élargie le 29/09/2026 : « Etablissement POUR personnes âgées… » (sans « hébergement »), les
+# abréviations « Etab », « Etabl », « P. Agées », et le nom collé à la formule
+# (« …DÉPENDANTESLOUISE-THÉRÈSE »). 90 noms de plus deviennent lisibles, aucun n'est dégradé.
+# Même règle, à l'identique, dans site/app.js (nomLisible) : 7 417 noms comparés, 0 écart.
 GENERIQUE = _re.compile(
-    r"^(é|e)tablissement\s+(d[’' ]\s*)?(h[ée]r?b\w*\.?|hospitalier)\s+(pour\s+|pr\s+|de\s+|des\s+)?"
-    r"(p\.\s*a\.?|p\.a\b|pa\b|pers\w*\.?)\s*([aâ]g\w*\.?)?\s*(d[ée]p\w*\.?)?\s*[-–]?\s*", _re.I)
+    r"^(?:é|e)ta?b\w*\.?\s*(?:(?:d[’' ]\s*)?h[ée]r?b\w*\.?\s+|hospitalier\s+)?(?:pour\s+|pr\s+|de\s+|des\s+)?"
+    r"(?:pers\w*\.?|p\.\s*a\.(?!\w)|p\.\s*(?=[aâ]g)|p\.a\b\.?|pa\b)\s*(?:[aâ]g\w*\.?)?\s*"
+    r"(?:d[ée]p(?:endantes(?=\w)|\w*)\.?)?\s*[-–]?\s*", _re.I)
+_ARTICLE = _re.compile(r"^(de|du|des|d’|d')\b", _re.I)
 
 
 def _prefixe_commun(a, b):
@@ -204,6 +210,9 @@ def noms_lisibles(rows, nom_ville):
         reste = GENERIQUE.sub('', n).strip(' -–,')
         if reste != n or n.strip().upper() == 'EHPAD':
             if n.strip().upper() == 'EHPAD': reste = ''
+            # « …dépendanteslouise-Thérèse » laisse « louise-Thérèse » : majuscule rétablie,
+            # sauf devant un article (« EHPAD de Romagnat », pas « EHPAD De Romagnat »).
+            if reste and not _ARTICLE.match(reste): reste = reste[0].upper() + reste[1:]
             r['nom_aff'] = f'EHPAD {reste}' if reste and not reste.upper().startswith('EHPAD') else (
                 reste or f"EHPAD de {nom_ville.get(r['cle'], r['ville_nom'])}")
     groupes = collections.defaultdict(list)

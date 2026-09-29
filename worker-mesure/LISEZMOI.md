@@ -113,6 +113,17 @@ https://mesure-tme.VOTRE-COMPTE.workers.dev/mesure?cle=VOTRE_CLE
 | Suspects | Vues qui ressemblent à un robot sans qu'il se déclare |
 | Vous | Vos propres chargements, depuis un navigateur marqué (voir plus bas) |
 
+En tête, le graphique **Visites par jour** : visites engagées en barres,
+chargements en courbe, du premier jour enregistré à aujourd'hui (3 ans au plus),
+boutons 30 j · 90 j · 1 an · Tout. Il est recalculé à chaque ouverture : rien à
+faire pour que l'historique s'y ajoute. Jours sans visite à 0, journée en cours
+en barre pâle ; au-delà de 120 jours, les courbes passent en moyenne sur 7 jours.
+
+Plus bas, **Heures de consultation** : même présentation (barres engagées, courbe
+des chargements, mêmes boutons de période), cumul par tranche horaire, heure de
+Paris, avec la part de chaque heure au survol. « Tout » y couvre au plus 400
+jours : au-delà, la tâche de nuit ne conserve que le total du jour.
+
 S'y ajoutent : pages les plus vues (avec leurs engagés), **motifs de suspicion**, nombre de
 vues hors liste, sites référents, pays, profil horaire des engagements.
 
@@ -187,6 +198,7 @@ wrangler d1 execute mesure-tme --remote --command "SELECT jour, heure, chemin, c
 | Engagement | 1 | 1 |
 | Entrée depuis l'extérieur | — | jusqu'à +4 (référent, pays) |
 | Vue suspecte | — | jusqu'à +2 (motif) |
+| Étape du parcours sur l'accueil | 1 par étape (4 au plus par visite) | 1 par étape |
 
 Une page vue par un humain coûte donc 2 requêtes et 2 à 7 lignes écrites.
 C'est D1 qui plafonne en premier : **environ 20 000 pages vues par jour**, en
@@ -208,6 +220,7 @@ journée manquent.
 | Chaîne de requête, ancre | **Jamais** — les liens de partage y portent la situation du visiteur |
 | Adresse IP | **Jamais**, ni en clair ni sous forme d'empreinte |
 | Numéro et nom du réseau (AS) | Lus pour classer, **jamais stockés**, sauf le nom de l'hébergeur dans le motif |
+| Étape du parcours sur l'accueil (arrivée, résultats, budget, fiche) et écran tactile ou non | Oui, un total par jour ; ni montant, ni commune, ni réponse |
 | Cookie, `localStorage`, identifiant | **Aucun** |
 
 Les signes `webdriver`, `window.chrome` et langues sont lus dans le navigateur
@@ -217,6 +230,23 @@ stockage et l'accès à des informations déjà stockées dans le terminal. La
 lecture de ces propriétés standard, sans identifiant ni conservation, se situe
 au même niveau que l'agent utilisateur envoyé à chaque page. À mentionner dans
 les mentions légales ; en cas de doute, la CNIL reste l'interlocuteur.
+
+## Parcours sur l'accueil (ajouté le 29/09/2026)
+
+Le tableau « Parcours sur l'accueil » compte, par jour, les chargements de l'accueil
+où chaque étape a été atteinte : arrivée, résultats affichés (code postal), budget
+calculé (ressources), fiche d'un établissement ouverte — séparés entre écran tactile
+et souris. Il dit où les visiteurs décrochent, et s'ils sont surtout sur téléphone.
+
+Mise en place, une fois (la commande est sans risque : elle ne crée que ce qui manque) :
+
+```
+wrangler d1 execute mesure-tme --remote --file=schema.sql
+wrangler deploy
+```
+
+Tant que la première commande n'a pas été lancée, le tableau reste vide et le reste
+du compteur fonctionne normalement.
 
 ## Le grain, et pourquoi il est fin
 
@@ -240,11 +270,11 @@ dégât : un tel robot doit en plus simuler un geste pour être compté engagé.
 ## Vérifier sans déployer
 
 ```bash
-node worker-mesure/test.mjs        # 32 tests du service (classes, réseaux, chemins, tables, « Vous »)
+node worker-mesure/test.mjs        # 37 tests du service (classes, réseaux, chemins, tables, « Vous », séries jour et heure)
 node build/t_mesure.mjs            # 16 tests de l'extrait, dans un vrai navigateur
 node build/t_mesure_chaine.mjs     # 7 tests navigateur → vrai code du service
 node build/t_proprio_theme.mjs     # marque « Vous » + interrupteur Sombre, site servi sur le port 8911
-node worker-mesure/t_ecran.mjs     # 10 tests de l'écran d'audience (interrupteur Sombre, contrastes)
+node worker-mesure/t_ecran.mjs     # 30 tests de l'écran d'audience (interrupteur Sombre, deux graphiques, contrastes, téléphone)
 ```
 
 Les deux derniers exigent Playwright, une page de test servie sur

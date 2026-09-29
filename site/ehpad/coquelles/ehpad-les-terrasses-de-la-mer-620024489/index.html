@@ -109,7 +109,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
 <a class="lien-c" href="/ehpad/pas-de-calais/"><b>Les EHPAD dans le Pas-de-Calais</b><span>136 établissements, tarif médian 2 086 € par mois.</span></a>
 <a class="lien-c" href="/comparer-devis-ehpad/"><b>Comparer ses devis</b><span>Poste par poste, avec celui d’un autre établissement.</span></a>
 </div></section>
-<section><h2>Le même gestionnaire</h2><p>La Vie Active gère aussi&nbsp;:</p><div class="puces"><a href="/ehpad/longuenesse/ehpad-raymond-dufay-620003632/">EHPAD Raymond Dufay (Longuenesse)</a><a href="/ehpad/isbergues/ehpad-les-orchidees-620026120/">EHPAD Les Orchidees (Isbergues)</a><a href="/ehpad/marles-les-mines/etablissement-pour-personnes-agees-dependantes-620022749/">Etablissement Pour Personnes Agées Dépendantes (Marles-les-Mines)</a><a href="/ehpad/sailly-sur-la-lys/maison-d-acceuil-personnes-agees-dependantes-sailly-sur-la-l-620117762/">Maison d'Acceuil Personnes Agees Dependantes Sailly sur La l (Sailly-sur-la-Lys)</a><a href="/ehpad/bouvigny-boyeffles/ehpad-du-bon-accueil-620106112/">EHPAD du Bon Accueil (Bouvigny-Boyeffles)</a><a href="/ehpad/courrieres/maison-d-accueil-pour-personnes-agees-dependantes-620024661/">Maison d'Accueil Pour Personnes Agees Dependantes (Courrières)</a></div></section>
+<section><h2>Le même gestionnaire</h2><p>La Vie Active gère aussi&nbsp;:</p><div class="puces"><a href="/ehpad/longuenesse/ehpad-raymond-dufay-620003632/">EHPAD Raymond Dufay (Longuenesse)</a><a href="/ehpad/isbergues/ehpad-les-orchidees-620026120/">EHPAD Les Orchidees (Isbergues)</a><a href="/ehpad/marles-les-mines/etablissement-pour-personnes-agees-dependantes-620022749/">EHPAD de Marles-les-Mines (Marles-les-Mines)</a><a href="/ehpad/sailly-sur-la-lys/maison-d-acceuil-personnes-agees-dependantes-sailly-sur-la-l-620117762/">Maison d'Acceuil Personnes Agees Dependantes Sailly sur La l (Sailly-sur-la-Lys)</a><a href="/ehpad/bouvigny-boyeffles/ehpad-du-bon-accueil-620106112/">EHPAD du Bon Accueil (Bouvigny-Boyeffles)</a><a href="/ehpad/courrieres/maison-d-accueil-pour-personnes-agees-dependantes-620024661/">Maison d'Accueil Pour Personnes Agees Dependantes (Courrières)</a></div></section>
 <p class="guides-l"><b>Guides</b>&nbsp;: <a href="/guides/qui-paie-quand-la-retraite-ne-suffit-pas/">Quand la retraite ne suffit pas</a> · <a href="/guides/dossier-admission-ehpad/">Le dossier d’admission</a> · <a href="/guides/ehpad-public-prive-ou-associatif/">Public, privé ou associatif</a></p>
 <p class="src-bloc"><b>Comment cette page est produite.</b> Sources&nbsp;: tarifs déclarés à la CNSA en 10/2025&nbsp;; identité, gestionnaire et habilitation&nbsp;: répertoire FINESS&nbsp;; évaluation&nbsp;: Haute Autorité de santé, 01/10/2025&nbsp;; historique&nbsp;: fichiers annuels CNSA 2018-2025. Les calculs sont automatiques et identiques pour tous les établissements&nbsp;; personne n’a visité celui-ci. Responsable de la publication&nbsp;: <a href="/qui-sommes-nous.html#editeur">David Rival</a>. <a href="/notre-methodologie.html">Méthode</a> · <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Correction%20620024489">Signaler une erreur</a></p>
 </main>
@@ -154,14 +154,17 @@ try{if(r){var h=new URL(r).hostname.replace(/^www\./,'');if(h!==location.hostnam
 function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(m?'&m=1':'')+(x||'');
  if(W.fetch){try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true,credentials:'omit'}).catch(function(){});return;}catch(e){}}
  try{if(N.sendBeacon)N.sendBeacon(q);}catch(e){}}
+var ok=0,E={},Q=[],dv=W.matchMedia&&W.matchMedia('(pointer: coarse)').matches?1:0;
+W.ME_etape=function(k){if(!/^(a|cp|r|f)$/.test(k)||E[k])return;E[k]=1;if(ok)env('e','&k='+k+'&d='+dv);else Q.push(k);};
 var fait=0,vis=0,tic;
 function engage(){if(fait)return;fait=1;clearInterval(tic);
  ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.removeEventListener(k,engage,true);});
  env('g');}
-function part(){
+function part(){ok=1;
  env('c','&e='+((!r||d)?1:0)+(d?'&r='+encodeURIComponent(d):''));
  ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.addEventListener(k,engage,{capture:true,passive:true});});
- tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);}
+ tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);
+ while(Q.length)env('e','&k='+Q.shift()+'&d='+dv);}
 function pret(){return !D.prerendering&&D.visibilityState==='visible';}
 if(pret())part();else{var f=function(){if(!pret())return;
  D.removeEventListener('visibilitychange',f);D.removeEventListener('prerenderingchange',f);part();};

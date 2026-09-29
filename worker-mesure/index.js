@@ -137,6 +137,17 @@ async function compte(request, env) {
     proprio: u.searchParams.get('m') === '1',
   });
   const { jour, heure } = quand(new Date());
+  // Étape du parcours sur l'accueil : une ligne par (jour, étape, appareil, classe).
+  // Toute autre page, ou une étape inconnue, est ignorée sans trace.
+  if (u.searchParams.get('t') === 'e') {
+    const k = u.searchParams.get('k');
+    if (c !== '/' || !ETAPES.some((x) => x[0] === k)) return vide();
+    await env.DB.batch([env.DB.prepare(
+      `INSERT INTO etapes (jour, etape, appareil, classe, n) VALUES (?, ?, ?, ?, 1)
+       ON CONFLICT(jour, etape, appareil, classe) DO UPDATE SET n = n + 1`)
+      .bind(jour, k, u.searchParams.get('d') === '1' ? 1 : 0, cl)]);
+    return vide();
+  }
   const ecritures = [];
 
   if (engagement) {
@@ -176,6 +187,49 @@ const PERIODES = {
   mois:    "substr(jour, 1, 7)",
 };
 
+/** Série quotidienne continue, du premier jour enregistré à aujourd'hui :
+ *  un jour sans ligne vaut 0 — sinon la courbe relierait deux jours éloignés
+ *  et masquerait les creux. Dates 'AAAA-MM-JJ' (heure de Paris), calcul en UTC
+ *  sur la date seule : aucun décalage d'heure d'été possible. */
+/** Profil horaire (0 h à 23 h) pour chaque période du graphique, à partir d'une
+ *  seule lecture de la base : [[engagées, chargements] × 24] par période. */
+export const PERIODES_H = ['30', '90', '365', 'tout'];
+export function profilHeures(lignes) {
+  const out = {};
+  for (const f of PERIODES_H) out[f] = Array.from({ length: 24 }, () => [0, 0]);
+  for (const l of lignes) {
+    const h = Number(l.heure); if (!(h >= 0 && h <= 23)) continue;
+    const v = { '30': [l.e30, l.c30], '90': [l.e90, l.c90], '365': [l.e365, l.c365], tout: [l.et, l.ct] };
+    for (const f of PERIODES_H) out[f][h] = [Number(v[f][0]) || 0, Number(v[f][1]) || 0];
+  }
+  return out;
+}
+
+/** Étapes du parcours sur l'accueil, dans l'ordre, et leur part des arrivées. */
+export const ETAPES = [['a', 'Arrivée sur l’accueil'], ['cp', 'Résultats affichés (code postal)'],
+                       ['r', 'Budget calculé (ressources)'], ['f', 'Fiche d’un établissement ouverte']];
+export function parcours(lignes) {
+  const v = (k, d) => lignes.filter((l) => l.etape === k && Number(l.appareil) === d)
+    .reduce((a, l) => a + (Number(l.n) || 0), 0);
+  const base = v('a', 0) + v('a', 1);
+  return ETAPES.map(([k, lib]) => {
+    const tactile = v(k, 1), souris = v(k, 0), total = tactile + souris;
+    return { etape: lib, tactile, souris, total,
+             part: base ? Math.round(100 * total / base) + ' %' : '—' };
+  });
+}
+
+export function serieJours(lignes, premier, auj) {
+  const par = new Map(lignes.map((l) => [l.jour, l]));
+  const out = [];
+  if (!premier || premier > auj) premier = auj;
+  for (let t = Date.parse(premier + 'T00:00:00Z'), fin = Date.parse(auj + 'T00:00:00Z'); t <= fin; t += 86400000) {
+    const j = new Date(t).toISOString().slice(0, 10), l = par.get(j);
+    out.push([j, l ? Number(l.e) || 0 : 0, l ? Number(l.c) || 0 : 0]);
+  }
+  return out;
+}
+
 async function releve(env, depuis) {
   const q = (sql, ...a) => env.DB.prepare(sql).bind(...a).all().then((r) => r.results || []);
   const par = (k) => q(
@@ -187,7 +241,11 @@ async function releve(env, depuis) {
             SUM(CASE WHEN classe = 2 THEN vues    ELSE 0 END) AS suspects,
             SUM(CASE WHEN classe = 3 THEN vues    ELSE 0 END) AS vous
        FROM vues WHERE jour >= ? GROUP BY periode ORDER BY periode DESC LIMIT 40`, depuis);
-  const [jour, semaine, mois, pages, horsListe, motifs, sources, pays, heures] = await Promise.all([
+  // Graphique : sa propre lecture, sans la limite de 40 lignes des tableaux, sur 3 ans au plus.
+  const il = (k) => quand(new Date(Date.now() - k * 86400000)).jour;   // « il y a k jours », heure de Paris
+  const auj = quand(new Date()).jour;
+  const borne = il(1095);
+  const [jour, semaine, mois, pages, horsListe, motifs, sources, pays, heures, gj, gp, et] = await Promise.all([
     par('jour'), par('semaine'), par('mois'),
     q(`SELECT chemin, SUM(vues) AS vues, SUM(engages) AS engages, SUM(entrees) AS entrees FROM vues
         WHERE jour >= ? AND classe = 0 AND chemin <> ? GROUP BY chemin ORDER BY vues DESC LIMIT 25`, depuis, HORS_LISTE),
@@ -195,35 +253,46 @@ async function releve(env, depuis) {
     q(`SELECT motif, SUM(vues) AS vues FROM motifs WHERE jour >= ? GROUP BY motif ORDER BY vues DESC LIMIT 20`, depuis),
     q(`SELECT domaine, SUM(vues) AS vues FROM sources WHERE jour >= ? GROUP BY domaine ORDER BY vues DESC LIMIT 25`, depuis),
     q(`SELECT code, SUM(visites) AS visites FROM pays WHERE jour >= ? GROUP BY code ORDER BY visites DESC LIMIT 25`, depuis),
-    q(`SELECT heure, SUM(engages) AS engages FROM vues
-        WHERE jour >= ? AND classe = 0 AND heure >= 0 GROUP BY heure ORDER BY heure`, depuis),
+    // Heures : les 4 périodes du graphique en une seule lecture. Le détail horaire
+    // n'existe que sur 400 jours (au-delà, la tâche de nuit le replie en heure = -1).
+    q(`SELECT heure,
+              SUM(CASE WHEN jour >= ? THEN engages ELSE 0 END) AS e30,  SUM(CASE WHEN jour >= ? THEN vues ELSE 0 END) AS c30,
+              SUM(CASE WHEN jour >= ? THEN engages ELSE 0 END) AS e90,  SUM(CASE WHEN jour >= ? THEN vues ELSE 0 END) AS c90,
+              SUM(CASE WHEN jour >= ? THEN engages ELSE 0 END) AS e365, SUM(CASE WHEN jour >= ? THEN vues ELSE 0 END) AS c365,
+              SUM(engages) AS et, SUM(vues) AS ct
+         FROM vues WHERE jour >= ? AND classe = 0 AND heure >= 0 GROUP BY heure ORDER BY heure`,
+      il(29), il(29), il(89), il(89), il(364), il(364), il(400)),   // pas plus loin : moins de lignes lues
+    q(`SELECT jour, SUM(CASE WHEN classe = 0 THEN engages ELSE 0 END) AS e,
+              SUM(CASE WHEN classe = 0 THEN vues    ELSE 0 END) AS c
+         FROM vues WHERE jour >= ? GROUP BY jour ORDER BY jour`, borne),
+    q(`SELECT MIN(jour) AS premier FROM vues WHERE jour >= ?`, borne),
+    // Avant la création de la table (schema.sql relancé), le tableau reste simplement vide.
+    Promise.resolve().then(() => q(
+      `SELECT etape, appareil, SUM(n) AS n FROM etapes WHERE jour >= ? AND classe = 0 GROUP BY etape, appareil`, depuis))
+      .catch(() => []),
   ]);
   const taux = (l) => l.map((x) => Object.assign(x, {
     taux: x.vues ? Math.round(100 * x.engages / x.vues) + ' %' : '—' }));
   return { depuis, jour: taux(jour), semaine: taux(semaine), mois: taux(mois),
-           pages: taux(pages), horsListe, motifs, sources, pays, heures };
+           pages: taux(pages), horsListe, motifs, sources, pays, heures: profilHeures(heures),
+           parcours: parcours(et),
+           graphe: { auj, jours: serieJours(gj, gp[0] && gp[0].premier, auj) } };
 }
 
 function tableau(titre, lignes, colonnes, note) {
   const n = note ? `<p class="v">${note}</p>` : '';
   if (!lignes.length) return `<h2>${ech(titre)}</h2>${n}<p class="v">Aucune donnée.</p>`;
-  return `<h2>${ech(titre)}</h2>${n}<table><thead><tr>${
+  return `<h2>${ech(titre)}</h2>${n}<div class="tab"><table><thead><tr>${
     colonnes.map((c) => `<th>${ech(c[0])}</th>`).join('')}</tr></thead><tbody>${
     lignes.map((l) => `<tr>${colonnes.map((c) =>
       `<td>${ech(l[c[1]] == null ? '—' : l[c[1]])}</td>`).join('')}</tr>`).join('')
-  }</tbody></table>`;
+  }</tbody></table></div>`;
 }
 
 const COLS = [['Visites engagées','engages'],['Chargements','vues'],['Taux d’engagement','taux'],
               ['Entrées','entrees'],['Robots déclarés','declares'],['Suspects','suspects'],['Vous','vous']];
 
 function ecran(d) {
-  const max = Math.max(1, ...d.heures.map((h) => h.engages));
-  const profil = d.heures.length
-    ? `<h2>Heures de consultation</h2><div class="h">${Array.from({ length: 24 }, (_, i) => {
-        const v = (d.heures.find((x) => x.heure === i) || { engages: 0 }).engages;
-        return `<i style="height:${Math.round((v / max) * 100)}%" title="${i} h : ${v}"></i>`;
-      }).join('')}</div><p class="v">Visites engagées d’humains, de 0 h à 23 h, heure de Paris.</p>` : '';
   const hl = d.horsListe.reduce((a, x) => a + x.vues, 0);
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Audience — Trouver mon EHPAD</title>
@@ -244,12 +313,39 @@ body{margin:0;padding:1.5rem;font:15px/1.5 system-ui,sans-serif;max-width:66rem;
 .sw[aria-checked="true"] i::after{transform:translateX(16px)}
 @media (prefers-reduced-motion:reduce){.sw i::after{transition:none}}
 h1{font-size:1.5rem;margin:0 0 .25rem}h2{font-size:1rem;margin:2rem 0 .5rem}
+.tab{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th{white-space:nowrap}
 th,td{text-align:left;padding:.35rem .6rem;border-bottom:1px solid var(--ln)}
 td+td,th+th{text-align:right}
 .v{color:var(--mut);font-size:.85rem;margin:.2rem 0 .5rem}
-.h{display:flex;align-items:flex-end;gap:2px;height:90px;margin-top:.5rem}
-.h i{flex:1;background:var(--bl);min-height:1px;border-radius:2px 2px 0 0}
+:root{--ligne:#64748b;--moy:#0f172a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ligne:#8b97ab;--moy:#e8edf5}}
+:root[data-theme="dark"]{--ligne:#8b97ab;--moy:#e8edf5}
+.g-barre{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;margin:.25rem 0 .5rem}
+.leg{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.85rem;color:var(--mut)}
+.leg span{display:inline-flex;align-items:center;gap:.4rem}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--bl)}
+.leg i.l{height:2px;border-radius:1px;background:var(--ligne)}
+.leg i.m{height:2px;border-radius:1px;background:var(--moy)}
+.fen{display:inline-flex;border:1.5px solid var(--ln);border-radius:999px;padding:2px}
+.fen button{border:0;background:transparent;color:var(--mut);font:600 .78rem/1 system-ui,sans-serif;padding:.4rem .7rem;border-radius:999px;cursor:pointer}
+.fen button[aria-pressed="true"]{background:var(--bl);color:var(--bg)}
+.fen button:focus-visible{outline:2px solid var(--bl);outline-offset:1px}
+.gbox{position:relative;width:100%}
+.gbox svg{display:block;width:100%;height:240px;overflow:visible}
+.gbox svg:focus-visible{outline:2px solid var(--bl);outline-offset:4px;border-radius:4px}
+.gbox .gr{stroke:var(--ln);stroke-width:1}
+.gbox .ax{fill:var(--mut);font:11px system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.gbox .b{fill:var(--bl)}
+.gbox .b.auj{opacity:.45}
+.gbox .lc{fill:none;stroke:var(--ligne);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.gbox .pc{fill:var(--ligne);stroke:var(--bg);stroke-width:2}
+.gbox .lm{fill:none;stroke:var(--moy);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.gbox .x{stroke:var(--mut);stroke-width:1;opacity:.6}
+.gtip{position:absolute;pointer-events:none;background:var(--bg);color:var(--fg);border:1px solid var(--ln);border-radius:8px;
+  padding:.45rem .6rem;font-size:.8rem;line-height:1.4;box-shadow:0 6px 20px rgba(0,0,0,.18);white-space:nowrap;display:none;z-index:2}
+.gtip b{font-weight:600}.gtip .t{color:var(--mut)}
 </style></head><body>
 <div class="tete"><h1>Audience</h1>
 <button type="button" class="sw" id="sw" role="switch" aria-checked="false" aria-label="Mode sombre">Sombre<i aria-hidden="true"></i></button></div><p class="v">Depuis le ${ech(d.depuis)}. Heure de Paris.</p>
@@ -258,10 +354,24 @@ ou l’onglet est resté visible 10 secondes. <b>Chargement</b> : la page s’es
 les deux mesure les passages éclairs et le trafic fantôme. Robots déclarés et suspects ne sont
 jamais mêlés aux humains. <b>Vous</b> : vos propres chargements, depuis un navigateur marqué par le lien
 #ne-pas-me-compter.</p>
+<h2>Visites par jour</h2>
+<div class="g-barre"><div class="leg" id="gleg"><span><i></i>Visites engagées (humains)</span><span><i class="l"></i><b class="lcg" style="font-weight:inherit">Chargements (humains)</b></span></div>
+<div class="fen" id="fenj" role="group" aria-label="Période du graphique"><button type="button" data-f="30" aria-pressed="false">30 j</button><button type="button" data-f="90" aria-pressed="false">90 j</button><button type="button" data-f="365" aria-pressed="false">1 an</button><button type="button" data-f="tout" aria-pressed="true">Tout</button></div></div>
+<div id="graphe" class="gbox"><div id="gtip" class="gtip" role="status" aria-live="polite"></div></div>
+<p class="v">Relu dans la base à chaque ouverture : l’historique s’ajoute seul. Jours sans visite comptés à 0 ; journée en cours en barre pâle. Survol, toucher ou flèches du clavier pour les chiffres exacts.</p>
+<script type="application/json" id="gdata">${JSON.stringify(d.graphe || { auj: '', jours: [] }).replace(/</g, '\\u003c')}</script>
 ${tableau('Par jour', d.jour, [['Jour','periode'], ...COLS])}
 ${tableau('Par semaine', d.semaine, [['Semaine','periode'], ...COLS])}
 ${tableau('Par mois', d.mois, [['Mois','periode'], ...COLS])}
-${profil}
+<h2>Heures de consultation</h2>
+<div class="g-barre"><div class="leg"><span><i></i>Visites engagées (humains)</span><span><i class="l"></i>Chargements (humains)</span></div>
+<div class="fen" id="fenh" role="group" aria-label="Période du graphique"><button type="button" data-f="30" aria-pressed="false">30 j</button><button type="button" data-f="90" aria-pressed="false">90 j</button><button type="button" data-f="365" aria-pressed="false">1 an</button><button type="button" data-f="tout" aria-pressed="true">Tout</button></div></div>
+<div id="gheures" class="gbox"><div id="htip" class="gtip" role="status" aria-live="polite"></div></div>
+<p class="v">Cumul par tranche horaire, heure de Paris, relu à chaque ouverture. « Tout » couvre au plus les 400 derniers jours : au-delà, la tâche de nuit ne garde que le total du jour.</p>
+<script type="application/json" id="hdata">${JSON.stringify(d.heures || {}).replace(/</g, '\\u003c')}</script>
+${tableau('Parcours sur l’accueil (humains)', d.parcours || [],
+  [['Étape','etape'],['Écran tactile','tactile'],['Souris','souris'],['Total','total'],['Part des arrivées','part']],
+  'Chargements de l’accueil où l’étape a été atteinte au moins une fois, sur la période. Mesuré depuis le 29/09/2026. Tactile = téléphone ou tablette.')}
 ${tableau('Pages les plus vues (humains)', d.pages, [['Page','chemin'],['Visites engagées','engages'],['Chargements','vues'],['Taux','taux'],['Entrées','entrees']])}
 ${tableau('Pourquoi des vues sont suspectes', d.motifs, [['Motif','motif'],['Vues','vues']],
   'À surveiller : si un réseau grand public apparaît ici, la règle range des humains parmi les suspects.')}
@@ -272,6 +382,91 @@ ${tableau('Pays (entrées humaines)', d.pays, [['Pays','code'],['Visites','visit
 <p class="v" style="margin-top:2rem">Un visiteur qui bloque les scripts n’est pas compté, et un robot qui
 pilote un vrai navigateur depuis une connexion résidentielle peut passer pour un humain : aucun
 relevé de ce type n’est exhaustif.</p>
+<script>(function(){
+var NS='http://www.w3.org/2000/svg',MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+function dl(j){var p=j.split('-');return (+p[2])+' '+MOIS[+p[1]-1]+' '+p[0];}
+function dc(j){var p=j.split('-');return p[2]+'/'+p[1];}
+function nb(v){return Math.round(v).toLocaleString('fr-FR');}
+function pas(m){var r=m/4,e=Math.pow(10,Math.floor(Math.log10(r)));r/=e;return Math.max(1,(r<=1?1:r<=2?2:r<=5?5:10)*e);}
+function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e;}
+function donnee(id){try{return JSON.parse(document.getElementById(id).textContent);}catch(e){return null;}}
+/* Moteur commun. o.pts : [[engagées, chargements]…] ; o.lisse : moyennes 7 j ; o.pale : index en barre pâle ;
+   o.ticks : [[index, texte]…] ; o.titre(i) : en-tête de l'infobulle ; o.resume : texte pour lecteur d'écran. */
+function dessine(box,tip,o){
+ var d=o.pts,n=d.length,old=box.querySelector('svg');if(old)old.remove();tip.style.display='none';if(!n)return;
+ var W=Math.max(260,box.clientWidth),H=o.haut||240,ml=40,mr=10,mt=10,mb=26,pw=W-ml-mr,ph=H-mt-mb,sl=pw/n,cur=-1;
+ var max=0,tot=0;d.forEach(function(x){if(x[0]>max)max=x[0];if(x[1]>max)max=x[1];tot+=x[0];});
+ var st=pas(Math.max(max,1)),ym=st*Math.max(1,Math.ceil(max/st));
+ var y=function(v){return mt+ph-v/ym*ph;},cx=function(i){return ml+(i+.5)*sl;};
+ var svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img',tabindex:'0','aria-label':o.resume});
+ svg.style.height=H+'px';
+ for(var t=0;t<=ym+1e-9;t+=st){svg.appendChild(el('line',{'class':'gr',x1:ml,x2:W-mr,y1:y(t),y2:y(t)}));
+  svg.appendChild(el('text',{'class':'ax',x:ml-6,y:y(t)+4,'text-anchor':'end'},nb(t)));}
+ var bw=Math.min(24,Math.max(1,sl-2));
+ d.forEach(function(x,i){if(!x[0])return;var h=ph*x[0]/ym,x0=cx(i)-bw/2,y0=mt+ph,r=Math.min(4,bw/2,h),
+  pa='M'+x0+','+y0+'V'+(y0-h+r)+'Q'+x0+','+(y0-h)+' '+(x0+r)+','+(y0-h)+'H'+(x0+bw-r)+'Q'+(x0+bw)+','+(y0-h)+' '+(x0+bw)+','+(y0-h+r)+'V'+y0+'Z';
+  svg.appendChild(el('path',{'class':'b'+(i===o.pale?' auj':''),d:pa}));});
+ function mg(c,i){var s=0,k=Math.max(0,i-6);for(var j=k;j<=i;j++)s+=d[j][c];return s/(i-k+1);}
+ if(n===1)svg.appendChild(el('circle',{'class':'pc',cx:cx(0),cy:y(d[0][1]),r:4}));
+ else svg.appendChild(el('polyline',{'class':'lc',points:d.map(function(x,i){return cx(i)+','+y(o.lisse?mg(1,i):x[1]);}).join(' ')}));
+ if(o.lisse)svg.appendChild(el('polyline',{'class':'lm',points:d.map(function(x,i){return cx(i)+','+y(mg(0,i));}).join(' ')}));
+ var last=-1e9;o.ticks.slice().sort(function(a,b){return a[0]-b[0];}).forEach(function(l){var x=cx(l[0]);if(x-last<46)return;last=x;
+  svg.appendChild(el('text',{'class':'ax',x:x,y:H-8,'text-anchor':'middle'},l[1]));});
+ var cr=el('line',{'class':'x',y1:mt,y2:mt+ph,x1:0,x2:0,visibility:'hidden'});svg.appendChild(cr);
+ var zone=el('rect',{x:ml,y:mt,width:pw,height:ph,fill:'transparent'});svg.appendChild(zone);
+ function montre(i){if(i<0||i>=n){cache();return;}cur=i;var x=d[i],xx=cx(i);cr.setAttribute('x1',xx);cr.setAttribute('x2',xx);cr.setAttribute('visibility','visible');
+  tip.innerHTML=o.titre(i)+'<br>Visites engagées : <b>'+nb(x[0])+'</b>'+(o.part&&tot?' <span class="t">('+Math.round(100*x[0]/tot)+' %)</span>':'')+'<br>Chargements : <b>'+nb(x[1])+'</b>';
+  tip.style.display='block';var tw=tip.offsetWidth,sc=box.clientWidth/W,px=xx*sc+12;if(px+tw>box.clientWidth)px=xx*sc-tw-12;
+  tip.style.left=Math.max(0,px)+'px';tip.style.top='8px';}
+ function cache(){cr.setAttribute('visibility','hidden');tip.style.display='none';}
+ function idx(ev){var r=svg.getBoundingClientRect(),x=(ev.clientX-r.left)*W/r.width;return Math.floor((x-ml)/sl);}
+ zone.addEventListener('pointermove',function(ev){montre(idx(ev));});
+ zone.addEventListener('pointerdown',function(ev){montre(idx(ev));});
+ svg.addEventListener('pointerleave',cache);svg.addEventListener('blur',cache);
+ svg.addEventListener('keydown',function(ev){var i=cur<0?n-1:cur;
+  if(ev.key==='ArrowLeft')i=Math.max(0,i-1);else if(ev.key==='ArrowRight')i=Math.min(n-1,i+1);
+  else if(ev.key==='Home')i=0;else if(ev.key==='End')i=n-1;else if(ev.key==='Escape'){cache();return;}else return;
+  ev.preventDefault();montre(i);});
+ box.insertBefore(svg,tip);
+ return pw;}
+function periode(id,defaut,rafraichit){var f=defaut;document.querySelectorAll('#'+id+' button').forEach(function(b){b.addEventListener('click',function(){
+ f=b.dataset.f;document.querySelectorAll('#'+id+' button').forEach(function(o){o.setAttribute('aria-pressed',String(o===b));});rafraichit();});});
+ return function(){return f;};}
+function suit(box,fn){var lw=0;function r(){var w=box.clientWidth;if(w!==lw){lw=w;fn();}}
+ if(window.ResizeObserver)new ResizeObserver(r).observe(box);else window.addEventListener('resize',r);r();}
+var NOMS={'30':'sur les 30 derniers jours','90':'sur les 90 derniers jours','365':'sur la dernière année','tout':'sur tout l’historique horaire'};
+
+/* ── Visites par jour */
+var D=donnee('gdata')||{jours:[]},J=D.jours||[],gbox=document.getElementById('graphe'),gtip=document.getElementById('gtip'),leg=document.getElementById('gleg');
+var fj=periode('fenj','tout',jours);
+function jours(){
+ var f=fj(),d=f==='tout'?J:J.slice(-(+f)),n=d.length,moy=n>120,lm=leg.querySelector('.mo'),lc=leg.querySelector('.lcg');
+ lc.textContent=moy?'Chargements (moyenne 7 j)':'Chargements (humains)';
+ if(moy&&!lm){lm=document.createElement('span');lm.className='mo';lm.innerHTML='<i class="m"></i>Visites engagées (moyenne 7 j)';leg.appendChild(lm);}
+ if(!moy&&lm)lm.remove();
+ if(!n)return;
+ var tot=0,im=0;d.forEach(function(x,i){tot+=x[1];if(x[1]>d[im][1])im=i;});
+ var w=Math.max(260,gbox.clientWidth)-50,ticks=[];
+ if(n<=120){var k=Math.max(1,Math.ceil(n/Math.max(1,Math.floor(w/52))));for(var i=n-1;i>=0;i-=k)ticks.push([i,dc(d[i][0])]);}
+ else{for(var i=0;i<n;i++)if(d[i][0].slice(8)==='01')ticks.push([i,MOIS[+d[i][0].slice(5,7)-1]+' '+d[i][0].slice(2,4)]);}
+ dessine(gbox,gtip,{pts:d.map(function(x){return [x[1],x[2]];}),lisse:moy,pale:d[n-1][0]===D.auj?n-1:-1,ticks:ticks,
+  titre:function(i){return '<b>'+dl(d[i][0])+'</b>'+(d[i][0]===D.auj?' <span class="t">(en cours)</span>':'');},
+  resume:'Visites engagées par jour, du '+dl(d[0][0])+' au '+dl(d[n-1][0])+' : '+nb(tot)+' au total, maximum '+nb(d[im][1])+' le '+dl(d[im][0])+'. Le tableau « Par jour » donne le détail.'});}
+suit(gbox,jours);
+
+/* ── Heures de consultation */
+var HP=donnee('hdata')||{},hbox=document.getElementById('gheures'),htip=document.getElementById('htip');
+var fh=periode('fenh','tout',heures);
+function heures(){
+ var f=fh(),d=HP[f]||[];if(d.length!==24){d=[];for(var i=0;i<24;i++)d.push([0,0]);}
+ var tot=0,im=0;d.forEach(function(x,i){tot+=x[0];if(x[0]>d[im][0])im=i;});
+ var w=Math.max(260,hbox.clientWidth)-50,k=[1,2,3,4,6].filter(function(k){return w/24*k>=46;})[0]||6,ticks=[];
+ for(var i=0;i<24;i+=k)ticks.push([i,i+' h']);
+ dessine(hbox,htip,{pts:d,lisse:false,pale:-1,ticks:ticks,haut:220,part:true,
+  titre:function(i){return '<b>'+i+' h – '+(i+1)+' h</b>';},
+  resume:'Visites engagées par heure de la journée, heure de Paris, '+NOMS[f]+' : '+(tot?'pic entre '+im+' h et '+(im+1)+' h avec '+nb(d[im][0])+' visites sur '+nb(tot)+'.':'aucune visite engagée.')});}
+suit(hbox,heures);
+})();</script>
 <script>(function(){var r=document.documentElement,b=document.getElementById('sw'),
 mq=matchMedia('(prefers-color-scheme:dark)');
 function sombre(){var t=r.getAttribute('data-theme');return t?t==='dark':mq.matches;}

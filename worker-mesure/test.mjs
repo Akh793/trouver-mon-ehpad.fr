@@ -2,12 +2,12 @@
  * Tests du compteur, sans déploiement : D1 est remplacé par une table en mémoire.
  *   node worker-mesure/test.mjs
  */
-import worker, { quand, chemin, domaine, estDeclare, estHebergeur, classe,
+import worker, { quand, chemin, domaine, estDeclare, estHebergeur, classe, serieJours, profilHeures, parcours, ETAPES,
                  HUMAIN, DECLARE, SUSPECT, PROPRIO, HORS_LISTE } from './index.js';
 
 function faireDB() {
-  const t = { vues: [], motifs: [], sources: [], pays: [] };
-  const cles = { vues: 4, motifs: 2, sources: 2, pays: 2 };
+  const t = { vues: [], motifs: [], sources: [], pays: [], etapes: [] };
+  const cles = { vues: 4, motifs: 2, sources: 2, pays: 2, etapes: 4 };
   function prepare(sql) {
     const ctx = { sql, args: [] };
     return {
@@ -162,7 +162,58 @@ test('marque propriétaire ignorée pour un robot déclaré', () =>
   classe({ ua: GOOGLE, auto: 0, cf: ORANGE, origine: ORIG, proprio: true }).c === DECLARE);
 test('m=0 ou absent : visiteur ordinaire', () =>
   classe({ ua: UA, auto: 0, cf: ORANGE, origine: ORIG, proprio: false }).c === HUMAIN);
+// ── graphique : série quotidienne continue
+test('série : jours sans ligne remplis de zéros, du premier jour à aujourd’hui', () => {
+  const s = serieJours([{ jour: '2026-09-27', e: 3, c: 5 }, { jour: '2026-09-29', e: 1, c: 2 }], '2026-09-27', '2026-09-30');
+  return JSON.stringify(s) === JSON.stringify([['2026-09-27',3,5],['2026-09-28',0,0],['2026-09-29',1,2],['2026-09-30',0,0]]);
+});
+test('série : base vide → la seule journée du jour, à zéro', () =>
+  JSON.stringify(serieJours([], null, '2026-09-30')) === JSON.stringify([['2026-09-30',0,0]]));
+test('série : passages à l’heure d’été et d’hiver sans jour sauté ni doublé', () => {
+  const a = serieJours([], '2026-03-27', '2026-03-31').map((x) => x[0]);
+  const b = serieJours([], '2026-10-23', '2026-10-27').map((x) => x[0]);
+  return a.join() === '2026-03-27,2026-03-28,2026-03-29,2026-03-30,2026-03-31'
+      && b.join() === '2026-10-23,2026-10-24,2026-10-25,2026-10-26,2026-10-27';
+});
+test('série : années bissextiles et changement d’année', () => {
+  const s = serieJours([], '2027-12-30', '2028-03-01').map((x) => x[0]);
+  return s.length === 63 && s.includes('2028-02-29') && s[2] === '2028-01-01';
+});
+// ── graphique des heures
+test('profil horaire : 24 tranches par période, heures absentes à zéro, heure compactée (-1) ignorée', () => {
+  const p = profilHeures([{ heure: 9, e30: 1, c30: 2, e90: 3, c90: 4, e365: 5, c365: 6, et: 7, ct: 8 },
+                          { heure: -1, e30: 99, c30: 99, e90: 99, c90: 99, e365: 99, c365: 99, et: 99, ct: 99 },
+                          { heure: 23, e30: 0, c30: 0, e90: 0, c90: 1, e365: 0, c365: 1, et: 2, ct: 3 }]);
+  return ['30', '90', '365', 'tout'].every((f) => p[f].length === 24)
+    && JSON.stringify(p['30'][9]) === '[1,2]' && JSON.stringify(p['tout'][9]) === '[7,8]'
+    && JSON.stringify(p['90'][23]) === '[0,1]' && JSON.stringify(p['365'][0]) === '[0,0]'
+    && p.tout.reduce((a, x) => a + x[0], 0) === 9;
+});
 test('domaine référent normalisé', () => domaine('WWW.Google.fr') === 'google.fr');
+// ── parcours sur l'accueil
+test('étape du parcours : une ligne (jour, étape, appareil, classe), sans toucher aux vues', async () => {
+  const avant = DB.t.vues.length;
+  await req('t=e&p=/&k=cp&d=1'); await req('t=e&p=/index.html&k=cp&d=1'); await req('t=e&p=/&k=r&d=0');
+  const cp = DB.t.etapes.find((l) => l.a[1] === 'cp' && l.a[2] === 1 && l.a[3] === HUMAIN);
+  const r = DB.t.etapes.find((l) => l.a[1] === 'r' && l.a[2] === 0);
+  return cp && cp.n === 2 && r && r.n === 1 && DB.t.vues.length === avant;
+});
+test('étape inconnue, ou hors de l’accueil : ignorée sans trace', async () => {
+  const avant = DB.t.etapes.length;
+  await req('t=e&p=/&k=montant'); await req('t=e&p=/guides/&k=cp');
+  return DB.t.etapes.length === avant;
+});
+test('étape envoyée par un robot déclaré : rangée à part', async () => {
+  await req('t=e&p=/&k=a&d=0', { ua: GOOGLE, cf: { asn: 15169, asOrganization: 'GOOGLE' } });
+  return !!DB.t.etapes.find((l) => l.a[1] === 'a' && l.a[3] === DECLARE);
+});
+test('tableau du parcours : ordre, total, part des arrivées', () => {
+  const p = parcours([{ etape: 'a', appareil: 1, n: 30 }, { etape: 'a', appareil: 0, n: 10 },
+                      { etape: 'cp', appareil: 1, n: 12 }, { etape: 'cp', appareil: 0, n: 8 }, { etape: 'f', appareil: 0, n: 2 }]);
+  return p.length === ETAPES.length && p[0].total === 40 && p[1].total === 20 && p[1].part === '50 %'
+    && p[1].tactile === 12 && p[2].total === 0 && p[3].part === '5 %';
+});
+test('tableau du parcours : sans arrivée, aucune part inventée', () => parcours([]).every((l) => l.part === '—' && l.total === 0));
 
 let ok = 0;
 for (const [n, f] of cas) { let p = false; try { p = !!(await f()); } catch (e) { console.error('   ', e.message); }

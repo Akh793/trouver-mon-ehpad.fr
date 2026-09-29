@@ -139,7 +139,9 @@
   const state = {
     mode: 'famille',
     cp: '', commune: null, rayon: 20,
-    gir: '34',
+    gir: '?',                  // aucune présélection : sans réponse, le calcul retient GIR 3-4 et le dit
+    girNotif: null,            // GIR notifié par le département, s'il y en a un
+    girCases: [false, false, false, false, false],   // mini-grille : lever, toilette, manger, repères, aucune
     revenus: NaN, autres: 0, epargne: NaN, proprietaire: false,
     pourQui: 'proche',         // 'proche' = on cherche pour quelqu'un · 'moi' = pour soi-même
     couple: false, conjointDomicile: false, deuxResidents: false,
@@ -206,6 +208,7 @@
   /** Aucun événement ne contient de nom, de revenu ni d'information de santé : seulement des codes et des compteurs. */
   function evt(nom, extra) {
     try {
+      if (nom === 'result_opened' && window.ME_etape) window.ME_etape('f');
       if (pro() && PRO_EVT[nom]) nom = PRO_EVT[nom];
       (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: nom }, extra || {}));
     } catch (e) {}
@@ -228,7 +231,44 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const dfr = (d) => (d ? String(d).slice(0, 10).split('-').reverse().join('/') : '');
   const mfr = (m) => { if (!m) return ''; const [y, mo] = String(m).split('-'); return `${mo}/${y}`; };
-  const nom = (e) => (e[C.nom] || '').replace(/\s+/g, ' ').trim();
+  /* ---------- Noms lisibles ----------
+     Le répertoire FINESS écrit les noms en capitales, et près de 400 établissements s'y appellent
+     « Etablissement d'hébergement pour personnes âgées dépendantes » — parfois collé à la suite
+     (« …DÉPENDANTESLOUISE-THÉRÈSE »). Même règle que les pages du site (build/seo) : casse
+     normale, sigles rétablis, formule générique remplacée par « EHPAD ». L'affichage seul change. */
+  const N_PETITS = new Set(['de', 'du', 'des', 'sur', 'sous', 'en', 'et', 'aux', 'au', 'lès', 'd', 'l']);
+  const N_SIGLES = { Ehpad: 'EHPAD', Ehpa: 'EHPA', Usld: 'USLD', Uhr: 'UHR', Ccas: 'CCAS', Chu: 'CHU',
+    Chr: 'CHR', Ch: 'CH', Chi: 'CHI', Ssiad: 'SSIAD', Had: 'HAD', Marpa: 'MARPA', Mapa: 'MAPA',
+    Mas: 'MAS', Fam: 'FAM', Cias: 'CIAS', Pasa: 'PASA', Uva: 'UVA', Hopital: 'Hôpital', Hopitaux: 'Hôpitaux' };
+  const N_W = '[\\p{L}\\p{N}_]';
+  const N_SIGLE_RE = new RegExp(`(?<!${N_W})(${Object.keys(N_SIGLES).join('|')})(?!${N_W})`, 'gu');
+  const N_GENERIQUE = new RegExp(
+    `^(?:é|e)ta?b${N_W}*\\.?\\s*(?:(?:d[’' ]\\s*)?h[ée]r?b${N_W}*\\.?\\s+|hospitalier\\s+)?(?:pour\\s+|pr\\s+|de\\s+|des\\s+)?`
+    + `(?:pers${N_W}*\\.?|p\\.\\s*a\\.(?!${N_W})|p\\.\\s*(?=[aâ]g)|p\\.a(?!${N_W})\\.?|pa(?!${N_W}))\\s*(?:[aâ]g${N_W}*\\.?)?\\s*`
+    + `(?:d[ée]p(?:endantes(?=${N_W})|${N_W}*)\\.?)?\\s*[-–]?\\s*`, 'iu');
+  const N_ARTICLE = new RegExp(`^(?:(?:de|du|des)(?!${N_W})|d[’'])`, 'iu');
+  function titreNom(s) {
+    s = (s || '').trim();
+    if (!s || s !== s.toUpperCase()) return s;
+    const out = [];
+    for (const m of s.toLowerCase().split(/(\s+|-|’|')/)) {
+      if (!m.trim() || m === '-' || m === '’' || m === "'") { out.push(m); continue; }
+      out.push(N_PETITS.has(m) && out.length ? m : m.charAt(0).toUpperCase() + m.slice(1));
+    }
+    return out.join('');
+  }
+  function nomLisible(brut, ville) {
+    const n = titreNom((brut || '').replace(/\s+/g, ' ').trim()).replace(N_SIGLE_RE, (x) => N_SIGLES[x]);
+    let reste = n.replace(N_GENERIQUE, '').replace(/^[ \-–,]+|[ \-–,]+$/g, '');
+    const nu = n.trim().toUpperCase() === 'EHPAD';
+    if (reste === n && !nu) return n;
+    if (nu) reste = '';
+    if (reste && !N_ARTICLE.test(reste)) reste = reste.charAt(0).toUpperCase() + reste.slice(1);
+    if (reste) return reste.toUpperCase().startsWith('EHPAD') ? reste : 'EHPAD ' + reste;
+    return 'EHPAD de ' + titreNom(String(ville || '').replace(/\s+cedex.*$/i, ''));
+  }
+  const NOMS = new Map();
+  const nom = (e) => { let v = NOMS.get(e[C.fin]); if (v === undefined) { v = nomLisible(e[C.nom], e[C.ville]); NOMS.set(e[C.fin], v); } return v; };
   /** 0478602323 → 04 78 60 23 23 : un numéro se lit par paires, et se compose mieux. */
   const telFr = (t) => String(t || '').replace(/\D/g, '').replace(/(\d\d)(?=\d)/g, '$1 ');
   /** « de Lyon » mais « d’Assieu » : l'élision, sinon la phrase sonne faux. */
@@ -485,6 +525,7 @@
       rac, total: facture, aides: apa + apl,
       trou,                          // 5. contribution complémentaire nécessaire
       moisEpargne, couleur, ash, famille, secteur, vieux, notes,
+      gardeMini, reserveConjoint,   // laissé à la personne avant de compter ce qui manque
     };
   }
 
@@ -571,6 +612,7 @@
 
   const COULEUR = { vert: '#0f8a5f', orange: '#e08a00', rouge: '#d1344b', gris: '#94a3b8', bleu: '#2548FF' };
   let map = null, layer = null, cluster = null, leafletPromise = null;
+  let bornesCarte = null;   // dernier cadrage : la carte masquée sur mobile se recadre à l'ouverture
   function loadScript(src) {
     return new Promise((resolve) => {
       const t = document.createElement('script');
@@ -627,8 +669,9 @@
     if (list.length) {
       const b = L.latLngBounds(list.map((o) => [o.e[C.lat], o.e[C.lon]]));
       b.extend([s.commune.lat, s.commune.lon]);
-      map.fitBounds(b.pad(0.12));
-    } else map.setView([s.commune.lat, s.commune.lon], 11);
+      bornesCarte = b.pad(0.12);
+      map.fitBounds(bornesCarte);
+    } else { bornesCarte = null; map.setView([s.commune.lat, s.commune.lon], 11); }
     L.circleMarker([s.commune.lat, s.commune.lon], { radius: 6, color: '#2548FF', weight: 3, fillColor: '#fff', fillOpacity: 1 })
       .bindTooltip('Votre point de départ : ' + s.commune.nom, { direction: 'top' }).addTo(map);
     if (state.selection) marqueSelection(state.selection);
@@ -931,8 +974,13 @@
       // Un montant ne doit jamais paraître plus sûr que les données qui le produisent.
       if (!r.depConnue) second += '<span class="tarif t-reserve">hors aide au quotidien, non déclarée</span>';
       else if (r.depDouteuse) second += '<span class="tarif t-reserve">tarifs dépendance à confirmer</span>';
-      else if (r.girSuppose) second += '<span class="tarif t-reserve">niveau d’autonomie supposé</span>';
+      // GIR non renseigné : dit une fois, en tête des résultats, plutôt que sur chaque carte
       if (r.chambreSupposee) second += '<span class="tarif t-reserve">tarif de chambre double non déclaré</span>';
+      // Ce qui manque chaque mois, sur la carte même : la couleur seule ne disait pas combien.
+      // Facture incomplète : un manque devient un minimum, et « couvert » n'est pas affirmé.
+      if (r.trou > 0) second += `<span class="manque">Il manque ${r.depConnue ? '' : 'au moins '}${euro(r.trou)}/mois`
+        + `${r.couleur === 'orange' ? ` · l’épargne tient ${Math.floor(r.moisEpargne / 12)} ans` : ''}</span>`;
+      else if (r.depConnue) second += '<span class="manque ok">Couvert par les ressources</span>';
     } else {
       montant = euro(r.facture); lib = 'tarif / mois';
       second = '<span class="tarif">avant les aides</span>';
@@ -1041,7 +1089,7 @@
                 : 'Aucune aide déduite au vu des ressources indiquées. Hors frais d’entrée et dépenses personnelles.'}</p>` : ''}
         ${r.prixConnu && !p ? `<p class="ctx">Indiquez ${mot('retraite')}, en haut de page, pour estimer le budget.</p>` : ''}
         ${r.prixConnu && p && r.trou > 0 ? `<p class="f-manque"><b>À compléter&nbsp;: ${euro(r.trou)} / mois</b><br>
-          Après les revenus renseignés${state.epargne > 0 && r.moisEpargne !== Infinity && r.moisEpargne >= 1
+          Ressources moins ${euro(r.gardeMini)} laissés pour ${mot('possessif')} dépenses personnelles${r.reserveConjoint ? ` et ${euro(r.reserveConjoint)} pour le conjoint à domicile` : ''}${state.epargne > 0 && r.moisEpargne !== Infinity && r.moisEpargne >= 1
             ? `, et hors épargne (elle y pourvoirait environ ${Math.floor(r.moisEpargne)} mois)` : ''}.</p>` : ''}
       </div>
       <div class="f-faits">
@@ -1491,7 +1539,7 @@
     const pret = !!s.commune;
     $('resultats').hidden = !pret; $('vide').hidden = pret;
     document.body.classList.toggle('explore', pret);
-    $('route-wrap').hidden = !pret; $('route-vide').hidden = pret;
+    $('route-wrap').hidden = !pret; $('route-vide').hidden = pret; $('print-btn').hidden = !pret;
     if (!pret) return;
 
     const t0 = performance.now();
@@ -1514,23 +1562,57 @@
     const maxi = avecPrix.length ? Math.max(...avecPrix.map(val)) : null;
     const rouges = p ? avecPrix.filter((o) => o.r.couleur === 'rouge').length : 0;
 
-    // Le nombre d'établissements devient le chiffre de tête : c'est lui le résultat
-    // de la recherche. La médiane le suit comme repère, jamais comme un prix.
-    $('res-titre').textContent = 'Les EHPAD dans cette zone';
-    $('res-chiffre').textContent = `${list.length} établissement${list.length > 1 ? 's' : ''}`;
+    // Le chiffre de tête répond à la question posée. Sans ressources : combien
+    // d'établissements, et leur tarif. Avec : ce qui manquerait chaque mois, ou combien
+    // d'établissements sont couverts. (Avant : « 119 établissements » restait en tête,
+    // et la réponse se perdait au milieu d'une phrase de cinq lignes.)
     const sansTarif = list.length - avecPrix.length;
+    const pl = (k, sg, pr) => (k > 1 ? pr : sg);
+    const nEt = (k) => `${nbfr(k)} établissement${k > 1 ? 's' : ''}`;
+    const zone = `${nEt(list.length)} à ${s.rayon} km ${esc(de(s.commune.nom))}`
+      + (sansTarif ? `, dont ${nbfr(sansTarif)} sans tarif déclaré` : '');
     if (med == null) {
+      $('res-titre').textContent = 'Les EHPAD dans cette zone';
+      $('res-chiffre').textContent = nEt(list.length);
       $('res-sous').innerHTML = `à ${s.rayon} km ${esc(de(s.commune.nom))} · aucun n’a déclaré son tarif`;
+    } else if (!p) {
+      $('res-titre').textContent = 'Les EHPAD dans cette zone';
+      $('res-chiffre').textContent = nEt(list.length);
+      $('res-sous').innerHTML = `Tarif médian ${euro(med)}/mois, de ${euro(mini)} à ${euro(maxi)}, avant les aides.<br>`
+        + `<b>Indiquez ${mot('retraite')}</b> pour voir ce qui resterait à payer.<br><small>${zone}</small>`;
     } else {
-      // Le mot dit ce que le chiffre mesure : un tarif affiché, ou un budget calculé.
-      const lib = p ? 'Budget médian estimé' : 'Prix médian de la sélection';
-      $('res-sous').innerHTML = `à ${s.rayon} km ${esc(de(s.commune.nom))}`
-        + ` · <b>${lib}&nbsp;: ${euro(med)}</b>/mois, de ${euro(mini)} à ${euro(maxi)}`
-        + ` sur ${avecPrix.length} établissement${avecPrix.length > 1 ? 's' : ''} comparable${avecPrix.length > 1 ? 's' : ''}`
-        + (sansTarif ? ` · ${sansTarif} sans tarif déclaré` : '')
-        + (p && rouges ? ` · <b>${rouges}</b> au-delà des ressources renseignées` : '')
-        + (p ? '' : ` · <b>indiquez ${mot('retraite')}</b> pour estimer le budget`);
+      const R = ressourcesTotales(s);
+      const couverts = avecPrix.filter((o) => !(o.r.trou > 0));
+      const manquent = avecPrix.filter((o) => o.r.trou > 0);
+      const tMin = manquent.length ? Math.min(...manquent.map((o) => o.r.trou)) : 0;
+      const tMax = manquent.length ? Math.max(...manquent.map((o) => o.r.trou)) : 0;
+      const ecart = tMin === tMax ? euro(tMin) : `${euro(tMin)} à ${euro(tMax)}`;
+      const ref = avecPrix[0].r;
+      const tient = manquent.filter((o) => o.r.couleur === 'orange').length;
+      const l = [];
+      if (!manquent.length) {
+        $('res-titre').textContent = `Avec ${euro(R)} de ressources par mois`;
+        $('res-chiffre').textContent = `${nEt(couverts.length)} ${pl(couverts.length, 'couvert', 'couverts')}`;
+        l.push(`Budget estimé de ${euro(mini)} à ${euro(maxi)}/mois selon l’établissement, aides déduites.`);
+      } else if (!couverts.length) {
+        $('res-titre').textContent = `Avec ${euro(R)} de ressources par mois, il manquerait chaque mois`;
+        $('res-chiffre').textContent = ecart;
+        l.push(`Budget estimé de ${euro(mini)} à ${euro(maxi)}/mois selon l’établissement, aides déduites.`);
+      } else {
+        $('res-titre').textContent = `Avec ${euro(R)} de ressources par mois`;
+        $('res-chiffre').textContent = `${nEt(couverts.length)} ${pl(couverts.length, 'couvert', 'couverts')}`;
+        l.push(`Pour ${pl(manquent.length, 'l’autre', `les ${nbfr(manquent.length)} autres`)}, il manquerait ${ecart} par mois.`);
+      }
+      if (tient) l.push(`L’épargne indiquée couvrirait ce manque au moins 5 ans dans ${nEt(tient)}.`);
+      l.push(`Calcul fait en laissant ${euro(ref.gardeMini)}/mois pour ${mot('possessif')} dépenses personnelles`
+        + ` (10&nbsp;% des ressources, minimum ${euro(BAREME.ashResteMiniEur)})`
+        + (ref.reserveConjoint ? ` et ${euro(ref.reserveConjoint)} pour le conjoint à domicile` : '') + '.');
+      if (s.gir === '?') l.push('Autonomie non renseignée&nbsp;: calcul sur un GIR 3-4.');
+      $('res-sous').innerHTML = l.join('<br>') + `<br><small>${zone}</small>`;
     }
+    // mesure du parcours : résultats affichés, puis budget calculé
+    if (window.ME_etape) { window.ME_etape('cp'); if (p) window.ME_etape('r'); }
+    $('affiner-btn').hidden = !(p && !$('plus-situation').open);
     $('res-recap').textContent = recapTexte(s);
     $('action-rouge').hidden = !(rouges > 0 && !s.ashOnly);
     $('barre-n').textContent = list.length
@@ -1850,7 +1932,7 @@
     state.selection = null; state.nbAffiches = 15;
     if (state.commune) { cpInput.value = state.commune.cp; $('commune').textContent = state.commune.nom; }
     else if (state.cp) cpInput.value = state.cp;
-    $('rayon').value = String(state.rayon);
+    if ($('rayon')) $('rayon').value = String(state.rayon);
     if ($('rayon2')) $('rayon2').value = String(state.rayon);
     ouvreDrawer('drawer-dossiers', false);
     majLigneDossier();
@@ -1924,12 +2006,12 @@
       });
     });
     majPourQui();
-    $('gir-aide').hidden = state.gir !== '?';
+    majGir();
     $('fam-detail').hidden = !(state.enfants > 0);
     $('ash-aide').hidden = state.besoinAsh !== 'nsp';
     $('tri').value = state.tri;
     if ($('rayon2')) $('rayon2').value = String(state.rayon);
-    $('rayon').value = String(state.rayon);
+    if ($('rayon')) $('rayon').value = String(state.rayon);
     document.querySelectorAll('[data-check]').forEach((el) => {
       const k = el.dataset.check;
       el.checked = k.startsWith('statut') ? !!state.statuts[+k.slice(6)] : !!state[k];
@@ -1945,6 +2027,8 @@
     seg.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       state[key] = cast(vals[[...seg.querySelectorAll('button')].indexOf(b)]);
+      // un GIR notifié remplace l'estimation de la mini-grille
+      if (key === 'girNotif') { state.gir = state.girNotif; state.girCases = [false, false, false, false, false]; }
       if (CLES_FILTRE[key]) { state.nbAffiches = 15; evt('filters_applied', { critere: key, valeur: String(state[key]) }); }
       render();
     });
@@ -2164,11 +2248,34 @@
     evt('filters_applied', { critere: 'besoinAsh', valeur: 'oui' });
     render();
   });
-  $('gir-calc').addEventListener('change', () => {
-    const n = [...document.querySelectorAll('#gir-calc input:checked')].length;
-    state.gir = n >= 3 ? '12' : n >= 1 ? '34' : '56';
-    $('gir-res').textContent = `Estimation indicative : niveau d’autonomie GIR ${state.gir === '12' ? '1-2' : state.gir === '34' ? '3-4' : '5-6'}. Seul le niveau notifié par le département fait foi.`;
+  $('gir-calc').addEventListener('change', (ev) => {
+    const cases = [...document.querySelectorAll('#gir-calc input')];
+    const aucun = cases[4];
+    // « aucune de ces aides » exclut les autres réponses, et réciproquement
+    if (ev.target === aucun && aucun.checked) cases.slice(0, 4).forEach((c) => { c.checked = false; });
+    else if (ev.target !== aucun && ev.target.checked) aucun.checked = false;
+    state.girCases = cases.map((c) => c.checked);
+    state.girNotif = null;
+    state.gir = girDeGrille(state.girCases);
     render();
+  });
+  $('affiner-btn').addEventListener('click', () => {
+    const d = $('plus-situation'); d.open = true;
+    d.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    setTimeout(() => { const f = $('epargne'); if (f) f.focus({ preventScroll: true }); }, 400);
+    $('affiner-btn').hidden = true;
+  });
+  // Mobile : la liste d'abord, la carte sur demande (NN/g 2014 : sur mobile, la carte
+  // rallonge les tâches ; aucun utilisateur ne l'a réclamée quand elle était absente).
+  $('carte-mob').addEventListener('click', () => {
+    const on = !$('atelier').classList.contains('carte-on');
+    $('atelier').classList.toggle('carte-on', on);
+    $('carte-mob').setAttribute('aria-pressed', String(on));
+    $('carte-mob').textContent = on ? 'Masquer la carte' : 'Voir sur la carte';
+    if (!on) return;
+    evt('map_opened', { source: 'mobile' });
+    setTimeout(() => { if (map) { map.invalidateSize(); if (bornesCarte) map.fitBounds(bornesCarte); } }, 60);
+    $('pan-carte').scrollIntoView({ block: 'start', behavior: 'smooth' });
   });
 
   /* ---------- Initialisation ---------- */
@@ -2176,6 +2283,14 @@
     const partage = await litHash();
     if (!partage) charge();
     state.gir = String(state.gir);   // un état enregistré par une version antérieure pouvait contenir un nombre
+    if (!Array.isArray(state.girCases) || state.girCases.length !== 5) state.girCases = [false, false, false, false, false];
+    // Avant ce lot, « GIR 3-4 » était présélectionné : un 3-4 sans grille ni notification n'est
+    // pas une réponse. Un 1-2 ou un 5-6 l'est : il devient un GIR notifié, visible et modifiable.
+    if (!state.girNotif && !state.girCases.some(Boolean)) {
+      if (state.gir === '34') state.gir = '?';
+      else if (state.gir === '12' || state.gir === '56') state.girNotif = state.gir;
+    }
+    if (window.ME_etape) window.ME_etape('a');   // mesure du parcours : arrivée sur l'accueil
     if (state.tri === 'marge' || state.priorite === 'marge') { state.tri = 'rac'; state.priorite = 'rac'; }   // tri retiré
     // entrée dans l'espace professionnel : depuis /professionnels/ (?pro=1) ou un lien #pro
     const demandePro = /(^|[?&])pro=1(&|$)/.test(location.search) || /(^|#)pro$/.test(location.hash || '');
@@ -2194,7 +2309,7 @@
     if (state.autres) $('autres').value = state.autres;
     if (state.aideLogement) $('apl').value = state.aideLogement;
     if (state.revenusConjoint && $('revconj')) $('revconj').value = state.revenusConjoint;
-    $('rayon').value = String(state.rayon); $('tri').value = state.tri;
+    if ($('rayon')) $('rayon').value = String(state.rayon); $('tri').value = state.tri;
     $('enfants').value = String(state.enfants); $('tmi').value = String(state.tmi);
     state.selection = null;                 // la fiche s'ouvre sur demande, jamais au chargement
     // si une précision a déjà été donnée, le bloc reste ouvert : rien ne se cache derrière un repli
@@ -2229,6 +2344,24 @@
     }
   })();
 
+  /** Mini-grille d'autonomie → GIR estimé. Trois aides ou plus : 1-2 ; une ou deux : 3-4 ;
+      « aucune de ces aides » : 5-6 ; aucune réponse : inconnu (« ? »), calcul sur 3-4, affiché. */
+  function girDeGrille(c) {
+    const k = (c || []).slice(0, 4).filter(Boolean).length;
+    return k >= 3 ? '12' : k >= 1 ? '34' : (c && c[4]) ? '56' : '?';
+  }
+  const LIB_GIR = { '12': 'GIR 1-2', '34': 'GIR 3-4', '56': 'GIR 5-6' };
+  /** Recoche la grille d'après l'état, et dit d'où vient le GIR retenu. */
+  function majGir() {
+    const c = Array.isArray(state.girCases) ? state.girCases : [];
+    document.querySelectorAll('#gir-calc input').forEach((x, i) => { x.checked = !!c[i]; });
+    const r = $('gir-res'); if (!r) return;
+    r.textContent = state.girNotif ? `GIR notifié retenu : ${LIB_GIR[state.girNotif]}.`
+      : state.gir === '?' ? 'Sans réponse, le calcul retient un niveau intermédiaire (GIR 3-4) et le signale.'
+      : `Estimation indicative : ${LIB_GIR[state.gir]}. Seul le niveau notifié par le département fait foi.`;
+    const d = $('gir-notif'); if (d && state.girNotif) d.open = true;
+  }
+
   /** Réécrit les libellés de la page selon la personne concernée. Aucun calcul n'en dépend. */
   function majPourQui() {
     // Le titre est neutre : il n'a plus à être réécrit selon la personne concernée.
@@ -2236,7 +2369,7 @@
       'lbl-revenus': pourMoi() ? 'Vos retraites et pensions par mois' : 'Retraites et pensions du proche, par mois',
       'lbl-situation': 'Estimer le budget',
       'nav-situation': 'Estimer le budget',
-      'lbl-gir': 'Niveau d’autonomie connu (GIR)',
+      'lbl-gir': pourMoi() ? 'Au quotidien, avez-vous besoin d’aide pour…' : 'Au quotidien, votre proche a-t-il besoin d’aide pour…',
       'lbl-couple': pourMoi() ? 'Vivez-vous en couple ?' : 'Vit-il ou elle en couple ?',
       'lbl-proprio': pourMoi() ? 'Êtes-vous propriétaire de votre logement ?' : 'Est-il ou elle propriétaire de son logement ?',
       'lbl-impot': pourMoi() ? 'Payez-vous l’impôt sur le revenu ?' : 'Paie-t-il ou elle l’impôt sur le revenu ?',
@@ -2491,13 +2624,27 @@
       ['Aucun reste à charge négatif', () =>
         calcule(E, { ...base, revenus: 500, aideLogement: 99999, imposable: true }).rac === 0],
       ['Le GIR choisi dans l’interface reste une chaîne (« 12 », pas 12)', () => {
-        const seg = document.querySelector('[data-seg^="gir:"]');
+        const seg = document.querySelector('[data-seg^="girNotif:"]');
         if (!seg) return false;
-        const avant = state.gir;
+        const avant = state.gir, avantN = state.girNotif, avantC = state.girCases;
         seg.querySelectorAll('button')[0].click();
-        const ok = state.gir === '12' && calcule(E, { ...base, gir: state.gir }).dependance === 21.85 * mois;
-        state.gir = avant; majUI();
+        const ok = state.gir === '12' && state.girNotif === '12'
+          && calcule(E, { ...base, gir: state.gir }).dependance === 21.85 * mois;
+        state.gir = avant; state.girNotif = avantN; state.girCases = avantC; majUI();
         return ok;
+      }],
+      ['Mini-grille : 3 aides → GIR 1-2, 1 aide → 3-4, « aucune » → 5-6, rien → inconnu', () =>
+        girDeGrille([true, true, true, false, false]) === '12' && girDeGrille([false, true, false, false, false]) === '34'
+        && girDeGrille([false, false, false, false, true]) === '56' && girDeGrille([false, false, false, false, false]) === '?'],
+      ['Noms lisibles : formule générique collée au nom (FINESS 690785662)', () =>
+        nomLisible('ETABLISSEMENT POUR PERSONNES ÂGEES DÉPENDANTESLOUISE-THÉRÈSE', 'ECULLY') === 'EHPAD Louise-Thérèse'
+        && nomLisible("ETABLISSEMENT D'HEBERGEMENT POUR PERSONNES AGEES DEPENDANTES", 'BRUAY LA BUISSIERE CEDEX') === 'EHPAD de Bruay La Buissiere'
+        && nomLisible('EHPAD LES TILLEULS MONTLUEL', 'MONTLUEL') === 'EHPAD Les Tilleuls Montluel'],
+      ['Ce qui manque laisse 10 % des ressources (au moins 125 €) à la personne', () => {
+        const r = calcule(E, { ...base, revenus: 1500 });
+        const r2 = calcule(E, { ...base, revenus: 1000 });
+        return r.gardeMini === 150 && Math.abs(r.trou - Math.max(0, r.decaisse - 1350)) < 0.01
+          && r2.gardeMini === 125;
       }],
       ['Seul en EHPAD : la réserve du conjoint à domicile ne s’applique pas si les deux sont hébergés', () => {
         const a = calcule(E, { ...base, couple: true, conjointDomicile: true, deuxResidents: true });
