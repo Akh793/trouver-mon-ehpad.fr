@@ -112,6 +112,29 @@ places changent d’occupant chaque année, soit une place tous les douze jours 
 <p>Ce site peut utiliser une mesure d’audience, uniquement si vous l’acceptez. Les informations que vous saisissez dans le calculateur ne sont jamais transmises : elles restent sur votre appareil. <a href="/mentions-legales.html#cookies">En savoir plus</a></p>
 <div class="cb-b"><button type="button" id="consent-accept" class="btn">Accepter</button>
 <button type="button" id="consent-refuse" class="lien">Continuer sans accepter</button></div></div></div>
-<!-- relevé d'audience : en attente du déploiement du Worker de mesure -->
+<script>/* relevé d'audience : aucun cookie, aucun identifiant, chemin seul */
+(function(){try{
+var A='https://mesure-tme.trouver-mon-ehpad.workers.dev',D=document,N=navigator,W=window,ua=N.userAgent||'';
+var a=(N.webdriver?1:0)|(/HeadlessChrome/.test(ua)?2:0)
+ |(/Chrome\//.test(ua)&&!/; wv\)|Version\/\d/.test(ua)&&!W.chrome?4:0)
+ |(!N.languages||!N.languages.length?8:0);
+var r=D.referrer||'',d='';
+try{if(r){var h=new URL(r).hostname.replace(/^www\./,'');if(h!==location.hostname.replace(/^www\./,''))d=h;}}catch(e){}
+function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(x||'');
+ try{if(N.sendBeacon&&N.sendBeacon(q))return;}catch(e){}
+ try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true}).catch(function(){});}catch(e){}}
+var fait=0,vis=0,tic;
+function engage(){if(fait)return;fait=1;clearInterval(tic);
+ ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.removeEventListener(k,engage,true);});
+ env('g');}
+function part(){
+ env('c','&e='+((!r||d)?1:0)+(d?'&r='+encodeURIComponent(d):''));
+ ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.addEventListener(k,engage,{capture:true,passive:true});});
+ tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);}
+function pret(){return !D.prerendering&&D.visibilityState==='visible';}
+if(pret())part();else{var f=function(){if(!pret())return;
+ D.removeEventListener('visibilitychange',f);D.removeEventListener('prerenderingchange',f);part();};
+ D.addEventListener('visibilitychange',f);D.addEventListener('prerenderingchange',f);}
+}catch(e){}})();</script>
 </body>
 </html>

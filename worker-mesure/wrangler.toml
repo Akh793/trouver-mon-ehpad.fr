@@ -1,0 +1,14 @@
+name = "mesure-tme"
+main = "index.js"
+compatibility_date = "2026-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mesure-tme"
+database_id = "401b34c0-c548-4f84-baad-a367510df010"
+
+# Compactage des lignes horaires de plus de 400 jours, chaque nuit à 3 h 45.
+# Décalé de quinze minutes par rapport au ménage du service de retours, pour ne
+# pas faire tourner deux tâches en même temps sur le même compte.
+[triggers]
+crons = ["45 3 * * *"]

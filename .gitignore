@@ -42,3 +42,6 @@ build/index.template.v*.html
 build/site.v*.css
 site/*.v*.js
 .DS_Store
+
+*.zip
+.wrangler/
