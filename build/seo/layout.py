@@ -44,6 +44,7 @@ TOPBAR = """<div id="topbar" class="topbar print-hide">
 <a href="/aides-ehpad/">Aides financières</a>
 <a href="/guides/">Guides</a>
 <a href="/professionnels/">Espace professionnel</a>
+<a href="/lexique/">Lexique</a>
 <hr>
 <a href="/qui-sommes-nous.html">Qui sommes-nous&nbsp;?</a>
 <a href="/comparer-devis-ehpad/" class="menu-devis">Comparer vos devis</a>
@@ -78,6 +79,7 @@ PIED = f"""<footer class="foot"><div class="foot-in">
 <a href="/aides-ehpad/">Aides financières</a>
 <a href="/guides/">Guides</a>
 <a href="/professionnels/">Espace professionnel</a>
+<a href="/lexique/">Lexique</a>
 <a href="/notre-methodologie.html">Méthodologie</a>
 <a href="/qui-sommes-nous.html">Qui sommes-nous ?</a>
 <a href="/etudes/">Études et données</a>

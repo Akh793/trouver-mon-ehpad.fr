@@ -117,6 +117,8 @@ GUIDES_LIENS = [
     ('/guides/urgence-apres-hospitalisation/', 'Après une hospitalisation'),
     ('/guides/qui-paie-quand-la-retraite-ne-suffit-pas/', 'Quand la retraite ne suffit pas'),
     ('/aides-ehpad/obligation-alimentaire/', 'L’obligation alimentaire'),
+    ('/guides/gir-niveau-autonomie/', 'Le GIR, de 1 à 6'),
+    ('/lexique/', 'Le lexique de l’EHPAD'),
 ]
 
 

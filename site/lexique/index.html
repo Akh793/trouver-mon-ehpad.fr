@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* Thème : appliqué avant le premier rendu, sinon la page clignote en blanc. */
+(function(){try{var k='mon_ehpad_theme',t=localStorage.getItem(k);
+if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<title>Lexique EHPAD : GIR, APA, ASH et 50 mots expliqués</title>
+<meta name="description" content="GIR, APA, aide sociale à l’hébergement, tarif dépendance, habilitation, évaluation HAS : 50 mots de l’EHPAD expliqués simplement, avec leur source officielle.">
+<link rel="canonical" href="https://trouver-mon-ehpad.fr/lexique/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Lexique EHPAD : GIR, APA, ASH et 50 mots expliqués">
+<meta property="og:description" content="GIR, APA, aide sociale à l’hébergement, tarif dépendance, habilitation, évaluation HAS : 50 mots de l’EHPAD expliqués simplement, avec leur source officielle.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://trouver-mon-ehpad.fr/lexique/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Trouver mon EHPAD">
+<meta property="og:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
+<meta name="theme-color" content="#2548FF">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://trouver-mon-ehpad.fr/#website","url":"https://trouver-mon-ehpad.fr/","name":"Trouver mon EHPAD","alternateName":["trouver-mon-ehpad.fr","Trouver mon Ehpad"],"description":"Comprendre, comparer et estimer le coût réel des EHPAD en France.","inLanguage":"fr-FR","publisher":{"@id":"https://trouver-mon-ehpad.fr/#organization"}},{"@type":"Organization","@id":"https://trouver-mon-ehpad.fr/#organization","name":"Trouver mon EHPAD","url":"https://trouver-mon-ehpad.fr/","email":"contact@trouver-mon-ehpad.fr","logo":{"@type":"ImageObject","url":"https://trouver-mon-ehpad.fr/assets/logo-512.png","width":512,"height":512},"founder":{"@id":"https://trouver-mon-ehpad.fr/#editeur"},"areaServed":{"@type":"Country","name":"France"}},{"@type":"Person","@id":"https://trouver-mon-ehpad.fr/#editeur","name":"David Rival","url":"https://trouver-mon-ehpad.fr/qui-sommes-nous.html#editeur","description":"Juriste de formation (master 2 en droit des affaires), il conçoit des outils numériques et a construit ce site seul, sans financement ni partenariat, à partir des données publiques.","jobTitle":"Éditeur de Trouver mon EHPAD"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://trouver-mon-ehpad.fr/"},{"@type":"ListItem","position":2,"name":"Lexique"}]},{"@type":"DefinedTermSet","@id":"https://trouver-mon-ehpad.fr/lexique/#lexique","name":"Lexique de l’EHPAD","inLanguage":"fr-FR","url":"https://trouver-mon-ehpad.fr/lexique/","hasDefinedTerm":[{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#accueil-de-jour","name":"Accueil de jour","description":"Accueil d’une ou plusieurs journées par semaine, dans un centre dédié ou dans un EHPAD, de personnes âgées qui vivent chez elles. Il propose des activités adaptées et libère du temps pour les proches.","url":"https://trouver-mon-ehpad.fr/lexique/#accueil-de-jour","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#ash","name":"Aide sociale à l’hébergement (ASH)","description":"Aide du département qui paie la part des frais d’hébergement que la personne ne peut pas régler. Elle suppose un établissement habilité et peut être récupérée, notamment sur la succession.","url":"https://trouver-mon-ehpad.fr/lexique/#ash","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#apa","name":"APA en établissement","description":"Allocation personnalisée d’autonomie : aide du département qui paie une partie du tarif dépendance en EHPAD ou en USLD. Elle concerne les personnes de 60 ans ou plus évaluées en GIR 1 à 4. Son montant dépend des ressources.","url":"https://trouver-mon-ehpad.fr/lexique/#apa","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#apl-als","name":"APL / ALS","description":"Aides au logement qui réduisent le tarif d’hébergement. L’APL (aide personnalisée au logement) est possible si l’établissement est conventionné ; sinon, c’est l’ALS (allocation de logement sociale). Elles ne se cumulent pas entre elles.","url":"https://trouver-mon-ehpad.fr/lexique/#apl-als","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#aspa","name":"ASPA — minimum vieillesse","description":"Allocation de solidarité aux personnes âgées, ex-minimum vieillesse : prestation mensuelle versée par la caisse de retraite aux retraités qui ont de faibles ressources et vivent en France.","url":"https://trouver-mon-ehpad.fr/lexique/#aspa","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#ccas","name":"CCAS — centre communal d’action sociale","description":"Service social de la commune. Il informe sur les aides, aide à monter une demande d’APA et reçoit les demandes d’aide sociale à l’hébergement. Sans CCAS dans la commune, on s’adresse à la mairie.","url":"https://trouver-mon-ehpad.fr/lexique/#ccas","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#chambre-double","name":"Chambre double","description":"Chambre partagée à deux, proposée par certains EHPAD aux couples ou aux personnes qui l’acceptent. Son prix est affiché par personne.","url":"https://trouver-mon-ehpad.fr/lexique/#chambre-double","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#cnsa","name":"CNSA","description":"Caisse nationale de solidarité pour l’autonomie : établissement public qui gère, depuis 2021, la branche Autonomie de la Sécurité sociale. Elle reçoit les prix déclarés par les EHPAD, publiés dans l’annuaire officiel.","url":"https://trouver-mon-ehpad.fr/lexique/#cnsa","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#conseil-departemental","name":"Conseil départemental","description":"Collectivité du département. Pour les personnes âgées, il accorde l’APA et l’aide sociale à l’hébergement. Il autorise, contrôle et fixe les tarifs de certains établissements.","url":"https://trouver-mon-ehpad.fr/lexique/#conseil-departemental","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#contrat-sejour","name":"Contrat de séjour","description":"Contrat conclu entre le résident (ou son représentant) et l’EHPAD dès que le séjour peut dépasser deux mois. Il détaille les prestations, les prix, la facturation en cas d’absence et les conditions de départ.","url":"https://trouver-mon-ehpad.fr/lexique/#contrat-sejour","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#criteres-imperatifs","name":"Critères impératifs","description":"Les 18 exigences du référentiel de la HAS qui doivent être totalement satisfaites. Elles portent par exemple sur la dignité, la vie privée ou la prévention de la maltraitance. Un critère non atteint impose un plan d’actions.","url":"https://trouver-mon-ehpad.fr/lexique/#criteres-imperatifs","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#depot-garantie","name":"Dépôt de garantie","description":"Somme versée à l’entrée pour couvrir d’éventuelles dégradations. Elle ne dépasse pas un mois de tarif d’hébergement. Elle est rendue dans les 30 jours après le départ, moins les sommes dues.","url":"https://trouver-mon-ehpad.fr/lexique/#depot-garantie","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#dossier-admission","name":"Dossier unique d’admission en EHPAD","description":"Formulaire national (Cerfa n° 14732*03) pour demander une place en EHPAD, en hébergement temporaire ou en accueil de jour. Il comprend un volet administratif et un volet médical rempli par un médecin.","url":"https://trouver-mon-ehpad.fr/lexique/#dossier-admission","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#drees","name":"DREES","description":"Direction de la recherche, des études, de l’évaluation et des statistiques : service statistique des ministères de la santé et des solidarités. Elle collecte, analyse et diffuse les statistiques de la santé et de l’action sociale.","url":"https://trouver-mon-ehpad.fr/lexique/#drees","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#ehpad","name":"EHPAD","description":"Établissement d’hébergement pour personnes âgées dépendantes : une maison de retraite médicalisée. Il accueille des personnes, en général de 60 ans ou plus, qui ont besoin d’aide et de soins au quotidien.","url":"https://trouver-mon-ehpad.fr/lexique/#ehpad","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#equipe-medico-sociale","name":"Équipe médico-sociale du département","description":"Équipe du service autonomie du département (médecins, travailleurs sociaux, infirmiers…). Pour une demande d’APA à domicile, l’un de ses membres vient évaluer la perte d’autonomie et propose un plan d’aide.","url":"https://trouver-mon-ehpad.fr/lexique/#equipe-medico-sociale","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#essms","name":"ESSMS","description":"Établissements et services sociaux et médico-sociaux : structures qui accompagnent des personnes âgées, des personnes handicapées, des enfants protégés ou des personnes en grande précarité. Les EHPAD en font partie.","url":"https://trouver-mon-ehpad.fr/lexique/#essms","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#conventionne","name":"Établissement conventionné APL","description":"Établissement qui a signé une convention avec l’État ouvrant droit à l’aide personnalisée au logement (APL) pour ses résidents. Cela dépend de l’établissement, pas de la personne.","url":"https://trouver-mon-ehpad.fr/lexique/#conventionne","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#evaluation-has","name":"Évaluation HAS des ESSMS","description":"Évaluation de la qualité menée tous les cinq ans dans chaque ESSMS par un organisme extérieur. Elle suit le référentiel de la HAS. Elle aboutit à un niveau global de qualité, de A à D.","url":"https://trouver-mon-ehpad.fr/lexique/#evaluation-has","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#finess","name":"FINESS","description":"Fichier national des établissements sanitaires et sociaux : répertoire officiel qui identifie chaque établissement, dont les EHPAD, par un numéro de neuf caractères. Il distingue l’entité juridique (le gestionnaire) et l’entité géographique (le lieu).","url":"https://trouver-mon-ehpad.fr/lexique/#finess","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#gir","name":"GIR — groupe iso-ressources","description":"Niveau de perte d’autonomie d’une personne âgée, de GIR 1 (la plus dépendante) à GIR 6 (autonome). Il est déterminé avec la grille nationale AGGIR.","url":"https://trouver-mon-ehpad.fr/lexique/#gir","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#aggir","name":"Grille AGGIR","description":"Grille nationale qui mesure la perte d’autonomie. Dix activités du quotidien (se laver, s’habiller, se repérer…) servent à fixer le GIR. Sept activités domestiques et sociales complètent l’évaluation.","url":"https://trouver-mon-ehpad.fr/lexique/#aggir","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#habilitation","name":"Habilitation à l’aide sociale","description":"Autorisation pour un établissement d’accueillir des bénéficiaires de l’aide sociale à l’hébergement, sur tout ou partie de ses places. Pour ces places, c’est le département qui fixe le prix d’hébergement.","url":"https://trouver-mon-ehpad.fr/lexique/#habilitation","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#has","name":"HAS — Haute Autorité de santé","description":"Organisme public chargé de mesurer et d’améliorer la qualité des soins et des accompagnements. Elle a créé le référentiel qui sert à évaluer les établissements sociaux et médico-sociaux, dont les EHPAD.","url":"https://trouver-mon-ehpad.fr/lexique/#has","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#hebergement-temporaire","name":"Hébergement temporaire","description":"Séjour de courte durée en établissement ou en accueil familial pour une personne qui vit chez elle : après une hospitalisation, pendant l’absence d’un proche, ou avant une entrée définitive.","url":"https://trouver-mon-ehpad.fr/lexique/#hebergement-temporaire","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#medecin-coordonnateur","name":"Médecin coordonnateur","description":"Médecin de l’EHPAD qui organise les soins avec l’équipe soignante. Il donne son avis sur chaque admission et évalue le GIR des résidents. Il peut aussi suivre les résidents qui le souhaitent.","url":"https://trouver-mon-ehpad.fr/lexique/#medecin-coordonnateur","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#mediane","name":"Médiane","description":"Valeur qui partage un ensemble en deux moitiés égales : la moitié des prix est en dessous, l’autre moitié au-dessus. Elle est moins tirée vers le haut que la moyenne par quelques prix très élevés.","url":"https://trouver-mon-ehpad.fr/lexique/#mediane","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#notification","name":"Notification","description":"Formalité par laquelle une décision est portée officiellement à la connaissance d’une personne. Pour l’APA ou l’aide sociale, c’est le courrier du département qui annonce l’accord, le refus ou le montant.","url":"https://trouver-mon-ehpad.fr/lexique/#notification","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#obligation-alimentaire","name":"Obligation alimentaire","description":"Devoir d’aider un parent ou un beau-parent qui ne peut plus faire face à ses besoins essentiels (logement, nourriture, soins). Il n’existe pas de barème : l’aide dépend des besoins de l’un et des ressources de l’autre.","url":"https://trouver-mon-ehpad.fr/lexique/#obligation-alimentaire","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#obliges-alimentaires","name":"Obligés alimentaires","description":"Personnes tenues à l’obligation alimentaire : enfants, petits-enfants, gendres et belles-filles. Pour une demande d’aide sociale à l’hébergement, les petits-enfants et leurs descendants sont dispensés.","url":"https://trouver-mon-ehpad.fr/lexique/#obliges-alimentaires","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#participation-forfaitaire","name":"Participation forfaitaire (expérimentation soins-dépendance)","description":"Somme par jour, identique pour tous les résidents, qui remplace le tarif dépendance dans les 23 territoires de l’expérimentation lancée le 1er juillet 2025. Elle ne dépend ni du GIR ni des ressources.","url":"https://trouver-mon-ehpad.fr/lexique/#participation-forfaitaire","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#pasa","name":"PASA — pôle d’activités et de soins adaptés","description":"Espace aménagé dans un EHPAD qui accueille en journée des résidents atteints d’Alzheimer ou d’une maladie apparentée, avec des troubles du comportement modérés. Des activités adaptées y sont proposées par une équipe formée.","url":"https://trouver-mon-ehpad.fr/lexique/#pasa","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#pui","name":"PUI — pharmacie à usage intérieur","description":"Pharmacie située à l’intérieur d’un établissement de santé ou médico-social. Elle fournit les médicaments et le matériel médical aux services de soins et veille à leur bon usage.","url":"https://trouver-mon-ehpad.fr/lexique/#pui","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#recuperation-succession","name":"Récupération sur succession","description":"Remboursement, au décès du bénéficiaire, des sommes versées par le département au titre de l’aide sociale à l’hébergement. Il porte sur l’actif net de la succession (biens moins dettes), jamais sur le patrimoine des héritiers.","url":"https://trouver-mon-ehpad.fr/lexique/#recuperation-succession","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#reduction-impot","name":"Réduction d’impôt pour frais d’hébergement","description":"Avantage fiscal pour la personne accueillie en EHPAD ou en établissement de soins de longue durée : 25 % des frais de dépendance et d’hébergement restant à payer, dans la limite de 2 500 € par an et par personne.","url":"https://trouver-mon-ehpad.fr/lexique/#reduction-impot","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#residence-autonomie","name":"Résidence autonomie","description":"Ensemble de logements privatifs non médicalisés, avec des services collectifs (repas, animations, blanchisserie). Elle accueille des personnes âgées autonomes ou peu dépendantes, à un loyer modéré.","url":"https://trouver-mon-ehpad.fr/lexique/#residence-autonomie","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#reste-a-charge","name":"Reste à charge","description":"Ce que le résident paie chaque mois une fois déduites du total de la facture les aides publiques : APA, aide au logement, aide sociale.","url":"https://trouver-mon-ehpad.fr/lexique/#reste-a-charge","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#socle-prestations","name":"Socle de prestations minimales","description":"Liste des prestations que tout EHPAD doit inclure dans son tarif d’hébergement : administration, chambre avec salle de bain, trois repas, goûter et collation de nuit, linge, accès à internet et animations.","url":"https://trouver-mon-ehpad.fr/lexique/#socle-prestations","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#argent-de-poche","name":"Somme minimale laissée au résident (« argent de poche »)","description":"Somme que le département laisse obligatoirement au résident bénéficiaire de l’aide sociale : 10 % de ses ressources, et au moins 1 % du montant annuel de l’ASPA, soit 125 € par mois en 2026.","url":"https://trouver-mon-ehpad.fr/lexique/#argent-de-poche","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#prix-habilite","name":"Tarif « aide sociale » et tarif libre (tarifs différenciés)","description":"Dans un EHPAD habilité, le département fixe le tarif « aide sociale ». Depuis 2025, un EHPAD totalement ou majoritairement habilité peut appliquer un tarif plus élevé, dit « libre ». Il vise les nouveaux résidents non bénéficiaires, dans une limite fixée.","url":"https://trouver-mon-ehpad.fr/lexique/#prix-habilite","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#tarif-dependance","name":"Tarif dépendance","description":"Part de la facture qui paie l’aide aux gestes du quotidien (toilette, habillage, déplacements). Chaque EHPAD a trois tarifs selon le GIR : GIR 1-2, GIR 3-4 et GIR 5-6. Le département les fixe pour un an.","url":"https://trouver-mon-ehpad.fr/lexique/#tarif-dependance","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#tarif-hebergement","name":"Tarif d’hébergement","description":"Prix de la vie quotidienne en EHPAD : chambre, repas, entretien, blanchissage, animation et administration. Il est à la charge du résident, aidé parfois par l’aide au logement ou l’aide sociale.","url":"https://trouver-mon-ehpad.fr/lexique/#tarif-hebergement","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#tarif-global-partiel","name":"Tarif global / tarif partiel","description":"Deux façons de financer les soins. En tarif partiel, le résident règle ses frais médicaux personnels comme à domicile. En tarif global, l’Assurance maladie verse en plus une enveloppe qui couvre notamment les médecins généralistes et les examens courants.","url":"https://trouver-mon-ehpad.fr/lexique/#tarif-global-partiel","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#tarif-journalier","name":"Tarif journalier","description":"Prix fixé par jour. En EHPAD, l’hébergement, la dépendance et les soins ont chacun leur tarif journalier. Les prix publiés dans l’annuaire officiel sont des prix par jour.","url":"https://trouver-mon-ehpad.fr/lexique/#tarif-journalier","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#tarif-soins","name":"Tarif soins / forfait soins","description":"Part des coûts liée aux soins : personnel soignant, médecin coordonnateur, petit matériel médical. L’Assurance maladie la verse directement à l’EHPAD ; elle n’est pas facturée au résident.","url":"https://trouver-mon-ehpad.fr/lexique/#tarif-soins","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#ticket-moderateur","name":"Ticket modérateur (tarif GIR 5-6)","description":"Nom donné au tarif dépendance GIR 5-6 en EHPAD. Tout résident le paie au minimum, quel que soit son GIR : l’APA ne couvre que la différence avec son propre tarif.","url":"https://trouver-mon-ehpad.fr/lexique/#ticket-moderateur","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#uhr","name":"UHR — unité d’hébergement renforcée","description":"Lieu de vie aménagé dans un EHPAD, jour et nuit, pour des personnes atteintes d’Alzheimer ou d’une maladie apparentée avec d’importants troubles du comportement. L’objectif est un retour dans le lieu de vie habituel.","url":"https://trouver-mon-ehpad.fr/lexique/#uhr","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#unite-protegee","name":"Unité protégée / unité de vie Alzheimer","description":"Unité d’un EHPAD pour des personnes atteintes de la maladie d’Alzheimer ou d’une maladie apparentée, avec des troubles modérés du comportement. Les lieux permettent de marcher sans se perdre, avec une équipe formée.","url":"https://trouver-mon-ehpad.fr/lexique/#unite-protegee","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#usld","name":"USLD — unité de soins de longue durée","description":"Structure d’hébergement et de soins, en général rattachée à un hôpital, pour des personnes dont l’état exige une surveillance médicale constante. Les moyens médicaux y sont plus importants qu’en EHPAD.","url":"https://trouver-mon-ehpad.fr/lexique/#usld","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"},{"@type":"DefinedTerm","@id":"https://trouver-mon-ehpad.fr/lexique/#viatrajectoire","name":"ViaTrajectoire","description":"Service public national, gratuit et sécurisé, d’aide à l’orientation. Pour les personnes âgées, il permet de remplir une seule fois le dossier d’admission et de l’envoyer à plusieurs EHPAD.","url":"https://trouver-mon-ehpad.fr/lexique/#viatrajectoire","inDefinedTermSet":"https://trouver-mon-ehpad.fr/lexique/#lexique"}]}]}</script>
+<script src="/assets/pages.js" defer></script>
+</head>
+<body data-type="guide" data-lieu="">
+<div id="topbar" class="topbar print-hide">
+<div class="topbar-in">
+<a class="tb-logo" href="/">Trouver mon <span>EHPAD</span></a>
+<div class="tb-r">
+<div class="tb-nav-wrap">
+<button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
+<nav id="tb-menu" class="tb-menu" hidden aria-label="Navigation rapide">
+<a href="/">Accueil</a>
+<a href="/ehpad/">Les EHPAD en France</a>
+<a href="/prix-ehpad/">Prix des EHPAD</a>
+<a href="/aides-ehpad/">Aides financières</a>
+<a href="/guides/">Guides</a>
+<a href="/professionnels/">Espace professionnel</a>
+<a href="/lexique/">Lexique</a>
+<hr>
+<a href="/qui-sommes-nous.html">Qui sommes-nous&nbsp;?</a>
+<a href="/comparer-devis-ehpad/" class="menu-devis">Comparer vos devis</a>
+<a href="/retours/">Vos retours</a>
+</nav>
+</div>
+<button type="button" id="theme-btn" class="tb-icon tb-sw js-theme" role="switch" aria-checked="false" aria-label="Mode sombre" title="Mode sombre : activer ou désactiver"><span class="sw-txt" aria-hidden="true">Sombre</span><span class="sw-piste" aria-hidden="true"><span class="sw-pouce"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></span></span></button>
+<a href="/comparer-devis-ehpad/" class="tb-devis">Comparer vos devis</a>
+<a href="/retours/" class="tb-avis">Vos retours</a>
+<a href="/" class="tb-cta" data-ev="seo_topbar_to_calculator">Calculer<span class="tb-cta-plus">&nbsp;mon reste à charge</span></a>
+</div>
+</div>
+<div class="tb-prog" aria-hidden="true"><i id="tb-prog"></i></div>
+</div>
+<header class="top"><div class="top-in">
+<a class="logo" href="/">Trouver mon <span>EHPAD</span></a>
+<nav aria-label="Navigation principale">
+<a href="/">Accueil</a>
+<a href="/ehpad/">Les EHPAD en France</a>
+<a href="/prix-ehpad/">Prix</a>
+<a href="/aides-ehpad/">Aides</a>
+<a href="/guides/">Guides</a>
+</nav>
+<button type="button" class="tb-icon tb-sw js-theme" role="switch" aria-checked="false" aria-label="Mode sombre" title="Mode sombre : activer ou désactiver"><span class="sw-txt" aria-hidden="true">Sombre</span><span class="sw-piste" aria-hidden="true"><span class="sw-pouce"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></span></span></button></div></header>
+<main class="wrap">
+<nav class="fil-ariane" aria-label="Fil d’Ariane"><a href="/">Accueil</a> <span aria-hidden="true">›</span> <span aria-current="page">Lexique</span></nav>
+<h1 class="p-h1">Lexique de l’EHPAD</h1>
+<p class="p-sub">50 mots de l’EHPAD expliqués simplement&nbsp;: GIR, APA, aide sociale, tarif dépendance,
+évaluation HAS… Chaque définition cite sa source officielle.</p>
+<p class="p-maj">Par <a href="/qui-sommes-nous.html#editeur">David Rival</a> · définitions vérifiées le 29/09/2026</p>
+<p>Sur tout le site, ces mots sont soulignés en pointillé&nbsp;: survolez-les pour la définition courte,
+cliquez pour arriver ici.</p>
+<nav class="lx-nav" aria-label="Familles de termes"><p><a href="#famille-etablissements">Les établissements</a> · <a href="#famille-autonomie">L’autonomie</a> · <a href="#famille-tarifs">Les tarifs et la facture</a> · <a href="#famille-aides">Les aides et la famille</a> · <a href="#famille-demarches">Les démarches</a> · <a href="#famille-donnees">Les données et la qualité</a></p></nav>
+<section><h2>De A à Z</h2><ul class="lx-alpha"><li id="lettre-A"><b>A</b> <a href="#accueil-de-jour">Accueil de jour</a> · <a href="#ash">Aide sociale à l’hébergement (ASH)</a> · <a href="#apa">APA en établissement</a> · <a href="#apl-als">APL / ALS</a> · <a href="#aspa">ASPA — minimum vieillesse</a></li><li id="lettre-C"><b>C</b> <a href="#ccas">CCAS — centre communal d’action sociale</a> · <a href="#chambre-double">Chambre double</a> · <a href="#cnsa">CNSA</a> · <a href="#conseil-departemental">Conseil départemental</a> · <a href="#contrat-sejour">Contrat de séjour</a> · <a href="#criteres-imperatifs">Critères impératifs</a></li><li id="lettre-D"><b>D</b> <a href="#depot-garantie">Dépôt de garantie</a> · <a href="#dossier-admission">Dossier unique d’admission en EHPAD</a> · <a href="#drees">DREES</a></li><li id="lettre-E"><b>E</b> <a href="#ehpad">EHPAD</a> · <a href="#equipe-medico-sociale">Équipe médico-sociale du département</a> · <a href="#essms">ESSMS</a> · <a href="#conventionne">Établissement conventionné APL</a> · <a href="#evaluation-has">Évaluation HAS des ESSMS</a></li><li id="lettre-F"><b>F</b> <a href="#finess">FINESS</a></li><li id="lettre-G"><b>G</b> <a href="#gir">GIR — groupe iso-ressources</a> · <a href="#aggir">Grille AGGIR</a></li><li id="lettre-H"><b>H</b> <a href="#habilitation">Habilitation à l’aide sociale</a> · <a href="#has">HAS — Haute Autorité de santé</a> · <a href="#hebergement-temporaire">Hébergement temporaire</a></li><li id="lettre-M"><b>M</b> <a href="#medecin-coordonnateur">Médecin coordonnateur</a> · <a href="#mediane">Médiane</a></li><li id="lettre-N"><b>N</b> <a href="#notification">Notification</a></li><li id="lettre-O"><b>O</b> <a href="#obligation-alimentaire">Obligation alimentaire</a> · <a href="#obliges-alimentaires">Obligés alimentaires</a></li><li id="lettre-P"><b>P</b> <a href="#participation-forfaitaire">Participation forfaitaire (expérimentation soins-dépendance)</a> · <a href="#pasa">PASA — pôle d’activités et de soins adaptés</a> · <a href="#pui">PUI — pharmacie à usage intérieur</a></li><li id="lettre-R"><b>R</b> <a href="#recuperation-succession">Récupération sur succession</a> · <a href="#reduction-impot">Réduction d’impôt pour frais d’hébergement</a> · <a href="#residence-autonomie">Résidence autonomie</a> · <a href="#reste-a-charge">Reste à charge</a></li><li id="lettre-S"><b>S</b> <a href="#socle-prestations">Socle de prestations minimales</a> · <a href="#argent-de-poche">Somme minimale laissée au résident (« argent de poche »)</a></li><li id="lettre-T"><b>T</b> <a href="#prix-habilite">Tarif « aide sociale » et tarif libre (tarifs différenciés)</a> · <a href="#tarif-dependance">Tarif dépendance</a> · <a href="#tarif-hebergement">Tarif d’hébergement</a> · <a href="#tarif-global-partiel">Tarif global / tarif partiel</a> · <a href="#tarif-journalier">Tarif journalier</a> · <a href="#tarif-soins">Tarif soins / forfait soins</a> · <a href="#ticket-moderateur">Ticket modérateur (tarif GIR 5-6)</a></li><li id="lettre-U"><b>U</b> <a href="#uhr">UHR — unité d’hébergement renforcée</a> · <a href="#unite-protegee">Unité protégée / unité de vie Alzheimer</a> · <a href="#usld">USLD — unité de soins de longue durée</a></li><li id="lettre-V"><b>V</b> <a href="#viatrajectoire">ViaTrajectoire</a></li></ul></section>
+<section class="lx-fam"><h2 id="famille-etablissements">Les établissements</h2><div class="lx-terme" id="accueil-de-jour">
+<h3>Accueil de jour</h3>
+<p>Accueil d’une ou plusieurs journées par semaine, dans un centre dédié ou dans un EHPAD, de personnes âgées qui vivent chez elles. Il propose des activités adaptées et libère du temps pour les proches.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Son prix à la journée est fixé chaque année par le conseil départemental ; l’APA à domicile peut aider à le payer.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/solutions-d-accueil-temporaire/aller-a-l-accueil-de-jour" rel="noopener">Pour-les-personnes-agees.gouv.fr — Aller à l’accueil de jour</a></p>
+</div><div class="lx-terme" id="ehpad">
+<h3>EHPAD</h3>
+<p>Établissement d’hébergement pour personnes âgées dépendantes : une maison de retraite médicalisée. Il accueille des personnes, en général de 60 ans ou plus, qui ont besoin d’aide et de soins au quotidien.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> La facture comprend un tarif d’hébergement et un tarif dépendance ; les soins sont payés par l’Assurance maladie.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F763" rel="noopener">Service-public.fr — Éhpad</a> · <a href="/guides/comment-choisir-un-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="essms">
+<h3>ESSMS</h3>
+<p>Établissements et services sociaux et médico-sociaux : structures qui accompagnent des personnes âgées, des personnes handicapées, des enfants protégés ou des personnes en grande précarité. Les EHPAD en font partie.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Tous sont évalués tous les cinq ans par un organisme extérieur, selon le référentiel de la HAS.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.has-sante.fr/jcms/c_2838131/fr/comprendre-la-nouvelle-evaluation-des-essms" rel="noopener">HAS — Comprendre la nouvelle évaluation des ESSMS</a> · <a href="/guides/lire-une-evaluation-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="hebergement-temporaire">
+<h3>Hébergement temporaire</h3>
+<p>Séjour de courte durée en établissement ou en accueil familial pour une personne qui vit chez elle : après une hospitalisation, pendant l’absence d’un proche, ou avant une entrée définitive.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Il peut servir de solution d’attente ; l’APA, l’aide sociale ou des aides locales peuvent réduire son coût.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/solutions-d-accueil-temporaire/l-hebergement-temporaire-ce-qu-il-faut-savoir" rel="noopener">Pour-les-personnes-agees.gouv.fr — L’hébergement temporaire : ce qu’il faut savoir</a> · <a href="/guides/urgence-apres-hospitalisation/">En savoir plus</a></p>
+</div><div class="lx-terme" id="pasa">
+<h3>PASA — pôle d’activités et de soins adaptés</h3>
+<p>Espace aménagé dans un EHPAD qui accueille en journée des résidents atteints d’Alzheimer ou d’une maladie apparentée, avec des troubles du comportement modérés. Des activités adaptées y sont proposées par une équipe formée.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Pour les résidents de l’EHPAD, le PASA n’est pas facturé en plus du prix mensuel.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/les-pasa-des-espaces-amenages-au-sein-des-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Les PASA</a> · <a href="/guides/ehpad-alzheimer-unite-protegee/">En savoir plus</a></p>
+</div><div class="lx-terme" id="residence-autonomie">
+<h3>Résidence autonomie</h3>
+<p>Ensemble de logements privatifs non médicalisés, avec des services collectifs (repas, animations, blanchisserie). Elle accueille des personnes âgées autonomes ou peu dépendantes, à un loyer modéré.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Si la perte d’autonomie s’aggrave, il peut falloir la quitter : elle n’accueille qu’un petit nombre de résidents dépendants.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/changer-de-logement/vivre-dans-une-residence-avec-services-pour-seniors/les-residences-autonomie-pour-qui" rel="noopener">Pour-les-personnes-agees.gouv.fr — Les résidences autonomie, pour qui ?</a></p>
+</div><div class="lx-terme" id="uhr">
+<h3>UHR — unité d’hébergement renforcée</h3>
+<p>Lieu de vie aménagé dans un EHPAD, jour et nuit, pour des personnes atteintes d’Alzheimer ou d’une maladie apparentée avec d’importants troubles du comportement. L’objectif est un retour dans le lieu de vie habituel.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Ses tarifs d’hébergement et de dépendance peuvent différer de ceux du reste de l’EHPAD : demandez-les.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/les-uhr-des-lieux-d-hebergement-amenages-dans-les-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Les UHR</a> · <a href="/guides/ehpad-alzheimer-unite-protegee/">En savoir plus</a></p>
+</div><div class="lx-terme" id="unite-protegee">
+<h3>Unité protégée / unité de vie Alzheimer</h3>
+<p>Unité d’un EHPAD pour des personnes atteintes de la maladie d’Alzheimer ou d’une maladie apparentée, avec des troubles modérés du comportement. Les lieux permettent de marcher sans se perdre, avec une équipe formée.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Toutes les places n’y sont pas ouvertes à tous : l’admission dépend du diagnostic et des troubles de la personne.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/alzheimer-en-ehpad-quel-accompagnement" rel="noopener">Pour-les-personnes-agees.gouv.fr — Alzheimer en EHPAD : quel accompagnement ?</a> · <a href="/guides/ehpad-alzheimer-unite-protegee/">En savoir plus</a></p>
+</div><div class="lx-terme" id="usld">
+<h3>USLD — unité de soins de longue durée</h3>
+<p>Structure d’hébergement et de soins, en général rattachée à un hôpital, pour des personnes dont l’état exige une surveillance médicale constante. Les moyens médicaux y sont plus importants qu’en EHPAD.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> La facture y fonctionne comme en EHPAD : hébergement et dépendance à payer, soins pris en charge par l’Assurance maladie.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-usld-unites-de-soins-de-longue-duree" rel="noopener">Pour-les-personnes-agees.gouv.fr — Les USLD</a></p>
+</div></section><section class="lx-fam"><h2 id="famille-autonomie">L’autonomie</h2><div class="lx-terme" id="equipe-medico-sociale">
+<h3>Équipe médico-sociale du département</h3>
+<p>Équipe du service autonomie du département (médecins, travailleurs sociaux, infirmiers…). Pour une demande d’APA à domicile, l’un de ses membres vient évaluer la perte d’autonomie et propose un plan d’aide.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Si la situation change, vous pouvez lui demander à tout moment une réévaluation.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/l-equipe-medico-sociale-apa" rel="noopener">Pour-les-personnes-agees.gouv.fr — L’équipe médico-sociale APA</a></p>
+</div><div class="lx-terme" id="gir">
+<h3>GIR — groupe iso-ressources</h3>
+<p>Niveau de perte d’autonomie d’une personne âgée, de GIR 1 (la plus dépendante) à GIR 6 (autonome). Il est déterminé avec la grille nationale AGGIR.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Du GIR 1 au GIR 4, la personne peut obtenir l’APA ; en EHPAD, le GIR fixe aussi le tarif dépendance.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F1229" rel="noopener">Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ?</a> · <a href="/guides/gir-niveau-autonomie/">En savoir plus</a></p>
+</div><div class="lx-terme" id="aggir">
+<h3>Grille AGGIR</h3>
+<p>Grille nationale qui mesure la perte d’autonomie. Dix activités du quotidien (se laver, s’habiller, se repérer…) servent à fixer le GIR. Sept activités domestiques et sociales complètent l’évaluation.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> C’est avec elle que le médecin coordonnateur de l’EHPAD, ou l’équipe du département à domicile, fixe le GIR.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F1229" rel="noopener">Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ?</a> · <a href="/guides/gir-niveau-autonomie/">En savoir plus</a></p>
+</div><div class="lx-terme" id="medecin-coordonnateur">
+<h3>Médecin coordonnateur</h3>
+<p>Médecin de l’EHPAD qui organise les soins avec l’équipe soignante. Il donne son avis sur chaque admission et évalue le GIR des résidents. Il peut aussi suivre les résidents qui le souhaitent.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> C’est à lui qu’est remis, sous pli confidentiel, le volet médical du dossier d’admission.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-medecin-coordonnateur" rel="noopener">Pour-les-personnes-agees.gouv.fr — Le médecin coordonnateur</a> · <a href="/guides/dossier-admission-ehpad/">En savoir plus</a></p>
+</div></section><section class="lx-fam"><h2 id="famille-tarifs">Les tarifs et la facture</h2><div class="lx-terme" id="chambre-double">
+<h3>Chambre double</h3>
+<p>Chambre partagée à deux, proposée par certains EHPAD aux couples ou aux personnes qui l’acceptent. Son prix est affiché par personne.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Pour un couple, comptez ce prix pour chacun des deux.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Comprendre le comparateur de prix des EHPAD</a> · <a href="/calcul-reste-a-charge-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="depot-garantie">
+<h3>Dépôt de garantie</h3>
+<p>Somme versée à l’entrée pour couvrir d’éventuelles dégradations. Elle ne dépasse pas un mois de tarif d’hébergement. Elle est rendue dans les 30 jours après le départ, moins les sommes dues.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Sans état des lieux à l’entrée et à la sortie, aucune remise en état ne peut vous être facturée.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/quelles-garanties-demandees-pour-entrer-en-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Quelles garanties pour entrer en EHPAD ?</a> · <a href="/guides/dossier-admission-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="participation-forfaitaire">
+<h3>Participation forfaitaire (expérimentation soins-dépendance)</h3>
+<p>Somme par jour, identique pour tous les résidents, qui remplace le tarif dépendance dans les 23 territoires de l’expérimentation lancée le 1er juillet 2025. Elle ne dépend ni du GIR ni des ressources.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Dans ces territoires, l’APA en établissement est supprimée : la part dépendance est la même pour tous.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/actualites/financement-des-ehpad-une-experimentation-dans-23-departements" rel="noopener">Pour-les-personnes-agees.gouv.fr — Financement des EHPAD : une expérimentation dans 23 départements</a> · <a href="/etudes/fusion-soins-dependance-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="pui">
+<h3>PUI — pharmacie à usage intérieur</h3>
+<p>Pharmacie située à l’intérieur d’un établissement de santé ou médico-social. Elle fournit les médicaments et le matériel médical aux services de soins et veille à leur bon usage.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Seuls certains EHPAD en ont une : demandez qui fournit les médicaments et comment ils sont payés.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.paca.ars.sante.fr/pharmacies-usage-interieur-1" rel="noopener">ARS Provence-Alpes-Côte d’Azur — Pharmacies à usage intérieur</a></p>
+</div><div class="lx-terme" id="reste-a-charge">
+<h3>Reste à charge</h3>
+<p>Ce que le résident paie chaque mois une fois déduites du total de la facture les aides publiques : APA, aide au logement, aide sociale.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> C’est le chiffre à comparer entre établissements, plutôt que le prix affiché.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-usld-unites-de-soins-de-longue-duree" rel="noopener">Pour-les-personnes-agees.gouv.fr — Les USLD</a> · <a href="/calcul-reste-a-charge-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="socle-prestations">
+<h3>Socle de prestations minimales</h3>
+<p>Liste des prestations que tout EHPAD doit inclure dans son tarif d’hébergement : administration, chambre avec salle de bain, trois repas, goûter et collation de nuit, linge, accès à internet et animations.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Tout ce qui s’y ajoute (coiffeur, pédicure…) est facturé en plus : demandez la liste écrite avant de signer.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Les EHPAD</a> · <a href="/guides/dossier-admission-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="prix-habilite">
+<h3>Tarif « aide sociale » et tarif libre (tarifs différenciés)</h3>
+<p>Dans un EHPAD habilité, le département fixe le tarif « aide sociale ». Depuis 2025, un EHPAD totalement ou majoritairement habilité peut appliquer un tarif plus élevé, dit « libre ». Il vise les nouveaux résidents non bénéficiaires, dans une limite fixée.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Le tarif « libre » ne s’applique jamais à un bénéficiaire de l’aide sociale, ni aux résidents entrés avant sa mise en place.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://solidarites.gouv.fr/faq-tarifs-differencies-dans-les-ehpad" rel="noopener">Ministère des Solidarités — FAQ Tarifs différenciés dans les EHPAD</a> · <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="tarif-dependance">
+<h3>Tarif dépendance</h3>
+<p>Part de la facture qui paie l’aide aux gestes du quotidien (toilette, habillage, déplacements). Chaque EHPAD a trois tarifs selon le GIR : GIR 1-2, GIR 3-4 et GIR 5-6. Le département les fixe pour un an.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> L’APA en couvre une partie pour les GIR 1 à 4 ; dans les 23 territoires de l’expérimentation, il est remplacé par une participation forfaitaire.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD</a> · <a href="/guides/tarif-hebergement-et-tarif-dependance/">En savoir plus</a></p>
+</div><div class="lx-terme" id="tarif-hebergement">
+<h3>Tarif d’hébergement</h3>
+<p>Prix de la vie quotidienne en EHPAD : chambre, repas, entretien, blanchissage, animation et administration. Il est à la charge du résident, aidé parfois par l’aide au logement ou l’aide sociale.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Il figure dans le contrat de séjour, ne change pas en cours d’année et est réévalué chaque année.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F763" rel="noopener">Service-public.fr — Éhpad</a> · <a href="/guides/tarif-hebergement-et-tarif-dependance/">En savoir plus</a></p>
+</div><div class="lx-terme" id="tarif-global-partiel">
+<h3>Tarif global / tarif partiel</h3>
+<p>Deux façons de financer les soins. En tarif partiel, le résident règle ses frais médicaux personnels comme à domicile. En tarif global, l’Assurance maladie verse en plus une enveloppe qui couvre notamment les médecins généralistes et les examens courants.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Renseignez-vous lors de la visite : cela change qui paie le médecin et certains examens, pas le tarif d’hébergement.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/le-cout-des-soins-en-ehpad-et-en-usld-unites-de-soins-de-longue-duree" rel="noopener">Pour-les-personnes-agees.gouv.fr — Le coût des soins en EHPAD et en USLD</a> · <a href="/guides/tarif-hebergement-et-tarif-dependance/">En savoir plus</a></p>
+</div><div class="lx-terme" id="tarif-journalier">
+<h3>Tarif journalier</h3>
+<p>Prix fixé par jour. En EHPAD, l’hébergement, la dépendance et les soins ont chacun leur tarif journalier. Les prix publiés dans l’annuaire officiel sont des prix par jour.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Pour un mois, ce site multiplie le tarif journalier par 30,5 jours ; le comparateur officiel utilise 30 jours.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD</a> · <a href="/notre-methodologie.html">En savoir plus</a></p>
+</div><div class="lx-terme" id="tarif-soins">
+<h3>Tarif soins / forfait soins</h3>
+<p>Part des coûts liée aux soins : personnel soignant, médecin coordonnateur, petit matériel médical. L’Assurance maladie la verse directement à l’EHPAD ; elle n’est pas facturée au résident.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Les frais médicaux personnels (médecin traitant, médicaments…) restent à part, selon que l’EHPAD est en tarif global ou partiel.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/le-cout-des-soins-en-ehpad-et-en-usld-unites-de-soins-de-longue-duree" rel="noopener">Pour-les-personnes-agees.gouv.fr — Le coût des soins en EHPAD et en USLD</a> · <a href="/guides/tarif-hebergement-et-tarif-dependance/">En savoir plus</a></p>
+</div><div class="lx-terme" id="ticket-moderateur">
+<h3>Ticket modérateur (tarif GIR 5-6)</h3>
+<p>Nom donné au tarif dépendance GIR 5-6 en EHPAD. Tout résident le paie au minimum, quel que soit son GIR : l’APA ne couvre que la différence avec son propre tarif.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Si les ressources ne suffisent pas, l’aide sociale à l’hébergement peut le prendre en charge.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad" rel="noopener">CNSA — Réforme de la tarification des EHPAD</a> · <a href="/aides-ehpad/apa/">En savoir plus</a></p>
+</div></section><section class="lx-fam"><h2 id="famille-aides">Les aides et la famille</h2><div class="lx-terme" id="ash">
+<h3>Aide sociale à l’hébergement (ASH)</h3>
+<p>Aide du département qui paie la part des frais d’hébergement que la personne ne peut pas régler. Elle suppose un établissement habilité et peut être récupérée, notamment sur la succession.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Demandez-la dans les deux mois suivant l’entrée : la prise en charge peut alors remonter à la date d’entrée.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2444" rel="noopener">Service-public.fr — Aide sociale à l’hébergement</a> · <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="apa">
+<h3>APA en établissement</h3>
+<p>Allocation personnalisée d’autonomie : aide du département qui paie une partie du tarif dépendance en EHPAD ou en USLD. Elle concerne les personnes de 60 ans ou plus évaluées en GIR 1 à 4. Son montant dépend des ressources.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Elle n’est jamais récupérée sur la succession ; elle est souvent versée directement à l’EHPAD.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-apa-en-etablissement" rel="noopener">Pour-les-personnes-agees.gouv.fr — L’APA en établissement</a> · <a href="/aides-ehpad/apa/">En savoir plus</a></p>
+</div><div class="lx-terme" id="apl-als">
+<h3>APL / ALS</h3>
+<p>Aides au logement qui réduisent le tarif d’hébergement. L’APL (aide personnalisée au logement) est possible si l’établissement est conventionné ; sinon, c’est l’ALS (allocation de logement sociale). Elles ne se cumulent pas entre elles.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> La demande se fait à la CAF ou à la MSA ; l’établissement remplit l’attestation prévue dans le formulaire.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/vivre-en-etablissement-et-faire-une-demande-d-apl-ou-d-als" rel="noopener">Pour-les-personnes-agees.gouv.fr — Vivre en établissement et demander l’APL ou l’ALS</a> · <a href="/aides-ehpad/aide-au-logement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="aspa">
+<h3>ASPA — minimum vieillesse</h3>
+<p>Allocation de solidarité aux personnes âgées, ex-minimum vieillesse : prestation mensuelle versée par la caisse de retraite aux retraités qui ont de faibles ressources et vivent en France.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Son montant sert de référence à l’aide sociale : il fixe la somme minimale laissée au résident et au conjoint resté à domicile.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F16871" rel="noopener">Service-public.fr — Aspa</a> · <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="ccas">
+<h3>CCAS — centre communal d’action sociale</h3>
+<p>Service social de la commune. Il informe sur les aides, aide à monter une demande d’APA et reçoit les demandes d’aide sociale à l’hébergement. Sans CCAS dans la commune, on s’adresse à la mairie.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> C’est souvent là que se dépose le dossier d’aide sociale, qui est ensuite transmis au département.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-centre-communal-d-action-sociale-ccas-la-mairie" rel="noopener">Pour-les-personnes-agees.gouv.fr — Le CCAS / la mairie</a> · <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="conventionne">
+<h3>Établissement conventionné APL</h3>
+<p>Établissement qui a signé une convention avec l’État ouvrant droit à l’aide personnalisée au logement (APL) pour ses résidents. Cela dépend de l’établissement, pas de la personne.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Posez la question avant de signer : dans un établissement non conventionné, seule l’ALS est possible.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/glossaire/R18743" rel="noopener">Service-public.fr — Glossaire : Logement conventionné</a> · <a href="/aides-ehpad/aide-au-logement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="habilitation">
+<h3>Habilitation à l’aide sociale</h3>
+<p>Autorisation pour un établissement d’accueillir des bénéficiaires de l’aide sociale à l’hébergement, sur tout ou partie de ses places. Pour ces places, c’est le département qui fixe le prix d’hébergement.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Sans habilitation, l’aide sociale n’est en principe pas possible, sauf après cinq ans de séjour payant.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad" rel="noopener">Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD</a> · <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="obligation-alimentaire">
+<h3>Obligation alimentaire</h3>
+<p>Devoir d’aider un parent ou un beau-parent qui ne peut plus faire face à ses besoins essentiels (logement, nourriture, soins). Il n’existe pas de barème : l’aide dépend des besoins de l’un et des ressources de l’autre.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> En cas de désaccord entre la famille et le parent, le juge aux affaires familiales fixe la part de chacun.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2009" rel="noopener">Service-public.fr — Obligation alimentaire</a> · <a href="/aides-ehpad/obligation-alimentaire/">En savoir plus</a></p>
+</div><div class="lx-terme" id="obliges-alimentaires">
+<h3>Obligés alimentaires</h3>
+<p>Personnes tenues à l’obligation alimentaire : enfants, petits-enfants, gendres et belles-filles. Pour une demande d’aide sociale à l’hébergement, les petits-enfants et leurs descendants sont dispensés.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Le département peut leur demander une participation avant de fixer sa propre aide.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2444" rel="noopener">Service-public.fr — Aide sociale à l’hébergement</a> · <a href="/aides-ehpad/obligation-alimentaire/">En savoir plus</a></p>
+</div><div class="lx-terme" id="recuperation-succession">
+<h3>Récupération sur succession</h3>
+<p>Remboursement, au décès du bénéficiaire, des sommes versées par le département au titre de l’aide sociale à l’hébergement. Il porte sur l’actif net de la succession (biens moins dettes), jamais sur le patrimoine des héritiers.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> L’APA n’est jamais récupérée ; et s’il n’y a pas de succession, il n’y a rien à récupérer.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/la-recuperation-de-l-aide-sociale-a-l-hebergement" rel="noopener">Pour-les-personnes-agees.gouv.fr — La récupération de l’ASH</a> · <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+</div><div class="lx-terme" id="reduction-impot">
+<h3>Réduction d’impôt pour frais d’hébergement</h3>
+<p>Avantage fiscal pour la personne accueillie en EHPAD ou en établissement de soins de longue durée : 25 % des frais de dépendance et d’hébergement restant à payer, dans la limite de 2 500 € par an et par personne.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Les aides reçues (APA, aide au logement, aide sociale) doivent être déduites des frais déclarés.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F17" rel="noopener">Service-public.fr — Réduction d’impôt pour frais d’accueil liés à la dépendance</a> · <a href="/aides-ehpad/reduction-impot/">En savoir plus</a></p>
+</div><div class="lx-terme" id="argent-de-poche">
+<h3>Somme minimale laissée au résident (« argent de poche »)</h3>
+<p>Somme que le département laisse obligatoirement au résident bénéficiaire de l’aide sociale : 10 % de ses ressources, et au moins 1 % du montant annuel de l’ASPA, soit 125 € par mois en 2026.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Cette somme sert aux dépenses personnelles ; en général, 90 % des ressources vont aux frais d’hébergement.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/demander-l-ash-aide-sociale-a-l-hebergement-pour-les-personnes-agees" rel="noopener">Pour-les-personnes-agees.gouv.fr — Demander l’ASH</a> · <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+</div></section><section class="lx-fam"><h2 id="famille-demarches">Les démarches</h2><div class="lx-terme" id="conseil-departemental">
+<h3>Conseil départemental</h3>
+<p>Collectivité du département. Pour les personnes âgées, il accorde l’APA et l’aide sociale à l’hébergement. Il autorise, contrôle et fixe les tarifs de certains établissements.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Chaque département a son propre règlement d’aide sociale : c’est lui qui fait foi.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-conseil-departemental" rel="noopener">Pour-les-personnes-agees.gouv.fr — Le conseil départemental</a></p>
+</div><div class="lx-terme" id="contrat-sejour">
+<h3>Contrat de séjour</h3>
+<p>Contrat conclu entre le résident (ou son représentant) et l’EHPAD dès que le séjour peut dépasser deux mois. Il détaille les prestations, les prix, la facturation en cas d’absence et les conditions de départ.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Vous pouvez vous rétracter par écrit dans les 15 jours qui suivent la signature, sans préavis.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F763" rel="noopener">Service-public.fr — Éhpad</a> · <a href="/guides/dossier-admission-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="dossier-admission">
+<h3>Dossier unique d’admission en EHPAD</h3>
+<p>Formulaire national (Cerfa n° 14732*03) pour demander une place en EHPAD, en hébergement temporaire ou en accueil de jour. Il comprend un volet administratif et un volet médical rempli par un médecin.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Envoyez-le à plusieurs établissements en même temps : chacun l’inscrit sur sa liste d’attente s’il en a une.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/R17461" rel="noopener">Service-public.fr — Demande d’admission en Éhpad, Cerfa 14732*03</a> · <a href="/guides/dossier-admission-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="notification">
+<h3>Notification</h3>
+<p>Formalité par laquelle une décision est portée officiellement à la connaissance d’une personne. Pour l’APA ou l’aide sociale, c’est le courrier du département qui annonce l’accord, le refus ou le montant.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Gardez-la : le délai de deux mois pour contester une décision sur l’APA court à partir de sa réception.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.service-public.gouv.fr/particuliers/glossaire/R14732" rel="noopener">Service-public.fr — Glossaire : Notification</a></p>
+</div><div class="lx-terme" id="viatrajectoire">
+<h3>ViaTrajectoire</h3>
+<p>Service public national, gratuit et sécurisé, d’aide à l’orientation. Pour les personnes âgées, il permet de remplir une seule fois le dossier d’admission et de l’envoyer à plusieurs EHPAD.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Il permet de suivre les réponses et d’accepter ou refuser une proposition ; le dossier papier reste possible.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.viatrajectoire.fr/" rel="noopener">ViaTrajectoire — site officiel</a> · <a href="/guides/trouver-une-place-en-ehpad/">En savoir plus</a></p>
+</div></section><section class="lx-fam"><h2 id="famille-donnees">Les données et la qualité</h2><div class="lx-terme" id="cnsa">
+<h3>CNSA</h3>
+<p>Caisse nationale de solidarité pour l’autonomie : établissement public qui gère, depuis 2021, la branche Autonomie de la Sécurité sociale. Elle reçoit les prix déclarés par les EHPAD, publiés dans l’annuaire officiel.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Les prix affichés sur ce site viennent de ces déclarations à la CNSA.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.cnsa.fr/la-cnsa/la-cnsa-branche-autonomie-de-la-securite-sociale/presentation-et-missions-de-la-cnsa" rel="noopener">CNSA — Présentation et missions de la CNSA</a> · <a href="/notre-methodologie.html">En savoir plus</a></p>
+</div><div class="lx-terme" id="criteres-imperatifs">
+<h3>Critères impératifs</h3>
+<p>Les 18 exigences du référentiel de la HAS qui doivent être totalement satisfaites. Elles portent par exemple sur la dignité, la vie privée ou la prévention de la maltraitance. Un critère non atteint impose un plan d’actions.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Regardez combien de critères impératifs sont atteints, en plus de la note : chaque fiche du site l’indique.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.has-sante.fr/jcms/p_3324490/fr/evaluation-des-essms-referentiel-et-manuel" rel="noopener">HAS — Évaluation des ESSMS : référentiel et manuel</a> · <a href="/guides/lire-une-evaluation-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="drees">
+<h3>DREES</h3>
+<p>Direction de la recherche, des études, de l’évaluation et des statistiques : service statistique des ministères de la santé et des solidarités. Elle collecte, analyse et diffuse les statistiques de la santé et de l’action sociale.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Ce site reprend certains de ses chiffres nationaux (délais d’entrée, taux d’occupation), en citant leur année.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.insee.fr/fr/information/2114794" rel="noopener">Insee — Le SSM Santé et solidarités</a> · <a href="/notre-methodologie.html">En savoir plus</a></p>
+</div><div class="lx-terme" id="evaluation-has">
+<h3>Évaluation HAS des ESSMS</h3>
+<p>Évaluation de la qualité menée tous les cinq ans dans chaque ESSMS par un organisme extérieur. Elle suit le référentiel de la HAS. Elle aboutit à un niveau global de qualité, de A à D.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Elle reflète la situation au jour de la visite ; la HAS rappelle qu’elle ne sert pas à classer les établissements.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.has-sante.fr/jcms/c_2838131/fr/comprendre-la-nouvelle-evaluation-des-essms" rel="noopener">HAS — Comprendre la nouvelle évaluation des ESSMS</a> · <a href="/guides/lire-une-evaluation-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="finess">
+<h3>FINESS</h3>
+<p>Fichier national des établissements sanitaires et sociaux : répertoire officiel qui identifie chaque établissement, dont les EHPAD, par un numéro de neuf caractères. Il distingue l’entité juridique (le gestionnaire) et l’entité géographique (le lieu).</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Ce site s’appuie sur ce numéro pour relier les prix, l’habilitation et l’évaluation de chaque établissement.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://gnius.esante.gouv.fr/fr/reglementation/fiches-reglementation/fichier-national-des-etablissements-sanitaires-et-sociaux-finess" rel="noopener">Agence du numérique en santé</a> · <a href="/notre-methodologie.html">En savoir plus</a></p>
+</div><div class="lx-terme" id="has">
+<h3>HAS — Haute Autorité de santé</h3>
+<p>Organisme public chargé de mesurer et d’améliorer la qualité des soins et des accompagnements. Elle a créé le référentiel qui sert à évaluer les établissements sociaux et médico-sociaux, dont les EHPAD.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Les résultats des évaluations sont publiés sur Qualiscope, son service d’information en ligne.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.has-sante.fr/jcms/c_1002212/fr/la-has-en-bref" rel="noopener">HAS — Missions de la HAS</a> · <a href="/guides/lire-une-evaluation-ehpad/">En savoir plus</a></p>
+</div><div class="lx-terme" id="mediane">
+<h3>Médiane</h3>
+<p>Valeur qui partage un ensemble en deux moitiés égales : la moitié des prix est en dessous, l’autre moitié au-dessus. Elle est moins tirée vers le haut que la moyenne par quelques prix très élevés.</p>
+<p class="lx-pv"><b>Pour vous&nbsp;:</b> Un prix médian décrit un établissement « du milieu » ; celui qui vous intéresse peut être plus ou moins cher.</p>
+<p class="lx-src">Source&nbsp;: <a href="https://www.insee.fr/fr/metadonnees/definition/c1376" rel="noopener">Insee — Définition : Médiane</a> · <a href="/prix-ehpad/">En savoir plus</a></p>
+</div></section>
+<p class="src-bloc">Chaque définition a été vérifiée le 29/09/2026 sur la source citée. Une définition vous paraît
+fausse ou incomplète&nbsp;? <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Lexique">Signalez-le</a>.</p>
+</main>
+<footer class="foot"><div class="foot-in">
+<nav aria-label="Pied de page">
+<a href="/">Accueil</a>
+<a href="/ehpad/">Les EHPAD en France</a>
+<a href="/prix-ehpad/">Prix des EHPAD</a>
+<a href="/aides-ehpad/">Aides financières</a>
+<a href="/guides/">Guides</a>
+<a href="/professionnels/">Espace professionnel</a>
+<a href="/lexique/">Lexique</a>
+<a href="/notre-methodologie.html">Méthodologie</a>
+<a href="/qui-sommes-nous.html">Qui sommes-nous ?</a>
+<a href="/etudes/">Études et données</a>
+<a href="/presse/">Presse</a>
+<a href="/retours/">Vos retours</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+<a href="#" data-consent-open>Gérer les cookies</a>
+</nav>
+<p>© 2026 Trouver mon EHPAD — service indépendant, gratuit, sans publicité et sans partenariat avec des établissements. Ce site n’est pas un service public.</p>
+</div></footer>
+<div id="consent-banner" hidden><div class="cb">
+<p>Ce site peut utiliser une mesure d’audience, uniquement si vous l’acceptez. Les informations que vous saisissez dans le calculateur ne sont jamais transmises : elles restent sur votre appareil. <a href="/mentions-legales.html#cookies">En savoir plus</a></p>
+<div class="cb-b"><button type="button" id="consent-accept" class="btn">Accepter</button>
+<button type="button" id="consent-refuse" class="lien">Continuer sans accepter</button></div></div></div>
+<script>/* relevé d'audience : aucun cookie, aucun identifiant, chemin seul */
+(function(){try{
+var A='https://mesure-tme.trouver-mon-ehpad.workers.dev',D=document,N=navigator,W=window,ua=N.userAgent||'';
+var a=(N.webdriver?1:0)|(/HeadlessChrome/.test(ua)?2:0)
+ |(/Chrome\//.test(ua)&&!/; wv\)|Version\/\d/.test(ua)&&!W.chrome?4:0)
+ |(!N.languages||!N.languages.length?8:0);
+var m=0;try{var S=W.localStorage,K='tme_proprio',H=location.hash,M='';
+if(H==='#ne-pas-me-compter'){S.setItem(K,'1');M='Ce navigateur ne compte plus dans l’audience : vos visites sont rangées à part, colonne « Vous ».';}
+else if(H==='#ne-plus-m-exclure'){S.removeItem(K);M='Ce navigateur est de nouveau compté comme un visiteur ordinaire.';}
+if(M){history.replaceState(null,'',location.pathname+location.search);
+ var B=D.createElement('div');B.setAttribute('role','status');B.textContent=M;
+ B.style.cssText='position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);z-index:99999;max-width:min(34rem,calc(100% - 2rem));padding:.8rem 1.1rem;border-radius:12px;background:#0b6b4a;color:#fff;font:600 .95rem/1.4 system-ui,sans-serif;box-shadow:0 8px 28px rgba(0,0,0,.25)';
+ D.body.appendChild(B);setTimeout(function(){B.remove();},7000);}
+m=S.getItem(K)==='1'?1:0;}catch(e){}
+var r=D.referrer||'',d='';
+try{if(r){var h=new URL(r).hostname.replace(/^www\./,'');if(h!==location.hostname.replace(/^www\./,''))d=h;}}catch(e){}
+function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(m?'&m=1':'')+(x||'');
+ if(W.fetch){try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true,credentials:'omit'}).catch(function(){});return;}catch(e){}}
+ try{if(N.sendBeacon)N.sendBeacon(q);}catch(e){}}
+var ok=0,E={},Q=[],dv=W.matchMedia&&W.matchMedia('(pointer: coarse)').matches?1:0;
+W.ME_etape=function(k){if(!/^(a|cp|r|f)$/.test(k)||E[k])return;E[k]=1;if(ok)env('e','&k='+k+'&d='+dv);else Q.push(k);};
+var fait=0,vis=0,tic;
+function engage(){if(fait)return;fait=1;clearInterval(tic);
+ ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.removeEventListener(k,engage,true);});
+ env('g');}
+function part(){ok=1;
+ env('c','&e='+((!r||d)?1:0)+(d?'&r='+encodeURIComponent(d):''));
+ ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.addEventListener(k,engage,{capture:true,passive:true});});
+ tic=setInterval(function(){if(D.visibilityState==='visible'&&++vis>=10)engage();},1000);
+ while(Q.length)env('e','&k='+Q.shift()+'&d='+dv);}
+function pret(){return !D.prerendering&&D.visibilityState==='visible';}
+if(pret())part();else{var f=function(){if(!pret())return;
+ D.removeEventListener('visibilitychange',f);D.removeEventListener('prerenderingchange',f);part();};
+ D.addEventListener('visibilitychange',f);D.addEventListener('prerenderingchange',f);}
+}catch(e){}})();</script>
+</body>
+</html>

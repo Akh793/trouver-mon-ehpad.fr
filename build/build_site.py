@@ -62,3 +62,7 @@ for _i, _b in enumerate(re.findall(r'<script type="application/ld\+json">(.*?)</
 if _erreurs:
     raise SystemExit('%d anomalie(s) de données structurées : index.html non publiable.' % _erreurs)
 print('données structurées : %d bloc(s) JSON-LD valides' % len(re.findall(r'application/ld\+json', out)))
+
+# --- mots du lexique soulignés sur l'accueil (même règle que le reste du site)
+import lexique_liens
+print('lexique : %d mots soulignés sur l’accueil' % lexique_liens.lier_fichier(SITE + '/index.html'))

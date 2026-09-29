@@ -43,7 +43,7 @@ Le site est organisé en quatre niveaux, chacun avec sa propre adresse et son pr
 - `/ehpad/<ville>/` — 985 communes comptant au moins deux établissements : tableau comparatif complet, tarif médian, minimum, nombre d'établissements habilités à l'aide sociale. Les arrondissements de Paris, Lyon et Marseille sont regroupés avec leur commune.
 - `/ehpad/<ville>/<nom>-<finess>/` — 6 778 fiches d'établissement : tarifs d'hébergement et de dépendance, comparaison au tarif médian local, évolution du tarif depuis 2018, habilitation à l'aide sociale, évaluation officielle, hygiène alimentaire, capacité, gestionnaire, établissements voisins.
 
-Pages nationales : `/prix-ehpad/`, `/prix-ehpad-par-departement/`, `/ehpad-les-moins-chers/`, `/calcul-reste-a-charge-ehpad/`, `/aides-ehpad/` (et `/aides-ehpad/apa/`, `/aide-sociale-hebergement/`, `/aide-au-logement/`, `/reduction-impot/`, `/obligation-alimentaire/`), `/guides/` (12 guides), `/etudes/barometre-prix-ehpad-2026/`, `/etudes/fusion-soins-dependance-ehpad/`, `/donnees/`, `/presse/`. Éditeur : David Rival (`/qui-sommes-nous.html#editeur`).
+Pages nationales : `/prix-ehpad/`, `/prix-ehpad-par-departement/`, `/ehpad-les-moins-chers/`, `/calcul-reste-a-charge-ehpad/`, `/aides-ehpad/` (et `/aides-ehpad/apa/`, `/aide-sociale-hebergement/`, `/aide-au-logement/`, `/reduction-impot/`, `/obligation-alimentaire/`), `/guides/` (13 guides, dont `/guides/gir-niveau-autonomie/`), `/lexique/` (50 termes définis, source officielle pour chacun, balisage DefinedTermSet), `/etudes/barometre-prix-ehpad-2026/`, `/etudes/fusion-soins-dependance-ehpad/`, `/donnees/`, `/presse/`. Éditeur : David Rival (`/qui-sommes-nous.html#editeur`).
 
 Une commune ne comptant qu'un seul établissement n'a pas de page : son adresse redirige vers la fiche de l'établissement. Un établissement sans tarif déclaré ni évaluation publiée n'a pas de fiche. Ces deux règles évitent des pages qui n'apporteraient rien.
 
@@ -67,6 +67,8 @@ Chaque chiffre publié est calculé à partir des tarifs déclarés à la CNSA e
 - [Données ouvertes](https://trouver-mon-ehpad.fr/donnees/) : prix d’hébergement de 7 255 EHPAD, année par année de 2018 à 2025 (CSV, Licence Ouverte 2.0).
 - [Presse](https://trouver-mon-ehpad.fr/presse/) : chiffres clés prêts à citer, contact.
 - [L’obligation alimentaire](https://trouver-mon-ehpad.fr/aides-ehpad/obligation-alimentaire/) : qui est tenu, dispenses, fixation, déduction fiscale.
+- [Lexique de l’EHPAD](https://trouver-mon-ehpad.fr/lexique/) : 50 termes (GIR, APA, aide sociale à l’hébergement, tarif dépendance, habilitation, évaluation HAS…) définis en langage clair, chacun avec sa source officielle vérifiée le 29/09/2026.
+- [Le GIR, de 1 à 6](https://trouver-mon-ehpad.fr/guides/gir-niveau-autonomie/) : les six niveaux, qui les évalue, tarif dépendance médian par GIR, répartition des résidents (DREES, Badiane 2023).
 - [Notre méthodologie](https://trouver-mon-ehpad.fr/notre-methodologie.html) : chaîne de croisement des sources, formules, règles de déduction et leur taux de concordance, limites assumées.
 - [Qui sommes-nous](https://trouver-mon-ehpad.fr/qui-sommes-nous.html) : objet du site, absence de financement, traitement des données.
 - [Mentions légales](https://trouver-mon-ehpad.fr/mentions-legales.html) : éditeur, hébergeur, licences des données réutilisées, cookies.

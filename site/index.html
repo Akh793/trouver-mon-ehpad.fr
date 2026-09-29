@@ -1800,6 +1800,29 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
    largeur « tout sur une ligne » et débordait de l'encadré sur mobile */
 .t-row>div:first-child{min-width:0;flex:1 1 20rem}
 @media (max-width:640px){.t-tuiles{grid-template-columns:minmax(0,1fr)}}
+/* ---------- Lexique (29/09/2026) ----------
+   Mot du lexique : soulignement pointillé discret (un fond coloré serait pris pour de la
+   publicité), bulle de définition au survol ou au focus clavier, clic vers /lexique/#terme. */
+html body a.lx{color:inherit;text-decoration:underline dotted;text-decoration-thickness:1.5px;text-decoration-color:var(--bl-t);text-underline-offset:.22em;position:relative}
+html body a.lx:hover{color:var(--bl-t)}
+a.lx::after{content:attr(data-def);position:absolute;left:0;bottom:calc(100% + 8px);z-index:60;width:max-content;max-width:min(19rem,78vw);
+  padding:.55rem .75rem;border-radius:10px;background:var(--ink);color:var(--surf);font:400 .86rem/1.4 Inter,system-ui,sans-serif;
+  letter-spacing:0;text-align:left;white-space:normal;box-shadow:0 10px 24px rgba(0,0,0,.22);opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .12s ease-out}
+@media (hover:hover){a.lx:hover::after{opacity:1;visibility:visible}}
+a.lx:focus-visible::after{opacity:1;visibility:visible}
+@media (prefers-reduced-motion:reduce){a.lx::after{transition:none}}
+@media print{a.lx{text-decoration:none}a.lx::after{display:none}}
+/* page lexique */
+.lx-nav p{font-size:.95rem}
+.lx-alpha{list-style:none;padding:0;margin:.4rem 0 0;display:grid;gap:.35rem}
+.lx-alpha b{display:inline-block;min-width:1.4rem;color:var(--bl-t)}
+.lx-terme{padding:1rem 0 .9rem;border-top:1px solid var(--bd2);scroll-margin-top:5rem}
+.lx-terme h3{font-size:1.12rem;margin:0 0 .3rem}
+.lx-terme p{margin:.3rem 0}
+.lx-pv{color:var(--txt2)}
+.lx-src,.lx-prud{font-size:.86rem;color:var(--mut)}
+.lx-terme:target{background:var(--ti-bl);border-radius:12px;padding:1rem;border-top-color:transparent}
 
 </style>
 <!-- Consentement (Consent Mode v2) : aucune mesure d'audience tant que l'utilisateur n'a pas accepté -->
@@ -1847,6 +1870,8 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
             <a href="/prix-ehpad/">Prix des EHPAD</a>
             <a href="/aides-ehpad/">Aides financières</a>
             <a href="/guides/">Guides</a>
+      <a href="/lexique/">Lexique</a>
+            <a href="/lexique/">Lexique</a>
             <a href="/professionnels/">Espace professionnel</a>
             <a href="/retours/">Vos retours</a>
           </nav>
@@ -1959,7 +1984,7 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
         <div class="seg" data-seg="chambre:cs,cd" role="group" aria-label="Type de chambre">
           <button type="button">Seule</button><button type="button">Double</button>
         </div>
-        <p class="fld-h">Le tarif d’une chambre double vaut pour une personne.</p>
+        <p class="fld-h">Le tarif d’une <a class="lx" href="/lexique/#chambre-double" data-def="Chambre partagée à deux. Le prix affiché vaut pour une personne.">chambre double</a> vaut pour une personne.</p>
       </div>
       <div class="fld">
         <label id="lbl-impot">Paie-t-il ou elle l’impôt sur le revenu&nbsp;?</label>
@@ -1973,7 +1998,7 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
         <div class="seg" data-seg="couple:false,true" role="group" aria-label="En couple">
           <button type="button">Non</button><button type="button">Oui</button>
         </div>
-        <p class="fld-h">Le barème de l’APA retient les ressources du ménage.</p>
+        <p class="fld-h">Le barème de l’<a class="lx" href="/lexique/#apa" data-def="Aide du département qui paie une partie du tarif dépendance, pour les GIR 1 à 4, dès 60 ans.">APA</a> retient les ressources du ménage.</p>
       </div>
       <div class="fld" id="fld-revconj" hidden>
         <label for="revconj">Retraites et pensions du conjoint, par mois</label>
@@ -1985,7 +2010,7 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
         <div class="seg" data-seg="deuxResidents:false,true" role="group" aria-label="Deux résidents hébergés">
           <button type="button">Non</button><button type="button">Oui</button>
         </div>
-        <p class="fld-h">Deux hébergements, deux tarifs dépendance, et un plafond de réduction d’impôt par personne hébergée.</p>
+        <p class="fld-h">Deux hébergements, deux <a class="lx" href="/lexique/#tarif-dependance" data-def="Part de la facture pour l’aide au quotidien. Trois tarifs selon le GIR : 1-2, 3-4 et 5-6.">tarifs dépendance</a>, et un plafond de <a class="lx" href="/lexique/#reduction-impot" data-def="25 % des frais de dépendance et d’hébergement restant à payer, au plus 2 500 € par an et par personne.">réduction d’impôt</a> par personne hébergée.</p>
       </div>
       <div class="fld" id="fld-conjoint" hidden>
         <label>Le conjoint reste-t-il à domicile ?</label>
@@ -2061,7 +2086,7 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
         <details class="t-det print-hide">
           <summary id="res-recap-r">Voir la situation retenue pour ce calcul</summary>
           <p class="t-r" id="res-recap"></p>
-          <p class="t-d">Ces montants sont des estimations. Le niveau d’autonomie, l’allocation personnalisée d’autonomie et l’aide sociale à l’hébergement sont notifiés par le conseil départemental&nbsp;: seule sa décision fait foi.</p>
+          <p class="t-d">Ces montants sont des estimations. Le niveau d’autonomie, l’allocation personnalisée d’autonomie et l’<a class="lx" href="/lexique/#ash" data-def="Aide du département pour payer l’hébergement quand les ressources ne suffisent pas. Elle est récupérable.">aide sociale à l’hébergement</a> sont notifiés par le <a class="lx" href="/lexique/#conseil-departemental" data-def="Il accorde l’APA et l’aide sociale, et fixe les tarifs de certains établissements.">conseil départemental</a>&nbsp;: seule sa décision fait foi.</p>
         </details>
       </div>
 
@@ -2131,11 +2156,11 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
         <button type="button" class="x" id="drawer-close" aria-label="Fermer les filtres">×</button>
       </div>
       <div class="drawer-b">
-        <p class="q-lbl">Avez-vous besoin d’un établissement habilité à l’aide sociale&nbsp;?</p>
+        <p class="q-lbl">Avez-vous besoin d’un établissement <a class="lx" href="/lexique/#habilitation" data-def="Un établissement habilité peut accueillir des bénéficiaires de l’aide sociale ; le département fixe alors son prix.">habilité à l’aide sociale</a>&nbsp;?</p>
         <div class="seg seg4" data-seg="besoinAsh:oui,non,nsp" role="group" aria-label="Besoin de l’aide sociale à l’hébergement">
           <button type="button">Oui</button><button type="button">Non</button><button type="button">Je ne sais pas</button>
         </div>
-        <p id="ash-aide" class="fld-h" hidden>L’aide sociale à l’hébergement est l’aide du département quand les ressources et l’épargne ne suffisent pas à payer l’hébergement. Elle n’est possible que dans un établissement habilité, elle peut être demandée aux enfants et elle est récupérée sur la succession. <a href="/aides-ehpad/aide-sociale-hebergement/">Ce qu’il faut savoir</a></p>
+        <p id="ash-aide" class="fld-h" hidden>L’aide sociale à l’hébergement est l’aide du département quand les ressources et l’épargne ne suffisent pas à payer l’hébergement. Elle n’est possible que dans un établissement habilité, elle peut être demandée aux enfants et elle est <a class="lx" href="/lexique/#recuperation-succession" data-def="Au décès, le département reprend l’aide sociale versée sur la succession, jamais sur les biens des héritiers.">récupérée sur la succession</a>. <a href="/aides-ehpad/aide-sociale-hebergement/">Ce qu’il faut savoir</a></p>
         <label class="chk-l"><input type="checkbox" data-check="ashConfirmer" checked> Inclure les habilitations partielles, à confirmer auprès de l’établissement</label>
 
         <p class="q-lbl">Quel type d’établissement&nbsp;?</p>
@@ -2324,6 +2349,7 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
 <script src="data.js" defer></script>
 <script src="data/departements.js" defer></script>
 <script src="data/prix-reference.js" defer></script>
+<script src="data/lexique.js" defer></script>
 <script src="app.js" defer></script>
 <script>/* relevé d'audience : aucun cookie, aucun identifiant, chemin seul */
 (function(){try{

@@ -1633,6 +1633,7 @@
     majChips();
     $('contexte').innerHTML = contexteDept(depDeInsee(s.commune.insee), s.commune.insee);
     $('route').innerHTML = routeHtml(list, s);
+    lexiquer($('route'));
     majCompare();
     if (state.selection && !list.some((o) => o.e[C.fin] === state.selection)) ferme();
     else if (state.selection) majFiche();
@@ -1724,11 +1725,64 @@
     sauve();
   }
 
+  /* ---------- Lexique : mots soulignés dans les textes calculés (fiche, étapes) ----------
+     Même règle que les pages générées (build/lexique_liens.py) : première occurrence de chaque
+     terme dans le bloc, jamais dans un titre, un lien, un bouton ou un tableau. */
+  let LX_RE = null, LX_T = null;
+  function lxPrepare() {
+    if (LX_RE || !window.LEXIQUE) return;
+    const esp = '[ \\u00a0\\u202f]+', apo = "(?:’|')", alt = [], lst = [];
+    window.LEXIQUE.forEach((t) => t.v.forEach((v) => lst.push([v, t])));
+    lst.sort((a, b) => b[0].length - a[0].length);
+    LX_T = [];
+    lst.forEach(([v, t]) => {
+      let e = '';
+      [...v].forEach((ch, i) => {
+        if (/[   ]/.test(ch)) { if (!e.endsWith(esp)) e += esp; }
+        else if (ch === '’' || ch === "'") e += apo;
+        else if (i === 0 && ch !== ch.toUpperCase()) e += `[${ch}${ch.toUpperCase()}]`;
+        else e += ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      });
+      alt.push(`(${e})`); LX_T.push(t);
+    });
+    const W = '[0-9A-Za-zÀ-ÖØ-öø-ÿŒœ_]';
+    LX_RE = new RegExp(`(?<!${W})(?:${alt.join('|')})(?!${W})`, 'gu');
+  }
+  function lexiquer(racine) {
+    try { lxPrepare(); } catch (e) { return; }
+    if (!LX_RE || !racine) return;
+    const SAUT = /^(A|BUTTON|H1|H2|H3|H4|H5|H6|LABEL|SUMMARY|SCRIPT|STYLE|TABLE|SELECT|TEXTAREA|NAV)$/;
+    const vus = new Set(), noeuds = [];
+    const w = document.createTreeWalker(racine, NodeFilter.SHOW_TEXT, { acceptNode(n) {
+      for (let p = n.parentNode; p && p !== racine; p = p.parentNode) if (SAUT.test(p.nodeName)) return NodeFilter.FILTER_REJECT;
+      return n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    } });
+    while (w.nextNode()) noeuds.push(w.currentNode);
+    noeuds.forEach((n) => {
+      const txt = n.nodeValue, frag = document.createDocumentFragment();
+      let m, pos = 0, change = false;
+      LX_RE.lastIndex = 0;
+      while ((m = LX_RE.exec(txt))) {
+        const t = LX_T[m.slice(1).findIndex((x) => x !== undefined)];
+        if (!t || vus.has(t.id)) continue;
+        vus.add(t.id); change = true;
+        frag.appendChild(document.createTextNode(txt.slice(pos, m.index)));
+        const a = document.createElement('a');
+        a.className = 'lx'; a.href = '/lexique/#' + t.id; a.dataset.def = t.c; a.textContent = m[0];
+        frag.appendChild(a); pos = m.index + m[0].length;
+      }
+      if (!change) return;
+      frag.appendChild(document.createTextNode(txt.slice(pos)));
+      n.parentNode.replaceChild(frag, n);
+    });
+  }
+
   function majFiche() {
     const o = dernier.find((x) => x.e[C.fin] === state.selection);
     if (!o) { $('pan-fiche').hidden = true; return; }
     $('pan-fiche').hidden = false;
     $('fiche').innerHTML = ficheHtml(o, state);
+    lexiquer($('fiche'));
     $('fiche').scrollTop = 0;
   }
 

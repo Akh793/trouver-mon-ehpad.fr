@@ -966,3 +966,26 @@ button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2
    largeur « tout sur une ligne » et débordait de l'encadré sur mobile */
 .t-row>div:first-child{min-width:0;flex:1 1 20rem}
 @media (max-width:640px){.t-tuiles{grid-template-columns:minmax(0,1fr)}}
+/* ---------- Lexique (29/09/2026) ----------
+   Mot du lexique : soulignement pointillé discret (un fond coloré serait pris pour de la
+   publicité), bulle de définition au survol ou au focus clavier, clic vers /lexique/#terme. */
+html body a.lx{color:inherit;text-decoration:underline dotted;text-decoration-thickness:1.5px;text-decoration-color:var(--bl-t);text-underline-offset:.22em;position:relative}
+html body a.lx:hover{color:var(--bl-t)}
+a.lx::after{content:attr(data-def);position:absolute;left:0;bottom:calc(100% + 8px);z-index:60;width:max-content;max-width:min(19rem,78vw);
+  padding:.55rem .75rem;border-radius:10px;background:var(--ink);color:var(--surf);font:400 .86rem/1.4 Inter,system-ui,sans-serif;
+  letter-spacing:0;text-align:left;white-space:normal;box-shadow:0 10px 24px rgba(0,0,0,.22);opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .12s ease-out}
+@media (hover:hover){a.lx:hover::after{opacity:1;visibility:visible}}
+a.lx:focus-visible::after{opacity:1;visibility:visible}
+@media (prefers-reduced-motion:reduce){a.lx::after{transition:none}}
+@media print{a.lx{text-decoration:none}a.lx::after{display:none}}
+/* page lexique */
+.lx-nav p{font-size:.95rem}
+.lx-alpha{list-style:none;padding:0;margin:.4rem 0 0;display:grid;gap:.35rem}
+.lx-alpha b{display:inline-block;min-width:1.4rem;color:var(--bl-t)}
+.lx-terme{padding:1rem 0 .9rem;border-top:1px solid var(--bd2);scroll-margin-top:5rem}
+.lx-terme h3{font-size:1.12rem;margin:0 0 .3rem}
+.lx-terme p{margin:.3rem 0}
+.lx-pv{color:var(--txt2)}
+.lx-src,.lx-prud{font-size:.86rem;color:var(--mut)}
+.lx-terme:target{background:var(--ti-bl);border-radius:12px;padding:1rem;border-top-color:transparent}

@@ -51,6 +51,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
 <a href="/aides-ehpad/">Aides financières</a>
 <a href="/guides/">Guides</a>
 <a href="/professionnels/">Espace professionnel</a>
+<a href="/lexique/">Lexique</a>
 <hr>
 <a href="/qui-sommes-nous.html">Qui sommes-nous&nbsp;?</a>
 <a href="/comparer-devis-ehpad/" class="menu-devis">Comparer vos devis</a>
@@ -81,6 +82,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
     <a href="/prix-ehpad/">Prix des EHPAD</a>
     <a href="/aides-ehpad/">Aides financières</a>
     <a href="/guides/">Guides</a>
+    <a href="/lexique/">Lexique</a>
     <a href="/notre-methodologie.html">Notre méthodologie</a>
     <a href="/qui-sommes-nous.html">Qui sommes-nous ?</a>
     <a href="/mentions-legales.html">Mentions légales</a>

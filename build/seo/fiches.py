@@ -15,8 +15,8 @@ from territoires import phrase_dep, med_mois
 
 INFL = 17.2          # INSEE, prix à la consommation, cumul 2018 → 2025
 ANNEES = ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025']
-SOINS_COURT = {'G': 'tarif global de soins (médecins et médicaments pris en charge par l’établissement)',
-               'P': 'tarif partiel de soins (médecins et médicaments de ville)',
+SOINS_COURT = {'G': 'tarif global de soins (médecins généralistes et examens courants payés par l’établissement)',
+               'P': 'tarif partiel de soins (médecins et examens réglés comme à domicile)',
                'V': 'petite unité de vie'}
 CHAPITRES = ('la personne accompagnée', 'les professionnels', 'l’établissement')
 STATUT_PLUR = {0: 'publics', 1: 'associatifs', 2: 'privés commerciaux'}

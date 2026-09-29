@@ -687,19 +687,19 @@ qualité de l’accompagnement&nbsp;: les évaluations officielles ne montrent p
 
  ('ehpad-alzheimer-unite-protegee', 'EHPAD, Alzheimer et unité protégée',
   'Ce qu’est une unité protégée, quand elle est utile, et ce qu’elle change au tarif.',
-  """<div class="note"><b>En résumé.</b> Une unité protégée est un espace fermé au sein d’un EHPAD, destiné aux
-personnes désorientées qui risquent de se mettre en danger en sortant seules. L’équipe y est formée aux troubles
-cognitifs et l’environnement est adapté.</div>
+  """<div class="note"><b>En résumé.</b> Une unité protégée est une partie d’un EHPAD réservée aux personnes atteintes de la
+maladie d’Alzheimer ou d’une maladie apparentée, désorientées ou qui risquent de se mettre en danger. Les lieux
+sont conçus pour circuler sans se perdre, et l’équipe est formée aux troubles cognitifs.</div>
 <section><h2>Quand elle est utile</h2><p>Quand la personne déambule, ne reconnaît plus les lieux, ou a déjà fugué.
 Elle ne se justifie pas pour une simple perte de mémoire&nbsp;: un EHPAD classique accompagne très bien une maladie
 d’Alzheimer débutante, et un environnement fermé n’est pas neutre.</p></section>
 <section><h2>Les termes que vous entendrez</h2><ul>
-<li><b>Unité protégée</b> ou <b>unité de vie protégée</b>&nbsp;: hébergement permanent en espace fermé.</li>
-<li><b>Pôle d’activités et de soins adaptés</b>&nbsp;: accueil de jour, au sein de l’établissement, pour des activités thérapeutiques.</li>
+<li><b>Unité protégée</b> ou <b>unité de vie protégée</b>&nbsp;: hébergement permanent dans un espace adapté.</li>
+<li><b>Pôle d’activités et de soins adaptés</b>&nbsp;: accueil en journée de résidents de l’EHPAD, pour des activités adaptées. À ne pas confondre avec l’accueil de jour, destiné aux personnes qui vivent chez elles.</li>
 <li><b>Unité d’hébergement renforcée</b>&nbsp;: pour les troubles du comportement les plus sévères.</li></ul></section>
-<section><h2>Et le tarif&nbsp;?</h2><p>Le tarif d’hébergement est en général le même que dans le reste de
-l’établissement&nbsp;; c’est le tarif dépendance qui est plus élevé, la perte d’autonomie étant plus importante — et
-c’est justement la ligne que couvre en grande partie l’allocation personnalisée d’autonomie.</p>
+<section><h2>Et le tarif&nbsp;?</h2><p>Le tarif d’hébergement de l’unité peut être le même que dans le reste de
+l’établissement, ou différent&nbsp;: demandez-le. Le tarif dépendance, lui, suit le niveau d’autonomie de la personne,
+et c’est la ligne que couvre en grande partie l’allocation personnalisée d’autonomie.</p>
 <div class="att">Les données publiques ne disent pas quels établissements disposent d’une unité protégée, ni combien
 de places y sont disponibles. C’est une question à poser directement à l’établissement&nbsp;: nous préférons l’écrire
 plutôt que d’afficher une information que nous n’avons pas.</div></section>""",
@@ -707,9 +707,9 @@ plutôt que d’afficher une information que nous n’avons pas.</div></section>
 
  ('trouver-une-place-en-ehpad', 'Comment trouver une place en EHPAD',
   'Le dossier unique, le délai réel, et ce qui accélère vraiment les choses.',
-  """<div class="note"><b>En résumé.</b> Il n’existe qu’une seule porte d’entrée&nbsp;: le dossier unique national,
-déposé sur la plateforme ViaTrajectoire. Un seul dossier vaut candidature dans autant d’établissements que vous
-voulez.</div>
+  """<div class="note"><b>En résumé.</b> Tout passe par le dossier unique national d’admission&nbsp;: en ligne sur
+ViaTrajectoire, ouvert dans la quasi-totalité des départements, ou sur papier (formulaire Cerfa 14732). Un seul
+dossier vaut candidature dans autant d’établissements que vous voulez.</div>
 <section><h2>Le délai, en vrai</h2><p>Le délai entre le dépôt du dossier et l’entrée a été d’<b>un mois ou moins pour
 55 % des personnes entrées en 2023</b>, d’après l’enquête nationale de la Direction de la recherche, des études, de
 l’évaluation et des statistiques. L’image d’une attente systématique de plusieurs années ne correspond pas aux
@@ -813,8 +813,8 @@ GIR 3-4, GIR 5-6. Le résident paie au minimum le tarif GIR 5-6&nbsp;; le reste 
 <a href="/aides-ehpad/apa/">l’allocation personnalisée d’autonomie</a>.</p></section>
 <section><h2>Et les soins&nbsp;?</h2><p>Troisième ligne, invisible sur la facture&nbsp;: infirmiers, médecin
 coordonnateur, parfois médicaments. Elle est financée par l’assurance maladie. Selon que l’établissement est en
-« tarif global » ou en « tarif partiel », les médicaments et certains soins passent par l’établissement ou par les
-professionnels de ville — sans changer le reste à charge sur l’hébergement.</p></section>
+« tarif global » ou en « tarif partiel », les consultations de médecins généralistes et les examens courants sont
+payés par l’établissement, ou réglés comme à domicile — sans changer le reste à charge sur l’hébergement.</p></section>
 <div class="note">Retenez ceci&nbsp;: quand un site annonce un prix d’EHPAD « à partir de », il parle presque toujours
 du seul tarif d’hébergement, en chambre seule, hors dépendance et hors aides.</div>""",
   None),
@@ -890,7 +890,7 @@ chiffres, sans qu’aucun nom ni aucune donnée ne circule.</p></section>""",
 def guides(ctx, ecrire):
     liens = ''.join(f'<a class="lien-c" href="/guides/{s}/"><b>{esc(t)}</b><span>{esc(sub)}</span></a>'
                     for s, t, sub, _, _ in GUIDES)
-    corps = f"""<p>Douze guides courts, écrits pour répondre vite. Chacun donne la réponse dès les premières lignes,
+    corps = f"""<p>{nb(len(GUIDES))} guides courts, écrits pour répondre vite. Chacun donne la réponse dès les premières lignes,
 puis les cas particuliers, puis les sources.</p>
 <div class="liens-grid">{liens}</div>
 <section><h2>Et pour les chiffres</h2><div class="liens-grid">
@@ -900,7 +900,7 @@ puis les cas particuliers, puis les sources.</p>
 </div></section>"""
     art(ctx, ecrire, '/guides/', 'Les guides', 'Choisir, visiter, financer, déposer un dossier.', corps,
         f'Guides EHPAD : choisir, visiter, financer | {MARQUE}',
-        'Douze guides courts pour choisir un EHPAD, préparer une visite, monter un dossier d’admission et financer le séjour.',
+        f'{nb(len(GUIDES))} guides courts pour choisir un EHPAD, préparer une visite, monter un dossier d’admission et financer le séjour.',
         [('Guides', None)], prio=0.7, type_page='guide', article=False)
     for s, t, sub, corps_g, faq in GUIDES:
         art(ctx, ecrire, f'/guides/{s}/', t, sub, corps_g,

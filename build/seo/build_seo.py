@@ -169,12 +169,21 @@ def main():
     import territoires, fiches as mod_fiches, contenus
     territoires.construire(ctx, ecrire)
     mod_fiches.construire(ctx, ecrire, fiches)
+    import lexique
+    # la page GIR rejoint les guides (même gabarit, même maillage) ; le lexique est une page à part
+    if not any(g[0] == 'gir-niveau-autonomie' for g in contenus.GUIDES):
+        contenus.GUIDES.append(lexique.guide_gir(ctx))
     contenus.construire(ctx, ecrire)
+    lexique.page_lexique(ecrire)
     import etudes
     etudes.construire(ctx, ecrire)
     redirections(ctx)
     sitemaps()
     print(f"→ {len(URLS)} pages écrites")
+    # en dernier : les mots du lexique soulignés sur toutes les pages (accueil et annexes comprises)
+    sys.path.insert(0, os.path.join(B, '..'))
+    import lexique_liens
+    lexique_liens.main()
 
 
 # Élargie le 29/09/2026 : « Etablissement POUR personnes âgées… » (sans « hébergement »), les

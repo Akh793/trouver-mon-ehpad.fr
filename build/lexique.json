@@ -1,0 +1,1682 @@
+{
+ "verifie_le": "2026-09-29",
+ "termes": [
+  {
+   "id": "ehpad",
+   "famille": "etablissements",
+   "terme": "EHPAD",
+   "variantes": [
+    "EHPAD"
+   ],
+   "variantes_exclues": "Le sigle apparaît plus de 600 fois sur le site : surligner seulement la première occurrence par page.",
+   "definition": "Établissement d’hébergement pour personnes âgées dépendantes : une maison de retraite médicalisée. Il accueille des personnes, en général de 60 ans ou plus, qui ont besoin d’aide et de soins au quotidien.",
+   "court": "Maison de retraite médicalisée pour les personnes âgées qui ont besoin d’aide et de soins chaque jour.",
+   "pour_vous": "La facture comprend un tarif d’hébergement et un tarif dépendance ; les soins sont payés par l’Assurance maladie.",
+   "lien": "/guides/comment-choisir-un-ehpad/",
+   "source_label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Les EHPAD (mis à jour le 02/02/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-ehpad": "200"
+   }
+  },
+  {
+   "id": "usld",
+   "famille": "etablissements",
+   "terme": "USLD — unité de soins de longue durée",
+   "variantes": [
+    "USLD",
+    "unité de soins de longue durée",
+    "unités de soins de longue durée"
+   ],
+   "variantes_exclues": null,
+   "definition": "Structure d’hébergement et de soins, en général rattachée à un hôpital, pour des personnes dont l’état exige une surveillance médicale constante. Les moyens médicaux y sont plus importants qu’en EHPAD.",
+   "court": "Lieu de vie rattaché à un hôpital, pour les personnes qui ont besoin d’une surveillance médicale constante.",
+   "pour_vous": "La facture y fonctionne comme en EHPAD : hébergement et dépendance à payer, soins pris en charge par l’Assurance maladie.",
+   "lien": null,
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Les USLD (mis à jour le 06/09/2023)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-usld-unites-de-soins-de-longue-duree",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Quels établissements hébergent des personnes âgées ? (F255, vérifiée le 08/11/2024)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F255"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-usld-unites-de-soins-de-longue-duree": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F255": "200"
+   }
+  },
+  {
+   "id": "residence-autonomie",
+   "famille": "etablissements",
+   "terme": "Résidence autonomie",
+   "variantes": [
+    "résidence autonomie",
+    "résidences autonomie",
+    "logement-foyer",
+    "logements-foyers"
+   ],
+   "variantes_exclues": null,
+   "definition": "Ensemble de logements privatifs non médicalisés, avec des services collectifs (repas, animations, blanchisserie). Elle accueille des personnes âgées autonomes ou peu dépendantes, à un loyer modéré.",
+   "court": "Logements non médicalisés avec services collectifs, pour des personnes âgées encore autonomes.",
+   "pour_vous": "Si la perte d’autonomie s’aggrave, il peut falloir la quitter : elle n’accueille qu’un petit nombre de résidents dépendants.",
+   "lien": null,
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Les résidences autonomie, pour qui ? (mis à jour le 13/06/2025)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/changer-de-logement/vivre-dans-une-residence-avec-services-pour-seniors/les-residences-autonomie-pour-qui",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Quels établissements hébergent des personnes âgées ? (F255, vérifiée le 08/11/2024)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F255"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/changer-de-logement/vivre-dans-une-residence-avec-services-pour-seniors/les-residences-autonomie-pour-qui": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F255": "200"
+   }
+  },
+  {
+   "id": "unite-protegee",
+   "famille": "etablissements",
+   "terme": "Unité protégée / unité de vie Alzheimer",
+   "variantes": [
+    "unité protégée",
+    "unités protégées",
+    "unité de vie protégée",
+    "unités de vie protégées",
+    "unité Alzheimer",
+    "unités Alzheimer"
+   ],
+   "variantes_exclues": null,
+   "definition": "Unité d’un EHPAD pour des personnes atteintes de la maladie d’Alzheimer ou d’une maladie apparentée, avec des troubles modérés du comportement. Les lieux permettent de marcher sans se perdre, avec une équipe formée.",
+   "court": "Unité d’EHPAD adaptée aux personnes atteintes d’Alzheimer qui déambulent ou se désorientent.",
+   "pour_vous": "Toutes les places n’y sont pas ouvertes à tous : l’admission dépend du diagnostic et des troubles de la personne.",
+   "lien": "/guides/ehpad-alzheimer-unite-protegee/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Alzheimer en EHPAD : quel accompagnement ? (mis à jour le 10/01/2025)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/alzheimer-en-ehpad-quel-accompagnement",
+   "sources_complementaires": [],
+   "statut": "✅",
+   "alerte": "Nuance : le guide du site parle d’« espace fermé » ; la source officielle décrit une architecture conçue pour déambuler sans se perdre, sans employer le mot « fermé ». L’affirmation du site « le tarif d’hébergement est en général le même » n’a pas de source officielle trouvée (pour les UHR, le portail indique que les tarifs peuvent différer).",
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/alzheimer-en-ehpad-quel-accompagnement": "200"
+   }
+  },
+  {
+   "id": "uhr",
+   "famille": "etablissements",
+   "terme": "UHR — unité d’hébergement renforcée",
+   "variantes": [
+    "UHR",
+    "unité d’hébergement renforcée",
+    "unité d'hébergement renforcée",
+    "unités d’hébergement renforcées",
+    "unités d'hébergement renforcées",
+    "unité d’hébergement renforcé",
+    "unité d'hébergement renforcé"
+   ],
+   "variantes_exclues": null,
+   "definition": "Lieu de vie aménagé dans un EHPAD, jour et nuit, pour des personnes atteintes d’Alzheimer ou d’une maladie apparentée avec d’importants troubles du comportement. L’objectif est un retour dans le lieu de vie habituel.",
+   "court": "Unité d’EHPAD, jour et nuit, pour les troubles du comportement sévères liés à Alzheimer.",
+   "pour_vous": "Ses tarifs d’hébergement et de dépendance peuvent différer de ceux du reste de l’EHPAD : demandez-les.",
+   "lien": "/guides/ehpad-alzheimer-unite-protegee/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Les UHR (mis à jour le 03/03/2021)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/les-uhr-des-lieux-d-hebergement-amenages-dans-les-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Alzheimer en EHPAD : quel accompagnement ? (mis à jour le 10/01/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/alzheimer-en-ehpad-quel-accompagnement"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/les-uhr-des-lieux-d-hebergement-amenages-dans-les-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/alzheimer-en-ehpad-quel-accompagnement": "200"
+   }
+  },
+  {
+   "id": "pasa",
+   "famille": "etablissements",
+   "terme": "PASA — pôle d’activités et de soins adaptés",
+   "variantes": [
+    "PASA",
+    "pôle d’activités et de soins adaptés",
+    "pôle d'activités et de soins adaptés",
+    "pôles d’activités et de soins adaptés",
+    "pôles d'activités et de soins adaptés"
+   ],
+   "variantes_exclues": null,
+   "definition": "Espace aménagé dans un EHPAD qui accueille en journée des résidents atteints d’Alzheimer ou d’une maladie apparentée, avec des troubles du comportement modérés. Des activités adaptées y sont proposées par une équipe formée.",
+   "court": "Espace de jour dans l’EHPAD, avec des activités adaptées pour les résidents atteints d’Alzheimer.",
+   "pour_vous": "Pour les résidents de l’EHPAD, le PASA n’est pas facturé en plus du prix mensuel.",
+   "lien": "/guides/ehpad-alzheimer-unite-protegee/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Les PASA (mis à jour le 23/10/2024)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/les-pasa-des-espaces-amenages-au-sein-des-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Alzheimer en EHPAD : quel accompagnement ? (mis à jour le 10/01/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/alzheimer-en-ehpad-quel-accompagnement"
+    }
+   ],
+   "statut": "✅",
+   "alerte": "Le guide du site définit le PASA comme un « accueil de jour, au sein de l’établissement ». La source officielle parle d’un accueil « durant la journée » des résidents de l’EHPAD. Ne pas le confondre avec le service « accueil de jour », destiné aux personnes qui vivent chez elles (certains PASA accueillent toutefois des personnes extérieures).",
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/les-pasa-des-espaces-amenages-au-sein-des-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/prevention-accompagnement-et-soins/alzheimer-en-ehpad-quel-accompagnement": "200"
+   }
+  },
+  {
+   "id": "accueil-de-jour",
+   "famille": "etablissements",
+   "terme": "Accueil de jour",
+   "variantes": [
+    "accueil de jour",
+    "accueils de jour"
+   ],
+   "variantes_exclues": null,
+   "definition": "Accueil d’une ou plusieurs journées par semaine, dans un centre dédié ou dans un EHPAD, de personnes âgées qui vivent chez elles. Il propose des activités adaptées et libère du temps pour les proches.",
+   "court": "Une ou plusieurs journées par semaine en structure, pour une personne âgée qui vit chez elle.",
+   "pour_vous": "Son prix à la journée est fixé chaque année par le conseil départemental ; l’APA à domicile peut aider à le payer.",
+   "lien": null,
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Aller à l’accueil de jour (mis à jour le 12/01/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/solutions-d-accueil-temporaire/aller-a-l-accueil-de-jour",
+   "sources_complementaires": [],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/solutions-d-accueil-temporaire/aller-a-l-accueil-de-jour": "200"
+   }
+  },
+  {
+   "id": "hebergement-temporaire",
+   "famille": "etablissements",
+   "terme": "Hébergement temporaire",
+   "variantes": [
+    "hébergement temporaire",
+    "hébergements temporaires"
+   ],
+   "variantes_exclues": "« accueil temporaire » exclu : dans les textes officiels il recouvre aussi l’accueil de jour (« accueil temporaire avec ou sans hébergement »).",
+   "definition": "Séjour de courte durée en établissement ou en accueil familial pour une personne qui vit chez elle : après une hospitalisation, pendant l’absence d’un proche, ou avant une entrée définitive.",
+   "court": "Séjour court en établissement pour une personne qui vit chez elle, par exemple après l’hôpital.",
+   "pour_vous": "Il peut servir de solution d’attente ; l’APA, l’aide sociale ou des aides locales peuvent réduire son coût.",
+   "lien": "/guides/urgence-apres-hospitalisation/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — L’hébergement temporaire : ce qu’il faut savoir (mis à jour le 20/01/2025)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/solutions-d-accueil-temporaire/l-hebergement-temporaire-ce-qu-il-faut-savoir",
+   "sources_complementaires": [],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-a-domicile/solutions-d-accueil-temporaire/l-hebergement-temporaire-ce-qu-il-faut-savoir": "200"
+   }
+  },
+  {
+   "id": "essms",
+   "famille": "etablissements",
+   "terme": "ESSMS",
+   "variantes": [
+    "ESSMS",
+    "établissement médico-social",
+    "établissements médico-sociaux",
+    "établissements et services sociaux et médico-sociaux"
+   ],
+   "variantes_exclues": null,
+   "definition": "Établissements et services sociaux et médico-sociaux : structures qui accompagnent des personnes âgées, des personnes handicapées, des enfants protégés ou des personnes en grande précarité. Les EHPAD en font partie.",
+   "court": "Nom officiel des établissements et services sociaux et médico-sociaux, dont les EHPAD.",
+   "pour_vous": "Tous sont évalués tous les cinq ans par un organisme extérieur, selon le référentiel de la HAS.",
+   "lien": "/guides/lire-une-evaluation-ehpad/",
+   "source_label": "HAS — Comprendre la nouvelle évaluation des ESSMS",
+   "source_url": "https://www.has-sante.fr/jcms/c_2838131/fr/comprendre-la-nouvelle-evaluation-des-essms",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Allocation personnalisée d’autonomie (F10009)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.has-sante.fr/jcms/c_2838131/fr/comprendre-la-nouvelle-evaluation-des-essms": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009": "200"
+   }
+  },
+  {
+   "id": "gir",
+   "famille": "autonomie",
+   "terme": "GIR — groupe iso-ressources",
+   "variantes": [
+    "GIR"
+   ],
+   "variantes_exclues": "Sensible à la casse, mot entier (le site écrit « GIR 1-2 », « GIR 5-6 »…).",
+   "definition": "Niveau de perte d’autonomie d’une personne âgée, de GIR 1 (la plus dépendante) à GIR 6 (autonome). Il est déterminé avec la grille nationale AGGIR.",
+   "court": "Niveau de perte d’autonomie, de GIR 1 (très dépendant) à GIR 6 (autonome).",
+   "pour_vous": "Du GIR 1 au GIR 4, la personne peut obtenir l’APA ; en EHPAD, le GIR fixe aussi le tarif dépendance.",
+   "lien": "/guides/gir-niveau-autonomie/",
+   "source_label": "Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ? (F1229, vérifiée le 09/01/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comment le GIR est-il déterminé ? (mis à jour le 30/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine": "200"
+   }
+  },
+  {
+   "id": "aggir",
+   "famille": "autonomie",
+   "terme": "Grille AGGIR",
+   "variantes": [
+    "AGGIR",
+    "grille AGGIR",
+    "Aggir"
+   ],
+   "variantes_exclues": null,
+   "definition": "Grille nationale qui mesure la perte d’autonomie. Dix activités du quotidien (se laver, s’habiller, se repérer…) servent à fixer le GIR. Sept activités domestiques et sociales complètent l’évaluation.",
+   "court": "Grille officielle qui observe les gestes du quotidien pour classer la personne dans un GIR.",
+   "pour_vous": "C’est avec elle que le médecin coordonnateur de l’EHPAD, ou l’équipe du département à domicile, fixe le GIR.",
+   "lien": "/guides/gir-niveau-autonomie/",
+   "source_label": "Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ? (F1229, vérifiée le 09/01/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comment le GIR est-il déterminé ? (mis à jour le 30/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine": "200"
+   }
+  },
+  {
+   "id": "medecin-coordonnateur",
+   "famille": "autonomie",
+   "terme": "Médecin coordonnateur",
+   "variantes": [
+    "médecin coordonnateur",
+    "médecins coordonnateurs"
+   ],
+   "variantes_exclues": null,
+   "definition": "Médecin de l’EHPAD qui organise les soins avec l’équipe soignante. Il donne son avis sur chaque admission et évalue le GIR des résidents. Il peut aussi suivre les résidents qui le souhaitent.",
+   "court": "Médecin de l’EHPAD : il coordonne les soins, donne son avis sur les admissions et évalue le GIR.",
+   "pour_vous": "C’est à lui qu’est remis, sous pli confidentiel, le volet médical du dossier d’admission.",
+   "lien": "/guides/dossier-admission-ehpad/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Le médecin coordonnateur (mis à jour le 17/04/2024)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-medecin-coordonnateur",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comment faire une demande d’admission en EHPAD ? (mis à jour le 15/01/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/comment-faire-une-demande-d-admission-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-medecin-coordonnateur": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/comment-faire-une-demande-d-admission-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "equipe-medico-sociale",
+   "famille": "autonomie",
+   "terme": "Équipe médico-sociale du département",
+   "variantes": [
+    "équipe médico-sociale",
+    "équipes médico-sociales"
+   ],
+   "variantes_exclues": null,
+   "definition": "Équipe du service autonomie du département (médecins, travailleurs sociaux, infirmiers…). Pour une demande d’APA à domicile, l’un de ses membres vient évaluer la perte d’autonomie et propose un plan d’aide.",
+   "court": "Professionnels du département qui évaluent la perte d’autonomie à domicile pour l’APA.",
+   "pour_vous": "Si la situation change, vous pouvez lui demander à tout moment une réévaluation.",
+   "lien": null,
+   "source_label": "Pour-les-personnes-agees.gouv.fr — L’équipe médico-sociale APA (mis à jour le 02/01/2025)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/l-equipe-medico-sociale-apa",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ? (F1229, vérifiée le 09/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/l-equipe-medico-sociale-apa": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229": "200"
+   }
+  },
+  {
+   "id": "tarif-hebergement",
+   "famille": "tarifs",
+   "terme": "Tarif d’hébergement",
+   "variantes": [
+    "tarif d’hébergement",
+    "tarif d'hébergement",
+    "tarifs d’hébergement",
+    "tarifs d'hébergement",
+    "tarif hébergement",
+    "prix hébergement",
+    "prix d’hébergement",
+    "prix d'hébergement"
+   ],
+   "variantes_exclues": null,
+   "definition": "Prix de la vie quotidienne en EHPAD : chambre, repas, entretien, blanchissage, animation et administration. Il est à la charge du résident, aidé parfois par l’aide au logement ou l’aide sociale.",
+   "court": "Prix de la chambre, des repas, du linge et des animations, payé par le résident.",
+   "pour_vous": "Il figure dans le contrat de séjour, ne change pas en cours d’année et est réévalué chaque année.",
+   "lien": "/guides/tarif-hebergement-et-tarif-dependance/",
+   "source_label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "tarif-dependance",
+   "famille": "tarifs",
+   "terme": "Tarif dépendance",
+   "variantes": [
+    "tarif dépendance",
+    "tarifs dépendance",
+    "tarif de dépendance"
+   ],
+   "variantes_exclues": null,
+   "definition": "Part de la facture qui paie l’aide aux gestes du quotidien (toilette, habillage, déplacements). Chaque EHPAD a trois tarifs selon le GIR : GIR 1-2, GIR 3-4 et GIR 5-6. Le département les fixe pour un an.",
+   "court": "Part de la facture pour l’aide au quotidien. Trois tarifs selon le GIR : 1-2, 3-4 et 5-6.",
+   "pour_vous": "L’APA en couvre une partie pour les GIR 1 à 4 ; dans les 23 territoires de l’expérimentation, il est remplacé par une participation forfaitaire.",
+   "lien": "/guides/tarif-hebergement-et-tarif-dependance/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763"
+    },
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Financement des EHPAD : une expérimentation dans 23 départements (mis à jour le 03/02/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/actualites/financement-des-ehpad-une-experimentation-dans-23-departements"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/actualites/financement-des-ehpad-une-experimentation-dans-23-departements": "200"
+   }
+  },
+  {
+   "id": "ticket-moderateur",
+   "famille": "tarifs",
+   "terme": "Ticket modérateur (tarif GIR 5-6)",
+   "variantes": [
+    "ticket modérateur"
+   ],
+   "variantes_exclues": null,
+   "definition": "Nom donné au tarif dépendance GIR 5-6 en EHPAD. Tout résident le paie au minimum, quel que soit son GIR : l’APA ne couvre que la différence avec son propre tarif.",
+   "court": "Tarif dépendance GIR 5-6 : le minimum payé par tout résident, quel que soit son GIR.",
+   "pour_vous": "Si les ressources ne suffisent pas, l’aide sociale à l’hébergement peut le prendre en charge.",
+   "lien": "/aides-ehpad/apa/",
+   "source_label": "CNSA — Réforme de la tarification des EHPAD",
+   "source_url": "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre le comparateur de prix des EHPAD (mis à jour le 14/08/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad"
+    },
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "tarif-soins",
+   "famille": "tarifs",
+   "terme": "Tarif soins / forfait soins",
+   "variantes": [
+    "tarif soins",
+    "forfait soins"
+   ],
+   "variantes_exclues": null,
+   "definition": "Part des coûts liée aux soins : personnel soignant, médecin coordonnateur, petit matériel médical. L’Assurance maladie la verse directement à l’EHPAD ; elle n’est pas facturée au résident.",
+   "court": "Coût des soins en EHPAD, payé par l’Assurance maladie : il n’apparaît pas sur la facture.",
+   "pour_vous": "Les frais médicaux personnels (médecin traitant, médicaments…) restent à part, selon que l’EHPAD est en tarif global ou partiel.",
+   "lien": "/guides/tarif-hebergement-et-tarif-dependance/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Le coût des soins en EHPAD et en USLD (mis à jour le 08/11/2022)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/le-cout-des-soins-en-ehpad-et-en-usld-unites-de-soins-de-longue-duree",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/le-cout-des-soins-en-ehpad-et-en-usld-unites-de-soins-de-longue-duree": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200"
+   }
+  },
+  {
+   "id": "tarif-global-partiel",
+   "famille": "tarifs",
+   "terme": "Tarif global / tarif partiel",
+   "variantes": [
+    "tarif global",
+    "tarif partiel",
+    "tarif global de soins",
+    "tarif partiel de soins"
+   ],
+   "variantes_exclues": null,
+   "definition": "Deux façons de financer les soins. En tarif partiel, le résident règle ses frais médicaux personnels comme à domicile. En tarif global, l’Assurance maladie verse en plus une enveloppe qui couvre notamment les médecins généralistes et les examens courants.",
+   "court": "Tarif global : l’EHPAD prend en charge certains frais médicaux. Tarif partiel : ils se règlent comme à domicile.",
+   "pour_vous": "Renseignez-vous lors de la visite : cela change qui paie le médecin et certains examens, pas le tarif d’hébergement.",
+   "lien": "/guides/tarif-hebergement-et-tarif-dependance/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Le coût des soins en EHPAD et en USLD (mis à jour le 08/11/2022)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/le-cout-des-soins-en-ehpad-et-en-usld-unites-de-soins-de-longue-duree",
+   "sources_complementaires": [],
+   "statut": "✅",
+   "alerte": "Les fiches d’établissement du site (app.js) décrivent le tarif global comme « médecins et médicaments pris en charge par l’établissement » et le guide tarifs évoque les médicaments. La source officielle consultée cite les rémunérations des médecins généralistes et les examens de biologie et de radiologie courants, sans mentionner les médicaments. Formulation à vérifier (lien possible avec la présence d’une PUI, non vérifié).",
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/le-cout-des-soins-en-ehpad-et-en-usld-unites-de-soins-de-longue-duree": "200"
+   }
+  },
+  {
+   "id": "pui",
+   "famille": "tarifs",
+   "terme": "PUI — pharmacie à usage intérieur",
+   "variantes": [
+    "PUI",
+    "pharmacie à usage intérieur",
+    "pharmacie interne"
+   ],
+   "variantes_exclues": "« PUI » : sensible à la casse et mot entier (éviter « puis »). Le site écrit « pharmacie interne » sur les fiches ; le portail officiel écrit « pharmacie à usage interne » dans son comparateur.",
+   "definition": "Pharmacie située à l’intérieur d’un établissement de santé ou médico-social. Elle fournit les médicaments et le matériel médical aux services de soins et veille à leur bon usage.",
+   "court": "Pharmacie installée dans l’établissement, qui fournit médicaments et matériel médical aux soignants.",
+   "pour_vous": "Seuls certains EHPAD en ont une : demandez qui fournit les médicaments et comment ils sont payés.",
+   "lien": null,
+   "source_label": "ARS Provence-Alpes-Côte d’Azur — Pharmacies à usage intérieur",
+   "source_url": "https://www.paca.ars.sante.fr/pharmacies-usage-interieur-1",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre le comparateur de prix des EHPAD (mis à jour le 14/08/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": "Page glossaire du ministère de la Santé (sante.gouv.fr) bloquée par une vérification anti-robots : non contournée. Le lien entre PUI, tarif global et prise en charge des médicaments n’a pas été vérifié.",
+   "verif_http": {
+    "https://www.paca.ars.sante.fr/pharmacies-usage-interieur-1": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad": "200"
+   }
+  },
+  {
+   "id": "tarif-journalier",
+   "famille": "tarifs",
+   "terme": "Tarif journalier",
+   "variantes": [
+    "tarif journalier",
+    "tarifs journaliers",
+    "prix journalier",
+    "prix journaliers"
+   ],
+   "variantes_exclues": null,
+   "definition": "Prix fixé par jour. En EHPAD, l’hébergement, la dépendance et les soins ont chacun leur tarif journalier. Les prix publiés dans l’annuaire officiel sont des prix par jour.",
+   "court": "Prix par jour. L’hébergement, la dépendance et les soins ont chacun le leur.",
+   "pour_vous": "Pour un mois, ce site multiplie le tarif journalier par 30,5 jours ; le comparateur officiel utilise 30 jours.",
+   "lien": "/notre-methodologie.html",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre le comparateur de prix des EHPAD (mis à jour le 14/08/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad": "200"
+   }
+  },
+  {
+   "id": "socle-prestations",
+   "famille": "tarifs",
+   "terme": "Socle de prestations minimales",
+   "variantes": [
+    "socle de prestations",
+    "prestations minimales",
+    "prestations socles"
+   ],
+   "variantes_exclues": "« socle » seul exclu (trop court) ; le site écrit « socle de prestations » et « prestations facturées en plus du socle ».",
+   "definition": "Liste des prestations que tout EHPAD doit inclure dans son tarif d’hébergement : administration, chambre avec salle de bain, trois repas, goûter et collation de nuit, linge, accès à internet et animations.",
+   "court": "Prestations que tout EHPAD doit inclure dans le tarif d’hébergement : chambre, repas, linge, animations…",
+   "pour_vous": "Tout ce qui s’y ajoute (coiffeur, pédicure…) est facturé en plus : demandez la liste écrite avant de signer.",
+   "lien": "/guides/dossier-admission-ehpad/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Les EHPAD (mis à jour le 02/02/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763"
+    },
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Le contrat de séjour en EHPAD (mis à jour le 21/11/2024)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/le-contrat-de-sejour-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-ehpad": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/le-contrat-de-sejour-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "chambre-double",
+   "famille": "tarifs",
+   "terme": "Chambre double",
+   "variantes": [
+    "chambre double",
+    "chambres doubles"
+   ],
+   "variantes_exclues": null,
+   "definition": "Chambre partagée à deux, proposée par certains EHPAD aux couples ou aux personnes qui l’acceptent. Son prix est affiché par personne.",
+   "court": "Chambre partagée à deux. Le prix affiché vaut pour une personne.",
+   "pour_vous": "Pour un couple, comptez ce prix pour chacun des deux.",
+   "lien": "/calcul-reste-a-charge-ehpad/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Comprendre le comparateur de prix des EHPAD (mis à jour le 14/08/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Les EHPAD (mis à jour le 02/02/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/comprendre-le-comparateur-de-prix-des-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-ehpad": "200"
+   }
+  },
+  {
+   "id": "depot-garantie",
+   "famille": "tarifs",
+   "terme": "Dépôt de garantie",
+   "variantes": [
+    "dépôt de garantie",
+    "dépôts de garantie"
+   ],
+   "variantes_exclues": null,
+   "definition": "Somme versée à l’entrée pour couvrir d’éventuelles dégradations. Elle ne dépasse pas un mois de tarif d’hébergement. Elle est rendue dans les 30 jours après le départ, moins les sommes dues.",
+   "court": "Somme versée à l’entrée, au plus un mois d’hébergement, rendue dans les 30 jours après le départ.",
+   "pour_vous": "Sans état des lieux à l’entrée et à la sortie, aucune remise en état ne peut vous être facturée.",
+   "lien": "/guides/dossier-admission-ehpad/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Quelles garanties pour entrer en EHPAD ? (mis à jour le 21/11/2024)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/quelles-garanties-demandees-pour-entrer-en-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Le contrat de séjour en EHPAD (mis à jour le 21/11/2024)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/le-contrat-de-sejour-en-ehpad"
+    },
+    {
+     "label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763"
+    }
+   ],
+   "statut": "✅",
+   "alerte": "Nuance entre sources officielles : service-public (F763) plafonne le dépôt au « tarif hébergement mensuel qui reste à la charge de la personne hébergée » ; le portail officiel et le site disent « le tarif mensuel d’hébergement ». Pas de contradiction avec le site, mais le plafond pourrait être plus bas après déduction des aides.",
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/quelles-garanties-demandees-pour-entrer-en-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/le-contrat-de-sejour-en-ehpad": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200"
+   }
+  },
+  {
+   "id": "reste-a-charge",
+   "famille": "tarifs",
+   "terme": "Reste à charge",
+   "variantes": [
+    "reste à charge",
+    "restes à charge"
+   ],
+   "variantes_exclues": null,
+   "definition": "Ce que le résident paie chaque mois une fois déduites du total de la facture les aides publiques : APA, aide au logement, aide sociale.",
+   "court": "Ce qui reste à payer chaque mois, une fois les aides publiques déduites de la facture.",
+   "pour_vous": "C’est le chiffre à comparer entre établissements, plutôt que le prix affiché.",
+   "lien": "/calcul-reste-a-charge-ehpad/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Les USLD (mis à jour le 06/09/2023)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-usld-unites-de-soins-de-longue-duree",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/les-differents-etablissements-medicalises/les-usld-unites-de-soins-de-longue-duree": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "participation-forfaitaire",
+   "famille": "tarifs",
+   "terme": "Participation forfaitaire (expérimentation soins-dépendance)",
+   "variantes": [
+    "participation forfaitaire",
+    "participation journalière forfaitaire"
+   ],
+   "variantes_exclues": null,
+   "definition": "Somme par jour, identique pour tous les résidents, qui remplace le tarif dépendance dans les 23 territoires de l’expérimentation lancée le 1er juillet 2025. Elle ne dépend ni du GIR ni des ressources.",
+   "court": "Dans 23 territoires depuis juillet 2025 : un montant par jour, le même pour tous, à la place du tarif dépendance.",
+   "pour_vous": "Dans ces territoires, l’APA en établissement est supprimée : la part dépendance est la même pour tous.",
+   "lien": "/etudes/fusion-soins-dependance-ehpad/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Financement des EHPAD : une expérimentation dans 23 départements (mis à jour le 03/02/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/actualites/financement-des-ehpad-une-experimentation-dans-23-departements",
+   "sources_complementaires": [
+    {
+     "label": "CNSA — Réforme de la tarification des EHPAD",
+     "url": "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/actualites/financement-des-ehpad-une-experimentation-dans-23-departements": "200",
+    "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad": "200"
+   }
+  },
+  {
+   "id": "prix-habilite",
+   "famille": "tarifs",
+   "terme": "Tarif « aide sociale » et tarif libre (tarifs différenciés)",
+   "variantes": [
+    "tarif « aide sociale »",
+    "tarif aide sociale",
+    "tarifs différenciés",
+    "tarif « libre »",
+    "tarif libre"
+   ],
+   "variantes_exclues": null,
+   "definition": "Dans un EHPAD habilité, le département fixe le tarif « aide sociale ». Depuis 2025, un EHPAD totalement ou majoritairement habilité peut appliquer un tarif plus élevé, dit « libre ». Il vise les nouveaux résidents non bénéficiaires, dans une limite fixée.",
+   "court": "Tarif fixé par le département pour l’aide sociale ; depuis 2025, un tarif « libre » plus élevé peut viser les autres.",
+   "pour_vous": "Le tarif « libre » ne s’applique jamais à un bénéficiaire de l’aide sociale, ni aux résidents entrés avant sa mise en place.",
+   "lien": "/aides-ehpad/aide-sociale-hebergement/",
+   "source_label": "Ministère des Solidarités — FAQ Tarifs différenciés dans les EHPAD (publiée le 21/07/2025)",
+   "source_url": "https://solidarites.gouv.fr/faq-tarifs-differencies-dans-les-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://solidarites.gouv.fr/faq-tarifs-differencies-dans-les-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "apa",
+   "famille": "aides",
+   "terme": "APA en établissement",
+   "variantes": [
+    "APA",
+    "allocation personnalisée d’autonomie",
+    "allocation personnalisée d'autonomie"
+   ],
+   "variantes_exclues": "Sigle « APA » : sensible à la casse, mot entier.",
+   "definition": "Allocation personnalisée d’autonomie : aide du département qui paie une partie du tarif dépendance en EHPAD ou en USLD. Elle concerne les personnes de 60 ans ou plus évaluées en GIR 1 à 4. Son montant dépend des ressources.",
+   "court": "Aide du département qui paie une partie du tarif dépendance, pour les GIR 1 à 4, dès 60 ans.",
+   "pour_vous": "Elle n’est jamais récupérée sur la succession ; elle est souvent versée directement à l’EHPAD.",
+   "lien": "/aides-ehpad/apa/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — L’APA en établissement (mis à jour le 09/06/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-apa-en-etablissement",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Allocation personnalisée d’autonomie (F10009)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-apa-en-etablissement": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009": "200"
+   }
+  },
+  {
+   "id": "ash",
+   "famille": "aides",
+   "terme": "Aide sociale à l’hébergement (ASH)",
+   "variantes": [
+    "ASH",
+    "aide sociale à l’hébergement",
+    "aide sociale à l'hébergement"
+   ],
+   "variantes_exclues": "« aide sociale » seul exclu : ambigu (vise aussi d’autres aides départementales et l’habilitation).",
+   "definition": "Aide du département qui paie la part des frais d’hébergement que la personne ne peut pas régler. Elle suppose un établissement habilité et peut être récupérée, notamment sur la succession.",
+   "court": "Aide du département pour payer l’hébergement quand les ressources ne suffisent pas. Elle est récupérable.",
+   "pour_vous": "Demandez-la dans les deux mois suivant l’entrée : la prise en charge peut alors remonter à la date d’entrée.",
+   "lien": "/aides-ehpad/aide-sociale-hebergement/",
+   "source_label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — L’ASH en établissement (mis à jour le 09/04/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-aide-sociale-a-l-hebergement-ash-en-etablissement"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-aide-sociale-a-l-hebergement-ash-en-etablissement": "200"
+   }
+  },
+  {
+   "id": "habilitation",
+   "famille": "aides",
+   "terme": "Habilitation à l’aide sociale",
+   "variantes": [
+    "habilitation à l’aide sociale",
+    "habilitation à l'aide sociale",
+    "habilité à l’aide sociale",
+    "habilité à l'aide sociale",
+    "habilités à l’aide sociale",
+    "habilités à l'aide sociale",
+    "habilitée à l’aide sociale",
+    "habilitée à l'aide sociale",
+    "non habilité"
+   ],
+   "variantes_exclues": "« habilitation » et « habilité » seuls exclus : le pied de page du site emploie « habilitation FINESS ».",
+   "definition": "Autorisation pour un établissement d’accueillir des bénéficiaires de l’aide sociale à l’hébergement, sur tout ou partie de ses places. Pour ces places, c’est le département qui fixe le prix d’hébergement.",
+   "court": "Un établissement habilité peut accueillir des bénéficiaires de l’aide sociale ; le département fixe alors son prix.",
+   "pour_vous": "Sans habilitation, l’aide sociale n’est en principe pas possible, sauf après cinq ans de séjour payant.",
+   "lien": "/aides-ehpad/aide-sociale-hebergement/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — L’ASH en établissement (mis à jour le 09/04/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-aide-sociale-a-l-hebergement-ash-en-etablissement"
+    },
+    {
+     "label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-aide-sociale-a-l-hebergement-ash-en-etablissement": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200"
+   }
+  },
+  {
+   "id": "apl-als",
+   "famille": "aides",
+   "terme": "APL / ALS",
+   "variantes": [
+    "APL",
+    "ALS",
+    "aide personnalisée au logement",
+    "allocation de logement sociale",
+    "aide au logement",
+    "aides au logement"
+   ],
+   "variantes_exclues": null,
+   "definition": "Aides au logement qui réduisent le tarif d’hébergement. L’APL (aide personnalisée au logement) est possible si l’établissement est conventionné ; sinon, c’est l’ALS (allocation de logement sociale). Elles ne se cumulent pas entre elles.",
+   "court": "Aides de la CAF ou de la MSA qui réduisent le tarif d’hébergement : APL si l’établissement est conventionné, sinon ALS.",
+   "pour_vous": "La demande se fait à la CAF ou à la MSA ; l’établissement remplit l’attestation prévue dans le formulaire.",
+   "lien": "/aides-ehpad/aide-au-logement/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Vivre en établissement et demander l’APL ou l’ALS (mis à jour le 19/05/2025)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/vivre-en-etablissement-et-faire-une-demande-d-apl-ou-d-als",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/vivre-en-etablissement-et-faire-une-demande-d-apl-ou-d-als": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200"
+   }
+  },
+  {
+   "id": "conventionne",
+   "famille": "aides",
+   "terme": "Établissement conventionné APL",
+   "variantes": [
+    "conventionné",
+    "conventionnés",
+    "non conventionné"
+   ],
+   "variantes_exclues": null,
+   "definition": "Établissement qui a signé une convention avec l’État ouvrant droit à l’aide personnalisée au logement (APL) pour ses résidents. Cela dépend de l’établissement, pas de la personne.",
+   "court": "Établissement lié à l’État par une convention : ses résidents peuvent demander l’APL.",
+   "pour_vous": "Posez la question avant de signer : dans un établissement non conventionné, seule l’ALS est possible.",
+   "lien": "/aides-ehpad/aide-au-logement/",
+   "source_label": "Service-public.fr — Glossaire : Logement conventionné",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/glossaire/R18743",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Vivre en établissement et demander l’APL ou l’ALS (mis à jour le 19/05/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/vivre-en-etablissement-et-faire-une-demande-d-apl-ou-d-als"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/glossaire/R18743": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/vivre-en-etablissement-et-faire-une-demande-d-apl-ou-d-als": "200"
+   }
+  },
+  {
+   "id": "reduction-impot",
+   "famille": "aides",
+   "terme": "Réduction d’impôt pour frais d’hébergement",
+   "variantes": [
+    "réduction d’impôt",
+    "réduction d'impôt",
+    "réductions d’impôt",
+    "réductions d'impôt"
+   ],
+   "variantes_exclues": null,
+   "definition": "Avantage fiscal pour la personne accueillie en EHPAD ou en établissement de soins de longue durée : 25 % des frais de dépendance et d’hébergement restant à payer, dans la limite de 2 500 € par an et par personne.",
+   "court": "25 % des frais de dépendance et d’hébergement restant à payer, au plus 2 500 € par an et par personne.",
+   "pour_vous": "Les aides reçues (APA, aide au logement, aide sociale) doivent être déduites des frais déclarés.",
+   "lien": "/aides-ehpad/reduction-impot/",
+   "source_label": "Service-public.fr — Réduction d’impôt pour frais d’accueil liés à la dépendance (F17, vérifiée le 15/04/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17",
+   "sources_complementaires": [
+    {
+     "label": "BOFiP — BOI-IR-RICI-140 (réduction d’impôt, frais de dépendance)",
+     "url": "https://bofip.impots.gouv.fr/bofip/526-PGP.html/identifiant=BOI-IR-RICI-140-20140625"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F17": "200",
+    "https://bofip.impots.gouv.fr/bofip/526-PGP.html/identifiant=BOI-IR-RICI-140-20140625": "200"
+   }
+  },
+  {
+   "id": "obligation-alimentaire",
+   "famille": "aides",
+   "terme": "Obligation alimentaire",
+   "variantes": [
+    "obligation alimentaire"
+   ],
+   "variantes_exclues": null,
+   "definition": "Devoir d’aider un parent ou un beau-parent qui ne peut plus faire face à ses besoins essentiels (logement, nourriture, soins). Il n’existe pas de barème : l’aide dépend des besoins de l’un et des ressources de l’autre.",
+   "court": "Devoir légal d’aider un parent dans le besoin. Pas de barème : tout dépend des besoins et des ressources.",
+   "pour_vous": "En cas de désaccord entre la famille et le parent, le juge aux affaires familiales fixe la part de chacun.",
+   "lien": "/aides-ehpad/obligation-alimentaire/",
+   "source_label": "Service-public.fr — Obligation alimentaire (F2009, vérifiée le 12/12/2025)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2009",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Qu’est-ce que l’obligation alimentaire ? (mis à jour le 24/12/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/les-obligations-de-la-famille/qu-est-ce-que-l-obligation-alimentaire"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2009": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/les-obligations-de-la-famille/qu-est-ce-que-l-obligation-alimentaire": "200"
+   }
+  },
+  {
+   "id": "obliges-alimentaires",
+   "famille": "aides",
+   "terme": "Obligés alimentaires",
+   "variantes": [
+    "obligés alimentaires",
+    "obligé alimentaire"
+   ],
+   "variantes_exclues": null,
+   "definition": "Personnes tenues à l’obligation alimentaire : enfants, petits-enfants, gendres et belles-filles. Pour une demande d’aide sociale à l’hébergement, les petits-enfants et leurs descendants sont dispensés.",
+   "court": "Enfants, petits-enfants, gendres et belles-filles. Pour l’aide sociale, les petits-enfants sont dispensés.",
+   "pour_vous": "Le département peut leur demander une participation avant de fixer sa propre aide.",
+   "lien": "/aides-ehpad/obligation-alimentaire/",
+   "source_label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Qu’est-ce que l’obligation alimentaire ? (mis à jour le 24/12/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/les-obligations-de-la-famille/qu-est-ce-que-l-obligation-alimentaire"
+    },
+    {
+     "label": "Service-public.fr — Obligation alimentaire (F2009, vérifiée le 12/12/2025)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2009"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/les-obligations-de-la-famille/qu-est-ce-que-l-obligation-alimentaire": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2009": "200"
+   }
+  },
+  {
+   "id": "recuperation-succession",
+   "famille": "aides",
+   "terme": "Récupération sur succession",
+   "variantes": [
+    "récupération sur la succession",
+    "récupération sur succession",
+    "récupérable sur la succession",
+    "récupérables sur la succession",
+    "récupérée sur la succession"
+   ],
+   "variantes_exclues": null,
+   "definition": "Remboursement, au décès du bénéficiaire, des sommes versées par le département au titre de l’aide sociale à l’hébergement. Il porte sur l’actif net de la succession (biens moins dettes), jamais sur le patrimoine des héritiers.",
+   "court": "Au décès, le département reprend l’aide sociale versée sur la succession, jamais sur les biens des héritiers.",
+   "pour_vous": "L’APA n’est jamais récupérée ; et s’il n’y a pas de succession, il n’y a rien à récupérer.",
+   "lien": "/aides-ehpad/aide-sociale-hebergement/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — La récupération de l’ASH (mis à jour le 02/05/2025)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/la-recuperation-de-l-aide-sociale-a-l-hebergement",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/la-recuperation-de-l-aide-sociale-a-l-hebergement": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200"
+   }
+  },
+  {
+   "id": "argent-de-poche",
+   "famille": "aides",
+   "terme": "Somme minimale laissée au résident (« argent de poche »)",
+   "variantes": [
+    "argent de poche",
+    "10 % de ses ressources"
+   ],
+   "variantes_exclues": "Espaces : le site écrit « 10 % » avec espace simple ou insécable selon les pages ; normaliser les espaces avant comparaison.",
+   "definition": "Somme que le département laisse obligatoirement au résident bénéficiaire de l’aide sociale : 10 % de ses ressources, et au moins 1 % du montant annuel de l’ASPA, soit 125 € par mois en 2026.",
+   "court": "L’aide sociale laisse au résident au moins 10 % de ses ressources, jamais moins de 125 € par mois (2026).",
+   "pour_vous": "Cette somme sert aux dépenses personnelles ; en général, 90 % des ressources vont aux frais d’hébergement.",
+   "lien": "/aides-ehpad/aide-sociale-hebergement/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Demander l’ASH (mis à jour le 15/01/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/demander-l-ash-aide-sociale-a-l-hebergement-pour-les-personnes-agees",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/demander-l-ash-aide-sociale-a-l-hebergement-pour-les-personnes-agees": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200"
+   }
+  },
+  {
+   "id": "aspa",
+   "famille": "aides",
+   "terme": "ASPA — minimum vieillesse",
+   "variantes": [
+    "ASPA",
+    "Aspa",
+    "allocation de solidarité aux personnes âgées",
+    "minimum vieillesse"
+   ],
+   "variantes_exclues": null,
+   "definition": "Allocation de solidarité aux personnes âgées, ex-minimum vieillesse : prestation mensuelle versée par la caisse de retraite aux retraités qui ont de faibles ressources et vivent en France.",
+   "court": "Minimum vieillesse : allocation mensuelle de la caisse de retraite pour les retraités aux faibles ressources.",
+   "pour_vous": "Son montant sert de référence à l’aide sociale : il fixe la somme minimale laissée au résident et au conjoint resté à domicile.",
+   "lien": "/aides-ehpad/aide-sociale-hebergement/",
+   "source_label": "Service-public.fr — Aspa (F16871, vérifiée le 23/06/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F16871",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Demander l’ASH (mis à jour le 15/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/demander-l-ash-aide-sociale-a-l-hebergement-pour-les-personnes-agees"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F16871": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/demander-l-ash-aide-sociale-a-l-hebergement-pour-les-personnes-agees": "200"
+   }
+  },
+  {
+   "id": "ccas",
+   "famille": "aides",
+   "terme": "CCAS — centre communal d’action sociale",
+   "variantes": [
+    "CCAS",
+    "centre communal d’action sociale",
+    "centre communal d'action sociale",
+    "centres communaux d’action sociale",
+    "centres communaux d'action sociale",
+    "CIAS"
+   ],
+   "variantes_exclues": null,
+   "definition": "Service social de la commune. Il informe sur les aides, aide à monter une demande d’APA et reçoit les demandes d’aide sociale à l’hébergement. Sans CCAS dans la commune, on s’adresse à la mairie.",
+   "court": "Service social de la commune : informations, aide aux dossiers d’APA, dépôt des demandes d’aide sociale.",
+   "pour_vous": "C’est souvent là que se dépose le dossier d’aide sociale, qui est ensuite transmis au département.",
+   "lien": "/aides-ehpad/aide-sociale-hebergement/",
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Le CCAS / la mairie (mis à jour le 01/08/2025)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-centre-communal-d-action-sociale-ccas-la-mairie",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Les coordonnées des CCAS dans l’annuaire (actualité)",
+     "url": "https://www.service-public.gouv.fr/particuliers/actualites/A18757"
+    },
+    {
+     "label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-centre-communal-d-action-sociale-ccas-la-mairie": "200",
+    "https://www.service-public.gouv.fr/particuliers/actualites/A18757": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200"
+   }
+  },
+  {
+   "id": "dossier-admission",
+   "famille": "demarches",
+   "terme": "Dossier unique d’admission en EHPAD",
+   "variantes": [
+    "dossier unique",
+    "dossier d’admission",
+    "dossier d'admission",
+    "formulaire unique",
+    "Cerfa n° 14732*03",
+    "14732*03"
+   ],
+   "variantes_exclues": null,
+   "definition": "Formulaire national (Cerfa n° 14732*03) pour demander une place en EHPAD, en hébergement temporaire ou en accueil de jour. Il comprend un volet administratif et un volet médical rempli par un médecin.",
+   "court": "Formulaire national unique (Cerfa n° 14732*03) pour demander une place, en ligne ou sur papier.",
+   "pour_vous": "Envoyez-le à plusieurs établissements en même temps : chacun l’inscrit sur sa liste d’attente s’il en a une.",
+   "lien": "/guides/dossier-admission-ehpad/",
+   "source_label": "Service-public.fr — Demande d’admission en Éhpad, Cerfa 14732*03 (R17461)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/R17461",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comment faire une demande d’admission en EHPAD ? (mis à jour le 15/01/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/comment-faire-une-demande-d-admission-en-ehpad"
+    },
+    {
+     "label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/R17461": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/comment-faire-une-demande-d-admission-en-ehpad": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200"
+   }
+  },
+  {
+   "id": "viatrajectoire",
+   "famille": "demarches",
+   "terme": "ViaTrajectoire",
+   "variantes": [
+    "ViaTrajectoire"
+   ],
+   "variantes_exclues": null,
+   "definition": "Service public national, gratuit et sécurisé, d’aide à l’orientation. Pour les personnes âgées, il permet de remplir une seule fois le dossier d’admission et de l’envoyer à plusieurs EHPAD.",
+   "court": "Service public en ligne pour remplir une fois le dossier d’admission et l’envoyer à plusieurs EHPAD.",
+   "pour_vous": "Il permet de suivre les réponses et d’accepter ou refuser une proposition ; le dossier papier reste possible.",
+   "lien": "/guides/trouver-une-place-en-ehpad/",
+   "source_label": "ViaTrajectoire — site officiel",
+   "source_url": "https://www.viatrajectoire.fr/",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comment faire une demande d’admission en EHPAD ? (mis à jour le 15/01/2025)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/comment-faire-une-demande-d-admission-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": "Le guide « Comment trouver une place en EHPAD » écrit : « Il n’existe qu’une seule porte d’entrée : le dossier unique national, déposé sur la plateforme ViaTrajectoire ». Les sources officielles précisent que la demande peut aussi se faire par courrier (Cerfa papier) et que le service en ligne existe « dans la quasi-totalité des départements », pas partout.",
+   "verif_http": {
+    "https://www.viatrajectoire.fr/": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/comment-faire-une-demande-d-admission-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "contrat-sejour",
+   "famille": "demarches",
+   "terme": "Contrat de séjour",
+   "variantes": [
+    "contrat de séjour",
+    "contrats de séjour"
+   ],
+   "variantes_exclues": null,
+   "definition": "Contrat conclu entre le résident (ou son représentant) et l’EHPAD dès que le séjour peut dépasser deux mois. Il détaille les prestations, les prix, la facturation en cas d’absence et les conditions de départ.",
+   "court": "Contrat obligatoire dès que le séjour peut dépasser deux mois : prestations, prix, conditions de départ.",
+   "pour_vous": "Vous pouvez vous rétracter par écrit dans les 15 jours qui suivent la signature, sans préavis.",
+   "lien": "/guides/dossier-admission-ehpad/",
+   "source_label": "Service-public.fr — Éhpad (fiche F763, vérifiée le 01/01/2026)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F763",
+   "sources_complementaires": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Le contrat de séjour en EHPAD (mis à jour le 21/11/2024)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/le-contrat-de-sejour-en-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F763": "200",
+    "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/preparer-l-entree-en-ehpad/le-contrat-de-sejour-en-ehpad": "200"
+   }
+  },
+  {
+   "id": "conseil-departemental",
+   "famille": "demarches",
+   "terme": "Conseil départemental",
+   "variantes": [
+    "conseil départemental",
+    "conseils départementaux"
+   ],
+   "variantes_exclues": "« département » seul exclu : trop générique.",
+   "definition": "Collectivité du département. Pour les personnes âgées, il accorde l’APA et l’aide sociale à l’hébergement. Il autorise, contrôle et fixe les tarifs de certains établissements.",
+   "court": "Il accorde l’APA et l’aide sociale, et fixe les tarifs de certains établissements.",
+   "pour_vous": "Chaque département a son propre règlement d’aide sociale : c’est lui qui fait foi.",
+   "lien": null,
+   "source_label": "Pour-les-personnes-agees.gouv.fr — Le conseil départemental (mis à jour le 19/08/2026)",
+   "source_url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-conseil-departemental",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-conseil-departemental": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200"
+   }
+  },
+  {
+   "id": "notification",
+   "famille": "demarches",
+   "terme": "Notification",
+   "variantes": [
+    "notification",
+    "notifications"
+   ],
+   "variantes_exclues": null,
+   "definition": "Formalité par laquelle une décision est portée officiellement à la connaissance d’une personne. Pour l’APA ou l’aide sociale, c’est le courrier du département qui annonce l’accord, le refus ou le montant.",
+   "court": "Courrier officiel qui vous annonce une décision (accord, refus, montant d’une aide).",
+   "pour_vous": "Gardez-la : le délai de deux mois pour contester une décision sur l’APA court à partir de sa réception.",
+   "lien": null,
+   "source_label": "Service-public.fr — Glossaire : Notification (définition du 07/08/2024)",
+   "source_url": "https://www.service-public.gouv.fr/particuliers/glossaire/R14732",
+   "sources_complementaires": [
+    {
+     "label": "Service-public.fr — Aide sociale à l’hébergement (F2444, vérifiée le 01/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444"
+    },
+    {
+     "label": "Service-public.fr — Allocation personnalisée d’autonomie (F10009)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.service-public.gouv.fr/particuliers/glossaire/R14732": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F2444": "200",
+    "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009": "200"
+   }
+  },
+  {
+   "id": "finess",
+   "famille": "donnees",
+   "terme": "FINESS",
+   "variantes": [
+    "FINESS"
+   ],
+   "variantes_exclues": null,
+   "definition": "Fichier national des établissements sanitaires et sociaux : répertoire officiel qui identifie chaque établissement, dont les EHPAD, par un numéro de neuf caractères. Il distingue l’entité juridique (le gestionnaire) et l’entité géographique (le lieu).",
+   "court": "Répertoire officiel des établissements : chaque EHPAD y a un numéro FINESS de neuf caractères.",
+   "pour_vous": "Ce site s’appuie sur ce numéro pour relier les prix, l’habilitation et l’évaluation de chaque établissement.",
+   "lien": "/notre-methodologie.html",
+   "source_label": "Agence du numérique en santé (G_NIUS) — Fichier national des établissements sanitaires et sociaux (FINESS)",
+   "source_url": "https://gnius.esante.gouv.fr/fr/reglementation/fiches-reglementation/fichier-national-des-etablissements-sanitaires-et-sociaux-finess",
+   "sources_complementaires": [],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://gnius.esante.gouv.fr/fr/reglementation/fiches-reglementation/fichier-national-des-etablissements-sanitaires-et-sociaux-finess": "200"
+   }
+  },
+  {
+   "id": "cnsa",
+   "famille": "donnees",
+   "terme": "CNSA",
+   "variantes": [
+    "CNSA",
+    "Caisse nationale de solidarité pour l’autonomie",
+    "Caisse nationale de solidarité pour l'autonomie"
+   ],
+   "variantes_exclues": null,
+   "definition": "Caisse nationale de solidarité pour l’autonomie : établissement public qui gère, depuis 2021, la branche Autonomie de la Sécurité sociale. Elle reçoit les prix déclarés par les EHPAD, publiés dans l’annuaire officiel.",
+   "court": "Établissement public qui gère la branche Autonomie de la Sécurité sociale et collecte les prix des EHPAD.",
+   "pour_vous": "Les prix affichés sur ce site viennent de ces déclarations à la CNSA.",
+   "lien": "/notre-methodologie.html",
+   "source_label": "CNSA — Présentation et missions de la CNSA",
+   "source_url": "https://www.cnsa.fr/la-cnsa/la-cnsa-branche-autonomie-de-la-securite-sociale/presentation-et-missions-de-la-cnsa",
+   "sources_complementaires": [
+    {
+     "label": "CNSA — Réforme de la tarification des EHPAD",
+     "url": "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.cnsa.fr/la-cnsa/la-cnsa-branche-autonomie-de-la-securite-sociale/presentation-et-missions-de-la-cnsa": "200",
+    "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad": "200"
+   }
+  },
+  {
+   "id": "has",
+   "famille": "donnees",
+   "terme": "HAS — Haute Autorité de santé",
+   "variantes": [
+    "HAS",
+    "Haute Autorité de santé"
+   ],
+   "variantes_exclues": "Uniquement en majuscules, mot entier.",
+   "definition": "Organisme public chargé de mesurer et d’améliorer la qualité des soins et des accompagnements. Elle a créé le référentiel qui sert à évaluer les établissements sociaux et médico-sociaux, dont les EHPAD.",
+   "court": "Organisme public de la qualité en santé ; il a créé le référentiel d’évaluation des EHPAD.",
+   "pour_vous": "Les résultats des évaluations sont publiés sur Qualiscope, son service d’information en ligne.",
+   "lien": "/guides/lire-une-evaluation-ehpad/",
+   "source_label": "HAS — Missions de la HAS",
+   "source_url": "https://www.has-sante.fr/jcms/c_1002212/fr/la-has-en-bref",
+   "sources_complementaires": [
+    {
+     "label": "HAS — Quel est le niveau de qualité des accompagnements des ESSMS en France ?",
+     "url": "https://www.has-sante.fr/jcms/p_3946562/fr/quel-est-le-niveau-de-qualite-des-accompagnements-des-essms-en-france"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.has-sante.fr/jcms/c_1002212/fr/la-has-en-bref": "200",
+    "https://www.has-sante.fr/jcms/p_3946562/fr/quel-est-le-niveau-de-qualite-des-accompagnements-des-essms-en-france": "200"
+   }
+  },
+  {
+   "id": "evaluation-has",
+   "famille": "donnees",
+   "terme": "Évaluation HAS des ESSMS",
+   "variantes": [
+    "évaluation officielle",
+    "évaluations officielles",
+    "évaluation HAS"
+   ],
+   "variantes_exclues": null,
+   "definition": "Évaluation de la qualité menée tous les cinq ans dans chaque ESSMS par un organisme extérieur. Elle suit le référentiel de la HAS. Elle aboutit à un niveau global de qualité, de A à D.",
+   "court": "Évaluation tous les cinq ans par un organisme extérieur, selon le référentiel HAS, avec un niveau de A à D.",
+   "pour_vous": "Elle reflète la situation au jour de la visite ; la HAS rappelle qu’elle ne sert pas à classer les établissements.",
+   "lien": "/guides/lire-une-evaluation-ehpad/",
+   "source_label": "HAS — Comprendre la nouvelle évaluation des ESSMS",
+   "source_url": "https://www.has-sante.fr/jcms/c_2838131/fr/comprendre-la-nouvelle-evaluation-des-essms",
+   "sources_complementaires": [
+    {
+     "label": "HAS — Mettre en œuvre l’évaluation des ESSMS",
+     "url": "https://www.has-sante.fr/jcms/p_3323069/fr/mettre-en-oeuvre-l-evaluation-des-essms"
+    },
+    {
+     "label": "HAS — Quel est le niveau de qualité des accompagnements des ESSMS en France ?",
+     "url": "https://www.has-sante.fr/jcms/p_3946562/fr/quel-est-le-niveau-de-qualite-des-accompagnements-des-essms-en-france"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.has-sante.fr/jcms/c_2838131/fr/comprendre-la-nouvelle-evaluation-des-essms": "200",
+    "https://www.has-sante.fr/jcms/p_3323069/fr/mettre-en-oeuvre-l-evaluation-des-essms": "200",
+    "https://www.has-sante.fr/jcms/p_3946562/fr/quel-est-le-niveau-de-qualite-des-accompagnements-des-essms-en-france": "200"
+   }
+  },
+  {
+   "id": "criteres-imperatifs",
+   "famille": "donnees",
+   "terme": "Critères impératifs",
+   "variantes": [
+    "critères impératifs",
+    "critère impératif"
+   ],
+   "variantes_exclues": null,
+   "definition": "Les 18 exigences du référentiel de la HAS qui doivent être totalement satisfaites. Elles portent par exemple sur la dignité, la vie privée ou la prévention de la maltraitance. Un critère non atteint impose un plan d’actions.",
+   "court": "18 exigences de la HAS à satisfaire totalement ; sinon, l’établissement doit engager un plan d’actions.",
+   "pour_vous": "Regardez combien de critères impératifs sont atteints, en plus de la note : chaque fiche du site l’indique.",
+   "lien": "/guides/lire-une-evaluation-ehpad/",
+   "source_label": "HAS — Évaluation des ESSMS : référentiel et manuel",
+   "source_url": "https://www.has-sante.fr/jcms/p_3324490/fr/evaluation-des-essms-referentiel-et-manuel",
+   "sources_complementaires": [
+    {
+     "label": "HAS — Évaluation des ESSMS : foire aux questions",
+     "url": "https://www.has-sante.fr/jcms/p_3334593/fr/"
+    },
+    {
+     "label": "HAS — Quel est le niveau de qualité des accompagnements des ESSMS en France ?",
+     "url": "https://www.has-sante.fr/jcms/p_3946562/fr/quel-est-le-niveau-de-qualite-des-accompagnements-des-essms-en-france"
+    }
+   ],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.has-sante.fr/jcms/p_3324490/fr/evaluation-des-essms-referentiel-et-manuel": "200",
+    "https://www.has-sante.fr/jcms/p_3334593/fr/": "200",
+    "https://www.has-sante.fr/jcms/p_3946562/fr/quel-est-le-niveau-de-qualite-des-accompagnements-des-essms-en-france": "200"
+   }
+  },
+  {
+   "id": "drees",
+   "famille": "donnees",
+   "terme": "DREES",
+   "variantes": [
+    "DREES",
+    "Drees",
+    "Direction de la recherche, des études, de l’évaluation et des statistiques",
+    "Direction de la recherche, des études, de l'évaluation et des statistiques"
+   ],
+   "variantes_exclues": null,
+   "definition": "Direction de la recherche, des études, de l’évaluation et des statistiques : service statistique des ministères de la santé et des solidarités. Elle collecte, analyse et diffuse les statistiques de la santé et de l’action sociale.",
+   "court": "Service statistique des ministères de la santé et des solidarités.",
+   "pour_vous": "Ce site reprend certains de ses chiffres nationaux (délais d’entrée, taux d’occupation), en citant leur année.",
+   "lien": "/notre-methodologie.html",
+   "source_label": "Insee — Le SSM Santé et solidarités (DREES)",
+   "source_url": "https://www.insee.fr/fr/information/2114794",
+   "sources_complementaires": [],
+   "statut": "✅",
+   "alerte": "Définition vérifiée sur le site de l’Insee : le site de la DREES (drees.solidarites-sante.gouv.fr) et la page d’organisation sur solidarites.gouv.fr étaient inaccessibles (connexion refusée / « Request Rejected ») ; non contournés.",
+   "verif_http": {
+    "https://www.insee.fr/fr/information/2114794": "200"
+   }
+  },
+  {
+   "id": "mediane",
+   "famille": "donnees",
+   "terme": "Médiane",
+   "variantes": [
+    "médiane",
+    "médianes",
+    "médian",
+    "médians"
+   ],
+   "variantes_exclues": null,
+   "definition": "Valeur qui partage un ensemble en deux moitiés égales : la moitié des prix est en dessous, l’autre moitié au-dessus. Elle est moins tirée vers le haut que la moyenne par quelques prix très élevés.",
+   "court": "La moitié des prix est en dessous, l’autre au-dessus. Moins sensible que la moyenne aux prix extrêmes.",
+   "pour_vous": "Un prix médian décrit un établissement « du milieu » ; celui qui vous intéresse peut être plus ou moins cher.",
+   "lien": "/prix-ehpad/",
+   "source_label": "Insee — Définition : Médiane (mise à jour le 13/01/2021)",
+   "source_url": "https://www.insee.fr/fr/metadonnees/definition/c1376",
+   "sources_complementaires": [],
+   "statut": "✅",
+   "alerte": null,
+   "verif_http": {
+    "https://www.insee.fr/fr/metadonnees/definition/c1376": "200"
+   }
+  }
+ ],
+ "gir_page": {
+  "titre": "Le GIR : comprendre le niveau de perte d’autonomie",
+  "niveaux": [
+   {
+    "gir": 1,
+    "description": "La personne reste au lit ou au fauteuil et ses fonctions mentales sont gravement atteintes : elle a besoin d’une présence continue.",
+    "statut": "✅"
+   },
+   {
+    "gir": 2,
+    "description": "Soit la personne reste au lit ou au fauteuil, avec des fonctions mentales en partie préservées, et a besoin d’aide pour la plupart des gestes du quotidien ; soit elle se déplace mais ses fonctions mentales sont atteintes et elle doit être surveillée en permanence.",
+    "statut": "✅"
+   },
+   {
+    "gir": 3,
+    "description": "La personne a gardé tout ou partie de son autonomie mentale et une partie de sa mobilité, mais a besoin d’aide plusieurs fois par jour pour les soins du corps.",
+    "statut": "✅"
+   },
+   {
+    "gir": 4,
+    "description": "Soit la personne a besoin d’aide pour se lever ou se coucher mais se déplace seule dans son logement, avec parfois une aide pour la toilette et l’habillage ; soit elle se déplace sans difficulté mais doit être aidée pour les soins du corps et les repas.",
+    "statut": "✅"
+   },
+   {
+    "gir": 5,
+    "description": "La personne a seulement besoin d’une aide ponctuelle pour la toilette, la préparation des repas et le ménage.",
+    "statut": "✅"
+   },
+   {
+    "gir": 6,
+    "description": "La personne est encore autonome pour les gestes essentiels de la vie courante.",
+    "statut": "✅"
+   }
+  ],
+  "niveaux_sources": [
+   {
+    "label": "Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ? (F1229, vérifiée le 09/01/2026)",
+    "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229"
+   }
+  ],
+  "grille_aggir": {
+   "texte": "Le GIR est déterminé avec la grille nationale AGGIR : 10 activités corporelles et mentales (communiquer, se repérer, faire sa toilette, s’habiller, manger, l’hygiène de l’élimination, se lever et s’asseoir, se déplacer dedans et dehors, alerter) servent au calcul ; 7 activités domestiques et sociales (repas, budget, ménage, transports, achats, traitement, loisirs) complètent l’évaluation.",
+   "statut": "✅",
+   "sources": [
+    {
+     "label": "Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ? (F1229, vérifiée le 09/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229"
+    },
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comment le GIR est-il déterminé ? (mis à jour le 30/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine"
+    }
+   ]
+  },
+  "qui_evalue": {
+   "en_ehpad": {
+    "texte": "En EHPAD ou en USLD, le médecin coordonnateur évalue le GIR avec l’équipe soignante, en général un mois après l’entrée, puis le réévalue si la situation change.",
+    "statut": "✅",
+    "sources": [
+     {
+      "label": "Pour-les-personnes-agees.gouv.fr — Comment le GIR est-il déterminé ? (mis à jour le 30/01/2026)",
+      "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine"
+     },
+     {
+      "label": "Pour-les-personnes-agees.gouv.fr — Le médecin coordonnateur (mis à jour le 17/04/2024)",
+      "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/le-medecin-coordonnateur"
+     },
+     {
+      "label": "Pour-les-personnes-agees.gouv.fr — L’APA en établissement (mis à jour le 09/06/2026)",
+      "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-apa-en-etablissement"
+     }
+    ]
+   },
+   "validation": {
+    "texte": "Chaque année, l’ARS et le conseil départemental organisent la validation des évaluations faites par les médecins coordonnateurs : la partie dépendance est validée par des médecins ou infirmiers du conseil départemental, la partie soins par des médecins de l’ARS. Cette validation porte sur l’évaluation d’ensemble des résidents (GIR moyen pondéré, qui sert au financement de l’établissement).",
+    "statut": "⚠️",
+    "alerte": "Les sources officielles consultées décrivent la validation des « coupes » AGGIR de l’établissement (niveau moyen, GMP). Aucune source trouvée ne dit que le GIR individuel de chaque résident est validé une par une par le département. ARS Occitanie indique « un médecin du conseil départemental et un médecin de l’ARS » pour la perte d’autonomie ; la CNSA indique « médecins ou infirmiers des conseils départementaux » pour la dépendance et médecins de l’ARS pour les soins.",
+    "sources": [
+     {
+      "label": "CNSA — Ehpad (évaluation AGGIR/PATHOS, point GIR)",
+      "url": "https://www.cnsa.fr/informations-thematiques/lieux-et-cadre-de-vie/ehpad"
+     },
+     {
+      "label": "ARS Occitanie — AGGIR-PATHOS",
+      "url": "https://www.occitanie.ars.sante.fr/aggir-pathos"
+     }
+    ]
+   },
+   "a_domicile": {
+    "texte": "À domicile, après une demande d’APA, un professionnel de l’équipe médico-sociale du département vient évaluer le GIR avec la grille AGGIR et propose un plan d’aide.",
+    "statut": "✅",
+    "sources": [
+     {
+      "label": "Pour-les-personnes-agees.gouv.fr — Comment le GIR est-il déterminé ? (mis à jour le 30/01/2026)",
+      "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine"
+     },
+     {
+      "label": "Pour-les-personnes-agees.gouv.fr — L’équipe médico-sociale APA (mis à jour le 02/01/2025)",
+      "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/l-equipe-medico-sociale-apa"
+     },
+     {
+      "label": "Service-public.fr — Allocation personnalisée d’autonomie (F10009)",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009"
+     }
+    ]
+   }
+  },
+  "gir_et_apa": {
+   "texte": "Du GIR 1 au GIR 4, la personne peut obtenir l’APA, à domicile ou en établissement. En GIR 5 ou 6, elle n’y a pas droit mais peut demander une aide à sa caisse de retraite. Le GIR sert aussi à fixer le montant maximal de l’APA.",
+   "statut": "✅",
+   "sources": [
+    {
+     "label": "Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ? (F1229, vérifiée le 09/01/2026)",
+     "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229"
+    },
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comment le GIR est-il déterminé ? (mis à jour le 30/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine"
+    }
+   ]
+  },
+  "gir_et_tarif_dependance": {
+   "texte": "Chaque EHPAD affiche trois tarifs dépendance : GIR 1-2 (le plus élevé), GIR 3-4 (intermédiaire), GIR 5-6 (le moins élevé). Tout résident paie au minimum le tarif GIR 5-6, appelé ticket modérateur ; pour les GIR 1 à 4, l’APA prend en charge tout ou partie de la différence selon les ressources. L’aide sociale à l’hébergement peut payer le tarif GIR 5-6.",
+   "statut": "✅",
+   "exception": "Dans les 23 territoires de l’expérimentation lancée le 1er juillet 2025, il n’y a plus de tarif par GIR ni d’APA en établissement : chaque résident paie une participation forfaitaire identique.",
+   "sources": [
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Comprendre sa facture en EHPAD (mis à jour le 16/01/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/comprendre-les-prix-en-ehpad/comprendre-sa-facture-en-ehpad"
+    },
+    {
+     "label": "CNSA — Réforme de la tarification des EHPAD",
+     "url": "https://www.cnsa.fr/budget-et-financement/modeles-tarifaires/reforme-de-la-tarification-des-ehpad"
+    },
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — L’APA en établissement (mis à jour le 09/06/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/vivre-dans-un-ehpad/aides-financieres-en-ehpad/l-apa-en-etablissement"
+    },
+    {
+     "label": "Pour-les-personnes-agees.gouv.fr — Financement des EHPAD : une expérimentation dans 23 départements (mis à jour le 03/02/2026)",
+     "url": "https://www.pour-les-personnes-agees.gouv.fr/actualites/financement-des-ehpad-une-experimentation-dans-23-departements"
+    }
+   ]
+  },
+  "reviser_ou_contester": {
+   "reevaluation": {
+    "texte": "Si l’état de santé change, on peut demander une réévaluation : en EHPAD, au médecin coordonnateur, qui peut réévaluer le GIR pendant le séjour ; à domicile, à l’équipe médico-sociale qui a fait la première évaluation. Une personne classée en GIR 5 ou 6 lors d’une précédente demande peut déposer une nouvelle demande d’APA.",
+    "statut": "✅",
+    "sources": [
+     {
+      "label": "Service-public.fr — Apa : que sont les Gir 1 à 4 de la grille Aggir ? (F1229, vérifiée le 09/01/2026)",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1229"
+     },
+     {
+      "label": "Pour-les-personnes-agees.gouv.fr — Comment le GIR est-il déterminé ? (mis à jour le 30/01/2026)",
+      "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/perte-d-autonomie-evaluation-et-droits/comment-le-gir-est-il-determine"
+     },
+     {
+      "label": "Pour-les-personnes-agees.gouv.fr — L’équipe médico-sociale APA (mis à jour le 02/01/2025)",
+      "url": "https://www.pour-les-personnes-agees.gouv.fr/preserver-son-autonomie/a-qui-s-adresser/l-equipe-medico-sociale-apa"
+     }
+    ]
+   },
+   "contestation": {
+    "texte": "Pour contester une décision sur l’APA (refus, montant, réduction), il faut d’abord faire un recours administratif préalable obligatoire auprès du président du conseil départemental, dans les deux mois suivant la notification. Il a deux mois pour répondre. Ensuite, un recours est possible devant le tribunal administratif, dans les deux mois.",
+    "statut": "✅",
+    "sources": [
+     {
+      "label": "Service-public.fr — Allocation personnalisée d’autonomie (F10009)",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009"
+     }
+    ]
+   },
+   "procedure_specifique_gir_ehpad": {
+    "texte": null,
+    "statut": "❌",
+    "alerte": "Aucune source officielle consultée ne décrit une procédure propre pour contester le GIR fixé par le médecin coordonnateur en EHPAD, en dehors de la demande de réévaluation et du recours contre la décision d’APA."
+   }
+  },
+  "repartition_residents_par_gir": {
+   "texte": null,
+   "statut": "❌",
+   "alerte": "Non vérifié : le site de la DREES (enquête EHPA 2023, Études et Résultats n° 1351 de novembre 2025 repéré en recherche) et data.drees étaient inaccessibles aujourd’hui (connexion refusée, robots.txt en erreur) ; non contournés. Aucune autre source officielle récente et datée trouvée. Une page Insee (Tableaux de l’économie française) donne une répartition des bénéficiaires de l’APA, ancienne et d’un autre périmètre : non retenue.",
+   "source_candidate": {
+    "label": "DREES — Études et Résultats n° 1351 (novembre 2025), enquête EHPA 2023 — non consulté",
+    "url": "https://drees.solidarites-sante.gouv.fr/sites/default/files/2025-11/ER%201351%20EHPA-MEL.pdf"
+   }
+  }
+ },
+ "notes": [
+  "Vérifications faites le 29/09/2026 par récupération directe des pages (curl, puis lecture du texte). Chaque source_url a été re-testée en fin de travail (code HTTP dans verif_http).",
+  "Sources inaccessibles, non contournées : drees.solidarites-sante.gouv.fr et data.drees (connexion refusée / robots.txt en erreur) ; legifrance.gouv.fr (403) ; ameli.fr (403) ; sante.gouv.fr (page glossaire PUI derrière une vérification anti-robots) ; solidarites.gouv.fr/organisation-de-la-drees (« Request Rejected ») ; le glossaire de pour-les-personnes-agees.gouv.fr est rendu en JavaScript (vide sans navigateur) ; auvergne-rhone-alpes.ars.sante.fr (403).",
+  "Surlignage : comparer après normalisation des espaces (espace simple, insécable U+00A0 et fine insécable U+202F) et des apostrophes (’ et ') ; les variantes sont fournies avec les deux apostrophes. Sigles (GIR, APA, ASH, HAS, PUI, ALS, APL, UHR, PASA, USLD, EHPA, CCAS, ASPA, FINESS, CNSA, DREES, ESSMS) : sensibles à la casse et à mot entier. Expressions en minuscules : tolérer une majuscule initiale en début de phrase.",
+  "Montants : seuls figurent 25 %, 2 500 € (réduction d’impôt, F17 vérifiée le 15/04/2026) et 10 % / 125 € par mois en 2026 (somme minimale, portail mis à jour le 15/01/2026, cohérent avec l’ASPA 2026 de service-public F16871). La participation forfaitaire de l’expérimentation (6,16 € par jour depuis le 01/01/2026, portail mis à jour le 03/02/2026) est volontairement laissée hors des définitions (montant non entier).",
+  "Incohérence interne relevée sur une source officielle : la page CNSA « Réforme de la tarification des EHPAD » parle d’une expérimentation « sur une période de 18 mois, du 1er juillet 2025 au 31 décembre 2027 » (soit 30 mois). Le site retient la date de fin du 31/12/2027 : cohérent.",
+  "Réduction d’impôt : le site cite l’accueil de jour Alzheimer parmi les établissements éligibles ; la fiche F17 ne le mentionne pas, mais le BOFiP (BOI-IR-RICI-140, § 50) le confirme. Pas de contradiction.",
+  "APA : le site écrit « sans condition de ressources » pour l’ouverture du droit. Les conditions officielles listées (âge, résidence, GIR) ne comportent pas de plafond de ressources et le portail indique que seul le montant varie selon les revenus : cohérent, mais la formule exacte n’a pas été trouvée telle quelle.",
+  "USLD : service-public (F255) parle désormais d’« établissement de soins de longue durée (appelé auparavant USLD) » ; le portail et la CNSA emploient toujours « USLD ». Variante « établissement de soins de longue durée » non ajoutée (absente du site).",
+  "Le lien vers une future page dédiée « GIR » n’existe pas encore : les termes gir et aggir pointent pour l’instant vers /aides-ehpad/apa/.",
+  "Champ « variantes_exclues » : justification des variantes écartées ou consignes de surlignage propres au terme."
+ ]
+}
