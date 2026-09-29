@@ -33,15 +33,28 @@ ACTIF = 'VOTRE-SOUS-DOMAINE' not in API
 #    (défilement, clic, toucher, clavier, souris) ou après 10 secondes d'onglet
 #    VISIBLE. L'écart entre les deux mesure les passages éclairs et les robots
 #    qui chargent sans rien faire.
+#
+# Propriétaire du site : le lien #ne-pas-me-compter pose la marque « tme_proprio »
+# dans CE navigateur (#ne-plus-m-exclure la retire). Les vues marquées partent
+# avec m=1 et le Worker les range dans la colonne « Vous ». Chez un visiteur
+# ordinaire rien n'est jamais écrit : la lecture renvoie simplement « rien ».
 EXTRAIT = """<script>/* relevé d'audience : aucun cookie, aucun identifiant, chemin seul */
 (function(){try{
 var A='__API__',D=document,N=navigator,W=window,ua=N.userAgent||'';
 var a=(N.webdriver?1:0)|(/HeadlessChrome/.test(ua)?2:0)
  |(/Chrome\\//.test(ua)&&!/; wv\\)|Version\\/\\d/.test(ua)&&!W.chrome?4:0)
  |(!N.languages||!N.languages.length?8:0);
+var m=0;try{var S=W.localStorage,K='tme_proprio',H=location.hash,M='';
+if(H==='#ne-pas-me-compter'){S.setItem(K,'1');M='Ce navigateur ne compte plus dans l\u2019audience : vos visites sont rang\u00e9es \u00e0 part, colonne \u00ab Vous \u00bb.';}
+else if(H==='#ne-plus-m-exclure'){S.removeItem(K);M='Ce navigateur est de nouveau compt\u00e9 comme un visiteur ordinaire.';}
+if(M){history.replaceState(null,'',location.pathname+location.search);
+ var B=D.createElement('div');B.setAttribute('role','status');B.textContent=M;
+ B.style.cssText='position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);z-index:99999;max-width:min(34rem,calc(100% - 2rem));padding:.8rem 1.1rem;border-radius:12px;background:#0b6b4a;color:#fff;font:600 .95rem/1.4 system-ui,sans-serif;box-shadow:0 8px 28px rgba(0,0,0,.25)';
+ D.body.appendChild(B);setTimeout(function(){B.remove();},7000);}
+m=S.getItem(K)==='1'?1:0;}catch(e){}
 var r=D.referrer||'',d='';
 try{if(r){var h=new URL(r).hostname.replace(/^www\\./,'');if(h!==location.hostname.replace(/^www\\./,''))d=h;}}catch(e){}
-function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(x||'');
+function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(m?'&m=1':'')+(x||'');
  try{if(N.sendBeacon&&N.sendBeacon(q))return;}catch(e){}
  try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true}).catch(function(){});}catch(e){}}
 var fait=0,vis=0,tic;

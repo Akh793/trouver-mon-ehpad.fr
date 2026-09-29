@@ -19,7 +19,7 @@ import { CHEMINS } from './chemins.js';
 
 const SITE = 'trouver-mon-ehpad.fr';
 const ORIGINES = new Set(['https://' + SITE, 'https://www.' + SITE]);
-export const HUMAIN = 0, DECLARE = 1, SUSPECT = 2;
+export const HUMAIN = 0, DECLARE = 1, SUSPECT = 2, PROPRIO = 3;
 export const HORS_LISTE = '/(hors-liste)';
 
 // ── Jour et heure de Paris. En UTC, une visite à 1 h serait comptée la veille.
@@ -74,8 +74,12 @@ export function estHebergeur(cf) {
 
 /** Classe une requête. L'ordre compte : un robot qui s'annonce est « déclaré »
  *  même s'il vient d'un hébergeur — c'est l'information la plus sûre. */
-export function classe({ ua, auto, cf, origine }) {
+export function classe({ ua, auto, cf, origine, proprio }) {
   if (estDeclare(ua)) return { c: DECLARE, motif: null };
+  // Le propriétaire du site, marqué dans son propre navigateur par le lien
+  // #ne-pas-me-compter : rangé à part, jamais mêlé aux visiteurs. Exige une
+  // origine, pour qu'un appel fabriqué à la main ne puisse pas s'y glisser.
+  if (proprio && origine) return { c: PROPRIO, motif: null };
   // Le masque de bits dit QUELLE règle a signalé l'automatisation : utile pour
   // repérer une règle qui rangerait des humains parmi les suspects.
   if (auto) return { c: SUSPECT, motif: 'auto:' + auto };
@@ -130,6 +134,7 @@ async function compte(request, env) {
     auto: Math.min(15, Math.max(0, parseInt(u.searchParams.get('a'), 10) || 0)),
     cf: request.cf,
     origine,
+    proprio: u.searchParams.get('m') === '1',
   });
   const { jour, heure } = quand(new Date());
   const ecritures = [];
@@ -179,7 +184,8 @@ async function releve(env, depuis) {
             SUM(CASE WHEN classe = 0 THEN engages ELSE 0 END) AS engages,
             SUM(CASE WHEN classe = 0 THEN entrees ELSE 0 END) AS entrees,
             SUM(CASE WHEN classe = 1 THEN vues    ELSE 0 END) AS declares,
-            SUM(CASE WHEN classe = 2 THEN vues    ELSE 0 END) AS suspects
+            SUM(CASE WHEN classe = 2 THEN vues    ELSE 0 END) AS suspects,
+            SUM(CASE WHEN classe = 3 THEN vues    ELSE 0 END) AS vous
        FROM vues WHERE jour >= ? GROUP BY periode ORDER BY periode DESC LIMIT 40`, depuis);
   const [jour, semaine, mois, pages, horsListe, motifs, sources, pays, heures] = await Promise.all([
     par('jour'), par('semaine'), par('mois'),
@@ -209,7 +215,7 @@ function tableau(titre, lignes, colonnes, note) {
 }
 
 const COLS = [['Visites engagées','engages'],['Chargements','vues'],['Taux d’engagement','taux'],
-              ['Entrées','entrees'],['Robots déclarés','declares'],['Suspects','suspects']];
+              ['Entrées','entrees'],['Robots déclarés','declares'],['Suspects','suspects'],['Vous','vous']];
 
 function ecran(d) {
   const max = Math.max(1, ...d.heures.map((h) => h.engages));
@@ -236,7 +242,8 @@ td+td,th+th{text-align:right}
 <p class="v"><b>Visite engagée</b> : quelqu’un a défilé, cliqué, touché l’écran ou tapé au clavier,
 ou l’onglet est resté visible 10 secondes. <b>Chargement</b> : la page s’est affichée. L’écart entre
 les deux mesure les passages éclairs et le trafic fantôme. Robots déclarés et suspects ne sont
-jamais mêlés aux humains.</p>
+jamais mêlés aux humains. <b>Vous</b> : vos propres chargements, depuis un navigateur marqué par le lien
+#ne-pas-me-compter.</p>
 ${tableau('Par jour', d.jour, [['Jour','periode'], ...COLS])}
 ${tableau('Par semaine', d.semaine, [['Semaine','periode'], ...COLS])}
 ${tableau('Par mois', d.mois, [['Mois','periode'], ...COLS])}

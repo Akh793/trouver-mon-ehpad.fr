@@ -54,8 +54,7 @@
     if (memorise) { try { localStorage.setItem(CLE, t); } catch (e) {} }
     // il y a deux boutons : un dans l'en-tête de page, un dans la barre de défilement
     document.querySelectorAll('.js-theme').forEach(function (b) {   // l'icône bascule en CSS
-      b.setAttribute('aria-label', t === 'dark' ? 'Repasser au thème clair' : 'Passer au thème sombre');
-      b.setAttribute('aria-pressed', String(t === 'dark'));
+      b.setAttribute('aria-checked', String(t === 'dark'));   // interrupteur : role=switch
     });
     try { (window.dataLayer = window.dataLayer || []).push({ event: 'theme_changed', theme: t }); } catch (e) {}
   }

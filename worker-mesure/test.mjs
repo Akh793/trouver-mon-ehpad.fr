@@ -3,7 +3,7 @@
  *   node worker-mesure/test.mjs
  */
 import worker, { quand, chemin, domaine, estDeclare, estHebergeur, classe,
-                 HUMAIN, DECLARE, SUSPECT, HORS_LISTE } from './index.js';
+                 HUMAIN, DECLARE, SUSPECT, PROPRIO, HORS_LISTE } from './index.js';
 
 function faireDB() {
   const t = { vues: [], motifs: [], sources: [], pays: [] };
@@ -147,6 +147,21 @@ test('une panne de base ne fait jamais échouer la page', async () => {
 });
 test('l’écran de mesure est fermé sans la clé', async () =>
   (await worker.fetch(new Request('https://x/mesure'), env)).status === 403);
+// ── propriétaire du site (lien #ne-pas-me-compter)
+test('navigateur marqué : chargement et engagement rangés dans « Vous »', async () => {
+  const annexes = () => DB.t.sources.length + DB.t.pays.length + DB.t.motifs.length;
+  const humains = () => { const h = ligne('/guides/', HUMAIN); return h ? h.vues + h.engages : 0; };
+  const avant = annexes(), h0 = humains();
+  await req('t=c&p=/guides/&e=1&r=google.fr&m=1'); await req('t=g&p=/guides/&m=1');
+  const l = ligne('/guides/', PROPRIO);
+  return l && l.vues === 1 && l.engages === 1 && humains() === h0 && annexes() === avant;
+});
+test('marque propriétaire ignorée sans origine (appel fabriqué)', () =>
+  classe({ ua: UA, auto: 0, cf: ORANGE, origine: null, proprio: true }).c === SUSPECT);
+test('marque propriétaire ignorée pour un robot déclaré', () =>
+  classe({ ua: GOOGLE, auto: 0, cf: ORANGE, origine: ORIG, proprio: true }).c === DECLARE);
+test('m=0 ou absent : visiteur ordinaire', () =>
+  classe({ ua: UA, auto: 0, cf: ORANGE, origine: ORIG, proprio: false }).c === HUMAIN);
 test('domaine référent normalisé', () => domaine('WWW.Google.fr') === 'google.fr');
 
 let ok = 0;

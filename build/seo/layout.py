@@ -51,10 +51,10 @@ TOPBAR = """<div id="topbar" class="topbar print-hide">
 <a href="/retours/">Vos retours</a>
 </nav>
 </div>
-<button type="button" id="theme-btn" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button>
+<button type="button" id="theme-btn" class="tb-icon tb-sw js-theme" role="switch" aria-checked="false" aria-label="Mode sombre" title="Mode sombre : activer ou désactiver"><span class="sw-txt" aria-hidden="true">Sombre</span><span class="sw-piste" aria-hidden="true"><span class="sw-pouce"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></span></span></button>
 <a href="/comparer-devis-ehpad/" class="tb-devis">Comparer vos devis</a>
 <a href="/retours/" class="tb-avis">Vos retours</a>
-<a href="/" class="tb-cta" data-ev="seo_topbar_to_calculator">Calculer mon reste à charge</a>
+<a href="/" class="tb-cta" data-ev="seo_topbar_to_calculator">Calculer<span class="tb-cta-plus"> mon reste à charge</span></a>
 </div>
 </div>
 <div class="tb-prog" aria-hidden="true"><i id="tb-prog"></i></div>
@@ -70,7 +70,7 @@ NAV = """<header class="top"><div class="top-in">
 <a href="/guides/">Guides</a>
 <a href="/notre-methodologie.html">Méthodologie</a>
 </nav>
-<button type="button" class="tb-icon js-theme" aria-label="Passer au thème sombre" title="Changer de thème"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></button></div></header>"""
+<button type="button" class="tb-icon tb-sw js-theme" role="switch" aria-checked="false" aria-label="Mode sombre" title="Mode sombre : activer ou désactiver"><span class="sw-txt" aria-hidden="true">Sombre</span><span class="sw-piste" aria-hidden="true"><span class="sw-pouce"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></span></span></button></div></header>"""
 
 PIED = f"""<footer class="foot"><div class="foot-in">
 <nav aria-label="Pied de page">

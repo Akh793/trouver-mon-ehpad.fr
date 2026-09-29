@@ -13,12 +13,14 @@
 --   2 suspect  — navigateur automatisé, réseau d'hébergeur, ou requête sans
 --                origine. Ni jeté ni compté comme humain : une vue jetée ne se
 --                récupère pas, une vue mal classée se reclasse.
+--   3 vous     — le propriétaire, depuis un navigateur marqué par le lien
+--                #ne-pas-me-compter.
 
 CREATE TABLE IF NOT EXISTS vues (
   jour    TEXT    NOT NULL,            -- 'AAAA-MM-JJ', heure de Paris
   heure   INTEGER NOT NULL,            -- 0 à 23 ; -1 = journée compactée
   chemin  TEXT    NOT NULL,            -- chemin du sitemap, ou '/(hors-liste)'
-  classe  INTEGER NOT NULL DEFAULT 0,  -- 0 humain · 1 déclaré · 2 suspect
+  classe  INTEGER NOT NULL DEFAULT 0,  -- 0 humain · 1 déclaré · 2 suspect · 3 vous
   vues    INTEGER NOT NULL DEFAULT 0,  -- chargements de page
   engages INTEGER NOT NULL DEFAULT 0,  -- visites où quelqu'un a fait quelque chose
   entrees INTEGER NOT NULL DEFAULT 0,  -- arrivées depuis l'extérieur du site

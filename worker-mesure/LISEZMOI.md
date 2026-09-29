@@ -111,6 +111,7 @@ https://mesure-tme.VOTRE-COMPTE.workers.dev/mesure?cle=VOTRE_CLE
 | Entrées | Arrivées depuis l'extérieur du site |
 | Déclarés | Robots qui s'annoncent (Googlebot, Bingbot, GPTBot…) |
 | Suspects | Vues qui ressemblent à un robot sans qu'il se déclare |
+| Vous | Vos propres chargements, depuis un navigateur marqué (voir plus bas) |
 
 S'y ajoutent : pages les plus vues (avec leurs engagés), **motifs de suspicion**, nombre de
 vues hors liste, sites référents, pays, profil horaire des engagements.
@@ -126,6 +127,7 @@ Rien n'est jeté, sauf les appels venus d'un **autre site** (en-tête `Origin`
 | 2 · suspect | `navigator.webdriver` vrai (1), « HeadlessChrome » (2), Chrome sans `window.chrome` hors WebView Android (4), aucune langue (8) | navigateur → `auto:<somme>` |
 | 2 · suspect | Réseau d'un hébergeur (AWS, Google Cloud, Azure, OVH SAS, Hetzner, DigitalOcean…) | serveur → `hebergeur:<nom>` |
 | 2 · suspect | Requête sans en-tête `Origin` (appel à la main) | serveur → `sans-origine` |
+| 3 · vous | Navigateur marqué par le lien `#ne-pas-me-compter`, requête venue du site | navigateur → `m=1` |
 | 0 · humain | Aucun des signes ci-dessus | — |
 
 Akamai, Cloudflare et Fastly ne sont **pas** tenus pour des hébergeurs : ils
@@ -139,6 +141,35 @@ pas une vue.
 **Le tableau des motifs sert de garde-fou.** Si `hebergeur:…` ou
 `sans-origine` monte fort sans raison, la règle range peut-être des humains
 (VPN d'entreprise, navigateur exotique) parmi les suspects : c'est là qu'on le voit.
+
+## Ne pas compter vos propres visites
+
+Ouvrir **une fois, dans chaque navigateur et sur chaque appareil** :
+
+```
+https://trouver-mon-ehpad.fr/#ne-pas-me-compter
+```
+
+Un message vert confirme. Ce navigateur garde la marque `tme_proprio` ; ses
+visites partent avec `m=1` et tombent dans la colonne **Vous**, jamais chez les
+humains, ni dans les sources ni dans les pays. Pour annuler :
+`https://trouver-mon-ehpad.fr/#ne-plus-m-exclure`.
+
+La marque disparaît si l'on efface les données du site, et n'existe pas en
+navigation privée : il suffit de rouvrir le lien. Un robot déclaré reste
+« déclaré », et un appel sans origine reste « suspect », même avec `m=1`.
+
+Chez un visiteur ordinaire, rien n'est écrit : l'extrait lit la clé, ne la
+trouve pas, et s'arrête là — comme pour la préférence de thème déjà lue.
+
+Effacer après coup les visites humaines d'une journée (vos tests, par exemple) :
+
+```
+wrangler d1 execute mesure-tme --remote --command "DELETE FROM vues WHERE jour='2026-09-29' AND classe=0; DELETE FROM sources WHERE jour='2026-09-29'; DELETE FROM pays WHERE jour='2026-09-29';"
+```
+
+Cela efface aussi les éventuels vrais visiteurs de ce jour-là : à réserver aux
+journées de test.
 
 ## Budget
 
@@ -202,9 +233,10 @@ dégât : un tel robot doit en plus simuler un geste pour être compté engagé.
 ## Vérifier sans déployer
 
 ```bash
-node worker-mesure/test.mjs        # 28 tests du service (classes, réseaux, chemins, tables)
+node worker-mesure/test.mjs        # 32 tests du service (classes, réseaux, chemins, tables, « Vous »)
 node build/t_mesure.mjs            # 16 tests de l'extrait, dans un vrai navigateur
 node build/t_mesure_chaine.mjs     # 7 tests navigateur → vrai code du service
+node build/t_proprio_theme.mjs     # marque « Vous » + interrupteur Sombre, site servi sur le port 8911
 ```
 
 Les deux derniers exigent Playwright, une page de test servie sur
