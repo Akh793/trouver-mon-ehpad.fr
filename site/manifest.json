@@ -1,7 +1,7 @@
 {
   "name": "Trouver mon EHPAD — le reste à charge réel",
   "short_name": "Trouver mon EHPAD",
-  "description": "Calculateur du reste à charge en EHPAD, établissement par établissement, sur une carte : prix réel après aides, évolution du prix depuis 2018, places qui se libèrent.",
+  "description": "Calculateur du reste à charge en EHPAD, établissement par établissement, sur une carte : prix réel après aides et évolution du prix depuis 2018.",
   "version": "2.0",
   "lang": "fr-FR",
   "start_url": "/",
@@ -9,5 +9,24 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2548FF",
-  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }

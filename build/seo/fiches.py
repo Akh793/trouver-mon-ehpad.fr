@@ -1,160 +1,285 @@
 # -*- coding: utf-8 -*-
-"""Fiche d'un établissement : ce qu'il coûte, ce qu'il vaut, ce qui reste à payer."""
-import collections, math
+"""Fiche d'un établissement : ce qu'il coûte, où il se situe, ce qui reste à payer.
+
+Règle d'écriture (audit du 29/09/2026) : une fiche ne répète pas de texte pédagogique. Chaque
+paragraphe est calculé pour CET établissement : rang de prix, écart au même statut, évolution
+annuelle, détail de l'évaluation, coût mensuel selon le GIR. Les explications générales vivent
+dans les guides, vers lesquels la fiche renvoie par un lien. Aucun chiffre n'est écrit s'il n'est
+pas calculable à partir des données publiques."""
+import collections, math, statistics
 import geo, layout
 from base import (esc, nb, eur, eur2, pct, mois_eur, stats, mediane, lien_calc, titre, MOIS,
-                  MARQUE, MAJ, CNSA_MAJ, DOMAINE)
-from pieces import kpis, cta, tableau, sources, explique_heberg, STATUTS, STATUT_LONG, ash_cell
-from territoires import phrase_dep, med_mois, compare
+                  MARQUE, MAJ, CNSA_MAJ, DOMAINE, AUTEUR, AUTEUR_URL, APA_SEUIL_INF, IR_MAX, BAREME)
+from pieces import cta, tableau, STATUT_LONG, guides_tournants, GUIDES_LIENS
+from territoires import phrase_dep, med_mois
 
-INFL = 17.2
-TARIF_SOINS = {
-    'G': 'tarif global de soins : l’établissement rémunère lui-même les médecins et les auxiliaires médicaux, et paie les médicaments',
-    'P': 'tarif partiel de soins : les médicaments et une partie des soins passent par les professionnels de ville, et sont remboursés comme à domicile',
-    'V': 'petite unité de vie : établissement de petite taille, dont le financement des soins suit des règles particulières',
-}
-
-
-def bloc_ash(r):
-    if r['ash'] == 1:
-        return ('<p><b>Aide sociale à l’hébergement&nbsp;: oui.</b> Cet établissement peut accueillir des personnes '
-                'dont les ressources ne suffisent pas à payer l’hébergement&nbsp;: le département complète, puis récupère '
-                'tout ou partie des sommes versées sur la succession. L’information vient du libellé officiel du '
-                'répertoire national des établissements (FINESS).</p>')
-    if r['ash'] == 2:
-        return ('<p><b>Aide sociale à l’hébergement&nbsp;: à confirmer.</b> Le répertoire officiel indique que cet '
-                'établissement n’est pas habilité, alors qu’il déclare un tarif « aide sociale ». C’est le cas typique '
-                'd’une habilitation limitée à quelques places. Posez directement la question à l’établissement.</p>')
-    if r['ash'] == 0:
-        return ('<p><b>Aide sociale à l’hébergement&nbsp;: non.</b> Si les ressources et l’épargne ne suffisent pas, '
-                'cette aide ne pourra pas être demandée ici&nbsp;: il faudra chercher un établissement habilité.</p>')
-    return ''
+INFL = 17.2          # INSEE, prix à la consommation, cumul 2018 → 2025
+ANNEES = ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025']
+SOINS_COURT = {'G': 'tarif global de soins (médecins et médicaments pris en charge par l’établissement)',
+               'P': 'tarif partiel de soins (médecins et médicaments de ville)',
+               'V': 'petite unité de vie'}
+CHAPITRES = ('la personne accompagnée', 'les professionnels', 'l’établissement')
+STATUT_PLUR = {0: 'publics', 1: 'associatifs', 2: 'privés commerciaux'}
 
 
-def bloc_qualite(r):
+def date_fr(iso):
+    if not iso: return ''
+    p = str(iso)[:10].split('-')
+    return '/'.join(reversed(p)) if len(p) == 3 else str(iso)
+
+
+def mois_fr(maj):
+    try:
+        a, m = str(maj).split('-')[:2]
+        return f'{m}/{a}'
+    except Exception:
+        return ''
+
+
+def de_l(nom):
+    """« de l’EHPAD Les Tilleuls » — jamais « de l’EHPAD EHPAD Les Tilleuls »."""
+    return f'de l’{nom}' if nom.upper().startswith('EHPAD') else f'de l’EHPAD {nom}'
+
+
+def rang_txt(k, n):
+    return '1<sup>er</sup>' if k == 1 else f'{k}<sup>e</sup>'
+
+
+# --------------------------------------------------------------- blocs calculés
+def bloc_couts(r):
+    """Prix facturé selon le GIR, puis ce qui reste à payer dans le cas le plus fréquent."""
+    if not r['p']:
+        return ('<p>Aucun tarif d’hébergement déclaré à la Caisse nationale de solidarité pour l’autonomie. '
+                'L’établissement est tenu de le communiquer sur simple demande.</p>'), None
+    h = eur2(r['p'])
+    lignes = [f'<li><b>Hébergement, chambre seule&nbsp;: {h} par jour</b>, soit {eur(mois_eur(r["p"]))} par mois'
+              + (f' (tarif déclaré en {mois_fr(r["maj"])})' if r['maj'] else '') + '.</li>']
+    if r['pcd']:
+        lignes.append(f'<li>Chambre double&nbsp;: {eur2(r["pcd"])} par jour ({eur(mois_eur(r["pcd"]))} par mois).</li>')
+    if r['pa'] and r['ash'] in (1, 2):
+        e = 100 * (r['pa'] - r['p']) / r['p']
+        lignes.append(f'<li>Tarif « aide sociale »&nbsp;: {eur2(r["pa"])} par jour'
+                      + (f', {nb(abs(e), 0)} % {"de moins" if e < 0 else "de plus"} que le tarif courant' if abs(e) >= 0.5 else '')
+                      + '.</li>')
+    if r['temp'] is not None:
+        lignes.append(f'<li>Accueil temporaire&nbsp;: {eur2(r["temp"])} par jour.</li>')
+    out = '<ul>' + ''.join(lignes) + '</ul>'
+
+    if r.get('reg') == 'exp':
+        pf = (r.get('pf') or {}).get('montant_jour') or 0
+        tot = mois_eur(r['p'] + pf)
+        out += (f'<table class="tbl t-cout"><caption>Ce qui est facturé chaque mois, avant aide au logement</caption><tbody>'
+                f'<tr><td>Hébergement</td><td class="num" data-l="Par mois">{eur(mois_eur(r["p"]))}</td></tr>'
+                f'<tr><td>Participation forfaitaire à l’aide au quotidien ({eur2(pf)} par jour, identique pour tous)</td>'
+                f'<td class="num" data-l="Par mois">{eur(mois_eur(pf))}</td></tr>'
+                f'<tr><td><b>Total</b></td><td class="num" data-l="Par mois"><b>{eur(tot)}</b></td></tr></tbody></table>'
+                '<p>Commune du régime expérimental de <a href="/aides-ehpad/apa/">fusion soins-dépendance</a>&nbsp;: '
+                'pas de tarif par GIR, pas d’allocation personnalisée d’autonomie en établissement.</p>')
+        return out, tot
+    if not (r['t12'] and r['t56']):
+        out += ('<p>Tarifs dépendance non déclarés&nbsp;: le coût mensuel complet ne peut pas être calculé. '
+                'Demandez-les avec le tarif d’hébergement.</p>')
+        return out, None
+    rows = []
+    for g, t in (('1-2', r['t12']), ('3-4', r['t34']), ('5-6', r['t56'])):
+        if t: rows.append(f'<tr><td>GIR {g}</td><td class="num" data-l="Dépendance / jour">{eur2(t)}</td>'
+                          f'<td class="num" data-l="Total / mois">{eur(mois_eur(r["p"] + t))}</td></tr>')
+    uniq = r['t12'] and r['t56'] and abs(r['t12'] - r['t56']) < 0.01
+    out += ('<table class="tbl t-cout"><caption>Prix facturé chaque mois selon le niveau de perte d’autonomie, avant aides</caption>'
+            '<thead><tr><th>Niveau (GIR)</th><th class="num">Tarif dépendance / jour</th><th class="num">Hébergement + dépendance / mois</th></tr></thead>'
+            '<tbody>' + ''.join(rows) + '</tbody></table>')
+    if uniq:
+        out += ('<p>Le même tarif dépendance est déclaré pour tous les niveaux&nbsp;: '
+                'demandez celui qui s’appliquera réellement.</p>')
+    tot = mois_eur(r['p'] + r['t56'])
+    return out, tot
+
+
+def bloc_reste(r, tot):
+    """Reste à charge du cas le plus fréquent : ressources sous le premier seuil de l'APA."""
+    if not tot: return ''
+    an = tot * 12
+    ir = min(BAREME['irTaux'] * min(an, BAREME['irPlafond']), IR_MAX)
+    if r.get('reg') == 'exp':
+        tete = f'<p>Quelles que soient ses ressources, un nouveau résident paie ici <b>{eur(tot)} par mois</b>'
+    else:
+        tete = (f'<p>Avec moins de {eur2(APA_SEUIL_INF)} de ressources par mois, l’allocation personnalisée '
+                f'd’autonomie couvre le tarif dépendance au-delà du tarif GIR 5-6&nbsp;: le résident paie '
+                f'<b>{eur(tot)} par mois</b>, quel que soit son GIR')
+    return (tete + ', avant l’aide au logement, versée si l’établissement est conventionné. '
+            f'S’il est imposable, la réduction d’impôt peut atteindre <b>{eur(ir)}</b> l’année suivante '
+            f'({eur(ir / 12)} par mois). '
+            f'<a href="/calcul-reste-a-charge-ehpad/">La méthode de calcul</a>.</p>')
+
+
+def bloc_position(r, ctx, dp, vn, sv):
+    """Où se situe ce tarif : rang dans le département, même statut, ville, France."""
+    if not r['p']: return ''
+    d = r['dep']
+    prix = dp['prix']
+    k = 1 + sum(1 for x in prix if x < r['p'] - 1e-9)
+    n = len(prix)
+    ph = [f'<p>{rang_txt(k, n)} tarif le plus bas sur les <b>{n}</b> EHPAD {esc(phrase_dep(d))} ayant déclaré le leur'
+          + (f' — plus cher que {nb(100 * (k - 1) / n, 0)} % d’entre eux.' if n >= 10 else '.')]
+    st = r['statut']
+    ms = dp['statut'].get(st)
+    if st is not None and ms and ms[1] >= 3:
+        e = 100 * (r['p'] - ms[0]) / ms[0]
+        ph.append(f'Parmi les {ms[1]} établissements {STATUT_PLUR[st]} du département, le tarif médian est de '
+                  f'{eur(mois_eur(ms[0]))} par mois&nbsp;: celui-ci est '
+                  + ('au même niveau.' if abs(e) < 1.5 else f'<b>{nb(abs(e), 0)} % {"plus bas" if e < 0 else "plus élevé"}</b>.'))
+    if sv and sv['med'] and sv['n_prix'] >= 3:
+        e = 100 * (r['p'] - sv['med']) / sv['med']
+        ph.append(f'À {esc(vn)}, médiane de {med_mois(sv)} sur {sv["n_prix"]} établissements'
+                  + ('&nbsp;: même niveau.' if abs(e) < 1.5 else f'&nbsp;: {nb(abs(e), 0)} % {"moins cher" if e < 0 else "plus cher"}.'))
+    fr = ctx['FR']['med']
+    if fr:
+        e = 100 * (r['p'] - fr) / fr
+        ph.append(f'Médiane nationale&nbsp;: {eur(mois_eur(fr))} ({pct(e, 0)} pour cet établissement).')
+    return ' '.join(ph) + '</p>'
+
+
+def bloc_evolution(r, dp):
+    s = r.get('serie')
+    if not s or s.get('e') is None: return ''
+    pts = [(a, v) for a, v in zip(ANNEES, s['p']) if v]
+    if len(pts) < 2: return ''
+    lig = []
+    for i, (a, v) in enumerate(pts):
+        var = ''
+        if i and int(a) - int(pts[i - 1][0]) == 1:
+            var = pct(100 * (v - pts[i - 1][1]) / pts[i - 1][1])
+        lig.append(f'<tr><td>{a}</td><td class="num" data-l="Par jour">{eur2(v)}</td>'
+                   f'<td class="num" data-l="Sur un an">{var or "—"}</td></tr>')
+    t = ('<div class="tbl-wrap"><table class="tbl t-evol"><caption>Tarif d’hébergement par jour, chambre seule</caption>'
+         '<thead><tr><th>Année</th><th class="num">Par jour</th><th class="num">Sur un an</th></tr></thead><tbody>'
+         + ''.join(lig) + '</tbody></table></div>')
+    ph = [f'<p>De <b>{eur2(pts[0][1])}</b> en {pts[0][0]} à <b>{eur2(pts[-1][1])}</b> en {pts[-1][0]}&nbsp;: '
+          f'<b>{pct(s["e"])}</b>' + (f', soit {pct(s["a"], 2)} par an' if s.get('a') is not None else '') + '.']
+    # plus forte variation d'une année sur l'autre (années consécutives seulement)
+    sauts = [(100 * (b[1] - a[1]) / a[1], b[0]) for a, b in zip(pts, pts[1:]) if int(b[0]) - int(a[0]) == 1]
+    if sauts:
+        m = max(sauts, key=lambda x: abs(x[0]))
+        if abs(m[0]) >= 2:
+            ph.append(f'Plus forte variation annuelle&nbsp;: {pct(m[0])} en {m[1]}.')
+    if s['d'] == '2018' and s['f'] == '2025':
+        ph.append(f'Inflation sur la même période&nbsp;: +17,2 %.')
+    ev = dp['evol']
+    if len(ev) >= 10:
+        k = sum(1 for x in ev if x < s['e'])
+        ph.append(f'Hausse supérieure à celle de {nb(100 * k / len(ev), 0)} % des EHPAD {esc(phrase_dep(r["dep"]))} '
+                  f'(médiane départementale&nbsp;: {pct(statistics.median(ev))}).')
+    return '<section><h2>L’évolution du tarif depuis ' + pts[0][0] + '</h2>' + t + ' '.join(ph) + '</p></section>'
+
+
+def bloc_qualite(r, dp):
     out = []
     if r['hasN']:
-        p = (f'<p><b>Évaluation officielle&nbsp;: note {r["hasN"]}</b> (échelle de A à D). '
-             f'Évaluation réalisée le {esc(str(r["hasD"])[:10].split("-")[::-1] and "/".join(str(r["hasD"])[:10].split("-")[::-1]))}')
-        if r['hasO']:
-            p += f', par l’organisme {esc(r["hasO"])} — choisi et rémunéré par l’établissement lui-même'
-        p += '.'
+        p = (f'<p><b>Note {r["hasN"]}</b> (de A à D) à l’évaluation du {date_fr(r["hasD"])}'
+             + (f', réalisée par {esc(titre(r["hasO"]))}' if r['hasO'] else '') + '.')
         if r['hasM'] is not None:
-            p += f' Moyenne des objectifs évalués&nbsp;: {nb(r["hasM"], 2)} sur 100.'
+            p += f' Moyenne des objectifs&nbsp;: <b>{nb(r["hasM"], 1)}/100</b>'
+            if dp['hasM'] and len(dp['hasM']) >= 5:
+                k = sum(1 for x in dp['hasM'] if x < r['hasM'])
+                p += (f', au-dessus de {nb(100 * k / len(dp["hasM"]), 0)} % des établissements évalués '
+                      f'{esc(phrase_dep(r["dep"]))}')
+            p += '.'
         if r['hasCI'] is not None:
             p += f' Critères impératifs atteints&nbsp;: <b>{r["hasCI"]} sur 18</b>.'
-        out.append(p + ' Source&nbsp;: Haute Autorité de santé.</p>')
+        out.append(p + '</p>')
+        if r.get('hasC') and len(r['hasC']) == 3 and all(x is not None for x in r['hasC']):
+            out.append('<ul class="has-ch">' + ''.join(
+                f'<li>Chapitre « {c} »&nbsp;: <b>{nb(v, 2)}/4</b></li>' for c, v in zip(CHAPITRES, r['hasC'])) + '</ul>')
     else:
-        out.append('<p>Aucune évaluation n’a été publiée pour cet établissement par la Haute Autorité de santé. '
-                   'Cela ne veut pas dire que l’établissement est mauvais&nbsp;: toutes les évaluations ne sont pas '
-                   'encore réalisées ni publiées.</p>')
+        out.append('<p>Pas d’évaluation publiée par la Haute Autorité de santé à ce jour.</p>')
     if r['alim']:
         a = r['alim']
-        d = '/'.join(str(a[1])[:10].split('-')[::-1]) if a[1] else ''
-        out.append(f'<p><b>Hygiène alimentaire&nbsp;: {esc(a[0])}</b>, contrôle du {esc(d)}'
-                   + (f' (suite donnée&nbsp;: {esc(a[2])})' if a[2] else '') +
-                   '. Source&nbsp;: contrôles officiels de la Direction générale de l’alimentation.</p>')
+        out.append(f'<p>Hygiène alimentaire&nbsp;: <b>{esc(a[0])}</b> au contrôle du {date_fr(a[1])}'
+                   + (f' (suite&nbsp;: {esc(a[2])})' if a[2] else '') + '.</p>')
+    out.append('<p><a href="/guides/lire-une-evaluation-ehpad/">Lire une évaluation</a></p>')
     return ''.join(out)
 
 
-def bloc_tarifs(r, ctx):
-    l = []
-    if r['p']:
-        l.append(f'<li><b>Hébergement, chambre seule&nbsp;: {eur2(r["p"])} par jour</b>, soit environ '
-                 f'<b>{eur(mois_eur(r["p"]))} par mois</b>' + (f', tarif déclaré en {esc(str(r["maj"]).split("-")[1])}/{esc(str(r["maj"]).split("-")[0])}' if r['maj'] else '') + '.</li>')
-    if r['pcd']:
-        l.append(f'<li>Hébergement, chambre double&nbsp;: {eur2(r["pcd"])} par jour, soit environ {eur(mois_eur(r["pcd"]))} par mois.</li>')
-    if r['pa'] and r['ash'] in (1, 2):
-        l.append(f'<li>Tarif « aide sociale »&nbsp;: {eur2(r["pa"])} par jour. C’est le tarif appliqué quand le département prend le relais.</li>')
-    if r.get('reg') == 'exp':
-        pf = r.get('pf') or {}
-        m = pf.get('montant_jour') or 0
-        l.append('<li><b>Aide au quotidien&nbsp;: participation forfaitaire</b> de '
-                 f'{eur2(m)} par jour, soit environ {eur(mois_eur(m))} par mois. '
-                 'Cette commune fait partie des territoires qui expérimentent, depuis le 1<sup>er</sup> juillet 2025, '
-                 'la fusion des financements soins et dépendance&nbsp;: il n’y a plus de tarif par GIR, plus de '
-                 'participation qui augmente avec les ressources, et l’allocation personnalisée d’autonomie en '
-                 'établissement y est supprimée. Le montant est le même pour tous les résidents.</li>')
-    elif r['t12'] and r['t56'] and abs(r['t12'] - r['t56']) > 0.01:
-        l.append(f'<li>Tarif dépendance&nbsp;: de {eur2(r["t56"])} par jour pour une perte d’autonomie légère à '
-                 f'{eur2(r["t12"])} pour une perte d’autonomie lourde. C’est la part largement couverte par '
-                 f'l’allocation personnalisée d’autonomie, versée par le département.</li>')
-    elif r['t12']:
-        l.append(f'<li>Tarif dépendance&nbsp;: {eur2(r["t12"])} par jour. L’établissement déclare le même tarif '
-                 f'pour tous les niveaux de perte d’autonomie&nbsp;: demandez-lui celui qui s’appliquera '
-                 f'réellement, il varie normalement selon le niveau évalué par le département.</li>')
-    else:
-        l.append('<li>Tarif dépendance&nbsp;: non déclaré. C’est la part qui s’ajoute à l’hébergement et que '
-                 'l’allocation personnalisée d’autonomie couvre en grande partie&nbsp;; demandez-la à l’établissement.</li>')
-    if r['temp'] is not None:
-        l.append(f'<li>Accueil temporaire&nbsp;: {eur2(r["temp"])} par jour — pour un séjour de quelques semaines, par exemple après une hospitalisation.</li>')
-    if not l:
-        return ('<p>Cet établissement n’a pas déclaré de tarif à la Caisse nationale de solidarité pour l’autonomie. '
-                'Nous préférons l’écrire plutôt que d’afficher une estimation&nbsp;: demandez-lui son tarif du jour, '
-                'il est obligatoire de le communiquer.</p>')
-    return '<ul>' + ''.join(l) + '</ul>'
-
-
-def bloc_evolution(r):
-    s = r.get('serie')
-    if not s or s.get('e') is None: return ''
-    vals = [v for v in s['p'] if v]
-    if len(vals) < 2: return ''
-    ecart = s['e'] - INFL
-    comp = (f'soit {pct(ecart)} par rapport à l’inflation, qui a été de 17,2 % sur la même période'
-            if s['d'] == '2018' and s['f'] == '2025'
-            else 'l’établissement n’ayant pas déclaré son tarif chaque année, l’évolution est mesurée entre ces deux dates seulement')
-    return (f'<section><h2>L’évolution du tarif</h2><p>Le tarif d’hébergement de cet établissement est passé de '
-            f'<b>{eur2(vals[0])} à {eur2(vals[-1])} par jour</b> entre {s["d"]} et {s["f"]}, soit <b>{pct(s["e"])}</b> '
-            f'({pct(s["a"], 2)} par an) — {comp}. '
-            f'Une hausse n’est pas nécessairement un mauvais signe&nbsp;: elle peut financer des travaux ou du personnel '
-            f'supplémentaire. Elle vous dit surtout à quoi vous attendre pour les années à venir.</p></section>')
+def bloc_aides(r):
+    ash = {1: f'<b>habilité</b>{" — tarif aide sociale " + eur2(r["pa"]) + " par jour" if r["pa"] else ""}',
+           2: '<b>à confirmer</b> (tarif « aide sociale » déclaré sans habilitation au répertoire&nbsp;: souvent quelques places seulement)',
+           0: '<b>non habilité</b> — impossible de la demander ici'}.get(r['ash'], 'information non publiée')
+    apa = ('remplacée ici par la participation forfaitaire' if r.get('reg') == 'exp'
+           else 'couvre le tarif dépendance au-delà du GIR 5-6')
+    return (f'<ul class="aides-l">'
+            f'<li><a href="/aides-ehpad/aide-sociale-hebergement/">Aide sociale à l’hébergement</a>&nbsp;: {ash}.</li>'
+            f'<li><a href="/aides-ehpad/apa/">Allocation personnalisée d’autonomie</a>&nbsp;: {apa}.</li>'
+            f'<li><a href="/aides-ehpad/aide-au-logement/">Aide au logement</a> et '
+            f'<a href="/aides-ehpad/reduction-impot/">réduction d’impôt</a>.</li></ul>')
 
 
 def bloc_pratique(r):
     l = []
-    if r['cap']: l.append(f'<li>Capacité&nbsp;: {r["cap"]} places (donnée déclarée en 2020, dernière disponible en accès libre).</li>')
-    if r['statut'] is not None: l.append(f'<li>Statut&nbsp;: établissement {STATUT_LONG[r["statut"]]}.</li>')
-    if r['pm']: l.append(f'<li>Gestionnaire&nbsp;: {esc(r["pm"])}.</li>')
-    if r['ouv']: l.append(f'<li>Ouvert depuis {esc(r["ouv"])}.</li>')
-    if r['tarif'] in TARIF_SOINS:
-        l.append(f'<li>Financement des soins&nbsp;: {TARIF_SOINS[r["tarif"]]}'
-                 + (', avec une pharmacie interne' if r['pui'] else '') + '.</li>')
-    if r['nIncl'] or r['nSus']:
-        l.append(f'<li>{r["nIncl"] or 0} prestation(s) comprise(s) dans le tarif et {r["nSus"] or 0} facturée(s) en plus. '
-                 f'Le fichier officiel ne dit pas lesquelles&nbsp;: demandez la liste à l’établissement.</li>')
+    l.append(f'<li>N° FINESS&nbsp;: {r["fin"]}.</li>')
+    if r['statut'] is not None: l.append(f'<li>Statut&nbsp;: {STATUT_LONG[r["statut"]]}.</li>')
+    if r['pm']: l.append(f'<li>Gestionnaire&nbsp;: {esc(titre(r["pm"]))}' + (f' (SIREN {r["siren"]})' if r.get('siren') else '') + '.</li>')
+    if r['cap']: l.append(f'<li>{r["cap"]} places (capacité 2020).</li>')
+    if r['ouv']: l.append(f'<li>Ouvert en {esc(r["ouv"])}.</li>')
+    if r['tarif'] in SOINS_COURT:
+        l.append(f'<li>Soins&nbsp;: {SOINS_COURT[r["tarif"]]}' + (', pharmacie interne' if r['pui'] else '') + '.</li>')
+    incl = [x.strip() for x in (r.get('inclTxt') or '').split(';') if x.strip()]
+    sus = [x.strip() for x in (r.get('susTxt') or '').split(';') if x.strip()]
+    if incl: l.append(f'<li>Compris dans le tarif&nbsp;: {esc(", ".join(incl))}.</li>')
+    if sus: l.append(f'<li>Facturé en plus&nbsp;: {esc(", ".join(sus))}.</li>')
+    if not incl and not sus and (r['nIncl'] or r['nSus']):
+        l.append(f'<li>{r["nIncl"] or 0} prestation(s) comprise(s), {r["nSus"] or 0} en supplément (liste non publiée).</li>')
     return '<ul>' + ''.join(l) + '</ul>' if l else ''
 
 
-def fiche(ctx, ecrire, r, voisins):
+def bloc_production(r):
+    """« Comment cette page est produite » : sources datées propres à la fiche + responsable."""
+    s = [f'tarifs déclarés à la CNSA{" en " + mois_fr(r["maj"]) if r["maj"] else ""}',
+         'identité, gestionnaire et habilitation&nbsp;: répertoire FINESS']
+    if r['hasN']: s.append(f'évaluation&nbsp;: Haute Autorité de santé, {date_fr(r["hasD"])}')
+    if r['alim']: s.append(f'hygiène&nbsp;: Alim’confiance, {date_fr(r["alim"][1])}')
+    if r.get('serie'): s.append('historique&nbsp;: fichiers annuels CNSA 2018-2025')
+    return (f'<p class="src-bloc"><b>Comment cette page est produite.</b> Sources&nbsp;: {"&nbsp;; ".join(s)}. '
+            f'Les calculs sont automatiques et identiques pour tous les établissements&nbsp;; personne n’a visité '
+            f'celui-ci. Responsable de la publication&nbsp;: <a href="{AUTEUR_URL}">{AUTEUR}</a>. '
+            f'<a href="/notre-methodologie.html">Méthode</a> · '
+            f'<a href="mailto:contact@trouver-mon-ehpad.fr?subject=Correction%20{r["fin"]}">Signaler une erreur</a></p>')
+
+
+# --------------------------------------------------------------------- fiche
+def fiche(ctx, ecrire, r, voisins, dp, freres):
     vn = ctx['nom_ville'].get(r['cle']) or r['ville_nom']
     d = r['dep']; dn = geo.DEPARTEMENTS[d]
     rs, rn = geo.region_de(d)
     sv = stats(ctx['par_ville'][r['cle']]) if r['cle'] in ctx['par_ville'] else None
-    sd = stats(ctx['par_dep'][d])
+    sd = dp['stats']
     lien = lien_calc(cp=r['cp'], insee=r['insee'], rayon=20, finess=r['fin'])
     url = ctx['url_fiche'][r['fin']]
     nom = r['nom_aff']
 
-    # comparaison — uniquement si elle est calculable
-    comp = ''
-    if r['p'] and sv and sv['med'] and sv['n_prix'] >= 3:
-        e = 100 * (r['p'] - sv['med']) / sv['med']
-        mot = 'moins cher' if e < 0 else 'plus cher'
-        comp = (f'<p>Ce tarif est <b>{nb(abs(e), 0)} % {mot}</b> que le tarif médian des {sv["n_prix"]} EHPAD de '
-                f'{esc(vn)} ayant déclaré leur tarif ({med_mois(sv)} par mois).</p>')
-    elif r['p'] and sd['med']:
-        e = 100 * (r['p'] - sd['med']) / sd['med']
-        mot = 'moins cher' if e < 0 else 'plus cher'
-        comp = (f'<p>Ce tarif est <b>{nb(abs(e), 0)} % {mot}</b> que le tarif médian {esc(phrase_dep(d))} '
-                f'({med_mois(sd)} par mois).</p>')
-
     adr = ' '.join(x for x in [titre(r['adr']) if r['adr'] else None, r['cp'], vn] if x)
     tel = r['tel']
     tel_aff = ' '.join(tel[i:i + 2] for i in range(0, len(tel), 2)) if tel else None
+    statut = STATUT_LONG.get(r['statut'])
+    couts, tot = bloc_couts(r)
+
+    sous = (f'EHPAD {statut + " " if statut else ""}à {esc(vn)} ({esc(dn)})'
+            + (f', géré par {esc(titre(r["pm"]))}' if r['pm'] and titre(r['pm']).lower() not in nom.lower() else '') + '.')
+
+    vs = [x for x in voisins if x['p']]
+    ecart_v = ''
+    if len(vs) >= 2:
+        lo, hi = min(x['p'] for x in vs), max(x['p'] for x in vs)
+        ecart_v = (f'<p>Entre le moins cher et le plus cher de ces {len(vs)} voisins&nbsp;: '
+                   f'<b>{eur(mois_eur(hi - lo))} par mois</b> d’écart.</p>')
+
+    bloc_freres = ''
+    if freres:
+        bloc_freres = ('<section><h2>Le même gestionnaire</h2><p>' + esc(titre(r['pm'])) + ' gère aussi&nbsp;:</p><div class="puces">'
+                       + ''.join(f'<a href="{ctx["url_fiche"][x["fin"]]}">{esc(x["nom_aff"])} ({esc(x["ville_nom"])})</a>' for x in freres)
+                       + '</div></section>')
 
     corps = f"""<h1 class="p-h1">{esc(nom)}</h1>
-<p class="p-sub">EHPAD à {esc(vn)} ({esc(dn)}) — tarifs, aide sociale, évaluation et estimation du reste à charge.</p>
+<p class="p-sub">{sous}</p>
 <div class="f-head">
 <div class="f-grid">
 <div><b>{eur(mois_eur(r['p'])) + '<small style="font-size:.75rem;font-weight:400">/mois</small>' if r['p'] else 'Non déclaré'}</b><span>hébergement, chambre seule</span></div>
@@ -164,46 +289,49 @@ def fiche(ctx, ecrire, r, voisins):
 </div>
 <p class="f-adr">{esc(adr)}{f' · <a href="tel:{esc(tel)}">{esc(tel_aff)}</a>' if tel_aff else ''}</p>
 </div>
-{cta(lien, 'Estimer mon reste à charge', 'seo_establishment_to_calculator',
-     'Le calculateur s’ouvre avec cet établissement déjà sélectionné : il sépare ce que l’établissement facture, ce qu’il faut sortir chaque mois après aides, et l’avantage fiscal de l’année suivante.')}
+{cta(lien, 'Estimer mon reste à charge', 'seo_establishment_to_calculator')}
 
-<section><h2>Les tarifs</h2>
-{bloc_tarifs(r, ctx)}
-{comp}
-{explique_heberg(r.get('reg'))}</section>
+<section><h2>Ce qu’il coûte</h2>
+{couts}
+{bloc_reste(r, tot)}</section>
 
-{bloc_evolution(r)}
+{'<section><h2>Où se situe ce tarif</h2>' + bloc_position(r, ctx, dp, vn, sv) + '</section>' if r['p'] else ''}
 
-<section><h2>Payer moins&nbsp;: les aides possibles</h2>
-{bloc_ash(r)}
-<p>{"Ici, l’allocation personnalisée d’autonomie en établissement est supprimée : la participation forfaitaire en tient lieu. Reste " if r.get('reg') == 'exp' else "Avant l’aide sociale, deux aides réduisent la facture : " }<a href="/aides-ehpad/apa/">{"" if r.get('reg') == 'exp' else "l’allocation personnalisée d’autonomie, qui couvre une grande partie du tarif dépendance"}</a>{"" if r.get('reg') == 'exp' else " ; "}<a href="/aides-ehpad/aide-au-logement/">l’aide au logement</a>, si l’établissement est conventionné. <a href="/aides-ehpad/reduction-impot/">La réduction d’impôt</a> de 25 % des frais restants, elle, n’arrive que l’année suivante et seulement si la personne paie de l’impôt : elle n’allège aucune mensualité.</p></section>
+{bloc_evolution(r, dp)}
 
-<section><h2>La qualité&nbsp;: ce que disent les contrôles</h2>
-{bloc_qualite(r)}
-<p><a href="/guides/lire-une-evaluation-ehpad/">Comment lire une évaluation d’EHPAD</a></p></section>
+<section><h2>Les aides</h2>
+{bloc_aides(r)}</section>
 
-<section><h2>L’établissement en pratique</h2>
+<section><h2>Évaluation et contrôles</h2>
+{bloc_qualite(r, dp)}</section>
+
+<section><h2>En pratique</h2>
 {bloc_pratique(r)}</section>
 
 <section><h2>Les EHPAD à proximité</h2>
-<p>Les établissements les plus proches ayant déclaré un tarif. L’écart entre deux EHPAD distants de quelques kilomètres dépasse souvent 500&nbsp;€ par mois.</p>
-{tableau(voisins, ctx['lien_de'], 'Établissements voisins, du tarif le plus bas au plus élevé', avec_ville=True) if voisins else '<p>Aucun autre établissement avec tarif déclaré dans les environs immédiats.</p>'}
+{tableau(voisins, ctx['lien_de'], 'Les plus proches ayant déclaré un tarif, du moins cher au plus cher', avec_ville=True) if voisins else '<p>Aucun autre établissement avec tarif déclaré dans les environs immédiats.</p>'}
+{ecart_v}
 <div class="liens-grid">
 {f'<a class="lien-c" href="{ctx["url_ville"][r["cle"]]}"><b>Tous les EHPAD à {esc(vn)}</b><span>{sv["n"]} établissements, tarif médian {med_mois(sv)} par mois.</span></a>' if r['cle'] in ctx['url_ville'] and r['cle'] in ctx['villes_page'] else ''}
 <a class="lien-c" href="{ctx['url_dep'][d]}"><b>Les EHPAD {esc(phrase_dep(d))}</b><span>{nb(sd['n'])} établissements, tarif médian {med_mois(sd)} par mois.</span></a>
-<a class="lien-c" href="/calcul-reste-a-charge-ehpad/"><b>Calculer le reste à charge</b><span>La méthode, ligne par ligne.</span></a>
+<a class="lien-c" href="/comparer-devis-ehpad/"><b>Comparer ses devis</b><span>Poste par poste, avec celui d’un autre établissement.</span></a>
 </div></section>
-{sources()}"""
+{bloc_freres}
+{guides_tournants(r['fin'], 3, [GUIDES_LIENS[10]] if r['ash'] == 1 else ([GUIDES_LIENS[2]] if not r['p'] else None))}
+{bloc_production(r)}"""
 
     ld = [{
-        "@type": "Dataset",
-        "name": f"Tarifs et caractéristiques publiques de l’EHPAD {nom} ({r['fin']})",
-        "description": f"Tarif d’hébergement, tarifs dépendance, habilitation à l’aide sociale, capacité et évaluation officielle de l’EHPAD {nom} à {vn}.",
-        "url": DOMAINE + url, "inLanguage": "fr-FR", "isAccessibleForFree": True,
-        "creator": {"@id": DOMAINE + "/#organization"},
-        "spatialCoverage": {"@type": "Place", "name": f"{vn}, {dn}, France"},
-        "license": "https://www.etalab.gouv.fr/licence-ouverte-open-licence",
-        "identifier": r['fin'], "dateModified": "2026-09-11",
+        "@type": "WebPage", "@id": DOMAINE + url, "url": DOMAINE + url, "inLanguage": "fr-FR",
+        "name": f"{nom} à {vn}",
+        "isPartOf": {"@id": DOMAINE + "/#website"},
+        "author": {"@id": DOMAINE + "/#editeur"}, "publisher": {"@id": DOMAINE + "/#organization"},
+        "about": {"@type": "Place", "name": nom,
+                  "address": {"@type": "PostalAddress", "addressLocality": vn, "postalCode": r['cp'],
+                              "addressCountry": "FR", **({"streetAddress": titre(r['adr'])} if r['adr'] else {})},
+                  **({"geo": {"@type": "GeoCoordinates", "latitude": r['lat'], "longitude": r['lon']}}
+                     if r['lat'] and not r.get('approx') else {}),
+                  **({"telephone": r['tel']} if r['tel'] else {}),
+                  "identifier": {"@type": "PropertyValue", "propertyID": "FINESS", "value": r['fin']}},
     }]
     ariane = [('Accueil', '/'), ('Les EHPAD en France', '/ehpad/')]
     if rs: ariane.append((rn, ctx['url_region'][rs]))
@@ -211,19 +339,44 @@ def fiche(ctx, ecrire, r, voisins):
     if r['cle'] in ctx['villes_page']: ariane.append((vn, ctx['url_ville'][r['cle']]))
     ariane.append((nom, None))
 
-    titre_p = f'{nom} à {vn} : prix et reste à charge | {MARQUE}'
-    desc = (f'Tarifs, habilitation à l’aide sociale, capacité et évaluation de l’EHPAD {nom} à {vn}'
-            + (f'. Hébergement à partir de {eur(mois_eur(r["p"]))} par mois' if r['p'] else '')
-            + '. Estimez votre reste à charge après les aides.')
-    ecrire(url, layout.page(url, titre_p[:110], desc[:250], corps, ariane, ld_extra=ld,
+    prix = f'{eur(mois_eur(r["p"]))}/mois' if r['p'] else None
+    court = r.get('nom_court') or layout.coupe_mot(nom, 58 - len(vn) - 3)
+    titre_p = layout.titre_court(
+        ([f'{nom} à {vn} : {prix}'] if prix else [])
+        + [f'{nom} à {vn} : tarifs et aides', f'{nom} ({vn})']
+        + ([f'{court} ({vn}) : {prix}'] if prix else [])
+        + [f'{court} ({vn})', f'{court} ({vn})'[:60]])
+    s = r.get('serie')
+    desc = layout.desc_courte([
+        f'{nom} à {vn}{" (" + d + ")" if len(vn) < 25 else ""} :',
+        f'hébergement {prix} en chambre seule.' if prix else 'tarif non déclaré.',
+        f'{pct(s["e"], 0)} depuis {s["d"]}.' if s and s.get('e') is not None else '',
+        f'Évaluation HAS {r["hasN"]}.' if r['hasN'] else '',
+        {1: 'Habilité à l’aide sociale.', 0: 'Non habilité à l’aide sociale.'}.get(r['ash'], ''),
+        'Reste à charge estimé.' if tot else '',
+    ])
+    ecrire(url, layout.page(url, titre_p, desc, corps, ariane, ld_extra=ld,
                             type_page='etablissement', lieu=vn), 0.6, 'etablissements')
 
 
 def construire(ctx, ecrire, liste):
     par_dep = collections.defaultdict(list)
     for r in liste: par_dep[r['dep']].append(r)
+    # frères : même gestionnaire (SIREN), fiches publiées, au plus 6, les plus proches d'abord
+    par_siren = collections.defaultdict(list)
+    for r in liste:
+        if r.get('siren') and r['fin'] in ctx['url_fiche']: par_siren[r['siren']].append(r)
     for d, lot in par_dep.items():
-        avec = [x for x in ctx['par_dep'][d] if x['p'] and x['lat'] and x['fin'] in ctx['url_fiche']]
+        tout = ctx['par_dep'][d]
+        dp = {'stats': stats(tout),
+              'prix': sorted(x['p'] for x in tout if x['p']),
+              'evol': [x['serie']['e'] for x in tout if x.get('serie') and x['serie'].get('e') is not None],
+              'hasM': [x['hasM'] for x in tout if x['hasM'] is not None],
+              'statut': {}}
+        for k in (0, 1, 2):
+            p = [x['p'] for x in tout if x['p'] and x['statut'] == k]
+            if p: dp['statut'][k] = (mediane(p), len(p))
+        avec = [x for x in tout if x['p'] and x['lat'] and x['fin'] in ctx['url_fiche']]
         for r in lot:
             vois = []
             if r['lat']:
@@ -232,4 +385,7 @@ def construire(ctx, ecrire, liste):
                     dd = math.hypot((r['lat'] - x['lat']) * 111, (r['lon'] - x['lon']) * 111 * math.cos(math.radians(r['lat'])))
                     vois.append((dd, x))
                 vois.sort(key=lambda t: t[0])
-            fiche(ctx, ecrire, r, [x for _, x in vois[:6]])
+            fr = [x for x in par_siren.get(r.get('siren'), []) if x['fin'] != r['fin']]
+            if r['lat']:
+                fr.sort(key=lambda x: (x['lat'] is None, math.hypot(((x['lat'] or 0) - r['lat']) * 111, ((x['lon'] or 0) - r['lon']) * 78)))
+            fiche(ctx, ecrire, r, [x for _, x in vois[:6]], dp, fr[:6])

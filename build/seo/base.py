@@ -15,6 +15,25 @@ MAJ = '11/09/2026'                # dernière vérification des règles national
 MAJ_ISO = '2026-09-11'
 CNSA_MAJ = 'janvier 2026'         # dernier fichier de prix publié par la CNSA
 
+# Éditeur — nommé sur les pages indexables (qui est responsable du contenu : exigence forte des
+# consignes Google pour les sujets d'argent et de santé). Bio validée par l'éditeur le 29/09/2026.
+AUTEUR = 'David Rival'
+AUTEUR_URL = '/qui-sommes-nous.html#editeur'
+AUTEUR_BIO = ('Juriste de formation (master 2 en droit des affaires), il conçoit des outils numériques '
+              'et a construit ce site seul, sans financement ni partenariat, à partir des données publiques.')
+
+# Barèmes : relus dans site/data.js, la source unique du calculateur — les pages et le moteur
+# ne peuvent pas diverger.
+def _bareme():
+    import re as _re
+    t = open(os.path.join(SITE, 'data.js'), encoding='utf-8').read()
+    g = lambda k: float(_re.search(r'\b' + k + r'\s*:\s*([0-9.]+)', t).group(1))
+    return {'mtp': g('mtp'), 'seuilInf': g('seuilInf'), 'seuilSup': g('seuilSup'),
+            'irTaux': g('irTaux'), 'irPlafond': g('irPlafond')}
+BAREME = _bareme()
+APA_SEUIL_INF = round(BAREME['seuilInf'] * BAREME['mtp'], 2)      # 2 846,77 €/mois
+IR_MAX = BAREME['irTaux'] * BAREME['irPlafond']                    # 2 500 €/an
+
 # ---------------------------------------------------------------- chargement
 def charge():
     rows = json.load(open(os.path.join(B, 'merged_v2.json'), encoding='utf-8'))

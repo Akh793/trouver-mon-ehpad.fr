@@ -974,10 +974,9 @@ def main():
              + '<style>' + STYLE + '</style>\n<script>' + SCRIPT + '</script>')
 
     html = bp.HEAD.format(
-        title='Comparer vos devis d’EHPAD, poste par poste | Trouver mon EHPAD',
-        desc='Recopiez les lignes de vos devis d’EHPAD : le coût mensuel réel, tout compris, '
-             'et ce que chaque établissement inclut ou facture en plus. Gratuit, sans inscription, '
-             'rien n’est envoyé.',
+        title='Comparer vos devis d’EHPAD, poste par poste',
+        desc='Recopiez les lignes de vos devis d’EHPAD : coût mensuel réel tout compris, et ce que '
+             'chaque établissement inclut ou facture en plus. Gratuit, rien n’est envoyé.',
         slug=SLUG + '/', robots='index, follow', h1='Comparer vos devis',
         body=corps, font=FONT, css=CSS,
         jsonld=bp.crumb('Comparer vos devis', SLUG + '/'),

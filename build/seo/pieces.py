@@ -3,7 +3,7 @@
 questions fréquentes, blocs de sources. Aucune de ces briques n'invente de donnée : ce qui n'est pas
 connu n'est pas affiché."""
 import json
-from base import esc, eur, nb, pct, mois_eur, MOIS, CNSA_MAJ, MAJ
+from base import esc, eur, nb, pct, mois_eur, MOIS, CNSA_MAJ, MAJ, AUTEUR, AUTEUR_URL
 
 NON_PUB = '<span class="non">non publiée</span>'
 STATUTS = {0: 'Public', 1: 'Associatif', 2: 'Privé commercial'}
@@ -37,7 +37,7 @@ def ash_cell(v):
     return '<span class="non">Inconnu</span>'
 
 
-def tableau(lot, url_de, legende, avec_ville=False, limite=None):
+def tableau(lot, url_de, legende, avec_ville=False, limite=None, evol=False):
     """Tableau comparatif d'établissements. Trié du moins cher au plus cher,
     les tarifs non déclarés en fin de liste."""
     lot = sorted(lot, key=lambda r: (r['p'] is None, r['p'] or 0))
@@ -45,13 +45,19 @@ def tableau(lot, url_de, legende, avec_ville=False, limite=None):
     h = ['<div class="tbl-wrap"><table class="tbl">',
          f'<caption>{legende}</caption><thead><tr><th>Établissement</th>']
     if avec_ville: h.append('<th>Commune</th>')
-    h.append('<th class="num">Hébergement</th><th>Aide sociale</th><th class="num">Places</th><th>Évaluation</th></tr></thead><tbody>')
+    h.append('<th class="num">Hébergement</th>' + ('<th class="num">Depuis 2018</th>' if evol else '')
+             + '<th>Aide sociale</th><th class="num">Places</th><th>Évaluation</th></tr></thead><tbody>')
     for r in lot:
         pm = eur(mois_eur(r['p'])) + '/mois' if r['p'] else '<span class="non">non déclaré</span>'
         h.append(f'<tr><td><a href="{url_de(r)}">{esc(r["nom_aff"])}</a></td>')
         if avec_ville: h.append(f'<td data-l="Commune">{esc(r["ville_nom"])}</td>')
         note = r['hasN'] or NON_PUB
-        h.append(f'<td class="num" data-l="Hébergement">{pm}</td>'
+        ev = ''
+        if evol:
+            se = r.get('serie')
+            ev = (f'<td class="num" data-l="Évolution">{pct(se["e"], 0)} <small>({se["d"]}→{se["f"][2:]})</small></td>'
+                  if se and se.get('e') is not None else '<td class="num" data-l="Évolution">—</td>')
+        h.append(f'<td class="num" data-l="Hébergement">{pm}</td>{ev}'
                  f'<td data-l="Aide sociale">{ash_cell(r["ash"])}</td>'
                  f'<td class="num" data-l="Places">{r["cap"] or "—"}</td>'
                  f'<td data-l="Évaluation">{note}</td></tr>')
@@ -91,14 +97,42 @@ def _txt(html_str):
     return re.sub(r'\s+', ' ', t).strip()
 
 
-SOURCES_PRIX = (f'<b>Sources.</b> Tarifs et places : Caisse nationale de solidarité pour l’autonomie (CNSA), '
-                f'fichier « prix et tarifs des EHPAD », dernière publication&nbsp;: {CNSA_MAJ}. '
-                f'Identité, adresse et habilitation à l’aide sociale&nbsp;: répertoire FINESS (Agence du numérique en santé). '
-                f'Évaluations&nbsp;: Haute Autorité de santé. '
-                f'Les tarifs mensuels affichés sont le tarif journalier d’hébergement multiplié par {str(MOIS).replace(".", ",")} jours. '
-                f'Règles nationales vérifiées le {MAJ}. '
-                f'<a href="/notre-methodologie.html">Voir la méthode complète</a> · '
+SOURCES_PRIX = (f'<b>Sources</b>&nbsp;: tarifs CNSA ({CNSA_MAJ}) · identité et habilitation FINESS · évaluations HAS. '
+                f'Mois = tarif journalier × {str(MOIS).replace(".", ",")}. Règles vérifiées le {MAJ}. '
+                f'Responsable de la publication&nbsp;: <a href="{AUTEUR_URL}">{AUTEUR}</a>. '
+                f'<a href="/notre-methodologie.html">Méthode</a> · '
                 f'<a href="mailto:contact@trouver-mon-ehpad.fr?subject=Correction">Signaler une erreur</a>')
+
+
+GUIDES_LIENS = [
+    ('/guides/comment-choisir-un-ehpad/', 'Choisir un EHPAD'),
+    ('/guides/questions-a-poser-lors-dune-visite/', 'Les questions à poser en visite'),
+    ('/guides/dossier-admission-ehpad/', 'Le dossier d’admission'),
+    ('/guides/tarif-hebergement-et-tarif-dependance/', 'Hébergement et dépendance'),
+    ('/guides/comparer-deux-ehpad/', 'Comparer deux EHPAD'),
+    ('/guides/pourquoi-les-prix-varient/', 'Pourquoi les prix varient'),
+    ('/guides/trouver-une-place-en-ehpad/', 'Trouver une place'),
+    ('/guides/ehpad-public-prive-ou-associatif/', 'Public, privé ou associatif'),
+    ('/guides/ehpad-alzheimer-unite-protegee/', 'Alzheimer et unité protégée'),
+    ('/guides/urgence-apres-hospitalisation/', 'Après une hospitalisation'),
+    ('/guides/qui-paie-quand-la-retraite-ne-suffit-pas/', 'Quand la retraite ne suffit pas'),
+    ('/aides-ehpad/obligation-alimentaire/', 'L’obligation alimentaire'),
+]
+
+
+def guides_tournants(cle, n=3, d_abord=None):
+    """Quelques guides par page, choisis de façon stable (même page → mêmes liens) mais répartis sur
+    l'ensemble du site, pour qu'aucun guide ne dépende d'un seul lien entrant."""
+    import zlib
+    k = zlib.crc32(str(cle).encode()) % len(GUIDES_LIENS)
+    choix = [g for g in (d_abord or [])]
+    i = k
+    while len(choix) < n:
+        g = GUIDES_LIENS[i % len(GUIDES_LIENS)]
+        if g not in choix: choix.append(g)
+        i += 5
+    return ('<p class="guides-l"><b>Guides</b>&nbsp;: '
+            + ' · '.join(f'<a href="{u}">{t}</a>' for u, t in choix) + '</p>')
 
 
 def sources(txt=None):

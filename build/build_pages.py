@@ -31,12 +31,11 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
 <meta name="twitter:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
 <meta name="theme-color" content="#2548FF">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 {jsonld}
-<style>
-{font}
-{css}
-</style>
+<link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
 <div id="topbar" class="topbar print-hide">
@@ -83,9 +82,9 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
     <a href="/prix-ehpad/">Prix des EHPAD</a>
     <a href="/aides-ehpad/">Aides financières</a>
     <a href="/guides/">Guides</a>
-    <a href="notre-methodologie.html">Notre méthodologie</a>
-    <a href="qui-sommes-nous.html">Qui sommes-nous ?</a>
-    <a href="mentions-legales.html">Mentions légales</a>
+    <a href="/notre-methodologie.html">Notre méthodologie</a>
+    <a href="/qui-sommes-nous.html">Qui sommes-nous ?</a>
+    <a href="/mentions-legales.html">Mentions légales</a>
     <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Mon%20EHPAD%20%E2%80%94%20contact">Nous écrire</a>
   </nav>
   <p>© 2026 Trouver mon EHPAD — gratuit, sans publicité, sans partenariat avec des établissements.</p>
@@ -105,8 +104,8 @@ def crumb(name, slug):
 PAGES = [
 {
  'file': 'notre-methodologie.html', 'slug': 'notre-methodologie.html',
- 'title': 'Notre méthodologie — comment le reste à charge en EHPAD est calculé | Trouver mon EHPAD',
- 'desc': "Sources croisées, formule de l'APA en établissement, règles de l'aide sociale, méthode de l'évolution des prix et des places qui se libèrent, ce qui est vérifié, ce qui est déduit et ce que nous refusons de simuler.",
+ 'title': 'Méthodologie : comment le reste à charge est calculé',
+ 'desc': "Sources croisées, formule de l'APA en établissement, règles de l'aide sociale, méthode de l'évolution des prix : ce qui est vérifié, déduit ou refusé.",
  'robots': 'index, follow', 'h1': 'Notre méthodologie',
  'body': """
 <p>Ce site affiche de l’argent que des familles vont réellement dépenser. Il n’a donc le droit ni d’arrondir une règle, ni de combler un trou de données par une valeur vraisemblable. Cette page dit exactement d’où vient chaque chiffre, ce qui est vérifié, ce qui est déduit, et ce que nous ne calculons pas. <b>Version 2.0, vérifiée le 11 septembre 2026.</b></p>
@@ -155,7 +154,7 @@ PAGES = [
 <p>Ce que nous affichons à la place est explicitement une moyenne de segment, jamais un relevé : le <b>taux d’occupation</b> des EHPAD de même statut et de même degré de densité de commune, mesuré par l’enquête EHPA 2023 de la DREES (94 résidents pour 100 places en moyenne, de 89 pour 100 dans le privé commercial en commune dense à 97 pour 100 dans l’associatif en densité intermédiaire), et le <b>taux de rotation</b> des résidents, 38,8 % par an tous EHPAD confondus — soit, dans un établissement de 80 places, une place qui se libère en moyenne tous les douze jours. Quand la capacité 2020 de l’établissement est connue, nous traduisons ces taux en nombre de places et en délai moyen entre deux libérations, en écrivant que la capacité date de 2020. Le délai réel d’entrée est documenté au niveau national par la DREES : <b>55 % des personnes entrées en 2023 ont attendu un mois ou moins</b> après le dépôt du dossier.</p>
 
 <h2>7. L’aide sociale à l’hébergement, l’obligation alimentaire et la famille</h2>
-<p>Règles nationales appliquées : le résident conserve au moins 10 % de ses ressources et jamais moins de 125 € par mois ; le conjoint resté à domicile conserve au moins 1 043,59 € par mois ; l’aide versée est récupérable sur la succession, sur les donations consenties dans les dix ans précédant la demande <b>comme après elle</b>, et en cas de retour à meilleure fortune ; les sommes versées par les enfants au titre de l’obligation alimentaire ne le sont pas. Depuis la <b>loi du 8 avril 2024</b>, les petits-enfants ne sont plus sollicités au titre de l’obligation alimentaire envers leurs grands-parents en EHPAD.</p>
+<p>Règles nationales appliquées : le résident conserve au moins 10 % de ses ressources et jamais moins de 125 € par mois ; le conjoint resté à domicile conserve au moins 1 043,59 € par mois ; l’aide versée est récupérable sur la succession, sur les donations consenties dans les dix ans précédant la demande <b>comme après elle</b>, et en cas de retour à meilleure fortune ; les sommes versées par les enfants au titre de l’obligation alimentaire ne le sont pas. Depuis la <b>loi du 8 avril 2024</b>, les petits-enfants ne sont plus sollicités au titre de l’obligation alimentaire lorsqu’une aide sociale à l’hébergement est demandée pour leurs grands-parents.</p>
 <p>Ce qui relève du département est affiché comme tel : recours sur succession, personnes sollicitées au titre de l’obligation alimentaire, prise en charge du GIR 5-6, charges déductibles. Ces informations viennent de l’enquête Aide sociale de la DREES et portent sur <b>2018</b> — c’est la donnée la plus récente publiée. Nous les présentons comme « pratique déclarée en 2018 », jamais comme la règle d’aujourd’hui : le règlement départemental d’aide sociale en vigueur fait foi. Dans le Rhône, la Métropole de Lyon exerce les compétences départementales : le site distingue les deux, commune par commune. En Corse, la collectivité unique remplace les deux départements.</p>
 <p><b>Nous n’affichons aucun montant imposé d’obligation alimentaire</b> : il n’existe aucun barème national. Le conseil départemental, et à défaut le juge aux affaires familiales, fixe la part de chaque enfant. La seule référence chiffrée publiée est la participation moyenne constatée par la DREES, 270 € par mois fin 2023, sur environ 115 900 bénéficiaires de l’ASH dont un tiers a au moins un obligé alimentaire.</p>
 <p>Le bloc « si les enfants complètent » répond à une question que les simulateurs ignorent : <i>combien chacun</i>. Il divise à <b>parts égales</b> ce que les ressources du parent ne couvrent pas — hypothèse de travail, affichée comme telle, car le département tient compte des revenus de chacun — puis applique la déduction fiscale : la pension alimentaire versée à un ascendant dans le besoin est déductible du revenu imposable <b>sans plafond</b>, sur justificatifs, y compris lorsqu’elle est versée directement à l’établissement. Le coût réel dépend donc de la tranche marginale d’imposition de chaque enfant, que vous choisissez. Le parent doit déclarer la somme reçue.</p>
@@ -192,6 +191,10 @@ PAGES = [
  'body': """
 <p>Trouver mon EHPAD est un outil indépendant, gratuit et sans publicité. Il répond à une question précise, que ni les annuaires ni le portail officiel ne traitent complètement : <b>combien votre parent paiera réellement dans tel établissement, et qui paiera le reste</b>.</p>
 
+<h2 id="editeur">Qui l’édite</h2>
+<p><b>David Rival</b>, éditeur et directeur de la publication. Juriste de formation (master 2 en droit des affaires), il conçoit des outils numériques et a construit ce site seul, sans financement ni partenariat, à partir des données publiques. Il est responsable de chaque page publiée, y compris des fiches d’établissement produites automatiquement.</p>
+<p>Son rôle : choisir les sources, valider les règles de calcul et les guides, les confronter aux sources officielles (la formule de l’allocation personnalisée d’autonomie est contrôlée à 0,00 € près contre OpenFisca, le moteur de calcul socio-fiscal ouvert de l’État) et corriger les erreurs signalées. Ce qu’il ne fait pas : visiter les établissements. Chaque règle renvoie à sa source officielle, pour que vous puissiez la vérifier.</p>
+
 <h2>Pourquoi ce site</h2>
 <p>Trouver un EHPAD n’est pas le problème : les annuaires existent, et le portail officiel de la CNSA en est un bon. Comprendre la facture, si. Le prix affiché est un prix « à partir de », hors aides. Entre ce prix et ce que la famille paie, il y a l’APA, l’aide au logement, la réduction d’impôt, parfois l’aide sociale à l’hébergement, l’obligation alimentaire des enfants et le recours sur succession. Personne ne pose cet enchaînement sur une carte, à hauteur d’une famille donnée. C’est tout ce que fait ce site.</p>
 
@@ -199,7 +202,7 @@ PAGES = [
 <p>Il ne l’est pas. Pas d’abonnement, pas de mise en relation payante, aucun partenariat avec des établissements. Les plateformes d’orientation qui existent sont, de leur propre aveu, rémunérées par les résidences partenaires : ce modèle oriente structurellement vers le privé commercial, alors qu’un tiers des questions de financement se règle dans des établissements habilités à l’aide sociale, majoritairement publics et associatifs. Facturer une famille pour l’aider à obtenir l’APA ou l’ASH est par ailleurs interdit (article L. 554-2 du code de la sécurité sociale).</p>
 
 <h2>Ce que nous ne savons pas</h2>
-<p>Beaucoup de choses, et elles sont écrites en toutes lettres sur la page d’accueil et dans <a href="notre-methodologie.html">la méthodologie</a> : les places réellement libres dans tel établissement, le délai que vous attendrez, le montant exact de l’aide au logement, la part que votre département demandera aux enfants. Ces informations ne sont pas publiées. Nous préférons le dire, et donner à la place des moyennes officielles clairement étiquetées comme telles, plutôt que d’afficher un chiffre plausible.</p>
+<p>Beaucoup de choses, et elles sont écrites en toutes lettres sur la page d’accueil et dans <a href="/notre-methodologie.html">la méthodologie</a> : les places réellement libres dans tel établissement, le délai que vous attendrez, le montant exact de l’aide au logement, la part que votre département demandera aux enfants. Ces informations ne sont pas publiées. Nous préférons le dire, et donner à la place des moyennes officielles clairement étiquetées comme telles, plutôt que d’afficher un chiffre plausible.</p>
 
 <h2>Vos données</h2>
 <p>Le calcul s’exécute dans votre navigateur. Les ressources, l’épargne et le niveau de dépendance de votre parent ne sont ni transmis ni enregistrés sur un serveur ; ils sont seulement conservés sur votre appareil pour que vous retrouviez votre saisie, et le bouton « Effacer mes réponses » les supprime. Le site ne demande ni nom, ni adresse, ni téléphone, et ne crée aucun compte.</p>
@@ -280,10 +283,20 @@ NOTFOUND = """
 <p>Vous cherchiez un établissement précis ? Le calculateur affiche les EHPAD autour d’un code postal, avec le reste à charge de chacun.</p>
 """
 
+import json as _json
+PERSONNE_LD = ('<script type="application/ld+json">' + _json.dumps({
+    "@context": "https://schema.org", "@type": "AboutPage", "url": "https://trouver-mon-ehpad.fr/qui-sommes-nous.html",
+    "mainEntity": {"@type": "Person", "@id": "https://trouver-mon-ehpad.fr/#editeur", "name": "David Rival",
+                   "url": "https://trouver-mon-ehpad.fr/qui-sommes-nous.html#editeur",
+                   "jobTitle": "Éditeur de Trouver mon EHPAD",
+                   "description": "Juriste de formation (master 2 en droit des affaires), il conçoit des outils numériques et a construit ce site seul, sans financement ni partenariat, à partir des données publiques."}},
+    ensure_ascii=False) + '</script>')
+
 for p in PAGES:
     html = HEAD.format(title=p['title'], desc=p['desc'], slug=p['slug'], robots=p['robots'],
                        h1=p['h1'], body=p['body'], font=FONT, css=CSS,
-                       jsonld=crumb(p['h1'], p['slug']), mesure=MESURE)
+                       jsonld=crumb(p['h1'], p['slug']) + (PERSONNE_LD if p['file'] == 'qui-sommes-nous.html' else ''),
+                       mesure=MESURE)
     open(os.path.join(SITE, p['file']), 'w', encoding='utf-8').write(html)
 
 open(os.path.join(SITE, '404.html'), 'w', encoding='utf-8').write(

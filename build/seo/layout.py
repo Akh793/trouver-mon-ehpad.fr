@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Gabarit commun des pages de contenu : en-tête, fil d'Ariane, pied de page, données structurées."""
 import json, os, sys
-from base import DOMAINE, MARQUE, CONTACT, MAJ, MAJ_ISO, esc
+from base import DOMAINE, MARQUE, CONTACT, MAJ, MAJ_ISO, esc, AUTEUR, AUTEUR_URL, AUTEUR_BIO
 # mesure.py vit dans build/, un cran au-dessus de seo/ : une seule adresse
 # de service pour les trois gabarits, sinon ils divergent en silence.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -82,6 +82,8 @@ PIED = f"""<footer class="foot"><div class="foot-in">
 <a href="/professionnels/">Espace professionnel</a>
 <a href="/notre-methodologie.html">Méthodologie</a>
 <a href="/qui-sommes-nous.html">Qui sommes-nous ?</a>
+<a href="/etudes/">Études et données</a>
+<a href="/presse/">Presse</a>
 <a href="/retours/">Vos retours</a>
 <a href="/mentions-legales.html">Mentions légales</a>
 <a href="#" data-consent-open>Gérer les cookies</a>
@@ -95,6 +97,43 @@ def titre_page(base, marque=True):
     if marque and len(base) <= 44:
         return f'{base} | {MARQUE}'
     return base
+
+
+def coupe_mot(t, n):
+    """Coupe un texte à n caractères au plus, sur une frontière de mot, sans ponctuation pendante."""
+    t = ' '.join(t.split())
+    if len(t) <= n: return t
+    c = t[:n + 1].rsplit(' ', 1)[0].rstrip(' ,;:–—-|(')
+    # jamais de mot-outil orphelin en fin de titre (« … de la Vallée à »)
+    while True:
+        m = c.rsplit(' ', 1)
+        if len(m) == 2 and m[1].lower() in {'à', 'au', 'aux', 'de', 'du', 'des', 'la', 'le', 'les', 'l’', 'd’', 'et', 'en', 'sur', ':'}:
+            c = m[0].rstrip(' ,;:–—-|(')
+        else:
+            return c
+
+
+def titre_court(options, n=60):
+    """Premier titre de la liste qui tient en n caractères (marque ajoutée si la place le permet) ;
+    à défaut, le dernier, coupé au mot. Google : des titres descriptifs, propres à la page, sans
+    gabarit où seul un mot change."""
+    for o in options:
+        o = ' '.join(o.split())
+        if len(o) <= n:
+            return f'{o} | {MARQUE}' if len(o) + len(MARQUE) + 3 <= n else o
+    return coupe_mot(options[-1], n)
+
+
+def desc_courte(parties, n=155):
+    """Assemble des morceaux de phrase propres à la page tant qu'ils tiennent en n caractères."""
+    out = ''
+    for x in parties:
+        x = ' '.join(x.split())
+        if not x: continue
+        cand = (out + ' ' + x) if out else x
+        if len(cand) <= n: out = cand
+        elif not out: out = coupe_mot(x, n)
+    return out
 
 
 def fil(items):
@@ -115,20 +154,36 @@ def fil(items):
     return ''.join(h), ld
 
 
+PERSONNE = {"@type": "Person", "@id": DOMAINE + "/#editeur", "name": AUTEUR,
+            "url": DOMAINE + AUTEUR_URL, "description": AUTEUR_BIO,
+            "jobTitle": "Éditeur de Trouver mon EHPAD"}
+
+
 def jsonld_socle():
     return [
         {"@type": "WebSite", "@id": DOMAINE + "/#website", "url": DOMAINE + "/", "name": MARQUE,
+         "alternateName": ["trouver-mon-ehpad.fr", "Trouver mon Ehpad"],
          "description": "Comprendre, comparer et estimer le coût réel des EHPAD en France.",
          "inLanguage": "fr-FR", "publisher": {"@id": DOMAINE + "/#organization"}},
         {"@type": "Organization", "@id": DOMAINE + "/#organization", "name": MARQUE,
          "url": DOMAINE + "/", "email": CONTACT,
+         "logo": {"@type": "ImageObject", "url": DOMAINE + "/assets/logo-512.png", "width": 512, "height": 512},
+         "founder": {"@id": DOMAINE + "/#editeur"},
          "areaServed": {"@type": "Country", "name": "France"}},
+        PERSONNE,
     ]
 
 
 def page(url, titre, description, corps, ariane, ld_extra=None, robots='index, follow',
          type_page='', lieu='', h1=None, maj=True):
     """Assemble une page complète. `url` commence et finit par « / » (ou pointe un fichier)."""
+    # garde-fous : titre ≤ 60 caractères (la marque saute d'abord), description ≤ 158
+    suffixe = f' | {MARQUE}'
+    if len(titre) > 60 and titre.endswith(suffixe):
+        titre = titre[:-len(suffixe)]
+    if len(titre) > 60:
+        titre = coupe_mot(titre, 60)
+    description = coupe_mot(description, 158)
     ariane_html, ld_fil = fil(ariane)
     graph = jsonld_socle() + [ld_fil] + (ld_extra or [])
     ld = json.dumps({"@context": "https://schema.org", "@graph": graph},
@@ -154,6 +209,8 @@ def page(url, titre, description, corps, ariane, ld_extra=None, robots='index, f
 <meta name="twitter:image" content="{DOMAINE}/assets/og-image.png">
 <meta name="theme-color" content="#2548FF">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">{ld}</script>

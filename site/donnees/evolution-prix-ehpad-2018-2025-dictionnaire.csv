@@ -1,0 +1,21 @@
+﻿colonne;type;description;source
+finess;texte;Numéro FINESS de l’établissement (géographique);FINESS, Agence du numérique en santé
+nom;texte;Nom de l’établissement, remis en forme (casse, acronymes);FINESS
+commune;texte;Commune d’implantation;FINESS / COG INSEE
+code_insee;texte;Code officiel géographique de la commune;FINESS
+departement;texte;Code du département;calcul
+statut;texte;public, associatif, prive_commercial ou vide si non publié;CNSA, fichier retraité 2020
+habilitation_aide_sociale;texte;oui, non, a_confirmer (tarif « aide sociale » déclaré sans habilitation au répertoire) ou vide;FINESS + CNSA
+regime_dependance;texte;classique, ou experimentation_fusion (territoires de l’article 79 LFSS 2024);calcul à partir du territoire
+prix_2018;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2018;CNSA, fichier annuel 2018
+prix_2019;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2019;CNSA, fichier annuel 2019
+prix_2020;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2020;CNSA, fichier annuel 2020
+prix_2021;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2021;CNSA, fichier annuel 2021
+prix_2022;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2022;CNSA, fichier annuel 2022
+prix_2023;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2023;CNSA, fichier annuel 2023
+prix_2024;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2024;CNSA, fichier annuel 2024
+prix_2025;nombre;Prix d’hébergement permanent, chambre seule, en euros par jour, déclaré en 2025;CNSA, fichier annuel 2025
+evolution_pct;nombre;Évolution en % entre la première et la dernière année connues;calcul
+annee_debut;nombre;Première année connue;calcul
+annee_fin;nombre;Dernière année connue;calcul
+url_fiche;texte;Adresse de la fiche de l’établissement sur trouver-mon-ehpad.fr;trouver-mon-ehpad.fr

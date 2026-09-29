@@ -7,11 +7,11 @@
 (function(){try{var k='mon_ehpad_theme',t=localStorage.getItem(k);
 if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
 if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
-<title>Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD, sur une carte</title>
-<meta name="description" content="Calculateur gratuit du reste à charge en EHPAD : ce que l’établissement facture, ce qu’il faut sortir chaque mois après APA et aide au logement, et la réduction d’impôt à part. 7 417 EHPAD français, carte, évolution du prix depuis 2018, aide sociale à l’hébergement, part de chaque enfant et mode d’emploi des démarches.">
+<title>Reste à charge en EHPAD : le calculateur, sur une carte</title>
+<meta name="description" content="Ce que votre parent paiera vraiment dans chacun des 7 417 EHPAD, après APA, aide au logement et réduction d’impôt. Gratuit, sans inscription.">
 <link rel="canonical" href="https://trouver-mon-ehpad.fr/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-<meta property="og:title" content="Trouver mon EHPAD — Le vrai reste à charge, EHPAD par EHPAD, sur une carte">
+<meta property="og:title" content="Reste à charge en EHPAD : le calculateur, sur une carte">
 <meta property="og:description" content="Ce que coûtera vraiment un EHPAD à votre parent, après APA et aide au logement : 7 417 établissements, prix officiels CNSA, évolution du prix depuis 2018, qualité HAS, habilitation à l’aide sociale.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://trouver-mon-ehpad.fr/">
@@ -27,6 +27,8 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
 <meta name="twitter:image" content="https://trouver-mon-ehpad.fr/assets/og-image.png">
 <meta name="theme-color" content="#2548FF">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -35,10 +37,15 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
   "@context": "https://schema.org",
   "@graph": [
     { "@type": "WebSite", "@id": "https://trouver-mon-ehpad.fr/#website", "url": "https://trouver-mon-ehpad.fr/", "name": "Trouver mon EHPAD",
+      "alternateName": ["trouver-mon-ehpad.fr", "Trouver mon Ehpad"],
       "description": "Calculateur gratuit du reste à charge en EHPAD, établissement par établissement, sur une carte.",
       "inLanguage": "fr-FR", "publisher": { "@id": "https://trouver-mon-ehpad.fr/#organization" } },
     { "@type": "Organization", "@id": "https://trouver-mon-ehpad.fr/#organization", "name": "Trouver mon EHPAD", "url": "https://trouver-mon-ehpad.fr/",
-      "email": "contact@trouver-mon-ehpad.fr", "areaServed": { "@type": "Country", "name": "France" } },
+      "email": "contact@trouver-mon-ehpad.fr", "areaServed": { "@type": "Country", "name": "France" },
+      "logo": { "@type": "ImageObject", "url": "https://trouver-mon-ehpad.fr/assets/logo-512.png", "width": 512, "height": 512 },
+      "founder": { "@id": "https://trouver-mon-ehpad.fr/#editeur" } },
+    { "@type": "Person", "@id": "https://trouver-mon-ehpad.fr/#editeur", "name": "David Rival",
+      "url": "https://trouver-mon-ehpad.fr/qui-sommes-nous.html#editeur", "jobTitle": "Éditeur de Trouver mon EHPAD" },
     { "@type": "SoftwareApplication", "@id": "https://trouver-mon-ehpad.fr/#app",
       "name": "Trouver mon EHPAD — calculateur du reste à charge en maison de retraite",
       "alternateName": "Simulateur reste à charge EHPAD 2026",

@@ -4,8 +4,8 @@ import os, json, collections
 import geo, layout
 from base import (esc, nb, eur, pct, mois_eur, stats, mediane, lien_calc, slug, B,
                   DOMAINE, MARQUE, MAJ, CNSA_MAJ, MOIS)
-from layout import titre_page
-from pieces import kpis, cta, tableau, qa, sources, explique_heberg, bloc_financement, STATUTS
+from layout import titre_page, titre_court, desc_courte
+from pieces import kpis, cta, tableau, qa, sources, explique_heberg, bloc_financement, STATUTS, guides_tournants
 
 A = os.path.join(B, 'audit')
 ASH = json.load(open(os.path.join(B, 'ash_dept.json'), encoding='utf-8'))
@@ -61,12 +61,63 @@ def bloc_statuts(s):
     if s['assoc']: parts.append(f'<b>{s["assoc"]}</b> associatif{"s" if s["assoc"] > 1 else ""}, à but non lucratif{p(s["assoc"])}')
     if s['prive']: parts.append(f'<b>{s["prive"]}</b> privé{"s" if s["prive"] > 1 else ""} commercia{"ux" if s["prive"] > 1 else "l"}{p(s["prive"])}')
     liste = ', '.join(parts[:-1]) + (' et ' + parts[-1] if len(parts) > 1 else parts[0])
-    fin = ('' if len(parts) == 1 else
-           ' Le statut pèse sur le tarif&nbsp;: les établissements publics et associatifs sont en moyenne '
-           'moins chers, et ce sont aussi eux qui sont le plus souvent habilités à l’aide sociale.')
+    fin = ''
     reste = (f' Le statut de {inconnu} autre{"s" if inconnu > 1 else ""} établissement{"s" if inconnu > 1 else ""} '
              f'n’est pas publié.') if inconnu > 0 else ''
     return f'<p>Répartition&nbsp;: {liste}.{reste}{fin}</p>'
+
+
+def bloc_statut_prix(lot, ou):
+    """Écart de tarif entre statuts, calculé sur le territoire — l'argument général « le public est
+    moins cher » remplacé par les chiffres du lieu. Un statut n'est cité qu'à partir de 2 tarifs."""
+    lib = {0: 'public', 1: 'associatif', 2: 'privé commercial'}
+    m = {}
+    for k in (0, 1, 2):
+        p = [r['p'] for r in lot if r['p'] and r['statut'] == k]
+        if len(p) >= 2: m[k] = (mediane(p), len(p))
+    if len(m) < 2: return ''
+    parts = [f'{lib[k]}&nbsp;: <b>{eur(mois_eur(v[0]))}</b> ({v[1]})' for k, v in sorted(m.items())]
+    lo, hi = min(m.values()), max(m.values())
+    return (f'<p><b>Tarif médian par statut {ou}</b>&nbsp;: ' + ' ; '.join(parts)
+            + f'. Écart entre le statut le moins cher et le plus cher&nbsp;: {eur(mois_eur(hi[0] - lo[0]))} par mois.</p>')
+
+
+def bloc_has(lot, ou):
+    c = collections.Counter(r['hasN'] for r in lot if r['hasN'])
+    n = sum(c.values())
+    if not n: return f'<p>Aucune évaluation de la Haute Autorité de santé publiée {ou} à ce jour.</p>'
+    det = ', '.join(f'{k}&nbsp;: {c[k]}' for k in 'ABCD' if c.get(k))
+    return (f'<p><b>Évaluations publiées {ou}</b>&nbsp;: {n} sur {len(lot)} établissements ({det}). '
+            f'<a href="/guides/lire-une-evaluation-ehpad/">Lire une évaluation</a></p>')
+
+
+def bloc_hausses(ctx, lot, ou):
+    """Classement sur un seul critère, écrit en toutes lettres : la hausse du tarif d'hébergement entre
+    2018 et 2025, pour les seuls établissements dont les deux années sont connues (comparabilité)."""
+    c = [r for r in lot if r.get('serie') and r['serie'].get('d') == '2018' and r['serie'].get('f') == '2025'
+         and r['fin'] in ctx['url_fiche']]
+    if len(c) < 10: return ''
+    c.sort(key=lambda r: r['serie']['e'])
+    lig = ''.join(f'<tr><td><a href="{ctx["url_fiche"][r["fin"]]}">{esc(r["nom_aff"])}</a></td>'
+                  f'<td data-l="Commune">{esc(r["ville_nom"])}</td>'
+                  f'<td class="num" data-l="2018">{eur(mois_eur(r["serie"]["p"][0]))}</td>'
+                  f'<td class="num" data-l="2025">{eur(mois_eur(r["serie"]["p"][-1]))}</td>'
+                  f'<td class="num" data-l="Hausse">{pct(r["serie"]["e"])}</td></tr>' for r in c[:10])
+    return (f'<section><h2>Les dix plus faibles hausses de tarif {esc(ou)} depuis 2018</h2>'
+            f'<p>Critère unique&nbsp;: la hausse du tarif d’hébergement entre 2018 et 2025, sur les {len(c)} établissements '
+            f'dont les deux tarifs sont connus. Un tarif stable peut aussi traduire un établissement habilité dont le prix est '
+            f'fixé par le département.</p><div class="tbl-wrap"><table class="tbl"><caption>Tarif mensuel en 2018 et en 2025, chambre seule</caption>'
+            f'<thead><tr><th>Établissement</th><th>Commune</th><th class="num">2018</th><th class="num">2025</th><th class="num">Hausse</th></tr></thead>'
+            f'<tbody>{lig}</tbody></table></div></section>')
+
+
+def liens_aides(lien):
+    return (f'<section><h2>Réduire la facture</h2><ul class="aides-l">'
+            f'<li><a href="/aides-ehpad/apa/">Allocation personnalisée d’autonomie</a> — tarif dépendance</li>'
+            f'<li><a href="/aides-ehpad/aide-au-logement/">Aide au logement</a> — établissements conventionnés</li>'
+            f'<li><a href="/aides-ehpad/reduction-impot/">Réduction d’impôt</a> — l’année suivante</li>'
+            f'<li><a href="/aides-ehpad/aide-sociale-hebergement/">Aide sociale à l’hébergement</a> — en dernier recours</li></ul>'
+            f'{cta(lien, "Estimer mon reste à charge", "seo_financement_to_calculator")}</section>')
 
 
 def bloc_ash_dep(code):
@@ -95,7 +146,7 @@ def bloc_ash_dep(code):
             out.append('<p><b>Si l’aide sociale à l’hébergement est demandée</b>&nbsp;: ' + ' ; '.join(ph) +
                        '. Cette pratique a été déclarée par le département lors de la dernière enquête nationale, en 2018&nbsp;: '
                        'c’est le règlement départemental en vigueur aujourd’hui qui fait foi. '
-                       'Les petits-enfants, eux, ne sont plus sollicités depuis la loi du 8 avril 2024.</p>')
+                       'Les petits-enfants, eux, ne sont plus sollicités pour cette aide depuis la loi du 8 avril 2024.</p>')
     return ''.join(out)
 
 
@@ -125,7 +176,6 @@ def hub(ctx, ecrire):
        (med_mois(s) + '<small style="font-size:.8rem;font-weight:400">/mois</small>', 'tarif d’hébergement médian'),
        (nb(s['ash']), 'habilités à l’aide sociale'),
        (pct(s['evol_med']), 'hausse médiane du tarif depuis 2018')])}
-{explique_heberg()}
 {cta('/', 'Estimer mon reste à charge', 'seo_hub_to_calculator', 'Gratuit, sans inscription, et le calcul reste sur votre appareil.')}
 
 <section><h2>Chercher par région</h2>
@@ -135,7 +185,8 @@ def hub(ctx, ecrire):
          f'<td class="num" data-l="EHPAD">{st["n"]}</td>'
          f'<td class="num" data-l="Tarif médian">{med_mois(st)}</td>'
          f'<td class="num" data-l="Habilités à l’aide sociale">{st["ash"]}</td></tr>' for rn, rs, st in regions)}
-</tbody></table></div></section>
+</tbody></table></div>
+<p><b>Outre-mer</b>&nbsp;: {' · '.join(f'<a href="{ctx["url_dep"][d]}">{esc(geo.DEPARTEMENTS[d])}</a>' for d in ('971', '972', '973', '974', '975', '976') if d in ctx['url_dep'] and d in ctx['par_dep'])}</p></section>
 
 <section><h2>Comprendre le coût</h2>
 <div class="liens-grid">
@@ -148,7 +199,7 @@ def hub(ctx, ecrire):
 </div></section>
 {sources()}"""
     ariane = [('Accueil', '/'), ('Les EHPAD en France', None)]
-    ecrire('/ehpad/', layout.page('/ehpad/', f'Les EHPAD en France : prix, aides et reste à charge | {MARQUE}',
+    ecrire('/ehpad/', layout.page('/ehpad/', 'Les EHPAD en France : prix, aides et reste à charge',
         f"Les {nb(s['n'])} EHPAD de France : tarif d’hébergement médian, aides mobilisables et estimation du reste à charge réel, région par région.",
         corps, ariane, type_page='hub'), 0.9, 'pages')
 
@@ -176,7 +227,8 @@ def region(ctx, ecrire, rs, rn, deps):
        (nb(s['ash']), 'habilités à l’aide sociale')])}
 {phrase_prix(s, esc(phrase_region(rs, rn)), FR['med'], 'la médiane française')}
 {bloc_evolution(s, phrase_region(rs, rn))}
-{explique_heberg()}
+{bloc_statut_prix(lot, esc(phrase_region(rs, rn)))}
+{bloc_has(lot, esc(phrase_region(rs, rn)))}
 {cta('/', 'Trouver un EHPAD adapté à ma situation', 'seo_region_to_configurator')}
 
 <section><h2>Les départements de la région</h2>
@@ -186,8 +238,11 @@ def region(ctx, ecrire, rs, rn, deps):
 {sources()}"""
     ariane = [('Accueil', '/'), ('Les EHPAD en France', '/ehpad/'), (rn, None)]
     ecrire(ctx['url_region'][rs], layout.page(ctx['url_region'][rs],
-        titre_page(f'EHPAD {phrase_region(rs, rn)} : prix et comparaison'),
-        f'Les {nb(s["n"])} EHPAD {phrase_region(rs, rn)} : tarif d’hébergement médian de {med_mois(s)} par mois, comparaison par département et estimation du reste à charge.',
+        titre_court([f'EHPAD {phrase_region(rs, rn)} : prix de {nb(s["n"])} établissements',
+                     f'EHPAD {phrase_region(rs, rn)} : prix et tarifs']),
+        desc_courte([f'{nb(s["n"])} EHPAD {phrase_region(rs, rn)}, tarif médian {med_mois(s)} par mois.',
+                     f'Hausse médiane {pct(s["evol_med"])} depuis 2018.' if s['evol_med'] else '',
+                     f'{nb(s["ash"])} habilités à l’aide sociale.', 'Comparaison par département.']),
         corps, ariane, type_page='region', lieu=rn), 0.7, 'territoires')
 
 
@@ -222,16 +277,11 @@ def departement(ctx, ecrire, d):
                            + '</div>')
 
     moins_chers = sorted([r for r in lot if r['p'] and r['fin'] in ctx['url_fiche']], key=lambda r: r['p'])[:10]
-    q = qa([
-        (f'Combien coûte un EHPAD {ou}&nbsp;?',
-         f'Le tarif d’hébergement médian est de <b>{med_mois(s)} par mois</b> pour une chambre seule, sur {s["n_prix"]} établissements ayant déclaré leur tarif à la Caisse nationale de solidarité pour l’autonomie. Les tarifs vont de {eur(mois_eur(s["mini"]))} à {eur(mois_eur(s["maxi"]))} par mois. À ce tarif s’ajoute un tarif dépendance, en partie couvert par l’allocation personnalisée d’autonomie.'),
-        (f'Combien d’EHPAD acceptent l’aide sociale {ou}&nbsp;?',
-         f'<b>{s["ash"]} établissements sur {s["n"]}</b> sont habilités à l’aide sociale à l’hébergement, d’après leur libellé officiel au répertoire FINESS. {s["ash_conf"]} autres déclarent un tarif « aide sociale » sans être habilités&nbsp;: il s’agit le plus souvent d’une habilitation limitée à quelques places, à vérifier auprès de l’établissement.'),
-        ('Le tarif affiché est-il ce que l’on paie&nbsp;?',
-         'Non. Il faut y ajouter le tarif dépendance, puis retirer l’allocation personnalisée d’autonomie, l’aide au logement si l’établissement est conventionné, et la réduction d’impôt si la personne est imposable. L’écart se compte souvent en centaines d’euros par mois.'),
-    ])
+    # FAQ retirée (29/09/2026) : ses réponses répétaient la page, et Google n'affiche plus
+    # les résultats enrichis FAQ depuis le 07/05/2026.
+    q = ('', None)
     corps = f"""<h1 class="p-h1">EHPAD {esc(ou)}&nbsp;: prix des {nb(s['n'])} établissements</h1>
-<p class="p-sub">Comparez les {nb(s['n'])} EHPAD {esc(ou)} selon leur tarif, leur capacité et les informations publiques disponibles, puis estimez ce qui resterait à votre charge.</p>
+<p class="p-sub">{nb(s['n'])} établissements, dont {nb(s['ash'])} habilités à l’aide sociale{f" ; tarifs de {eur(mois_eur(s['mini']))} à {eur(mois_eur(s['maxi']))} par mois" if s['mini'] else ''}.</p>
 <p class="p-maj">Tarifs déclarés à la Caisse nationale de solidarité pour l’autonomie · {CNSA_MAJ}</p>
 {kpis([(nb(s['n']), 'EHPAD recensés', True),
        (med_mois(s), 'tarif d’hébergement médian, par mois'),
@@ -239,17 +289,20 @@ def departement(ctx, ecrire, d):
        (nb(s['ash']), 'habilités à l’aide sociale')])}
 {phrase_prix(s, esc(ou), FR['med'], 'la médiane française')}
 {bloc_statuts(s)}
+{bloc_statut_prix(lot, esc(ou))}
 {bloc_evolution(s, ou)}
-{explique_heberg()}
-{cta('/', 'Trouver un EHPAD adapté à ma situation', 'seo_dept_to_configurator', 'Vous indiquez le code postal, la retraite et le niveau d’autonomie ; le site calcule le reste à charge pour chaque établissement.')}
+{bloc_has(lot, esc(ou))}
+{cta('/', 'Trouver un EHPAD adapté à ma situation', 'seo_dept_to_configurator')}
 
 <section><h2>Les villes {esc(ou)}</h2>
 {'<div class="tbl-wrap"><table class="tbl"><caption>Communes comptant au moins deux EHPAD, de la plus équipée à la moins équipée</caption><thead><tr><th>Commune</th><th class="num">EHPAD</th><th class="num">Tarif médian</th><th class="num">Aide sociale</th></tr></thead><tbody>' + ''.join(lignes_v) + '</tbody></table></div>' if lignes_v else ''}
 {bloc_autres}</section>
 
 <section><h2>Les dix EHPAD au tarif le plus bas {esc(ou)}</h2>
-<p>Classement établi uniquement sur le tarif d’hébergement déclaré, pour une chambre seule. Un tarif bas ne dit rien de la qualité de l’accompagnement&nbsp;: regardez aussi l’évaluation et allez visiter.</p>
+<p>Classement sur le seul tarif d’hébergement déclaré (chambre seule).</p>
 {tableau(moins_chers, ctx['lien_de'], 'Tarif d’hébergement mensuel, du plus bas au plus élevé', avec_ville=True)}</section>
+
+{bloc_hausses(ctx, lot, ou)}
 
 <section><h2>L’aide sociale {esc(ou)}</h2>
 {bloc_ash_dep(d) or '<p>Les pratiques de ce département en matière d’aide sociale à l’hébergement n’ont pas été publiées.</p>'}
@@ -259,14 +312,18 @@ def departement(ctx, ecrire, d):
 {f'<a class="lien-c" href="{ctx["url_region"][rs]}"><b>Les EHPAD en {esc(rn)}</b><span>Les tarifs des départements voisins.</span></a>' if rs else ''}
 <a class="lien-c" href="/prix-ehpad-par-departement/"><b>Le prix des EHPAD par département</b><span>Les 101 départements classés par tarif médian.</span></a>
 <a class="lien-c" href="/aides-ehpad/"><b>Les aides financières</b><span>Ce qui réduit la facture, et dans quel ordre le demander.</span></a>
+<a class="lien-c" href="/comparer-devis-ehpad/"><b>Comparer ses devis</b><span>Poste par poste, ce qui est inclus ou facturé en plus.</span></a>
 </div></section>
 {sources()}"""
     ariane = [('Accueil', '/'), ('Les EHPAD en France', '/ehpad/')]
     if rs: ariane.append((rn, ctx['url_region'][rs]))
     ariane.append((dn, None))
     ecrire(ctx['url_dep'][d], layout.page(ctx['url_dep'][d],
-        titre_page(f'EHPAD {ou} : prix des {nb(s["n"])} établissements'),
-        f'Les {nb(s["n"])} EHPAD {ou} : tarif d’hébergement médian de {med_mois(s)} par mois, établissements habilités à l’aide sociale, comparaison par ville et estimation du reste à charge.',
+        titre_court([f'EHPAD {ou} ({d}) : prix des {nb(s["n"])} établissements',
+                     f'EHPAD {ou} : prix des {nb(s["n"])} établissements', f'EHPAD {ou} : prix et tarifs']),
+        desc_courte([f'{nb(s["n"])} EHPAD {ou} : tarif médian {med_mois(s)} par mois' + (f', de {eur(mois_eur(s["mini"]))} à {eur(mois_eur(s["maxi"]))}.' if s['mini'] else '.'),
+                     f'Hausse médiane {pct(s["evol_med"])} depuis 2018.' if s['evol_med'] else '',
+                     f'{nb(s["ash"])} habilités à l’aide sociale.', 'Comparaison par ville.']),
         corps, ariane, ld_extra=[q[1]] if q[1] else None, type_page='departement', lieu=dn), 0.8, 'territoires')
 
 
@@ -300,45 +357,35 @@ def ville(ctx, ecrire, c):
         arr = ('<p>Les établissements sont répartis dans les arrondissements&nbsp;: '
                + ', '.join(f'{esc(a)} ({k})' for a, k in sorted(par_arr.items())) + '.</p>')
 
-    q = qa([
-        (f'Quel est le prix d’un EHPAD à {vn}&nbsp;?',
-         (f'Le tarif d’hébergement médian des {s["n_prix"]} EHPAD de {vn} ayant déclaré leur tarif est de <b>{med_mois(s)} par mois</b> pour une chambre seule.'
-          + (f' Les tarifs vont de {eur(mois_eur(s["mini"]))} à {eur(mois_eur(s["maxi"]))} par mois.' if s['n_prix'] > 1 else '')
-          + ' Ce montant ne comprend pas le tarif dépendance, ni les aides qui viennent le réduire.')
-         if s['med'] else
-         f'Aucun des {s["n"]} EHPAD de {vn} n’a déclaré son tarif à la Caisse nationale de solidarité pour l’autonomie. Il faut le demander directement à l’établissement, qui est tenu de le communiquer. À titre de repère, le tarif médian {phrase_dep(d)} est de {med_mois(sd)} par mois.'),
-        (f'Existe-t-il des EHPAD habilités à l’aide sociale à {vn}&nbsp;?',
-         (f'Oui&nbsp;: <b>{s["ash"]} établissements sur {s["n"]}</b> sont habilités à l’aide sociale à l’hébergement. C’est l’aide du département pour les personnes dont les ressources et l’épargne ne suffisent pas. Elle n’est possible que dans un établissement habilité.'
-          if s['ash'] else f'D’après les données publiques, aucun des {s["n"]} établissements de {vn} n’est habilité à l’aide sociale à l’hébergement. Il faut alors chercher dans les communes voisines&nbsp;: cette aide n’est possible que dans un établissement habilité.')),
-        (f'Comment trouver un EHPAD moins cher autour de {vn}&nbsp;?',
-         f'Élargissez la recherche aux communes voisines&nbsp;: le tarif médian {phrase_dep(d)} est de {med_mois(sd)} par mois, et l’écart entre deux établissements distants de quelques kilomètres dépasse souvent 500&nbsp;€ par mois. Le calculateur affiche le reste à charge de chaque établissement dans un rayon que vous choisissez.'),
-    ])
+    # FAQ retirée (29/09/2026) : ses réponses répétaient la page, et Google n'affiche plus
+    # les résultats enrichis FAQ depuis le 07/05/2026.
+    q = ('', None)
 
     bloc_aide_locale = ('<section><h2>L’aide sociale ' + esc(phrase_dep(d)) + '</h2>' + bloc_ash_dep(d) +
                         '<p><a href="/aides-ehpad/aide-sociale-hebergement/">Comment fonctionne l’aide sociale à l’hébergement</a></p></section>') if fusion and bloc_ash_dep(d) else ''
     corps = f"""<h1 class="p-h1">EHPAD à {esc(vn)}&nbsp;: prix et établissements</h1>
-<p class="p-sub">Comparez les {nb(s['n'])} EHPAD recensés à {esc(vn)} selon leur tarif, leur capacité et les informations publiques disponibles.</p>
+<p class="p-sub">{nb(s['n'])} établissements à {esc(vn)}{'' if fusion else ' (' + esc(dn) + ')'}, dont {nb(s['ash'])} habilité{'s' if s['ash'] > 1 else ''} à l’aide sociale{f" ; tarifs de {eur(mois_eur(s['mini']))} à {eur(mois_eur(s['maxi']))} par mois" if s['mini'] and s['n_prix'] > 1 else ''}.</p>
 <p class="p-maj">Tarifs déclarés à la Caisse nationale de solidarité pour l’autonomie · {CNSA_MAJ}</p>
 {kpis([(nb(s['n']), f'EHPAD à {esc(vn)}', True)]
       + ([(med_mois(s), 'tarif d’hébergement médian, par mois'),
           (eur(mois_eur(s['mini'])), 'tarif le plus bas')] if s['med'] else
          [('—', 'aucun tarif déclaré à ce jour')])
       + [(nb(s['ash']), 'habilités à l’aide sociale')])}
-{cta(lien, 'Trouver un EHPAD adapté à ma situation', 'seo_city_to_configurator',
-     f'Le calculateur s’ouvre déjà centré sur {esc(vn)}. Vous indiquez la retraite et le niveau d’autonomie, il affiche le reste à charge de chaque établissement.')}
+{cta(lien, 'Trouver un EHPAD adapté à ma situation', 'seo_city_to_configurator')}
 
 <section><h2>Comparer les EHPAD à {esc(vn)}</h2>
-{tableau(lot, ctx['lien_de'], 'Tarif d’hébergement mensuel pour une chambre seule, du plus bas au plus élevé')}
+{tableau(lot, ctx['lien_de'], 'Tarif d’hébergement mensuel pour une chambre seule, du plus bas au plus élevé, et son évolution', evol=True)}
 {arr}</section>
 
 <section><h2>Combien coûte un EHPAD à {esc(vn)}&nbsp;?</h2>
 {phrase_prix(s, 'à ' + esc(vn), None if fusion else sd['med'], f'la médiane {phrase_dep(d)}')}
 {bloc_statuts(s)}
+{bloc_statut_prix(lot, 'à ' + esc(vn))}
 {bloc_evolution(s, 'à ' + esc(vn))}
-{explique_heberg()}</section>
+{bloc_has(lot, 'à ' + esc(vn))}</section>
 
-{bloc_financement(lien)}
-{q[0]}
+{liens_aides(lien)}
+{guides_tournants(c, 4)}
 
 {bloc_aide_locale}
 <section><h2>Autour de {esc(vn)}</h2>
@@ -347,6 +394,7 @@ def ville(ctx, ecrire, c):
 {'' if fusion else f'<a class="lien-c" href="{ctx["url_dep"][d]}"><b>Tous les EHPAD {esc(phrase_dep(d))}</b><span>{nb(sd["n"])} établissements, tarif médian {med_mois(sd)} par mois.</span></a>'}
 {f'<a class="lien-c" href="{ctx["url_region"][rs]}"><b>Les EHPAD {esc(phrase_region(rs, rn))}</b><span>Comparer les départements de la région.</span></a>' if rs else ''}
 <a class="lien-c" href="/calcul-reste-a-charge-ehpad/"><b>Calculer le reste à charge</b><span>La méthode complète, avec un exemple chiffré.</span></a>
+<a class="lien-c" href="/comparer-devis-ehpad/"><b>Comparer ses devis</b><span>Ce que chaque établissement inclut ou facture en plus, poste par poste.</span></a>
 </div></section>
 {sources()}"""
     ariane = [('Accueil', '/'), ('Les EHPAD en France', '/ehpad/')]
@@ -354,8 +402,14 @@ def ville(ctx, ecrire, c):
     if not fusion: ariane.append((dn, ctx['url_dep'][d]))
     ariane.append((vn, None))
     ecrire(ctx['url_ville'][c], layout.page(ctx['url_ville'][c],
-        titre_page(f'EHPAD à {vn} : prix des {nb(s["n"])} établissements'),
-        f'Comparez les {nb(s["n"])} EHPAD de {vn} : tarifs, habilitation à l’aide sociale, capacité et évaluations. Tarif médian {med_mois(s)} par mois. Estimez ensuite votre reste à charge.',
+        titre_court(([f'EHPAD à {vn} ({d}) : prix des {nb(s["n"])} établissements', f'EHPAD à {vn} ({d}) : prix et tarifs']
+                     if ctx['slug_ville'][c] != slug(vn) and c != '75056' else [])
+                    + [f'EHPAD à {vn} : prix des {nb(s["n"])} établissements', f'EHPAD à {vn} : prix et tarifs', f'EHPAD à {vn}']),
+        desc_courte([f'{nb(s["n"])} EHPAD à {vn}' + (f' : tarif médian {med_mois(s)} par mois.' if s['med'] else ' : aucun tarif déclaré.'),
+                     f'De {eur(mois_eur(s["mini"]))} à {eur(mois_eur(s["maxi"]))}.' if s['n_prix'] > 1 else '',
+                     f'{nb(s["ash"])} habilité{"s" if s["ash"] > 1 else ""} à l’aide sociale.',
+                     f'Hausse médiane {pct(s["evol_med"])} depuis 2018.' if s['evol_med'] else '',
+                     'Reste à charge estimé.']),
         corps, ariane, ld_extra=[q[1]] if q[1] else None, type_page='ville', lieu=vn), 0.8, 'villes')
 
 
