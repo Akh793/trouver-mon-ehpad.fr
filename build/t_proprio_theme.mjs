@@ -14,7 +14,7 @@ async function contexte(vp = { width: 1280, height: 800 }) {
   const ctx = await b.newContext({ userAgent: CHROME, viewport: vp });
   const recu = [];
   await ctx.route('**/*.workers.dev/**', async (r) => { const u = new URL(r.request().url());
-    if (u.host.startsWith('mesure-tme')) recu.push(Object.fromEntries(u.searchParams)); await r.fulfill({ status: 204 }); });
+    if (u.host.startsWith('mesure-tme')) recu.push(Object.assign(Object.fromEntries(u.searchParams), { _type: r.request().resourceType() })); await r.fulfill({ status: 204 }); });
   await ctx.addInitScript(() => { Object.defineProperty(Navigator.prototype, 'webdriver', { get: () => false });
     if (!window.chrome) window.chrome = { runtime: {} }; });
   return { ctx, recu };
@@ -35,6 +35,7 @@ async function visite(ctx, recu, chemin) {
   const etat = await p.evaluate(() => ({ h: location.hash, f: localStorage.getItem('tme_proprio') }));
   T(toast && etat.h === '' && etat.f === '1', 'lien #ne-pas-me-compter : message affiché, ancre retirée, marque posée');
   T(recu.length === 2 && recu.every((q) => q.m === '1'), 'chargement et engagement partent avec m=1');
+  T(recu.every((q) => q._type === 'fetch'), 'envoi par fetch, pas par sendBeacon (bloqué par EasyPrivacy « *$ping,third-party ») : ' + recu.map((q) => q._type).join(','));
   T(err.length === 0, 'aucune erreur JavaScript');
   await p.close();
   ({ p } = await visite(ctx, recu, '/ehpad/lyon/'));

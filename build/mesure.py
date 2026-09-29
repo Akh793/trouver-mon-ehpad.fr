@@ -34,6 +34,11 @@ ACTIF = 'VOTRE-SOUS-DOMAINE' not in API
 #    VISIBLE. L'écart entre les deux mesure les passages éclairs et les robots
 #    qui chargent sans rien faire.
 #
+# Envoi par fetch(keepalive), PAS par sendBeacon : la liste EasyPrivacy (active
+# par défaut dans uBlock Origin, Brave, AdGuard) contient « *$ping,third-party »,
+# qui bloque TOUT sendBeacon vers un autre domaine — or le Worker est sur
+# workers.dev. sendBeacon ne sert plus que de repli si fetch manque.
+#
 # Propriétaire du site : le lien #ne-pas-me-compter pose la marque « tme_proprio »
 # dans CE navigateur (#ne-plus-m-exclure la retire). Les vues marquées partent
 # avec m=1 et le Worker les range dans la colonne « Vous ». Chez un visiteur
@@ -55,8 +60,8 @@ m=S.getItem(K)==='1'?1:0;}catch(e){}
 var r=D.referrer||'',d='';
 try{if(r){var h=new URL(r).hostname.replace(/^www\\./,'');if(h!==location.hostname.replace(/^www\\./,''))d=h;}}catch(e){}
 function env(t,x){var q=A+'/v?t='+t+'&p='+encodeURIComponent(location.pathname)+'&a='+a+(m?'&m=1':'')+(x||'');
- try{if(N.sendBeacon&&N.sendBeacon(q))return;}catch(e){}
- try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true}).catch(function(){});}catch(e){}}
+ if(W.fetch){try{fetch(q,{method:'POST',mode:'no-cors',keepalive:true,credentials:'omit'}).catch(function(){});return;}catch(e){}}
+ try{if(N.sendBeacon)N.sendBeacon(q);}catch(e){}}
 var fait=0,vis=0,tic;
 function engage(){if(fait)return;fait=1;clearInterval(tic);
  ['scroll','wheel','pointerdown','keydown','touchstart','mousemove'].forEach(function(k){W.removeEventListener(k,engage,true);});

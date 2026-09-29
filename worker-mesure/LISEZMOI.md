@@ -171,6 +171,13 @@ wrangler d1 execute mesure-tme --remote --command "DELETE FROM vues WHERE jour='
 Cela efface aussi les éventuels vrais visiteurs de ce jour-là : à réserver aux
 journées de test.
 
+## Diagnostiquer un compteur qui reste à zéro
+
+```
+wrangler tail                         # affiche en direct chaque appel et « relevé non enregistré : … » en cas d'échec
+wrangler d1 execute mesure-tme --remote --command "SELECT jour, heure, chemin, classe, vues, engages FROM vues ORDER BY jour DESC, heure DESC LIMIT 20"
+```
+
 ## Budget
 
 | Événement | Requêtes Worker | Lignes D1 écrites |
@@ -237,6 +244,7 @@ node worker-mesure/test.mjs        # 32 tests du service (classes, réseaux, che
 node build/t_mesure.mjs            # 16 tests de l'extrait, dans un vrai navigateur
 node build/t_mesure_chaine.mjs     # 7 tests navigateur → vrai code du service
 node build/t_proprio_theme.mjs     # marque « Vous » + interrupteur Sombre, site servi sur le port 8911
+node worker-mesure/t_ecran.mjs     # 10 tests de l'écran d'audience (interrupteur Sombre, contrastes)
 ```
 
 Les deux derniers exigent Playwright, une page de test servie sur

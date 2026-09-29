@@ -227,18 +227,32 @@ function ecran(d) {
   const hl = d.horsListe.reduce((a, x) => a + x.vues, 0);
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Audience — Trouver mon EHPAD</title>
+<script>try{var t=localStorage.getItem('tme_theme_mesure');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <style>
-:root{color-scheme:light dark}
-body{margin:0;padding:1.5rem;font:15px/1.5 system-ui,sans-serif;max-width:66rem;margin-inline:auto}
+:root{--bg:#fff;--fg:#0f172a;--mut:#64748b;--ln:#e2e8f0;--bl:#2548FF;--piste:#475569;--pouce:#fff;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1117;--fg:#e8edf5;--mut:#a3aec0;--ln:#263041;--bl:#8ba4ff;--piste:#8ba4ff;--pouce:#0d1117;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1117;--fg:#e8edf5;--mut:#a3aec0;--ln:#263041;--bl:#8ba4ff;--piste:#8ba4ff;--pouce:#0d1117;color-scheme:dark}
+html{background:var(--bg)}
+body{margin:0;padding:1.5rem;font:15px/1.5 system-ui,sans-serif;max-width:66rem;margin-inline:auto;background:var(--bg);color:var(--fg)}
+.tete{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.sw{display:inline-flex;align-items:center;gap:.5rem;height:34px;padding:0 .3rem 0 .75rem;border-radius:999px;cursor:pointer;
+  border:1.5px solid var(--ln);background:transparent;color:var(--fg);font:600 .8rem/1 system-ui,sans-serif}
+.sw:hover,.sw:focus-visible{border-color:var(--bl)}
+.sw i{position:relative;width:36px;height:20px;border-radius:999px;background:var(--piste)}
+.sw i::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--pouce);
+  box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.sw[aria-checked="true"] i::after{transform:translateX(16px)}
+@media (prefers-reduced-motion:reduce){.sw i::after{transition:none}}
 h1{font-size:1.5rem;margin:0 0 .25rem}h2{font-size:1rem;margin:2rem 0 .5rem}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
-th,td{text-align:left;padding:.35rem .6rem;border-bottom:1px solid #8883}
+th,td{text-align:left;padding:.35rem .6rem;border-bottom:1px solid var(--ln)}
 td+td,th+th{text-align:right}
-.v{color:#8a8a8a;font-size:.85rem;margin:.2rem 0 .5rem}
+.v{color:var(--mut);font-size:.85rem;margin:.2rem 0 .5rem}
 .h{display:flex;align-items:flex-end;gap:2px;height:90px;margin-top:.5rem}
-.h i{flex:1;background:#2548FF;min-height:1px;border-radius:2px 2px 0 0}
+.h i{flex:1;background:var(--bl);min-height:1px;border-radius:2px 2px 0 0}
 </style></head><body>
-<h1>Audience</h1><p class="v">Depuis le ${ech(d.depuis)}. Heure de Paris.</p>
+<div class="tete"><h1>Audience</h1>
+<button type="button" class="sw" id="sw" role="switch" aria-checked="false" aria-label="Mode sombre">Sombre<i aria-hidden="true"></i></button></div><p class="v">Depuis le ${ech(d.depuis)}. Heure de Paris.</p>
 <p class="v"><b>Visite engagée</b> : quelqu’un a défilé, cliqué, touché l’écran ou tapé au clavier,
 ou l’onglet est resté visible 10 secondes. <b>Chargement</b> : la page s’est affichée. L’écart entre
 les deux mesure les passages éclairs et le trafic fantôme. Robots déclarés et suspects ne sont
@@ -258,6 +272,13 @@ ${tableau('Pays (entrées humaines)', d.pays, [['Pays','code'],['Visites','visit
 <p class="v" style="margin-top:2rem">Un visiteur qui bloque les scripts n’est pas compté, et un robot qui
 pilote un vrai navigateur depuis une connexion résidentielle peut passer pour un humain : aucun
 relevé de ce type n’est exhaustif.</p>
+<script>(function(){var r=document.documentElement,b=document.getElementById('sw'),
+mq=matchMedia('(prefers-color-scheme:dark)');
+function sombre(){var t=r.getAttribute('data-theme');return t?t==='dark':mq.matches;}
+function maj(){b.setAttribute('aria-checked',String(sombre()));}
+b.addEventListener('click',function(){var t=sombre()?'light':'dark';r.setAttribute('data-theme',t);
+ try{localStorage.setItem('tme_theme_mesure',t)}catch(e){}maj();});
+if(mq.addEventListener)mq.addEventListener('change',maj);maj();})();</script>
 </body></html>`;
 }
 
@@ -268,7 +289,8 @@ export default {
 
     if (u.pathname === '/v') {
       // Le relevé ne doit jamais faire échouer une page : toute erreur est avalée.
-      try { return await compte(request, env); } catch (e) { return vide(); }
+      try { return await compte(request, env); }
+      catch (e) { console.error('relevé non enregistré :', e && e.message); return vide(); }   // visible par « wrangler tail »
     }
 
     if (u.pathname === '/mesure' || u.pathname === '/mesure.json') {
