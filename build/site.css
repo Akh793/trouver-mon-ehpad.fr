@@ -577,8 +577,8 @@ body.fige{overflow:hidden}
 .f-prix .ctx{font-size:.78rem;color:var(--mut);margin-top:.5rem}
 .f-faits{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.6rem;margin-top:.9rem}
 .f-faits div{background:var(--surf);border:1px solid var(--bd2);border-radius:.7rem;padding:.5rem .7rem}
-.f-faits b{display:block;font-size:.92rem;font-weight:600}
-.f-faits span{display:block;font-size:.7rem;color:var(--mut2);margin-top:.1rem}
+.f-faits span{display:block;font-size:.84rem;font-weight:700;color:var(--ink);line-height:1.25}
+.f-faits b{display:block;font-size:.78rem;font-weight:500;color:var(--txt2);margin-top:.15rem;line-height:1.3}
 .f-cta{margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.5rem}
 .f-cta .btn{font-size:.85rem;padding:.6rem 1.1rem}
 /* Onglets de la fiche (29/09/2026) : sélecteur segmenté à angles légèrement arrondis, pas de pastilles.
@@ -616,8 +616,6 @@ body.fige{overflow:hidden}
 .f-hyp summary::after{content:' ▾'}
 .f-resume{font-size:.88rem;line-height:1.5;background:var(--bg);border-left:3px solid var(--bl);border-radius:.5rem;padding:.6rem .8rem;margin-bottom:.9rem}
 .ln.sstot{border-top:1px solid var(--bd2);margin-top:.2rem;padding-top:.45rem}
-.f-faits b{font-size:1.05rem}
-.f-faits span{line-height:1.3}
 
 /* panneau de filtres et comparaison */
 .drawer,.cmp-drawer{position:fixed;inset:0;z-index:2500;background:rgba(var(--om),.35);display:flex;justify-content:flex-end}

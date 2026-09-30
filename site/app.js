@@ -1099,7 +1099,7 @@
       </div>
       <div class="f-faits">
         ${fait(ashEtat(e), 'Aide sociale')}
-        ${fait(e[C.hasN] || 'Non publiée', 'Évaluation publiée')}
+        ${fait(e[C.hasN] || 'Non publiée', 'Évaluation (A à D)')}
         ${fait(e[C.statut] != null ? STATUTS[e[C.statut]] : 'Non renseigné', 'Statut')}
       </div>
       <p class="f-dispo-l">Disponibilités&nbsp;: contactez l’établissement.</p>
@@ -1115,7 +1115,8 @@
       <div class="f-panneau" role="tabpanel">${ongletHtml(ongletActif, o, s)}</div>`;
   }
 
-  function fait(val, lib) { return `<div><b>${esc(val)}</b><span>${esc(lib)}</span></div>`; }
+  // libellé en titre, valeur dessous (29/09/2026) : on lit d'abord de quoi il s'agit
+  function fait(val, lib) { return `<div><span>${esc(lib)}</span><b>${esc(val)}</b></div>`; }
 
   /* L'habilitation à l'aide sociale porte sur un NOMBRE DE PLACES, pas sur
      l'établissement entier, et elle n'ouvre aucun droit par elle-même : le
