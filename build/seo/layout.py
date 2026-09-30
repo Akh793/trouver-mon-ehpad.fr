@@ -33,7 +33,7 @@ BANDEAU = """<div id="consent-banner" hidden><div class="cb">
 
 TOPBAR = """<div id="topbar" class="topbar print-hide">
 <div class="topbar-in">
-<a class="tb-logo" href="/">Trouver mon <span>EHPAD</span></a>
+<a class="tb-logo" href="/">Trouver mon <span>EHPAD</span><b class="tld">.fr</b></a>
 <div class="tb-r">
 <div class="tb-nav-wrap">
 <button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
@@ -61,7 +61,7 @@ TOPBAR = """<div id="topbar" class="topbar print-hide">
 </div>"""
 
 NAV = """<header class="top"><div class="top-in">
-<a class="logo" href="/">Trouver mon <span>EHPAD</span></a>
+<a class="logo" href="/">Trouver mon <span>EHPAD</span><b class="tld">.fr</b></a>
 <nav aria-label="Navigation principale">
 <a href="/">Accueil</a>
 <a href="/ehpad/">Les EHPAD en France</a>

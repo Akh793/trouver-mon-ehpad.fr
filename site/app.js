@@ -2665,3 +2665,43 @@
     return ok === cases.length;
   };
 })();
+
+/* Bulle du lexique (30/09/2026) : un seul élément fixé à l'écran, placé à côté du mot.
+   Décalée pour ne jamais sortir de la fenêtre, retournée sous le mot s'il manque de place
+   au-dessus, masquée au défilement. Même code dans app.js (accueil) et assets/pages.js. */
+(function () {
+  var doc = document.documentElement, tip = null, cur = null, M = 8;
+  doc.classList.add('lx-js');
+  function montre(a) {
+    var d = a.getAttribute('data-def'); if (!d) return;
+    if (!tip) {
+      tip = document.createElement('div'); tip.className = 'lx-bulle'; tip.id = 'lx-bulle';
+      tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip);
+    }
+    tip.textContent = d; tip.style.left = '0px'; tip.style.top = '0px';
+    var r = a.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    var vw = doc.clientWidth, x = r.left, y = r.top - t.height - 8;
+    if (x + t.width > vw - M) x = vw - M - t.width;
+    if (x < M) x = M;
+    if (y < M) y = r.bottom + 8;
+    tip.style.left = Math.round(x) + 'px'; tip.style.top = Math.round(y) + 'px';
+    tip.classList.add('on'); a.setAttribute('aria-describedby', 'lx-bulle'); cur = a;
+  }
+  function cache() {
+    if (tip) tip.classList.remove('on');
+    if (cur) { cur.removeAttribute('aria-describedby'); cur = null; }
+  }
+  var survol = window.matchMedia && matchMedia('(hover:hover)').matches;
+  document.addEventListener('mouseover', function (e) {
+    if (!survol) return;
+    var a = e.target.closest && e.target.closest('a.lx');
+    if (a) { if (a !== cur) montre(a); } else if (cur) cache();
+  });
+  document.addEventListener('focusin', function (e) {
+    var a = e.target.closest && e.target.closest('a.lx');
+    if (a) montre(a); else cache();
+  });
+  document.addEventListener('focusout', cache);
+  window.addEventListener('scroll', cache, true);
+  window.addEventListener('resize', cache);
+})();

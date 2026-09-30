@@ -1497,6 +1497,8 @@ body.fige{overflow:hidden}
 .tb-logo{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.02em;
   text-decoration:none;color:var(--ink);white-space:nowrap}
 .tb-logo span{color:var(--bl-t);font-style:italic}
+/* « .fr » : le nom du site en entier, pour qu'il se retienne (30/09/2026) */
+.tb-logo .tld,.logo .tld{font-weight:700;color:inherit;font-style:normal}
 .tb-r{display:flex;align-items:center;gap:.5rem;margin-left:auto}
 
 /* les commandes : même grammaire que le reste du site, en plus compact */
@@ -1560,6 +1562,8 @@ body.fige{overflow:hidden}
   .tb-menu{position:fixed;left:1rem;right:1rem;top:auto;min-width:0}
 }
 @media (max-width:420px){.tb-logo{font-size:.9rem}}
+/* avec « .fr », la barre déborde sous 380 px : logo et espacements resserrés (30/09/2026) */
+@media (max-width:380px){.tb-logo{font-size:.8rem}.topbar-in{padding:.5rem .75rem;gap:.35rem}.tb-r{gap:.3rem}.tb-cta{padding:.5rem .7rem}.tb-btn{padding:.4rem .45rem}}
 @media (prefers-reduced-motion:reduce){
   .topbar{transition:opacity .15s linear}
   .topbar,.topbar.on{transform:none}
@@ -1829,6 +1833,16 @@ a.lx::after{content:attr(data-def);position:absolute;left:0;bottom:calc(100% + 8
   letter-spacing:0;text-align:left;white-space:normal;box-shadow:0 10px 24px rgba(0,0,0,.22);opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .12s ease-out}
 @media (hover:hover){a.lx:hover::after{opacity:1;visibility:visible}}
+/* Bulle placée par script (30/09/2026) : fixée à l'écran, jamais coupée par un panneau qui défile,
+   décalée pour rester dans la fenêtre et retournée sous le mot s'il n'y a pas de place au-dessus.
+   Sans script, la bulle en CSS ci-dessus sert de repli. */
+html.lx-js a.lx::after{display:none}
+.lx-bulle{position:fixed;left:0;top:0;z-index:3000;width:max-content;max-width:min(19rem,calc(100vw - 16px));padding:.55rem .75rem;border-radius:10px;
+  background:var(--ink);color:var(--surf);font:400 .86rem/1.4 Inter,system-ui,sans-serif;letter-spacing:0;text-align:left;white-space:normal;
+  box-shadow:0 10px 24px rgba(0,0,0,.22);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s ease-out}
+.lx-bulle.on{opacity:1;visibility:visible}
+@media (prefers-reduced-motion:reduce){.lx-bulle{transition:none}}
+@media print{.lx-bulle{display:none}}
 a.lx:focus-visible::after{opacity:1;visibility:visible}
 @media (prefers-reduced-motion:reduce){a.lx::after{transition:none}}
 @media print{a.lx{text-decoration:none}a.lx::after{display:none}}
@@ -1882,7 +1896,7 @@ a.lx:focus-visible::after{opacity:1;visibility:visible}
   <!-- barre compacte, révélée au défilement -->
   <div id="topbar" class="topbar print-hide">
     <div class="topbar-in">
-      <a class="tb-logo" href="#contenu">Trouver mon <span>EHPAD</span></a>
+      <a class="tb-logo" href="#contenu">Trouver mon <span>EHPAD</span><b class="tld">.fr</b></a>
       <div class="tb-r">
         <div class="tb-nav-wrap">
           <button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>

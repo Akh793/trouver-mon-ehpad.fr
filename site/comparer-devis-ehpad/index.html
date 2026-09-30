@@ -31,7 +31,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
 <body>
 <div id="topbar" class="topbar print-hide">
 <div class="topbar-in">
-<a class="tb-logo" href="/">Trouver mon <span>EHPAD</span></a>
+<a class="tb-logo" href="/">Trouver mon <span>EHPAD</span><b class="tld">.fr</b></a>
 <div class="tb-r">
 <div class="tb-nav-wrap">
 <button type="button" id="tb-nav" class="tb-btn" aria-expanded="false" aria-controls="tb-menu" aria-haspopup="true"><span>Naviguer</span><svg viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button>
@@ -66,7 +66,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(
 <section class="page">
 
 <p class="lead">Vous avez reçu deux ou trois devis et vous n’arrivez pas à savoir lequel coûte
-le moins cher&nbsp;? C’est normal&nbsp;: aucun modèle de devis n’est imposé aux <a class="lx" href="/lexique/#ehpad" data-def="Maison de retraite médicalisée pour les personnes âgées qui ont besoin d’aide et de soins chaque jour.">EHPAD</a>, chacun présente
+le moins cher&nbsp;? C’est normal&nbsp;: aucun modèle de devis n’est imposé aux EHPAD, chacun présente
 ses prix à sa façon. Recopiez les lignes ici, on les remet dans le même ordre.</p>
 
 <div class="dv-promesse">
@@ -171,14 +171,14 @@ ses prix à sa façon. Recopiez les lignes ici, on les remet dans le même ordre
         <label for="dv-gir">Tarif dépendance du GIR de la personne</label>
         <label class="in-eur"><span class="sr">Montant par jour</span>
           <input id="dv-gir" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
-        <p class="ai">Par jour. Sur le devis&nbsp;: «&nbsp;<a class="lx" href="/lexique/#gir" data-def="Niveau de perte d’autonomie, de GIR 1 (très dépendant) à GIR 6 (autonome).">GIR</a> 1-2&nbsp;», «&nbsp;GIR 3-4&nbsp;» ou «&nbsp;GIR 5-6&nbsp;».</p>
+        <p class="ai">Par jour. Sur le devis&nbsp;: «&nbsp;GIR 1-2&nbsp;», «&nbsp;GIR 3-4&nbsp;» ou «&nbsp;GIR 5-6&nbsp;».</p>
       </div>
       <div class="ch">
         <label for="dv-talon">Tarif «&nbsp;GIR 5-6&nbsp;»</label>
         <label class="in-eur"><span class="sr">Montant par jour</span>
           <input id="dv-talon" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
         <p class="ai">Par jour. Il reste toujours à votre charge, quel que soit le GIR.
-        Souvent appelé «&nbsp;<a class="lx" href="/lexique/#ticket-moderateur" data-def="Tarif dépendance GIR 5-6 : le minimum payé par tout résident, quel que soit son GIR.">ticket modérateur</a>&nbsp;» ou «&nbsp;<a class="lx" href="/lexique/#participation-forfaitaire" data-def="Dans 23 territoires depuis juillet 2025 : un montant par jour, le même pour tous, à la place du tarif dépendance.">participation forfaitaire</a>&nbsp;».</p>
+        Souvent appelé «&nbsp;ticket modérateur&nbsp;» ou «&nbsp;participation forfaitaire&nbsp;».</p>
       </div>
     </div>
   </div>
@@ -333,7 +333,7 @@ ses prix à sa façon. Recopiez les lignes ici, on les remet dans le même ordre
 <div class="so-l"><b>Le linge</b><span>Draps et serviettes fournis et lavés — et depuis 2023, le marquage et le lavage du linge personnel.</span></div>
 <div class="so-l"><b>La vie sociale</b><span>Les animations de l’établissement et l’organisation des sorties.</span></div>
 <div class="so-l"><b>L’administratif</b><span>La préparation de l’entrée, le contrat, les courriers pour vos dossiers d’aides.</span></div></div>
-    <p class="ai so-a">C’est le «&nbsp;<a class="lx" href="/lexique/#socle-prestations" data-def="Prestations que tout EHPAD doit inclure dans le tarif d’hébergement : chambre, repas, linge, animations…">socle de prestations</a>&nbsp;», fixé par décret. Si l’une de ces
+    <p class="ai so-a">C’est le «&nbsp;socle de prestations&nbsp;», fixé par décret. Si l’une de ces
     lignes apparaît en supplément sur votre devis, ce n’est pas normal.</p>
 
     <div class="g2 g2-h">
@@ -355,7 +355,7 @@ ses prix à sa façon. Recopiez les lignes ici, on les remet dans le même ordre
     <span class="et-c" id="dv-c3">0 sur 3 renseignées</span></summary>
   <div class="et-in">
     <p class="et-i">Elles ne changent pas le prix affiché, mais elles changent la dépense de l’année.
-    Cherchez-les dans les articles du <a class="lx" href="/lexique/#contrat-sejour" data-def="Contrat obligatoire dès que le séjour peut dépasser deux mois : prestations, prix, conditions de départ.">contrat de séjour</a>.</p>
+    Cherchez-les dans les articles du contrat de séjour.</p>
     <div class="g2 g2-h">
       <div class="ch"><label for="dv-resa">Chambre réservée pendant une absence</label>
         <label class="in-eur"><span class="sr">Montant par jour</span>
@@ -378,7 +378,7 @@ ses prix à sa façon. Recopiez les lignes ici, on les remet dans le même ordre
 <section id="dv-sortie">
   <h2><span class="n">4</span><span class="t">Ce que ça donne</span></h2>
   <div id="dv-vide" class="dv-vide">
-    <p><b>Saisissez le <a class="lx" href="/lexique/#tarif-hebergement" data-def="Prix de la chambre, des repas, du linge et des animations, payé par le résident.">prix d’hébergement</a> d’au moins un devis</b> pour voir le total apparaître ici.</p>
+    <p><b>Saisissez le prix d’hébergement d’au moins un devis</b> pour voir le total apparaître ici.</p>
   </div>
   <div id="dv-res" hidden></div>
   <div id="dv-alerte"></div>
