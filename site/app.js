@@ -1459,10 +1459,47 @@
       s.prixConnu, s.favorisOnly, s.statuts[0], s.statuts[1], s.statuts[2]].join('|');
   }
 
+  /* Guidage des deux champs clés (30/09/2026). Le champ à remplir « respire » en bleu (CSS .guide),
+     un seul à la fois : le code postal, puis la retraite. Le souffle s'arrête quand on clique
+     dedans (CSS :focus). Quand le champ devient valide, une coche verte ronde apparaît puis
+     s'efface. Rien n'est animé pour les champs déjà remplis à l'arrivée (état restauré). */
+  const GUIDE = [
+    { id: 'cp', ok: () => !!state.commune, delai: 0, droite: '1.5rem' },
+    { id: 'revenus', ok: () => Number.isFinite(state.revenus) && state.revenus > 0, delai: 650, droite: '4.3rem' },
+  ];
+  const guideVu = {};
+  const guideMinuteur = {};
+  function coche(g) {
+    const inp = $(g.id); if (!inp) return;
+    const hote = inp.parentElement;
+    const c = document.createElement('span');
+    c.className = 'coche-ok'; c.setAttribute('aria-hidden', 'true');
+    c.style.right = g.droite;
+    c.style.top = (inp.offsetTop + inp.offsetHeight / 2) + 'px';
+    c.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11"/><path d="M7 12.5l3.3 3.3L17 9"/></svg>';
+    hote.appendChild(c);
+    setTimeout(() => c.remove(), 1100);
+  }
+  function guideChamps() {
+    let cible = null;
+    GUIDE.forEach((g) => {
+      const inp = $(g.id); if (!inp) return;
+      const ok = g.ok();
+      if (guideVu[g.id] === undefined) guideVu[g.id] = ok;          // état à l'arrivée : pas de coche
+      if (ok && !guideVu[g.id]) {
+        clearTimeout(guideMinuteur[g.id]);
+        guideMinuteur[g.id] = setTimeout(() => { if (g.ok() && !guideVu[g.id]) { guideVu[g.id] = true; coche(g); } }, g.delai);
+      } else if (!ok) { clearTimeout(guideMinuteur[g.id]); guideVu[g.id] = false; }
+      if (!ok && !cible && inp.offsetParent) cible = inp;
+    });
+    GUIDE.forEach((g) => { const inp = $(g.id); if (inp) inp.classList.toggle('guide', inp === cible); });
+  }
+
   async function render() {
     sauve();
     const s = state;
     majUI();
+    guideChamps();
     const pret = !!s.commune;
     $('resultats').hidden = !pret; $('vide').hidden = pret;
     document.body.classList.toggle('explore', pret);
