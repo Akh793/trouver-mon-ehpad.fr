@@ -581,11 +581,20 @@ body.fige{overflow:hidden}
 .f-faits span{display:block;font-size:.7rem;color:var(--mut2);margin-top:.1rem}
 .f-cta{margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.5rem}
 .f-cta .btn{font-size:.85rem;padding:.6rem 1.1rem}
-/* onglets : jamais de défilement horizontal (un onglet caché à droite n'est pas vu) ; ils passent à la ligne s'il le faut */
-.f-onglets{display:flex;flex-wrap:wrap;gap:.2rem;margin-top:1rem;border-bottom:1px solid var(--bd2)}
-.f-onglets button{border:0;background:none;font:inherit;font-size:.85rem;font-weight:600;color:var(--mut);padding:.5rem .7rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;min-height:40px}
-.f-onglets button[aria-selected="true"]{color:var(--bl-t);border-bottom-color:var(--bl-t)}
-@media (max-width:480px){.f-onglets{gap:0;justify-content:space-between}.f-onglets button{padding:.5rem .3rem;font-size:.8rem}}
+/* Onglets de la fiche (29/09/2026) : sélecteur segmenté à angles légèrement arrondis, pas de pastilles.
+   Le fond gris du rail et le relief de l'onglet actif disent « ce sont des boutons » ; les quatre
+   onglets se partagent la largeur, sans défilement horizontal (un onglet caché n'est pas vu). */
+.f-onglets{display:flex;gap:.25rem;margin-top:1rem;padding:.25rem;background:var(--ti-seg);border:1px solid var(--bd);border-radius:10px}
+.f-onglets button{flex:1 1 auto;border:1px solid transparent;background:none;font:inherit;font-size:.85rem;font-weight:600;color:var(--txt2);
+  padding:.5rem .6rem;cursor:pointer;border-radius:7px;min-height:40px;line-height:1.2;text-align:center;
+  transition:background .2s,color .2s,border-color .2s,box-shadow .2s}
+/* survol : le fond s'éclaircit, sans prendre le bleu réservé à l'onglet actif */
+.f-onglets button:hover{background:color-mix(in srgb,var(--surf) 55%,transparent);color:var(--ink);border-color:var(--bd)}
+.f-onglets button[aria-selected="true"]:hover{background:var(--surf);color:var(--bl-t)}
+.f-onglets button:focus-visible{outline:2px solid var(--bl-t);outline-offset:1px}
+.f-onglets button[aria-selected="true"]{background:var(--surf);color:var(--bl-t);border-color:var(--bd-bl2);
+  box-shadow:0 1px 3px rgba(15,23,42,.12),inset 0 -3px 0 var(--bl-t)}
+@media (max-width:480px){.f-onglets{gap:.15rem;padding:.2rem}.f-onglets button{padding:.45rem .3rem;font-size:.78rem}}
 .f-panneau{padding-top:.8rem}
 .f-panneau .ln{font-size:.85rem}
 .f-panneau h4{font-size:.85rem;margin-top:1rem;color:var(--mut)}

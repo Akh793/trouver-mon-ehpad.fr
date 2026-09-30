@@ -1104,10 +1104,10 @@
       </div>
       <p class="f-dispo-l">Disponibilités&nbsp;: contactez l’établissement.</p>
       <div class="f-cta print-hide">
-        ${e[C.tel] ? `<a class="btn" href="tel:${esc(String(e[C.tel]).replace(/\D/g, ''))}" data-tel>Appeler l’établissement</a>` : ''}
+        <!-- « Appeler » et « Garder » retirés de la fiche (29/09/2026) : ils figurent déjà sur la ligne de
+             l'établissement dans la liste, et le téléphone reste dans l'onglet « L'établissement ». -->
         <button type="button" class="cta-s mini2" data-modif>${p ? 'Modifier ma situation' : 'Estimer le budget'}</button>
         <button type="button" class="cta-s mini2" data-cmp="${e[C.fin]}">${libCmp(state.compare.indexOf(e[C.fin]) >= 0)}</button>
-        <button type="button" class="cta-s mini2 fav" data-fav="${e[C.fin]}" aria-label="${state.favoris.indexOf(e[C.fin]) >= 0 ? 'Retirer des favoris' : 'Garder pour plus tard'}">${state.favoris.indexOf(e[C.fin]) >= 0 ? '♥ Gardé' : '♡ Garder'}</button>
       </div>
       <div class="f-onglets" role="tablist">
         ${ONGLETS.map(([k, t]) => `<button type="button" role="tab" data-onglet="${k}" aria-selected="${k === ongletActif}">${t}</button>`).join('')}
