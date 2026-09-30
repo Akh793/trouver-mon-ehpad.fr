@@ -6,7 +6,7 @@ passée en argument (par défaut : la plus récente). La clé est publiée à la
 (/<clé>.txt), ce qui prouve que la demande vient bien du propriétaire du domaine.
 À lancer APRÈS la mise en ligne (git push), sinon les moteurs trouvent les anciennes pages.
 Usage : python3 indexnow.py [AAAA-MM-JJ] [--simuler]"""
-import json, os, sys, urllib.request
+import json, os, sys, time, urllib.request, urllib.error
 B = os.path.dirname(os.path.abspath(__file__))
 HOTE = 'trouver-mon-ehpad.fr'
 cle = open(os.path.join(B, 'indexnow.key')).read().strip()
@@ -22,5 +22,14 @@ for i in range(0, len(urls), 10000):
         print('simulation :', len(lot), 'adresses, premier envoi non effectué'); continue
     req = urllib.request.Request('https://api.indexnow.org/indexnow', data=corps,
                                  headers={'Content-Type': 'application/json; charset=utf-8'})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        print('lot', i // 10000 + 1, ':', r.status, '(200 ou 202 = accepté)')
+    # 403 = clé refusée. Constaté le 29/09/2026 juste après un push, puis accepté (200) le lendemain
+    # sans rien changer : la clé est revérifiée sur le site, qui peut être en cours de déploiement.
+    for essai in (1, 2, 3):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                print('lot', i // 10000 + 1, ':', r.status, '(200 ou 202 = accepté)'); break
+        except urllib.error.HTTPError as e:
+            print('lot', i // 10000 + 1, ': refus', e.code, e.read()[:300].decode('utf-8', 'replace'))
+            if e.code not in (403, 429) or essai == 3:
+                sys.exit('Échec. 403 : vérifier que https://%s/%s.txt affiche la clé, puis relancer dans quelques minutes.' % (HOTE, cle))
+            time.sleep(60 * essai)
