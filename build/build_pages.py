@@ -242,6 +242,15 @@ PAGES = [
 <p>Licences relevées sur les fiches de publication : Licence Ouverte 2.0 (Etalab) pour FINESS, la Haute Autorité de santé, la DREES et la Base adresse nationale ; Licence Ouverte pour Alim’confiance et la grille de densité de l’INSEE ; le catalogue Melodi de l’INSEE indique un accès « public » pour le recensement, sans nommer de licence. Les documents de contrôle des ARS ne sont pas repris : le site renvoie vers leur page de publication. <b>Le jeu de données le plus central du site — les prix et tarifs des EHPAD publiés par la CNSA — ne déclare aucune licence</b> sur data.gouv.fr : nous l’écrivons plutôt que de le supposer, et une demande de précision a été adressée à la CNSA.</p>
 <p>Le fond de plan provient de la Géoplateforme de l’Institut national de l’information géographique et forestière et porte sa mention d’attribution sur la carte elle-même. Les données cartographiques sont affichées selon les conditions générales d’utilisation de la Géoplateforme.</p>
 
+<h2 id="photos">Photos des établissements</h2>
+<p>La vignette de chaque établissement, dans la liste des résultats, provient d’une de ces trois sources, citée sur l’image même&nbsp;:</p>
+<ul>
+<li><b>Wikimedia Commons</b>&nbsp;: photos reliées à l’établissement par son numéro FINESS dans Wikidata, sous licence libre (Creative Commons BY-SA, BY ou CC0). L’auteur et la licence figurent sur l’image&nbsp;; la liste complète, avec le lien vers chaque fichier, est sur la <a href="/credits-photos.html">page des crédits photo</a>.</li>
+<li><b>Panoramax</b>&nbsp;: photos prises depuis la voie publique, sous Licence Ouverte 2.0 ou CC BY-SA 4.0, recadrées dans la direction de l’établissement. Une photo recadrée d’origine CC BY-SA reste sous CC BY-SA 4.0. Chaque photo a été vérifiée à l’œil avant publication.</li>
+<li><b>IGN</b>&nbsp;: à défaut de photo, vue aérienne centrée sur l’adresse (BD ORTHO, Licence Ouverte 2.0). C’est une vue du quartier, pas une photo de l’établissement.</li>
+</ul>
+<p>Aucune image Google n’est utilisée. Un gestionnaire peut envoyer une photo de sa façade dont il détient les droits à <a href="mailto:contact@trouver-mon-ehpad.fr?subject=Photo%20de%20l%E2%80%99%C3%A9tablissement">contact@trouver-mon-ehpad.fr</a>&nbsp;: elle remplacera la vignette. Pour faire retirer une photo, même adresse.</p>
+
 <h2>Propriété intellectuelle</h2>
 <p>Les textes, les calculs et la mise en forme de ce site sont l’œuvre de son éditeur. Les données réutilisées appartiennent à leurs producteurs, cités ci-dessus et sur chaque page. Les chiffres agrégés publiés par le site (tarifs médians, baromètre) peuvent être repris librement avec la mention « Données : Trouver mon EHPAD, à partir des tarifs déclarés à la CNSA ».</p>
 
@@ -293,6 +302,30 @@ PERSONNE_LD = ('<script type="application/ld+json">' + _json.dumps({
                    "jobTitle": "Éditeur de Trouver mon EHPAD",
                    "description": "Juriste de formation (master 2 en droit des affaires), il conçoit des outils numériques et a construit ce site seul, sans financement ni partenariat, à partir des données publiques."}},
     ensure_ascii=False) + '</script>')
+
+# --- page des crédits photo (30/09/2026) : une ligne par photo Wikimedia ou Panoramax publiée
+import json as _json
+_cr_p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'photos', 'credits.json')
+_cr = _json.load(open(_cr_p, encoding='utf-8')) if os.path.exists(_cr_p) else []
+_noms = {e['fin']: e for e in _json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'merged_v2.json'), encoding='utf-8'))}
+import html as _h
+def _ligne(c):
+    e = _noms.get(c['fin'], {})
+    nom = _h.escape(e.get('nom', c['fin']).title()) + (' (' + _h.escape(e.get('ville', '').title()) + ')' if e.get('ville') else '')
+    lic = _h.escape(c.get('licence') or '')
+    if c.get('licence_url'): lic = f'<a href="{_h.escape(c["licence_url"])}" rel="nofollow noopener" target="_blank">{lic}</a>'
+    aut = _h.escape(c.get('auteur') or '')
+    return (f'<tr><td>{nom}</td><td>{_h.escape(c["source"])}</td><td>{aut or "—"}</td><td>{lic}</td>'
+            f'<td><a href="{_h.escape(c["lien"])}" rel="nofollow noopener" target="_blank">Voir</a></td></tr>')
+if _cr:
+    PAGES.append({
+     'file': 'credits-photos.html', 'slug': 'credits-photos.html',
+     'title': 'Crédits photo | Trouver mon EHPAD',
+     'desc': 'Auteur, licence et source de chaque photo d’établissement publiée sur le site.',
+     'robots': 'noindex, follow', 'h1': 'Crédits photo',
+     'body': f"""<p>{len(_cr)} photos d’établissements sont publiées sous licence libre. Elles sont réutilisées sans modification, sauf le recadrage des photos Panoramax dans la direction de l’établissement. Les autres vignettes sont des vues aériennes de l’IGN (BD ORTHO, Licence Ouverte 2.0). <a href="/mentions-legales.html#photos">Comment les photos sont choisies</a>.</p>
+<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Établissement</th><th>Source</th><th>Auteur</th><th>Licence</th><th>Original</th></tr></thead>
+<tbody>{''.join(_ligne(c) for c in sorted(_cr, key=lambda c: _noms.get(c['fin'], {}).get('nom', '')))}</tbody></table></div>"""})
 
 for p in PAGES:
     html = HEAD.format(title=p['title'], desc=p['desc'], slug=p['slug'], robots=p['robots'],

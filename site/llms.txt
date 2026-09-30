@@ -97,4 +97,4 @@ Chaque chiffre publié est calculé à partir des tarifs déclarés à la CNSA e
 
 ## Format des données du site
 
-Les données sont chargées par département, à la demande : `data/dep/ehpad-<dep>.js`, `data/dep/communes-<dep>.js` et `data/dep/prix-<dep>.js` (séries de prix 2018-2025), plus `data/departements.js` (table départementale et emprises) et `data/prix-reference.js` (quartiles de prix par département). Chaque établissement est un tableau de 52 colonnes dont l'ordre est documenté en tête de `app.js` et dans `MAINTENANCE.md`.
+Les données sont chargées par département, à la demande : `data/dep/ehpad-<dep>.js`, `data/dep/communes-<dep>.js` et `data/dep/prix-<dep>.js` (séries de prix 2018-2025), plus `data/departements.js` (table départementale et emprises) et `data/prix-reference.js` (quartiles de prix par département). Chaque établissement est un tableau de 53 colonnes dont l'ordre est documenté en tête de `app.js` et dans `MAINTENANCE.md`.

@@ -83,7 +83,7 @@
     alim:32, tel:33, adr:34, pm:35, siren:36, ouv:37, approx:38, mft:39, mftlib:40, tarif:41, pui:42,
     dens:43, occ:44, reg:45,
     // FINESS+ Activités (29/09/2026) : source de la capacité, places installées par unité
-    capsrc:46, alz:47, pasa:48, uhr:49, ht:50, aj:51 };
+    capsrc:46, alz:47, pasa:48, uhr:49, ht:50, aj:51, photo:52 };
 
   /* ---------- Chargement à la demande, par département (compatible file://) ---------- */
   const EHPAD = {}, COMMUNES = {}, PRIX = {}, pending = {};
@@ -930,8 +930,9 @@
     if (e[C.statut] != null) badges.push(`<span class="badge b-slate">${esc(STATUTS[e[C.statut]])}</span>`);
     if (e[C.hasN]) badges.push(badgeHas(e));
     if (e[C.alz] || e[C.uhr]) badges.push('<span class="badge b-slate">Unité Alzheimer</span>');
-    return `<article class="res ${r.prixConnu ? '' : 'sansprix'}" id="item-${fin}" role="listitem" tabindex="0"
+    return `<article class="res avec-ph ${r.prixConnu ? '' : 'sansprix'}" id="item-${fin}" role="listitem" tabindex="0"
         data-fin="${fin}" aria-current="${sel}" aria-label="${esc(nom(e))}, ${montant} ${lib}">
+      ${vignette(e)}
       <p class="res-n">${esc(nom(e))}</p>
       <p class="res-l">${esc(e[C.ville])} · ${nbfr(+o.dist.toFixed(1))} km${e[C.cap] ? ' · ' + e[C.cap] + ' places' : ''}</p>
       <div class="res-m" style="color:${r.prixConnu ? (p ? COULEUR[r.couleur] : 'var(--ink)') : 'var(--mut2)'}">
@@ -949,6 +950,24 @@
       </div>
       ${pro() && cmp ? `<p class="res-dem">${demLigne(fin)}</p>` : ''}
     </article>`;
+  }
+
+  /** Vignette de la carte (30/09/2026) : photo Wikimedia ou Panoramax quand elle existe et a été
+      vérifiée, sinon vue aérienne IGN, sinon illustration. Crédit toujours visible sur l'image.
+      Sans vraie photo, un lien propose au gestionnaire d'envoyer la sienne. */
+  const MAIL_PHOTO = 'contact@trouver-mon-ehpad.fr';
+  function vignette(e) {
+    const code = e[C.photo], fin = e[C.fin];
+    const [t, a, b] = code ? String(code).split('|') : [];
+    const credit = t === 'w' ? `${a} · ${b}` : t === 'p' ? `${a} · ${b} · Panoramax` : t === 'i' ? 'Vue aérienne · IGN' : '';
+    const img = t
+      ? `<span class="res-ph-img"><img src="img/e/${fin}.webp" alt="" width="120" height="96" loading="lazy" decoding="async"><small>${esc(credit)}</small></span>`
+      : '<span class="res-ph-img res-ph-vide" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M6 42h36M10 42V20l14-10 14 10v22M20 42V31h8v11M16 24h3M29 24h3"/></svg></span>';
+    const vraie = t === 'w' || t === 'p';
+    const sujet = encodeURIComponent(`Photo de l’établissement — ${nom(e)} (FINESS ${fin})`);
+    const corps = encodeURIComponent('Bonjour,\n\nVoici une photo de la façade de notre établissement. Je confirme en détenir les droits et en autoriser la publication sur trouver-mon-ehpad.fr.\n\n');
+    return `<div class="res-ph">${img}${vraie ? '' : `<a class="res-gest" data-gest href="mailto:${MAIL_PHOTO}?subject=${sujet}&body=${corps}"
+        data-bulle="Envoyez-nous une photo de la façade dont vous détenez les droits : elle remplacera cette image.">Vous êtes le gestionnaire&nbsp;?</a>`}</div>`;
   }
 
   const libCmp = (on) => (pro() ? (on ? '✓ Ajouté aux démarches' : 'Ajouter aux démarches') : (on ? '✓ Comparé' : 'Comparer'));
@@ -2067,6 +2086,7 @@
     // le clic composerait le numéro ET ouvrirait la fiche derrière.
     const tel = t.closest('[data-tel]');
     if (tel) { e.stopPropagation(); evt('tel_clicked', {}); return; }
+    if (t.closest('[data-gest]')) { e.stopPropagation(); evt('photo_gestionnaire', {}); return; }
     const carte = t.closest('.res');
     if (carte) { selectionne(carte.dataset.fin); return; }
   });
@@ -2397,9 +2417,9 @@
   /* ---------- Tests (console : window.runTests()) ---------- */
   window.runTests = function () {
     const mois = META.month;
-    // 52 colonnes depuis FINESS+ Activités (C.aj = 51). Sans mention contraire,
+    // 53 colonnes depuis la vignette (C.photo = 52). Sans mention contraire,
     // les cas de test portent sur un établissement de droit commun.
-    const mk = (o) => Object.assign(new Array(52).fill(null), { 45: 'classique' }, o);
+    const mk = (o) => Object.assign(new Array(53).fill(null), { 45: 'classique' }, o);
     const base = { mode: 'famille', gir: '34', revenus: 1500, autres: 0, epargne: 0, couple: false,
       deuxResidents: false, conjointDomicile: false, aideLogement: 0, imposable: false, chambre: 'cs', enfants: 0, tmi: 30,
       aplPortee: 'partout', aplEtab: null, moisAnnee: 12 };
@@ -2673,7 +2693,7 @@
   var doc = document.documentElement, tip = null, cur = null, M = 8;
   doc.classList.add('lx-js');
   function montre(a) {
-    var d = a.getAttribute('data-def'); if (!d) return;
+    var d = a.getAttribute('data-def') || a.getAttribute('data-bulle'); if (!d) return;
     if (!tip) {
       tip = document.createElement('div'); tip.className = 'lx-bulle'; tip.id = 'lx-bulle';
       tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip);
@@ -2694,11 +2714,11 @@
   var survol = window.matchMedia && matchMedia('(hover:hover)').matches;
   document.addEventListener('mouseover', function (e) {
     if (!survol) return;
-    var a = e.target.closest && e.target.closest('a.lx');
+    var a = e.target.closest && e.target.closest('a.lx,[data-bulle]');
     if (a) { if (a !== cur) montre(a); } else if (cur) cache();
   });
   document.addEventListener('focusin', function (e) {
-    var a = e.target.closest && e.target.closest('a.lx');
+    var a = e.target.closest && e.target.closest('a.lx,[data-bulle]');
     if (a) montre(a); else cache();
   });
   document.addEventListener('focusout', cache);

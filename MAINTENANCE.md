@@ -233,6 +233,7 @@ Quand la CNSA publie le fichier brut de l'année écoulée :
 |---|---|
 | FINESS+ (quotidien, utile 1×/mois) | Depuis le 29/09/2026, la chaîne lit FINESS+ (ANS) : l'extraction classique est figée au 04/05/2026. Retélécharger `finessplus/str.json.gz` (jeu « FINESS - Structures ») et `finessplus/act.json.gz` (« FINESS - Activités ») sur data.gouv.fr, puis, depuis `build/` : `python3 finessplus/extraire.py` (liste des EHPAD ouverts → `finess_ehpad_plus.json`, à copier sur `finess_ehpad.json`), `python3 finessplus/mft.py` (→ `audit/finess_plus_500.json`), `python3 finessplus/activites.py` (→ `audit/activites_plus.json`). Nomenclatures : dépôt NOS de l'ANS (`TRE_R74`, `TRE_r401`, `TRE_r404`, `TRE_R279`, `JDV_j353`, `JDV_j354`), copies dans `finessplus/`. |
 | INSEE recensement (1×/an, en juillet) | retélécharger `insee/rp2023_agesex.parquet` (commande en tête de `insee/pop75.py`, changer le millésime), puis `python3 insee/pop75.py` → `insee/pop75.json` (75+ et 85+ par commune et département) |
+| Photos (1×/semestre) | depuis `build/` : `python3 photos/wikimedia.py`, `python3 photos/panoramax.py`, `REQUESTS_CA_BUNDLE=… python3 photos/ign.py` (reprise possible), puis **tri visuel** des nouvelles photos Panoramax (`tri_panoramax.json` : liste `gardees`) et Wikimedia (`tri_wikimedia.json` : liste `rejetees`), puis `python3 photos/assembler.py` (écrit `site/img/e/*.webp`, `photos/photos.json`, `photos/credits.json`), `python3 split_data_v2.py`, `python3 build_pages.py` (page des crédits). Une photo envoyée par un gestionnaire : la déposer en `photos/cache/wm/<finess>.jpg` avec une entrée dans `cache/wm.json` (source, auteur, licence). |
 | ARS, contrôles (1×/trimestre) | `python3 ars/extraire_ars.py` : relit la page nationale et les 12 pages régionales (10 s entre deux requêtes, robots.txt des ARS), écrit `ars/ars_inspections.json`. Un document n'est rattaché à une fiche que si son nom porte le FINESS. |
 | HAS (quotidien, utile 1×/trimestre) | retélécharger le parquet, refiltrer sur les EHPAD, réécrire `has_ehpad.pkl` |
 | Alim'confiance (quotidien, utile 1×/trimestre) | réexporter le jeu, réécrire `alim.json` |
@@ -317,7 +318,7 @@ Les 7 903 pages de contenu, elles, ne contiennent pas de CSS : elles pointent ve
 
 ## 6. Format des fichiers produits
 
-### 6.1 `site/data/dep/ehpad-XX.js` — un tableau par EHPAD, 52 colonnes
+### 6.1 `site/data/dep/ehpad-XX.js` — un tableau par EHPAD, 53 colonnes
 
 Écrit sous la forme `ME.dep("69",[[...],[...]]);` — chargé par injection de balise `<script>`, ce qui
 fonctionne aussi en `file://` (contrairement à `fetch`). L'ordre des colonnes est **la** convention du
@@ -358,6 +359,7 @@ répliqué dans l'objet `C` en tête de `site/app.js`. **Modifier l'un sans l'au
 | 47 | `alz` | places installées en unité protégée Alzheimer (hébergement permanent, clientèle 436) |
 | 48 | `pasa` | `1` = pôle d'activités et de soins adaptés actif (sans nombre de places : FINESS+ l'enregistre à 0) |
 | 49-51 | `uhr`, `ht`, `aj` | places installées : unité d'hébergement renforcée, hébergement temporaire, accueil de jour |
+| 52 | `photo` | vignette : `i` vue aérienne IGN, `w\|auteur\|licence` Wikimedia, `p\|auteur\|licence` Panoramax, `null` illustration (`site/img/e/<finess>.webp`) |
 
 ### 6.2 Les autres fichiers de données
 

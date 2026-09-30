@@ -59,7 +59,7 @@ window.DELAI_ATTENTE = 'Un mois ou moins pour 55 % des personnes entrées en ét
    Ne pas modifier à la main : le bloc entre les deux marques est réécrit par
    build/split_data_v2.py. Ces chiffres disent ce que le site NE SAIT PAS. */
 /* @couverture:debut */
-window.COUVERTURE = {"date": "2026-09-29", "total": 7415, "prix": 5792, "dependance": 6079, "has": 4813, "capacite": 7350, "position": 7338, "positionApprochee": 151, "tel": 7343, "exp": 1615, "classique": 5800, "regimeInconnu": 0, "ashHabilite": 6071, "ashAConfirmer": 204};
+window.COUVERTURE = {"date": "2026-09-30", "total": 7415, "prix": 5792, "dependance": 6079, "has": 4813, "capacite": 7350, "position": 7338, "positionApprochee": 151, "tel": 7343, "exp": 1615, "classique": 5800, "regimeInconnu": 0, "ashHabilite": 6071, "ashAConfirmer": 204};
 /* @couverture:fin */
 
 /* ---------- Inflation (INSEE, moyenne annuelle) ---------- */

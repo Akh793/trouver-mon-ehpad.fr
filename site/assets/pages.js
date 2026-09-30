@@ -125,7 +125,7 @@
   var doc = document.documentElement, tip = null, cur = null, M = 8;
   doc.classList.add('lx-js');
   function montre(a) {
-    var d = a.getAttribute('data-def'); if (!d) return;
+    var d = a.getAttribute('data-def') || a.getAttribute('data-bulle'); if (!d) return;
     if (!tip) {
       tip = document.createElement('div'); tip.className = 'lx-bulle'; tip.id = 'lx-bulle';
       tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip);
@@ -146,11 +146,11 @@
   var survol = window.matchMedia && matchMedia('(hover:hover)').matches;
   document.addEventListener('mouseover', function (e) {
     if (!survol) return;
-    var a = e.target.closest && e.target.closest('a.lx');
+    var a = e.target.closest && e.target.closest('a.lx,[data-bulle]');
     if (a) { if (a !== cur) montre(a); } else if (cur) cache();
   });
   document.addEventListener('focusin', function (e) {
-    var a = e.target.closest && e.target.closest('a.lx');
+    var a = e.target.closest && e.target.closest('a.lx,[data-bulle]');
     if (a) montre(a); else cache();
   });
   document.addEventListener('focusout', cache);

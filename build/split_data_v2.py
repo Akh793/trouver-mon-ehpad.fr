@@ -55,12 +55,18 @@ COLS = ['fin', 'nom', 'cp', 'ville', 'lat', 'lon', 'p', 'pcd', 'pa', 't12', 't34
         'reg',   # régime de financement de la dépendance : 'exp', 'classique' ou 'inconnu'
         # FINESS+ Activités (29/09/2026) : source de la capacité ('finess' 2026 ou '2020' CNSA),
         # places installées en unité Alzheimer, PASA (présence), UHR, hébergement temporaire, accueil de jour
-        'capsrc', 'alz', 'pasa', 'uhr', 'ht', 'aj']
+        'capsrc', 'alz', 'pasa', 'uhr', 'ht', 'aj',
+        # vignette de la liste (30/09/2026, build/photos/assembler.py) : 'i' vue aérienne IGN,
+        # 'w|auteur|licence' Wikimedia Commons, 'p|auteur|licence' Panoramax, None sans image
+        'photo']
+_PH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'photos', 'photos.json')
+_PHOTOS = json.load(open(_PH, encoding='utf-8')) if os.path.exists(_PH) else {}
 # --- régime de financement, déduit du TERRITOIRE (jamais des tarifs déclarés)
 import regime as _regime
 _R = _regime.Regimes()
 _compte = collections.Counter()
 for r in rows:
+    r['photo'] = _PHOTOS.get(r['fin'])
     r['reg'] = _R.pour(insee=r.get('insee'), cp=r.get('cp'))
     _compte[r['reg']] += 1
 print('régime de financement :', dict(_compte))

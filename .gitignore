@@ -31,6 +31,10 @@ build/insee/*.parquet
 build/insee/*.log
 build/ars/pages/
 build/*/__pycache__/
+# photos (30/09/2026) : téléchargements et planches de tri, régénérables
+build/photos/cache/
+build/photos/tri/
+build/photos/*.log
 
 # --- audit : on garde les résultats dérivés légers, pas les fichiers bruts
 build/audit/*
