@@ -2348,7 +2348,13 @@
   $('res-chiffre').addEventListener('click', (ev) => {
     const t = ev.target.closest('[data-tuile]'); if (!t) return;
     selectionne(t.dataset.tuile, { source: 'tuile' });
-    const el = $('item-' + t.dataset.tuile); if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    // Le plus proche n'est pas toujours parmi les établissements affichés dans la liste (triée par
+    // prix, 15 par page) : sans ligne où défiler, la fiche s'ouvrait sous l'écran et le clic
+    // semblait sans effet (29/09/2026). On défile alors jusqu'à la fiche elle-même.
+    const el = $('item-' + t.dataset.tuile);
+    if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    // (sous 1 040 px, la fiche est un panneau fixe en bas d'écran : elle est déjà visible)
+    else if (innerWidth >= 1040) $('pan-fiche').scrollIntoView({ block: 'start', behavior: 'smooth' });
   });
   $('affiner-btn').addEventListener('click', () => {
     const d = $('plus-situation'); d.open = true;

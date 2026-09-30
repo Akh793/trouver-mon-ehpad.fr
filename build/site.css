@@ -955,8 +955,12 @@ button.tb-sw .ico-soleil{display:block}
 .t-tuiles{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));max-width:56rem}
 .t-tuile{display:flex;flex-direction:column;gap:.2rem;text-align:left;font:inherit;color:#fff;background:rgba(255,255,255,.12);
   border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:.8rem 1rem;min-width:0}
-button.t-tuile{cursor:pointer;transition:background .15s,border-color .15s}
-button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.2);border-color:#fff}
+/* survol : contour blanc net et fond qui s'éclaire en fondu (29/09/2026) */
+button.t-tuile{cursor:pointer;transition:background .35s ease,border-color .35s ease,box-shadow .35s ease,transform .35s ease}
+button.t-tuile:hover,button.t-tuile:focus-visible{background:rgba(255,255,255,.26);border-color:#fff;
+  box-shadow:0 0 0 1px #fff,0 0 22px rgba(255,255,255,.45),0 10px 24px rgba(10,20,90,.25);transform:translateY(-2px);outline:none}
+button.t-tuile:active{transform:translateY(0);background:rgba(255,255,255,.32)}
+@media (prefers-reduced-motion:reduce){button.t-tuile{transition:none}button.t-tuile:hover,button.t-tuile:focus-visible{transform:none}}
 .t-tl{font-size:.9rem;color:rgba(255,255,255,.88)}
 .t-tuile b{font-family:Poppins,Inter,sans-serif;font-weight:700;font-size:clamp(1.6rem,3.2vw,2.2rem);line-height:1.1;letter-spacing:-.02em}
 .t-tuile b small{font-size:.5em;font-weight:600;letter-spacing:0;margin-left:.15em}
