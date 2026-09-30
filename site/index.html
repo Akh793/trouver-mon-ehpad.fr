@@ -1846,6 +1846,11 @@ a.lx:focus-visible::after{opacity:1;visibility:visible}
 /* garde-fou : la fiche ne défile jamais horizontalement (une information cachée à droite est une information perdue) */
 #fiche,#pan-fiche .fiche{overflow-x:hidden}
 
+/* Fiche simplifiée (29/09/2026) : hypothèse de calcul en étiquette, à côté du montant */
+.f-hypo{display:inline-flex;align-items:center;gap:.4rem;margin-top:.45rem;font-size:.76rem;font-weight:600;color:var(--sur-or);background:var(--ti-or);border-radius:6px;padding:.2rem .55rem}
+.lien-b{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--bl-t);text-decoration:underline;cursor:pointer}
+.f-hyp summary{font-size:.76rem}
+
 </style>
 <!-- Consentement (Consent Mode v2) : aucune mesure d'audience tant que l'utilisateur n'a pas accepté -->
 <script>

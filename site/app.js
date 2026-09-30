@@ -359,7 +359,9 @@
   function calcule(e, s) {
     const mois = M(), nbRes = s.deuxResidents ? 2 : 1;
     const pj = s.chambre === 'cd' ? (e[C.pcd] || e[C.p]) : (e[C.p] || e[C.pcd]);
-    const notes = [];
+    // Fiche simplifiée (29/09/2026) : `notes` = réserves qui changent la lecture du montant, en une
+    // phrase ; `infos` = précisions de calcul, montrées seulement dans le détail replié.
+    const notes = [], infos = [];
     if (pj == null) {
       // Le tarif « aide sociale » peut exister sans le tarif ordinaire : c'est une
       // information utile, il ne faut pas présenter l'établissement comme dépourvu de prix.
@@ -368,17 +370,16 @@
         prixConnu: false,
         tarifAshSeul: tarifAsh != null ? tarifAsh : null,
         notes: [tarifAsh != null
-          ? 'Tarif aide sociale disponible (' + euro2(tarifAsh) + '/jour) ; tarif hors aide sociale non renseigné. '
-            + 'Le reste à charge ordinaire ne peut donc pas être calculé : demandez le prix à l’établissement.'
-          : 'Cet établissement n’a pas communiqué son prix. Impossible de calculer ce qu’il vous coûterait : appelez-le pour le connaître.'],
+          ? 'Seul le tarif aide sociale est connu (' + euro2(tarifAsh) + '/jour). Demandez le prix habituel à l’établissement.'
+          : 'Prix non communiqué : demandez-le à l’établissement.'],
       };
     }
     const chambreSupposee = s.chambre === 'cd' && e[C.pcd] == null;
-    if (chambreSupposee) notes.push('Cet établissement n’a pas communiqué de prix pour les chambres doubles. Le calcul utilise celui d’une chambre seule — le vrai prix sera sans doute différent.');
+    if (chambreSupposee) notes.push('Prix de chambre double non communiqué : calcul sur le prix d’une chambre seule.');
     // Un GIR non connu ne devient pas un GIR moyen : il reste un GIR non connu, et le
     // montant qui en découle porte cette réserve partout où il s'affiche.
     const girSuppose = s.gir === '?';
-    if (girSuppose) notes.push('Le niveau d’autonomie n’est pas connu. Le calcul retient un niveau moyen (GIR 3-4) pour donner un ordre de grandeur : le montant réel dépendra de l’évaluation faite par le médecin coordonnateur et le département, et il peut s’en écarter sensiblement.');
+    if (girSuppose) notes.push('GIR non renseigné : calcul sur un GIR 3-4, le montant réel peut s’en écarter.');
 
     const heberg = pj * mois * nbRes;
     const reg = regimeDe(e);
@@ -395,12 +396,11 @@
       apaConnue = false;           // l'APA en établissement est supprimée dans ces territoires
       const declare = e[C.t56];
       if (declare != null && Math.abs(declare - pf.montant) > 0.01) {
-        notes.push('Cet établissement a déclaré ' + euro2(declare) + ' par jour lors de la dernière publication. '
-          + 'Le calcul retient le montant national en vigueur, ' + euro2(pf.montant) + ' — ' + pf.src + '.');
+        infos.push('Forfait : montant national en vigueur retenu (' + euro2(pf.montant) + '/jour, ' + pf.src
+          + ') ; l’établissement avait déclaré ' + euro2(declare) + '.');
       }
     } else if (reg === 'inconnu') {
-      notes.push('Le régime de financement applicable à cet établissement n’a pas pu être établi. '
-        + 'La part « aide au quotidien » n’est donc pas calculée : demandez-la à l’établissement.');
+      notes.push('Régime de financement non établi : part « aide au quotidien » non calculée, à demander à l’établissement.');
     } else {
       const tg = tarifGir(e, s.gir), t56 = e[C.t56];
       if (tg != null && t56 != null) {
@@ -411,23 +411,18 @@
         const r = apaEtablissement(tg * mois, t56 * mois, ressourcesApa(s), s.couple || s.deuxResidents);
         apa = r.apa * nbRes; apaConnue = true;
         if (Math.abs(tg - t56) < 0.01) {
-          notes.push('Cet établissement déclare le même tarif quel que soit le niveau d’autonomie, '
-            + 'alors qu’il relève du régime de droit commun. L’aide du département ressort donc à zéro ici. '
-            + 'Demandez-lui le tarif qui s’appliquera réellement.');
+          notes.push('Même tarif déclaré pour tous les GIR : APA nulle ici. Demandez le tarif qui s’appliquera.');
         }
         // Le barème impose t12 ≥ t34 ≥ t56. Un ordre inverse signale une déclaration
         // erronée : le montant calculé ici ne peut pas être tenu pour fiable.
         const t12 = e[C.t12], t34 = e[C.t34];
         if (t12 != null && t34 != null && (t12 < t34 - 0.001 || t34 < t56 - 0.001)) {
           depDouteuse = true;
-          notes.push('Les tarifs dépendance déclarés par cet établissement sont dans un ordre impossible '
-            + '(' + euro2(t12) + ' / ' + euro2(t34) + ' / ' + euro2(t56) + ' par jour du GIR 1-2 au GIR 5-6, '
-            + 'alors que le tarif décroît toujours avec le niveau de dépendance). '
-            + 'La part « aide au quotidien » affichée ici n’est donc pas fiable : faites-la confirmer.');
+          notes.push('Tarifs dépendance incohérents (' + euro2(t12) + ' / ' + euro2(t34) + ' / ' + euro2(t56)
+            + ' par jour) : part « aide au quotidien » à faire confirmer.');
         }
       } else {
-        notes.push('Cet établissement n’a pas communiqué le prix de l’aide au quotidien. '
-          + 'Seul le logement est calculé ici : la facture réelle sera plus élevée.');
+        notes.push('Prix de l’aide au quotidien non communiqué : seul le logement est calculé, la facture sera plus élevée.');
       }
     }
 
@@ -526,7 +521,7 @@
       fisc,                          // 3. avantage fiscal annuel, potentiel et différé
       rac, total: facture, aides: apa + apl,
       trou,                          // 5. contribution complémentaire nécessaire
-      moisEpargne, couleur, ash, famille, secteur, vieux, notes,
+      moisEpargne, couleur, ash, famille, secteur, vieux, notes, infos,
       gardeMini, reserveConjoint,   // laissé à la personne avant de compter ce qui manque
     };
   }
@@ -788,11 +783,7 @@
     const infl = INFLATION_CUM_2018_2025;
     // Soustraire deux pourcentages donne des POINTS de pourcentage, jamais un pourcentage.
     const ecart = +(p.e - infl).toFixed(1);
-    const points = (x) => (x >= 0 ? '+' : '−') + nbfr(Math.abs(x)) + ' point' + (Math.abs(x) >= 2 ? 's' : '');
     const complet = p.d === '2018' && p.f === '2025';
-    const compl = complet
-      ? `soit <b>${points(ecart)}</b> ${ecart >= 0 ? 'de plus' : 'de moins'} que l’inflation, qui a été de ${pct(infl)} sur la période`
-      : `sur une période plus courte que 2018-2025&nbsp;: l’établissement n’a pas déclaré chaque année, la comparaison à l’inflation n’est donc pas faite`;
     const baisse = p.e < 0;
     const manquantes = p.p.length - vals.length;
     return `<div class="prix-box ${baisse ? 'baisse' : ''}">
@@ -800,44 +791,35 @@
         <div><b class="${baisse ? 'vert' : 'rouge'}">${pct(p.e)}</b> de ${p.d} à ${p.f}
           <span class="muted">(${p.a != null ? pct(p.a, 1) + ' par an' : '—'})</span></div>
       </div>
-      <p class="prix-s">${euro2(vals[0])} → ${euro2(vals[vals.length - 1])} par jour${complet ? ' · ' + compl : ''}.</p>
-      <p class="prix-n">${nbfr(vals.length)} année${vals.length > 1 ? 's' : ''} déclarée${vals.length > 1 ? 's' : ''} sur ${p.p.length}${manquantes
-        ? `&nbsp;: ${manquantes} manquante${manquantes > 1 ? 's' : ''}, et la courbe s’interrompt là où la déclaration manque` : ''}.
-        ${complet ? '' : compl.charAt(0).toUpperCase() + compl.slice(1) + '.'}</p>
-      <details class="t-det f-hyp"><summary>Ce que cette comparaison suppose</summary>
-        <p class="f-note">Que l’objet comparé soit resté le même d’une année sur l’autre&nbsp;: même type de
-        chambre, mêmes prestations comprises dans le prix, même périmètre. La source publiée ne permet pas
-        de le vérifier&nbsp;: un établissement qui cesse d’inclure l’entretien du linge fait baisser son
-        prix affiché sans que rien ne coûte moins cher. Les prix sont déclarés par l’établissement, à des
-        dates qui ne sont pas les mêmes pour tous.</p>
+      <p class="prix-s">${euro2(vals[0])} → ${euro2(vals[vals.length - 1])} par jour${complet
+        ? ` · ${nbfr(Math.abs(ecart))} point${Math.abs(ecart) >= 2 ? 's' : ''} ${ecart >= 0 ? 'au-dessus' : 'en dessous'} de l’inflation (${pct(infl)})` : ''}${manquantes
+        ? ` · ${manquantes} année${manquantes > 1 ? 's' : ''} non déclarée${manquantes > 1 ? 's' : ''}` : ''}.</p>
+      <details class="t-det f-hyp"><summary>Pourquoi ?</summary>
+        <p class="f-note">Prix déclarés par l’établissement. Ce qu’ils comprennent (chambre, prestations) a pu changer d’une année à l’autre.</p>
       </details>
     </div>`;
   }
 
-  /** Y a-t-il de la place ? Aucune source publique ne le dit. On l'écrit, et on donne
-      les questions qui, elles, obtiennent une réponse. */
+  /** Y a-t-il de la place ? Aucune source publique ne le dit : on donne les questions qui obtiennent une réponse. */
   function blocDispo(r, e) {
     const tel = e && e[C.tel];
-    const occ = r.secteur ? `<p class="muted">Pour situer le secteur, et non cet établissement&nbsp;:
-      les EHPAD de même statut et de même type de commune accueillaient
-      <b>${nbfr(r.secteur.occ)} résidents pour 100 places</b> lors de l’enquête EHPA 2023 de la DREES.
-      Une moyenne nationale de segment ne dit rien du nombre de places libres ici aujourd’hui.</p>` : '';
     return `<div class="dispo-box">
       <b>Y a-t-il de la place&nbsp;?</b>
-      <p><b>Disponibilité à confirmer auprès de l’établissement.</b> Les places réellement libres
-      ne sont publiées dans aucune base publique&nbsp;: ni leur nombre, ni le délai d’attente.</p>
-      <p>Les questions qui obtiennent une réponse utile&nbsp;:</p>
+      <p>À demander à l’établissement. Trois questions utiles&nbsp;:</p>
       <ul class="q-app">
-        <li>Une place est-elle libre aujourd’hui, et pour quelle date d’entrée&nbsp;?</li>
-        <li>S’agit-il d’une place habilitée à l’aide sociale&nbsp;?</li>
-        <li>Quelle chambre est proposée, et à quel tarif exact&nbsp;?</li>
-        <li>Combien de personnes sont inscrites avant nous&nbsp;?</li>
-        <li>Quelles pièces faut-il fournir, et sous quel délai&nbsp;?</li>
+        <li>Une place est-elle libre, et pour quelle date&nbsp;?</li>
+        <li>Est-elle habilitée à l’aide sociale&nbsp;?</li>
+        <li>Quel est le tarif exact de la chambre proposée&nbsp;?</li>
       </ul>
-      ${tel ? `<p class="q-tel"><a href="tel:${esc(tel)}">Appeler le ${esc(String(tel).replace(/(\d\d)(?=\d)/g, '$1 '))}</a></p>` : ''}
-      ${occ}
+      ${tel ? `<p class="q-tel"><a href="tel:${esc(tel)}" data-tel>Appeler le ${esc(String(tel).replace(/(\d\d)(?=\d)/g, '$1 '))}</a></p>` : ''}
     </div>`;
   }
+
+  /** Réserves à afficher sur la fiche. Le GIR supposé est dit une seule fois, en tête de fiche,
+      et seulement quand il change le montant (pas sous forfait). */
+  const reserves = (r) => (r.notes || []).filter((n) => n.indexOf('GIR non renseigné') < 0);
+  const girCompte = (r) => r.girSuppose && r.depConnue && r.reg !== 'exp';
+  const pourquoi2 = (html) => `<details class="t-det f-hyp"><summary>Pourquoi ?</summary><div class="f-note">${html}</div></details>`;
 
   function detailHtml(o, s) {
     const r = o.r, e = o.e;
@@ -848,87 +830,46 @@
 
     // ── ce que l'établissement facture
     let h = '<h4 class="f-t1">Ce que l’établissement facture</h4>';
-    h += l(`Le logement, les repas, le ménage${n}`, euro(r.heberg) + '/mois');
-    h += `<p class="f-note">${euro2(r.pj)} par jour × ${String(M()).replace('.', ',')} jours.</p>`;
-    if (r.depConnue && r.reg === 'exp') {
-      h += l(`L’aide aux gestes du quotidien${n}`, euro(r.dependance) + '/mois');
-      h += `<p class="f-note">Se lever, se laver, s’habiller, manger. Dans ce territoire, cette part
-        est une <b>participation forfaitaire</b> de ${euro2(r.pfJour)} par jour&nbsp;: la même pour tous,
-        quel que soit le niveau d’autonomie et quelles que soient les ressources.</p>`;
-      h += l('<b>Total facturé</b>', '<b>' + euro(r.total) + '/mois</b>', 'sstot');
-    } else if (r.depConnue) {
-      h += l(`L’aide aux gestes du quotidien${n}`, euro(r.dependance) + '/mois');
-      h += `<p class="f-note">Se lever, se laver, s’habiller, manger. Le montant dépend du niveau
-        d’autonomie&nbsp;: ici le GIR&nbsp;${gir}${s.gir === '?' ? ', retenu faute de mieux' : ''}.</p>`;
+    h += l(`Logement, repas, ménage${n}`, euro(r.heberg) + '/mois');
+    h += `<p class="f-note">${euro2(r.pj)} par jour × ${String(M()).replace('.', ',')} jours</p>`;
+    if (r.depConnue) {
+      h += l(`Aide au quotidien${n}`, euro(r.dependance) + '/mois');
+      h += `<p class="f-note">${r.reg === 'exp'
+        ? `Forfait national de ${euro2(r.pfJour)} par jour, identique pour tous`
+        : `GIR&nbsp;${gir}${s.gir === '?' ? ' (supposé)' : ''}`}</p>`;
       h += l('<b>Total facturé</b>', '<b>' + euro(r.total) + '/mois</b>', 'sstot');
     } else {
-      h += l(`L’aide aux gestes du quotidien${n}`, 'non calculée');
-      h += `<p class="f-note">Cette part de la facture existe, mais nous ne disposons pas de
-        l’information nécessaire pour la chiffrer ici. Le total ci-dessous est donc incomplet.</p>`;
+      h += l(`Aide au quotidien${n}`, 'non calculée');
     }
 
     // ── ce que les aides retirent
-    const aides = [];
-    if (r.apaConnue && r.apa > 0) aides.push([
-      'L’allocation personnalisée d’autonomie (APA)', r.apa,
-      'Versée par le département directement à l’établissement. Vous ne la touchez pas&nbsp;: elle vient en déduction de la facture.']);
-    if (r.apl > 0) aides.push([
-      'L’aide au logement', r.apl,
-      'Versée par la caisse d’allocations familiales. Il faut la demander&nbsp;: elle n’est jamais automatique.']);
-
-
-    if (aides.length) {
-      h += '<h4 class="f-t1">Ce que les aides retirent</h4>';
-      aides.forEach(([lib, val, note]) => {
-        h += l('− ' + lib, '− ' + euro(val) + '/mois', 'moins');
-        h += `<p class="f-note">${note}</p>`;
-      });
-    } else if (r.reg === 'exp') {
-      h += '<h4 class="f-t1">Ce que les aides retirent</h4>';
-      h += `<p class="f-note">Aucune. Dans ce territoire, l’APA en établissement est <b>supprimée</b>
-        depuis le 1<sup>er</sup> juillet 2025&nbsp;: il n’y a plus d’aide à déduire, parce qu’il n’y a
-        plus de participation à moduler. La participation forfaitaire ci-dessus en tient lieu.
-        L’aide au logement, elle, reste due si ${mot('y_droit')}.</p>`;
-    } else if (r.apaConnue) {
-      h += '<h4 class="f-t1">Ce que les aides retirent</h4>';
-      h += r.notes.length
-        ? '<p class="f-note">Aucune aide n’a pu être déduite, pour la raison suivante&nbsp;:</p>'
-        : `<p class="f-note">Aucune aide n’a pu être déduite. Les ressources indiquées dépassent
-           les plafonds, ou aucune aide n’a été saisie.</p>`;
+    h += '<h4 class="f-t1">Aides déduites</h4>';
+    if (r.apaConnue && r.apa > 0) h += l('− APA (versée à l’établissement)', '− ' + euro(r.apa) + '/mois', 'moins');
+    if (r.apl > 0) h += l('− Aide au logement', '− ' + euro(r.apl) + '/mois', 'moins');
+    if (!(r.apaConnue && r.apa > 0) && !(r.apl > 0)) {
+      h += `<p class="f-note">${r.reg === 'exp'
+        ? 'Aucune&nbsp;: dans ce département, l’APA est remplacée par le forfait ci-dessus.'
+        : r.apaConnue ? 'Aucune au vu des ressources indiquées.' : 'Aucune calculée.'}</p>`;
     }
-    // les avertissements se lisent ici, au moment où ils expliquent quelque chose
-    h += r.notes.map((x) => `<p class="warn">${esc(x)}</p>`).join('');
+    h += reserves(r).map((x) => `<p class="warn">${esc(x)}</p>`).join('');
 
-    h += l('<b>Ce qu’il faut sortir chaque mois</b>', '<b>' + euro(r.decaisse) + '/mois</b>', 'tot');
-    h += `<p class="f-note">C’est la somme à décaisser, une fois les aides versées à
-      l’établissement déduites. Ni l’impôt, ni l’aide sociale ne sont comptés ici.</p>`;
+    h += l('<b>À payer chaque mois</b>', '<b>' + euro(r.decaisse) + '/mois</b>', 'tot');
 
-    // Un montant mensuel laisse croire que l'entrée ne coûte rien de plus. Elle coûte.
-    h += `<details class="t-det f-hyp"><summary>Ce que ce montant ne comprend pas</summary>
+    // Un montant mensuel laisse croire que l'entrée ne coûte rien de plus : dit en une ligne, détail au clic.
+    h += `<details class="t-det f-hyp"><summary>Non compris dans ce montant</summary>
       <ul class="q-app">
-        <li><b>Les frais du premier mois</b>&nbsp;: dépôt de garantie, souvent trente jours
-            d’hébergement, frais de dossier, préavis du logement quitté, déménagement, mobilier.
-            Aucune base ne les publie&nbsp;: demandez-en le détail chiffré avant de signer.</li>
-        <li><b>Les dépenses personnelles</b>&nbsp;: mutuelle, coiffeur, pédicure, téléphone,
-            télévision, protections non comprises, transports. Elles se règlent sur ce qui reste.</li>
-        <li><b>Les prestations facturées en supplément</b>&nbsp;: ${e[C.nSus]
-            ? nbfr(e[C.nSus]) + ' sont déclarées en supplément par cet établissement'
-            : 'cet établissement n’en a déclaré aucune, ce qui ne veut pas dire qu’il n’en facture pas'}.</li>
-      </ul></details>`;
+        <li>Frais d’entrée&nbsp;: dépôt de garantie, frais de dossier, déménagement.</li>
+        <li>Dépenses personnelles&nbsp;: mutuelle, coiffeur, téléphone…</li>
+        <li>Prestations en supplément&nbsp;: ${e[C.nSus] ? nbfr(e[C.nSus]) + ' déclarée' + (e[C.nSus] > 1 ? 's' : '') : 'aucune déclarée (à vérifier)'}.</li>
+      </ul>${(r.infos || []).map((x) => `<p class="f-note">${esc(x)}</p>`).join('')}</details>`;
 
     // L'avantage fiscal : annuel, différé, conditionnel — donc présenté à part.
     if (r.fisc && r.fisc.applicable && r.fisc.reduction > 0) {
-      h += '<h4 class="f-t1">Et l’année suivante, l’impôt</h4>';
+      h += '<h4 class="f-t1">L’année suivante</h4>';
       h += l('Réduction d’impôt, au maximum', euro(r.fisc.reduction) + '/an');
-      h += `<p class="f-note">25&nbsp;% des frais restants, dans la limite de
-        ${euro(r.fisc.plafondDepenses)} de dépenses${r.fisc.moisRetenus < 12
-          ? ' pour ' + r.fisc.moisRetenus + ' mois de séjour' : ' par an'}${r.nbRes > 1 ? ' et par personne hébergée' : ''}.
-        ${r.fisc.plafonne ? 'Les frais dépassent ce plafond&nbsp;: le surplus ne donne droit à rien. ' : ''}
-        C’est un <b>maximum</b>&nbsp;: une réduction d’impôt ne peut pas dépasser l’impôt réellement dû,
-        et elle n’est pas remboursée. Elle arrive l’année suivante, jamais chaque mois.</p>`;
+      h += `<p class="f-note">25&nbsp;% des frais, plafonnés à ${euro(r.fisc.plafondDepenses)} de dépenses${r.nbRes > 1 ? ' par personne' : ''}. Jamais plus que l’impôt dû.</p>`;
     } else if (r.fisc && !r.fisc.applicable) {
-      h += `<p class="f-note">Une réduction d’impôt de 25&nbsp;% existe pour les personnes imposables.
-        Indiquez-le dans «&nbsp;Préciser ma situation&nbsp;» pour voir ce qu’elle représenterait.</p>`;
+      h += `<p class="f-note">Imposable&nbsp;? Une réduction d’impôt de 25&nbsp;% s’applique&nbsp;: indiquez-le dans «&nbsp;Préciser ma situation&nbsp;».</p>`;
     }
     h += ecartMediane(o);
     return h;
@@ -942,17 +883,11 @@
       <p class="f-note">Ce que ${mot('res')} ne couvrent pas, partagé entre ${pourMoi() ? 'vos' : 'ses'} enfants.</p>
       <div class="ln tot"><span><b>Il manque chaque mois</b></span><b>${euro(f.total)}/mois</b></div>
       <div class="ln"><span>Si la somme est partagée à parts égales entre ${f.nb} enfants</span><b>${euro(f.part)}/mois chacun</b></div>
-      <p class="f-note">Le partage à parts égales est une <b>hypothèse de travail</b>, pas une règle.
-      Aucun barème national n’existe&nbsp;: le département, ou à défaut le juge aux affaires familiales,
-      fixe la part de chacun selon ses revenus et ses charges. Les parts sont souvent inégales.</p>
+      <p class="f-note">Parts égales&nbsp;: une hypothèse. Le département fixe la part de chacun selon ses revenus.</p>
       <details class="t-det f-hyp"><summary>Et l’effet sur l’impôt de chaque enfant</summary>
-        <p class="f-note">La somme versée à un parent dans le besoin se déduit du revenu imposable de
-        l’enfant qui la verse, sans plafond, sur justificatifs — y compris s’il règle l’EHPAD
-        directement. En contrepartie, le parent doit la déclarer comme un revenu.</p>
+        <p class="f-note">La somme versée se déduit du revenu imposable de l’enfant ; le parent la déclare.</p>
         <div class="ln"><span>Pour un enfant dont la tranche serait ${f.tmiHypothese}&nbsp;%</span><b>− ${euro(f.economieSiTmi)}/mois</b></div>
-        <p class="f-note">Ce chiffre ne vaut que pour un foyer à cette tranche-là. Chaque enfant a la
-        sienne, et l’économie réelle dépend de l’ensemble de sa déclaration. Ce montant ne se soustrait
-        pas de ce qu’il faut verser&nbsp;: il arrive l’année suivante, sur son impôt.</p>
+        <p class="f-note">Économie d’impôt l’année suivante, pour un foyer à cette tranche.</p>
       </details>
     </div>`;
   }
@@ -1079,30 +1014,26 @@
       : p ? (r.depConnue ? 'Budget estimé' : 'Calcul incomplet')
           : 'Tarif avant aides';
     return `<div class="f-top">
-        <div><h3>${esc(nom(e))}</h3><p class="f-loc">${esc(e[C.ville])} · à ${nbfr(+o.dist.toFixed(1))} km à vol d’oiseau du lieu recherché</p></div>
+        <div><h3>${esc(nom(e))}</h3><p class="f-loc">${esc(e[C.ville])} · à ${nbfr(+o.dist.toFixed(1))} km</p></div>
         <button type="button" class="f-close" data-fermer aria-label="Fermer la fiche">×</button>
       </div>
       <div class="f-prix">
         <div class="gros" style="color:${r.prixConnu ? (p ? COULEUR[r.couleur] : 'var(--ink)') : 'var(--mut2)'}">${gros}</div>
         <p class="lib">${lib}</p>
         ${r.prixConnu && p ? `<p class="ctx">${!r.depConnue
-            ? 'La part «&nbsp;aide au quotidien&nbsp;» n’est pas déclarée&nbsp;: le budget réel sera plus élevé.'
-            : r.aides >= 1
-              ? `Aides déduites&nbsp;: ${euro(r.aides)}. Hors frais d’entrée et dépenses personnelles.`
-              : r.reg === 'exp'
-                ? 'Forfait d’aide au quotidien inclus. Hors frais d’entrée et dépenses personnelles.'
-                : 'Aucune aide déduite au vu des ressources indiquées. Hors frais d’entrée et dépenses personnelles.'}</p>` : ''}
+            ? 'Hors aide au quotidien (non déclarée)&nbsp;: le budget réel sera plus élevé.'
+            : r.aides >= 1 ? `Aides déduites&nbsp;: ${euro(r.aides)}` : r.reg === 'exp' ? 'Forfait d’aide au quotidien inclus' : 'Aucune aide déduite'}</p>` : ''}
+        ${r.prixConnu && p && girCompte(r) ? `<p class="f-hypo">GIR 3-4 supposé <button type="button" class="lien-b" data-preciser-gir>Préciser</button></p>` : ''}
         ${r.prixConnu && !p ? `<p class="ctx">Indiquez ${mot('retraite')}, en haut de page, pour estimer le budget.</p>` : ''}
         ${r.prixConnu && p && r.trou > 0 ? `<p class="f-manque"><b>À compléter&nbsp;: ${euro(r.trou)} / mois</b><br>
-          Ressources moins ${euro(r.gardeMini)} laissés pour ${mot('possessif')} dépenses personnelles${r.reserveConjoint ? ` et ${euro(r.reserveConjoint)} pour le conjoint à domicile` : ''}${state.epargne > 0 && r.moisEpargne !== Infinity && r.moisEpargne >= 1
-            ? `, et hors épargne (elle y pourvoirait environ ${Math.floor(r.moisEpargne)} mois)` : ''}.</p>` : ''}
+          après ${euro(r.gardeMini)} gardés pour ${mot('possessif')} dépenses${r.reserveConjoint ? ` et ${euro(r.reserveConjoint)} pour le conjoint` : ''}${state.epargne > 0 && r.moisEpargne !== Infinity && r.moisEpargne >= 1
+            ? ` · l’épargne tient environ ${Math.floor(r.moisEpargne)} mois` : ''}</p>` : ''}
       </div>
       <div class="f-faits">
         ${fait(ashEtat(e), 'Aide sociale')}
         ${fait(e[C.hasN] || 'Non publiée', 'Évaluation (A à D)')}
         ${fait(e[C.statut] != null ? STATUTS[e[C.statut]] : 'Non renseigné', 'Statut')}
       </div>
-      <p class="f-dispo-l">Disponibilités&nbsp;: contactez l’établissement.</p>
       <div class="f-cta print-hide">
         <!-- « Appeler » et « Garder » retirés de la fiche (29/09/2026) : ils figurent déjà sur la ligne de
              l'établissement dans la liste, et le téléphone reste dans l'onglet « L'établissement ». -->
@@ -1128,9 +1059,9 @@
     0: 'Non',
   };
   const ASH_NOTE = {
-    1: 'Certaines places sont habilitées. L’accord dépend du département et de la place proposée.',
-    2: 'Le répertoire et le tarif déclaré se contredisent. À vérifier auprès de l’établissement.',
-    0: 'Établissement non habilité. Une exception existe après plusieurs années de séjour payé : à voir avec le département.',
+    1: 'Certaines places seulement ; l’accord revient au département.',
+    2: 'Sources contradictoires : à vérifier auprès de l’établissement.',
+    0: 'Exception possible après plusieurs années de séjour : voir le département.',
   };
   const ashEtat = (e) => (ASH_LIB[e[C.ash]] || 'Non renseigné');
   const ashNote = (e) => (ASH_NOTE[e[C.ash]] || 'Information absente du répertoire.');
@@ -1160,90 +1091,51 @@
     if (avec.length < 5) return '';
     const med = avec.map((x) => x.r.facture).sort((a, b) => a - b)[Math.floor(avec.length / 2)];
     const d = o.r.facture - med;
-    const base = `<p class="f-note">Prix médian comparé&nbsp;: ${euro(med)} sur ${avec.length} établissements
-      de la sélection ayant déclaré un tarif.`;
-    if (Math.abs(d) < 20) return base + ' Cette facture en est proche.</p>';
-    return base + ` Cette facture est <b>${euro(Math.abs(d))} ${d < 0 ? 'en dessous' : 'au-dessus'}</b>.</p>`;
+    return `<p class="f-note">Médiane de la sélection&nbsp;: ${euro(med)} (${avec.length} établissements)${Math.abs(d) < 20
+      ? ', facture proche' : ` · <b>${d < 0 ? '−' : '+'}${euro(Math.abs(d))}</b> ici`}.</p>`;
   }
 
   function ongletHtml(k, o, s) {
     const e = o.e, r = o.r;
     if (k === 'prix') {
+      const a = r.ash;
+      const reste = a && a.depConnue && a.depReste > 0 ? a.garde - a.depReste : null;
       return `${detailHtml(o, s)}
         ${blocFamille(r)}
         <h4 class="f-t1">Aide sociale</h4>
-        <div class="ln"><span>État de l’habilitation</span><b>${esc(ashEtat(e))}</b></div>
+        <div class="ln"><span>Habilitation</span><b>${esc(ashEtat(e))}</b></div>
         <p class="f-note">${esc(ashNote(e))}</p>
-        ${r.ash ? `<div class="scenario"><b>Et si les ressources ne suffisent pas&nbsp;?</b>
-            <p class="f-note">Le département peut payer la différence. C’est l’aide sociale à
-            l’hébergement. Elle n’est possible que dans un établissement habilité — celui-ci l’est.</p>
-            ${r.ash.aConfirmer ? '<p class="warn">Habilitation à vérifier : le répertoire officiel indique « non habilité », alors que l’établissement déclare un tarif « aide sociale ». Appelez-le pour savoir si une place habilitée est libre.</p>' : ''}
-            <div class="ln"><span>Prix facturé dans ce cadre</span><b>${euro(r.ash.prixRetenu)}/mois</b></div>
-            <p class="f-note">${r.ash.prixEstime
-              ? 'Cet établissement n’a pas communiqué son tarif «&nbsp;aide sociale&nbsp;». Le calcul retient son tarif d’hébergement habituel : le vrai montant, fixé par le département, sera souvent plus bas.'
-              : `Ce n’est pas le tarif affiché plus haut&nbsp;: sous aide sociale, le prix est fixé par le département${r.ash.prixRetenu < r.heberg ? `, ici ${euro(r.heberg - r.ash.prixRetenu)} de moins par mois que le tarif habituel` : ''}.`}</p>
-            <div class="ln"><span>${mot('Sujet')} verse${pourMoi() ? 'z' : ''} sur ${pourMoi() ? 'vos' : 'ses'} propres ressources</span><b>− ${euro(r.ash.partParent)}/mois</b></div>
-            <p class="f-note">${r.ash.reste > 0
-              ? `Le département prend 90&nbsp;% de ses ressources, en lui laissant au minimum ${euro(BAREME.ashResteMiniEur)} par mois${r.ash.gardeMini <= BAREME.ashResteMiniEur * r.nbRes + 0.01 ? '&nbsp;— c’est ce plancher qui s’applique ici' : ''}.`
-              : 'Il ne verse que le prix facturé&nbsp;: la règle des 90&nbsp;% est un plafond, pas un forfait.'}</p>
-            <div class="ln"><span>Il lui resterait, après l’hébergement</span><b>${euro(r.ash.garde)}/mois</b></div>
-            ${r.ash.depConnue && r.ash.depReste > 0
-              ? `<div class="ln"><span>Mais l’aide aux gestes du quotidien reste due</span><b>− ${euro(r.ash.depReste)}/mois</b></div>
-                 <p class="f-note">L’aide sociale ne couvre que l’hébergement. ${r.ash.reg === 'exp'
-                   ? 'La participation forfaitaire, elle, reste à sa charge.'
-                   : 'Le tarif dépendance restant après APA, lui, reste à sa charge.'}</p>
-                 <div class="ln tot"><span><b>Pour ses dépenses personnelles, il resterait</b></span><b>${euro(Math.max(0, r.ash.garde - r.ash.depReste))}/mois</b></div>
-                 ${r.ash.garde - r.ash.depReste < 0
-                   ? `<p class="att">Ce reste à vivre est <b>négatif</b> de ${euro(r.ash.depReste - r.ash.garde)} par mois&nbsp;:
-                      ${mot('res')} ne suffisent pas à couvrir cette part une fois la
-                      contribution à l’hébergement versée. Le département apprécie ces situations au cas par cas
-                      — c’est un point à soulever explicitement lors de la demande.</p>`
-                   : ''}`
-              : r.ash.depConnue
-                ? ''
-                : `<p class="f-note">La part «&nbsp;aide au quotidien&nbsp;» n’a pas pu être chiffrée&nbsp;:
-                   elle se retranchera de ce montant, car l’aide sociale ne couvre que l’hébergement.</p>`}
-            ${r.ash.reserveConjoint ? `<div class="ln"><span>Son conjoint resté à domicile garde</span><b>${euro(r.ash.reserveConjoint)}/mois</b></div>` : ''}
-            <div class="ln tot"><span><b>Le département avance</b></span><b>${euro(r.ash.reste)}/mois</b></div>
-            ${r.ash.reste > 0
-              ? `<p class="f-note">Ce montant s’accumule tant que dure le séjour. Le département peut en
-                 demander tout ou partie&nbsp;: aux enfants au titre de l’obligation alimentaire pendant
-                 le séjour, et à la succession ensuite.</p>
-                 <p class="att">Ce n’est pas une créance calculable d’avance. Elle dépend de la durée réelle
-                 du séjour, de l’évolution des tarifs et des ressources, des montants que le département
-                 fixera, et de ce que comportera la succession. Nous ne projetons donc aucun total.</p>`
-              : `<p class="f-note">Au tarif retenu, ${mot('res')} couvrent le prix&nbsp;:
-                 le département n’aurait rien à avancer, donc rien à récupérer. L’aide sociale garde
-                 un intérêt&nbsp;: elle ouvre l’accès au tarif habilité, souvent inférieur.</p>`}
-            <p class="att">Le département peut aussi demander une participation aux enfants, et aux
-            gendres et belles-filles. Aucun barème national n’existe&nbsp;: c’est lui, ou le juge, qui
-            fixe les montants. <a href="/aides-ehpad/aide-sociale-hebergement/">Ce qu’il faut savoir avant de demander l’aide sociale</a></p>
-            <details class="t-det f-hyp"><summary>Ce que ce scénario suppose</summary>
-              <ul class="q-app">
-                <li>Que l’aide sociale soit <b>accordée</b>&nbsp;: elle ne l’est pas de droit. Le département
-                    vérifie les ressources, l’épargne, le patrimoine et la résidence.</li>
-                <li>Qu’une <b>place habilitée</b> soit libre. L’habilitation de l’établissement ne garantit
-                    pas que la place proposée le soit.</li>
-                <li>${r.ash.prixEstime
-                    ? 'Que le tarif aide sociale, <b>non communiqué</b> par cet établissement, soit proche de son tarif habituel. Le département fixe le vrai montant.'
-                    : 'Que le tarif aide sociale déclaré reste celui qui sera appliqué.'}</li>
-                <li>Que les ressources saisies correspondent à celles que le département retiendra&nbsp;:
-                    ses règles ne recouvrent pas exactement la notion courante de revenu.</li>
-              </ul>
-              <p class="f-note">Ce calcul n’est pas une notification d’aide sociale. Seul le département
-              en délivre une, après instruction du dossier.</p>
-            </details>
+        ${a ? `<div class="scenario"><b>Si les ressources ne suffisent pas</b>
+            <p class="f-note">Le département peut payer la différence (aide sociale à l’hébergement).</p>
+            ${a.aConfirmer ? '<p class="warn">Habilitation à confirmer&nbsp;: demandez si une place habilitée est libre.</p>' : ''}
+            <div class="ln"><span>Prix sous aide sociale</span><b>${euro(a.prixRetenu)}/mois</b></div>
+            ${a.prixEstime ? '<p class="f-note">Tarif habituel retenu (tarif aide sociale non communiqué)</p>'
+              : a.prixRetenu < r.heberg ? `<p class="f-note">Fixé par le département&nbsp;: ${euro(r.heberg - a.prixRetenu)} de moins que le tarif habituel</p>` : ''}
+            <div class="ln"><span>${mot('Sujet')} verse${pourMoi() ? 'z' : ''}</span><b>− ${euro(a.partParent)}/mois</b></div>
+            <p class="f-note">${a.reste > 0 ? `90&nbsp;% des ressources, ${euro(BAREME.ashResteMiniEur)} minimum laissés` : 'Le prix facturé, pas plus'}</p>
+            ${a.depConnue && a.depReste > 0
+              ? `<div class="ln"><span>Aide au quotidien (reste due)</span><b>− ${euro(a.depReste)}/mois</b></div>
+                 <div class="ln"><span>Reste pour ses dépenses</span><b>${euro(Math.max(0, reste))}/mois</b></div>
+                 ${reste < 0 ? `<p class="att">Reste négatif (${euro(-reste)}/mois)&nbsp;: à signaler au département lors de la demande.</p>` : ''}`
+              : `<div class="ln"><span>${a.depConnue ? 'Reste pour ses dépenses' : 'Reste, avant aide au quotidien'}</span><b>${euro(a.garde)}/mois</b></div>`}
+            ${a.reserveConjoint ? `<div class="ln"><span>Le conjoint à domicile garde</span><b>${euro(a.reserveConjoint)}/mois</b></div>` : ''}
+            <div class="ln tot"><span><b>Le département avance</b></span><b>${euro(a.reste)}/mois</b></div>
+            <p class="f-note">${a.reste > 0
+              ? 'Récupérable sur la succession ; les enfants peuvent être sollicités.'
+              : 'Rien à avancer au tarif retenu ; l’aide sociale donne accès au tarif habilité.'}
+              <a href="/aides-ehpad/aide-sociale-hebergement/">En savoir plus</a></p>
+            ${pourquoi2(`<ul class="q-app">
+                <li>L’aide n’est pas de droit&nbsp;: le département examine ressources, épargne et patrimoine.</li>
+                <li>Il faut qu’une place habilitée soit libre.</li>
+                <li>${a.prixEstime ? 'Le vrai tarif aide sociale est fixé par le département.' : 'Le tarif aide sociale déclaré est supposé inchangé.'}</li>
+                <li>Aucun total récupérable n’est projeté&nbsp;: il dépend de la durée du séjour et de la succession.</li>
+              </ul>`)}
           </div>` : ''}
-        ${e[C.temp] != null ? `<h4 class="f-t1">Si le séjour est temporaire</h4>
-          <div class="ln"><span>Tarif d’hébergement temporaire déclaré</span><b>${euro2(e[C.temp])}/jour</b></div>
-          <p class="f-note">Les montants calculés sur cette page portent tous sur un
-          <b>hébergement permanent</b>. L’hébergement temporaire est un autre régime&nbsp;: son tarif
-          est distinct, l’APA y obéit à d’autres règles, l’aide sociale à l’hébergement n’y est pas
-          acquise, et il est exclu de l’expérimentation de fusion des financements. Nous ne le
-          calculons pas&nbsp;: demandez à l’établissement le coût d’un séjour temporaire, et au
-          département les aides mobilisables pour cette formule.</p>` : ''}
-        ${o.prix ? '<h4>L’évolution du tarif</h4>' + blocPrix(o.prix) : ''}
-        <p class="f-src">Tarifs déclarés par l’établissement à la Caisse nationale de solidarité pour l’autonomie${e[C.maj] ? ', mis à jour ' + mfr(e[C.maj]) : ''}.</p>`;
+        ${e[C.temp] != null ? `<h4 class="f-t1">Séjour temporaire</h4>
+          <div class="ln"><span>Tarif déclaré</span><b>${euro2(e[C.temp])}/jour</b></div>
+          <p class="f-note">Non calculé ici&nbsp;: les aides y suivent d’autres règles.</p>` : ''}
+        ${o.prix ? '<h4>Évolution du tarif</h4>' + blocPrix(o.prix) : ''}
+        <p class="f-src">Tarifs CNSA${e[C.maj] ? ', mis à jour ' + mfr(e[C.maj]) : ''}.</p>`;
     }
     if (k === 'etab') {
       const chips = [];
@@ -1251,13 +1143,13 @@
       if (e[C.linge] != null) chips.push(`<span class="chip">Linge facturé ${euro2(e[C.linge])}${e[C.lingeU] ? ' / ' + esc(e[C.lingeU]) : ''}</span>`);
       if (e[C.nIncl] || e[C.nSus]) chips.push(`<span class="chip">${e[C.nIncl] || 0} prestation(s) comprise(s) · ${e[C.nSus] || 0} en sus</span>`);
       if (e[C.tarif]) chips.push(`<span class="chip">${e[C.tarif] === 'G' ? 'Tarif global de soins' : e[C.tarif] === 'P' ? 'Tarif partiel de soins' : 'Petite unité de vie'}${e[C.pui] ? ' · pharmacie interne' : ''}</span>`);
-      if (e[C.approx]) chips.push('<span class="chip chip-warn">position approximative : centre de la commune</span>');
-      if (r.vieux) chips.push(`<span class="chip chip-warn">tarif déclaré il y a ${r.vieux} mois : demandez celui du jour</span>`);
+      if (e[C.approx]) chips.push('<span class="chip chip-warn">position approximative</span>');
+      if (r.vieux) chips.push(`<span class="chip chip-warn">tarif de ${r.vieux} mois : à redemander</span>`);
       return `<div class="ln"><span>Adresse</span><b style="white-space:normal;text-align:right">${esc(e[C.adr] || 'Non publiée')}<br>${esc(e[C.cp])} ${esc(e[C.ville])}</b></div>
-        <div class="ln"><span>Téléphone</span><b>${e[C.tel] ? `<a href="tel:${esc(e[C.tel])}">${esc(e[C.tel].replace(/(\d\d)(?=\d)/g, '$1 '))}</a>` : 'Non publié'}</b></div>
+        <div class="ln"><span>Téléphone</span><b>${e[C.tel] ? `<a href="tel:${esc(e[C.tel])}" data-tel>${esc(e[C.tel].replace(/(\d\d)(?=\d)/g, '$1 '))}</a>` : 'Non publié'}</b></div>
         <div class="ln"><span>Gestionnaire</span><b style="white-space:normal;text-align:right">${esc(e[C.pm] || 'Non publié')}</b></div>
         <div class="ln"><span>Ouvert depuis</span><b>${esc(e[C.ouv] || 'Non publié')}</b></div>
-        <div class="ln"><span title="Identifiant national de l’établissement, utilisé par les administrations et les professionnels">Numéro FINESS</span><b>${esc(e[C.fin])}</b></div>
+        <div class="ln"><span title="Identifiant national de l’établissement">Numéro FINESS</span><b>${esc(e[C.fin])}</b></div>
         ${blocDispo(r, e)}
         <div class="chips">${chips.join('')}</div>
         <div class="liens">
@@ -1268,22 +1160,17 @@
     }
     if (k === 'qual') {
       const hasFutur = e[C.hasD] && String(e[C.hasD]).slice(0, 10) > new Date().toISOString().slice(0, 10);
-      return `${hasFutur ? `<p class="warn">La date d’évaluation publiée par la Haute Autorité de santé
-          (${dfr(e[C.hasD])}) est postérieure à aujourd’hui. Il s’agit d’une visite programmée, ou d’une
-          erreur de saisie à la source&nbsp;: le résultat ci-dessous ne peut pas être lu comme une
-          évaluation déjà rendue.</p>` : ''}
+      return `${hasFutur ? `<p class="warn">Date d’évaluation publiée dans le futur (${dfr(e[C.hasD])})&nbsp;: résultat à confirmer.</p>` : ''}
         <div class="ln"><span>Évaluation officielle</span><b>${e[C.hasN] || 'non publiée'}</b></div>
         ${e[C.hasD] ? `<div class="ln"><span>Date de l’évaluation</span><b>${dfr(e[C.hasD])}</b></div>` : ''}
         ${e[C.hasCI] != null ? `<div class="ln"><span>Critères impératifs atteints</span><b>${e[C.hasCI]} / 18</b></div>` : ''}
         ${e[C.hasM] != null ? `<div class="ln"><span>Moyenne des objectifs</span><b>${String(e[C.hasM]).replace('.', ',')} / 100</b></div>` : ''}
         ${Array.isArray(e[C.hasC]) && e[C.hasC][0] != null ? HAS_CHAPITRES.map((c, i) => `<div class="ln"><span>${esc(c)}</span><b>${String(e[C.hasC][i]).replace('.', ',')} / 4</b></div>`).join('') : ''}
-        ${e[C.hasO] ? `<p class="muted" style="font-size:.78rem;margin-top:.5rem">Organisme évaluateur : ${esc(e[C.hasO])} — choisi et rémunéré par l’établissement lui-même.</p>` : ''}
-        ${!e[C.hasN] ? '<p class="muted" style="font-size:.82rem;margin-top:.5rem">Aucune évaluation publiée. Cela ne dit rien de la qualité de l’établissement : toutes les évaluations ne sont pas encore réalisées ni publiées.</p>' : ''}
+        ${e[C.hasO] ? `<p class="f-note" style="margin-top:.5rem">Évaluateur&nbsp;: ${esc(e[C.hasO])} (choisi et payé par l’établissement)</p>` : ''}
+        ${!e[C.hasN] ? '<p class="f-note" style="margin-top:.5rem">Pas encore d’évaluation publiée.</p>' : ''}
         <h4>Hygiène alimentaire</h4>
-        ${e[C.alim] ? `<div class="ln"><span>Dernier contrôle du ${dfr(e[C.alim][1])}</span><b>${esc(e[C.alim][0])}</b></div>${e[C.alim][2] ? `<div class="ln"><span>Suite donnée</span><b>${esc(e[C.alim][2])}</b></div>` : ''}` : '<p class="muted" style="font-size:.82rem">Aucun contrôle publié pour cet établissement.</p>'}
-        <p class="f-src">Évaluations : Haute Autorité de santé. Hygiène : Direction générale de l’alimentation.
-        ${e[C.ashsrc] ? ' Habilitation à l’aide sociale : ' + esc(ASH_SRC[e[C.ashsrc]]) + '.' : ''}
-        ${e[C.statutsrc] ? ' Statut : ' + esc(STATUT_SRC[e[C.statutsrc]]) + '.' : ''}</p>`;
+        ${e[C.alim] ? `<div class="ln"><span>Contrôle du ${dfr(e[C.alim][1])}</span><b>${esc(e[C.alim][0])}</b></div>${e[C.alim][2] ? `<div class="ln"><span>Suite donnée</span><b>${esc(e[C.alim][2])}</b></div>` : ''}` : '<p class="f-note">Aucun contrôle publié.</p>'}
+        <p class="f-src">Sources&nbsp;: Haute Autorité de santé, Alim’confiance.</p>`;
     }
     // onglet « essentiel » : de quoi se faire une opinion en dix secondes
     const l = [];
@@ -1294,14 +1181,14 @@
       : r.reg === 'inconnu' ? 'régime à confirmer' : 'selon le GIR'}</b></div>`);
     if (r.apaConnue && r.apa > 0) l.push(`<div class="ln"><span>APA versée à l’établissement</span><b>− ${euro(r.apa)}/mois</b></div>`);
     if (o.prix) l.push(`<div class="ln"><span>Évolution du tarif ${o.prix.d}–${o.prix.f}</span><b class="${o.prix.e < 0 ? 'vert' : 'rouge'}">${pct(o.prix.e)}</b></div>`);
-    if (e[C.cap]) l.push(`<div class="ln"><span>Capacité</span><b>${nbfr(e[C.cap])} places</b><i class="ln-d">${e[C.capsrc] === 'finess' ? 'installées (FINESS, 2026)' : 'en 2020'} · ne dit rien des places libres</i></div>`);
+    if (e[C.cap]) l.push(`<div class="ln"><span>Capacité</span><b>${nbfr(e[C.cap])} places${e[C.capsrc] === 'finess' ? '' : ' (2020)'}</b></div>`);
     const offre = offreSpecialisee(e);
-    if (offre.length) l.push(`<div class="ln ln-offre"><span>Accueil spécialisé</span><b>${offre.map((x) => esc(x)).join(' · ')}</b><i class="ln-d">répertoire FINESS au 29/09/2026 ; places installées</i></div>`);
+    if (offre.length) l.push(`<div class="ln ln-offre"><span>Accueil spécialisé</span><b>${offre.map((x) => esc(x)).join(' · ')}</b></div>`);
     const tete = r.prixConnu && perso()
       ? `<p class="f-resume">${resumeSimple(o)}</p>` : '';
     return tete + l.join('') +
-      r.notes.map((n) => `<p class="warn">${esc(n)}</p>`).join('') +
-      '<p class="f-src"><a href="notre-methodologie.html">Sources et dates</a> — tarifs CNSA, identité FINESS, évaluation HAS.</p>';
+      (r.prixConnu ? reserves(r) : r.notes || []).map((n) => `<p class="warn">${esc(n)}</p>`).join('') +
+      '<p class="f-src"><a href="notre-methodologie.html">Sources et dates</a></p>';
   }
 
   /** Unités et accueils déclarés au répertoire FINESS+ (places installées). Le PASA n'a pas de places
@@ -2159,6 +2046,13 @@
     if (voir) { e.stopPropagation(); selectionne(voir.dataset.voir); return; }
     const onglet = t.closest('[data-onglet]');
     if (onglet) { ongletActif = onglet.dataset.onglet; majFiche(); return; }
+    const pg = t.closest('[data-preciser-gir]');
+    if (pg) {
+      const f = document.querySelector('.fld-gir');
+      if (innerWidth < 1040) ferme();
+      if (f) { f.scrollIntoView({ behavior: 'smooth', block: 'center' }); const c = f.querySelector('input'); if (c) c.focus({ preventScroll: true }); }
+      return;
+    }
     const modif = t.closest('[data-modif]');
     if (modif) {
       evt('calculator_started', {});
@@ -2593,7 +2487,7 @@
       }],
       ['GIR inconnu : le montant porte la réserve, il ne la perd pas', () => {
         const r = calcule(E, { ...base, gir: '?' });
-        return r.girSuppose === true && r.notes.some((t) => t.indexOf('n’est pas connu') >= 0);
+        return r.girSuppose === true && r.notes.some((t) => t.indexOf('GIR non renseigné') >= 0);
       }],
       ['Chambre double sans tarif déclaré : la substitution est signalée', () => {
         const r = calcule(mk({ 6: 100, 9: 21.85, 10: 13.86, 11: 5.89, 20: 1 }), { ...base, chambre: 'cd' });
@@ -2662,13 +2556,13 @@
       ['Régime expérimental : un tarif déclaré divergent est signalé, pas retenu', () => {
         const X = mk({ 6: 100, 9: 6.10, 10: 6.10, 11: 6.10, 20: 1, 45: 'exp' });
         const r = calcule(X, { ...base });
-        return r.notes.some((t) => t.indexOf('montant national en vigueur') >= 0);
+        return r.infos.some((t) => t.indexOf('montant national en vigueur') >= 0);
       }],
       ['Régime inconnu : la part « aide au quotidien » n’est pas inventée', () => {
         const X = mk({ 6: 100, 9: 21.85, 10: 13.86, 11: 5.89, 20: 1, 45: null });
         const r = calcule(X, { ...base });
         return r.reg === 'inconnu' && r.dependance === 0 && r.depConnue === false
-            && r.notes.some((t) => t.indexOf('régime de financement') >= 0);
+            && r.notes.some((t) => t.indexOf('Régime de financement') >= 0);
       }],
       ['Forfait : le barème est daté et sourcé', () => {
         const a = participationForfaitaire('2025-08-01'), b2 = participationForfaitaire('2026-03-01');
