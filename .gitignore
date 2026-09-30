@@ -23,6 +23,14 @@ build/cnsa/
 build/fonts/
 build/__pycache__/
 build/seo/__pycache__/
+# FINESS+, INSEE, ARS (29/09/2026) : fichiers bruts retéléchargeables (MAINTENANCE.md §4.3)
+build/finessplus/*.gz
+build/finessplus/finess_ehpad_plus.json
+build/finess_ehpad_*.json
+build/insee/*.parquet
+build/insee/*.log
+build/ars/pages/
+build/*/__pycache__/
 
 # --- audit : on garde les résultats dérivés légers, pas les fichiers bruts
 build/audit/*
@@ -42,6 +50,3 @@ build/index.template.v*.html
 build/site.v*.css
 site/*.v*.js
 .DS_Store
-
-*.zip
-.wrangler/

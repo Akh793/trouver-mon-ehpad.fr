@@ -228,8 +228,8 @@ n’y changent quoi que ce soit.</li>
 <section><h2>2. Ce qu’il faut sortir chaque mois</h2>
 <ol>
 <li><b>Moins l’allocation personnalisée d’autonomie</b> — versée directement à l’établissement par le département.
-Jusqu’à 2 846,77 € de ressources par mois, le résident ne paie que le tarif dépendance le plus faible. Au-delà de
-4 379,64 €, sa participation est plafonnée. Dans les territoires d’expérimentation, cette allocation en établissement
+Jusqu’à 2 869,55 € de ressources par mois, le résident ne paie que le tarif dépendance le plus faible. Au-delà de
+4 414,70 €, sa participation est plafonnée. Dans les territoires d’expérimentation, cette allocation en établissement
 est <b>supprimée</b>&nbsp;: la participation forfaitaire en tient lieu. <a href="/aides-ehpad/apa/">Le détail</a></li>
 <li><b>Moins l’aide au logement</b> — si l’établissement est conventionné. Son montant est notifié par la caisse
 d’allocations familiales ou la Mutualité sociale agricole, <b>pour un établissement précis</b>&nbsp;: il n’est pas
@@ -247,7 +247,7 @@ remboursée. Une personne non imposable n’en tire rien. <a href="/aides-ehpad/
 <ul>
 <li>Hébergement&nbsp;: {med_mois(s)} par mois.</li>
 <li>Aide au quotidien&nbsp;: environ 420 € par mois en régime de droit commun, dont l’essentiel est pris en charge
-par l’allocation personnalisée d’autonomie, puisque la retraite est inférieure à 2 846,77 €. Dans un territoire
+par l’allocation personnalisée d’autonomie, puisque la retraite est inférieure à 2 869,55 €. Dans un territoire
 d’expérimentation, ce serait à la place une participation forfaitaire d’environ 188 € par mois, sans aucune aide
 à déduire.</li>
 <li>Aide au logement&nbsp;: dépend du conventionnement de l’établissement, à demander à la caisse d’allocations familiales.</li>
@@ -344,8 +344,8 @@ national des personnes âgées</a> (03/02/2026), <a href="https://www.cnsa.fr/bu
 Le résident paie au minimum le tarif GIR 5-6, quel que soit son niveau d’autonomie&nbsp;: c’est le « ticket modérateur ».
 L’allocation couvre la différence, selon ses ressources&nbsp;:</p>
 <ul>
-<li>jusqu’à <b>2 846,77 € de ressources par mois</b>&nbsp;: le résident ne paie que le tarif GIR 5-6 ;</li>
-<li>entre 2 846,77 € et <b>4 379,64 €</b>&nbsp;: sa participation augmente progressivement ;</li>
+<li>jusqu’à <b>2 869,55 € de ressources par mois</b>&nbsp;: le résident ne paie que le tarif GIR 5-6 ;</li>
+<li>entre 2 869,55 € et <b>4 414,70 €</b>&nbsp;: sa participation augmente progressivement ;</li>
 <li>au-delà&nbsp;: elle est plafonnée à 80 % de l’écart entre son tarif et le tarif GIR 5-6.</li>
 </ul>
 <p>En couple, les ressources du ménage sont divisées par deux. L’allocation n’est pas versée si son montant est
@@ -700,9 +700,13 @@ d’Alzheimer débutante, et un environnement fermé n’est pas neutre.</p></se
 <section><h2>Et le tarif&nbsp;?</h2><p>Le tarif d’hébergement de l’unité peut être le même que dans le reste de
 l’établissement, ou différent&nbsp;: demandez-le. Le tarif dépendance, lui, suit le niveau d’autonomie de la personne,
 et c’est la ligne que couvre en grande partie l’allocation personnalisée d’autonomie.</p>
-<div class="att">Les données publiques ne disent pas quels établissements disposent d’une unité protégée, ni combien
-de places y sont disponibles. C’est une question à poser directement à l’établissement&nbsp;: nous préférons l’écrire
-plutôt que d’afficher une information que nous n’avons pas.</div></section>""",
+</section>
+<section><h2>Quels EHPAD en disposent</h2><p>Depuis septembre 2026, le répertoire officiel FINESS publie, avec ses
+nomenclatures, les unités de chaque établissement&nbsp;: unité protégée, unité d’hébergement renforcée, pôle d’activités
+et de soins adaptés, hébergement temporaire, accueil de jour. Chaque fiche du site les indique, en places installées.
+<a href="/ehpad-alzheimer/">Les EHPAD avec une unité Alzheimer, département par département</a></p>
+<div class="att">Une place installée n’est pas une place libre&nbsp;: aucune donnée publique ne dit si une place
+est disponible aujourd’hui. C’est la question à poser directement à l’établissement.</div></section>""",
   None),
 
  ('trouver-une-place-en-ehpad', 'Comment trouver une place en EHPAD',

@@ -82,6 +82,87 @@ def bloc_statut_prix(lot, ou):
             + f'. Écart entre le statut le moins cher et le plus cher&nbsp;: {eur(mois_eur(hi[0] - lo[0]))} par mois.</p>')
 
 
+def _lien_sur(ctx, r):
+    """Nom de l'établissement, lié à sa fiche ou à la page de sa commune quand l'une existe ;
+    sans lien sinon (commune sans page et établissement sans fiche : pas de lien mort)."""
+    u = ctx['url_fiche'].get(r['fin'])
+    if not u and r['cle'] in ctx['villes_page']: u = ctx['url_ville'][r['cle']]
+    n = esc(r['nom_aff'])
+    return f'<a href="{u}">{n}</a>' if u else f'{n} <span class="muted">({esc(r["ville_nom"])})</span>'
+
+
+_POP = None
+
+
+def pop75(niveau, code):
+    """[habitants, 75 ans et plus, 85 ans et plus] (INSEE, RP 2023), ou None. Voir insee/pop75.py."""
+    global _POP
+    if _POP is None:
+        f = os.path.join(B, 'insee', 'pop75.json')
+        _POP = json.load(open(f, encoding='utf-8')) if os.path.exists(f) else {}
+    return (_POP.get(niveau) or {}).get(code)
+
+
+def _taux(lot, p):
+    places = sum(r['cap'] for r in lot if r.get('cap'))
+    return places, (1000 * places / p[1] if p and p[1] else None)
+
+
+def bloc_population(ctx, lot, ou, niveau, code, lien_dep=None):
+    """Personnes de 75 et 85 ans et plus (INSEE, recensement 2023), et, à l'échelle du département
+    seulement, les places d'EHPAD rapportées aux 75 ans et plus. À l'échelle d'une commune ce rapport
+    trompe : un EHPAD accueille aussi les habitants des communes voisines."""
+    p = pop75(niveau, code)
+    if not p or not p[1]: return ''
+    places, taux = _taux(lot, p)
+    sans = sum(1 for r in lot if not r.get('cap'))
+    txt = (f'<p>{esc(ou[:1].upper() + ou[1:])}, {nb(p[1])} habitants ont 75 ans ou plus, soit {nb(100 * p[1] / p[0], 1)}&nbsp;% '
+           f'de la population, dont {nb(p[2])} ont 85 ans ou plus.</p>')
+    if niveau == 'DEP':
+        fr = ctx.setdefault('_taux_fr', _taux(ctx['rows'], pop75('FRANCE', 'F'))[1])
+        txt += (f'<p>Les {nb(len(lot))} EHPAD recensés {ou} totalisent {nb(places)} places d’hébergement permanent, '
+                f'soit <strong>{taux:.0f} places pour 1&nbsp;000 habitants de 75 ans ou plus</strong>'
+                + (f' (France&nbsp;: {fr:.0f})' if fr else '') + '. '
+                'Ce taux ne compte que les EHPAD&nbsp;: ni les résidences autonomie, ni les unités de soins de longue durée.'
+                + (f' La capacité de {nb(sans)} établissement{"s" if sans > 1 else ""} n’est pas connue.' if sans else '') + '</p>')
+    else:
+        txt += (f'<p>Ses {nb(len(lot))} EHPAD totalisent {nb(places)} places d’hébergement permanent. Ils accueillent aussi '
+                'des habitants des communes voisines&nbsp;: rapporter ces places aux seuls habitants de la commune '
+                'n’aurait pas de sens. Le taux d’équipement se lit à l’échelle du département'
+                + (f'&nbsp;: <a href="{lien_dep}#population">voir la page du département</a>.' if lien_dep else '.') + '</p>')
+    return (f'<section id="population"><h2>Les personnes âgées {ou}</h2>{txt}'
+            '<p class="muted">Sources&nbsp;: INSEE, recensement de la population 2023 (population au 1<sup>er</sup> janvier 2023)&nbsp;; '
+            'places installées&nbsp;: répertoire FINESS (Agence du numérique en santé), extraction du 29/09/2026.</p></section>')
+
+
+def bloc_specialise(ctx, lot, ou):
+    """Unités Alzheimer, UHR, PASA, hébergement temporaire et accueil de jour, d'après le répertoire
+    FINESS+ (ANS, places installées au 29/09/2026). Seuls les établissements concernés sont listés."""
+    avec = sorted((r for r in lot if r.get('alz') or r.get('uhr') or r.get('pasa') or r.get('ht') or r.get('aj')),
+                  key=lambda r: r['nom_aff'])
+    if not avec: return ''
+    n_alz = sum(1 for r in lot if r.get('alz') or r.get('uhr'))
+    n_ht = sum(1 for r in lot if r.get('ht')); n_aj = sum(1 for r in lot if r.get('aj'))
+    n_pasa = sum(1 for r in lot if r.get('pasa'))
+    cel = lambda v: f'{v}' if v else '—'
+    lignes = ''.join(
+        f'<tr><td>{_lien_sur(ctx, r)}</td>'
+        f'<td class="num" data-l="Unité Alzheimer">{cel(r.get("alz"))}</td>'
+        f'<td class="num" data-l="UHR">{cel(r.get("uhr"))}</td>'
+        f'<td data-l="PASA">{"Oui" if r.get("pasa") else "—"}</td>'
+        f'<td class="num" data-l="Hébergement temporaire">{cel(r.get("ht"))}</td>'
+        f'<td class="num" data-l="Accueil de jour">{cel(r.get("aj"))}</td></tr>' for r in avec)
+    return f"""<section id="unites-specialisees"><h2>Unités Alzheimer et accueil temporaire {ou}</h2>
+<p>{nb(n_alz)} établissement{'s' if n_alz > 1 else ''} sur {nb(len(lot))} déclare{'nt' if n_alz > 1 else ''} une unité protégée
+Alzheimer ou une unité d’hébergement renforcée, {nb(n_pasa)} un pôle d’activités et de soins adaptés,
+{nb(n_ht)} de l’hébergement temporaire et {nb(n_aj)} un accueil de jour. Ces places existent&nbsp;; le répertoire
+ne dit pas si elles sont libres.</p>
+<div class="tbl-wrap"><table class="tbl"><caption>Places installées selon le répertoire FINESS (septembre 2026)</caption>
+<thead><tr><th>Établissement</th><th class="num">Unité Alzheimer</th><th class="num">UHR</th><th>PASA</th><th class="num">Hébergement temporaire</th><th class="num">Accueil de jour</th></tr></thead>
+<tbody>{lignes}</tbody></table></div>
+<p><a href="/guides/ehpad-alzheimer-unite-protegee/">Unité protégée, UHR, PASA&nbsp;: ce qui les distingue</a> · <a href="/ehpad-alzheimer/">Les unités Alzheimer, département par département</a></p></section>"""
+
+
 def bloc_has(lot, ou):
     c = collections.Counter(r['hasN'] for r in lot if r['hasN'])
     n = sum(c.values())
@@ -292,6 +373,8 @@ def departement(ctx, ecrire, d):
 {bloc_statut_prix(lot, esc(ou))}
 {bloc_evolution(s, ou)}
 {bloc_has(lot, esc(ou))}
+{bloc_population(ctx, lot, esc(ou), 'DEP', d)}
+{bloc_specialise(ctx, lot, esc(ou))}
 {cta('/', 'Trouver un EHPAD adapté à ma situation', 'seo_dept_to_configurator')}
 
 <section><h2>Les villes {esc(ou)}</h2>
@@ -383,6 +466,8 @@ def ville(ctx, ecrire, c):
 {bloc_statut_prix(lot, 'à ' + esc(vn))}
 {bloc_evolution(s, 'à ' + esc(vn))}
 {bloc_has(lot, 'à ' + esc(vn))}</section>
+{bloc_population(ctx, lot, 'à ' + esc(vn), 'DEP' if fusion else 'COM', d if fusion else c, None if fusion else ctx['url_dep'][d])}
+{bloc_specialise(ctx, lot, 'à ' + esc(vn))}
 
 {liens_aides(lien)}
 {guides_tournants(c, 4)}
@@ -413,8 +498,57 @@ def ville(ctx, ecrire, c):
         corps, ariane, ld_extra=[q[1]] if q[1] else None, type_page='ville', lieu=vn), 0.8, 'villes')
 
 
+def page_alzheimer(ctx, ecrire):
+    """Une page nationale, pas une page par ville : les sections « unités Alzheimer » des pages
+    départements et villes portent le détail. Cinq cents pages quasi identiques seraient du
+    contenu produit en masse."""
+    rows = [r for l in ctx['par_dep'].values() for r in l]
+    n_alz = sum(1 for r in rows if r.get('alz')); p_alz = sum(r.get('alz') or 0 for r in rows)
+    n_uhr = sum(1 for r in rows if r.get('uhr')); p_uhr = sum(r.get('uhr') or 0 for r in rows)
+    n_pasa = sum(1 for r in rows if r.get('pasa'))
+    lignes = []
+    for d in sorted(ctx['par_dep'], key=lambda d: geo.DEPARTEMENTS[d]):
+        lot = ctx['par_dep'][d]
+        a = sum(1 for r in lot if r.get('alz')); u = sum(1 for r in lot if r.get('uhr')); pa = sum(1 for r in lot if r.get('pasa'))
+        pl = sum(r.get('alz') or 0 for r in lot)
+        url = ctx['url_dep'][d]
+        lignes.append(f'<tr><td><a href="{url}#unites-specialisees">{esc(geo.DEPARTEMENTS[d])} ({d})</a></td>'
+                      f'<td class="num" data-l="EHPAD">{len(lot)}</td><td class="num" data-l="Avec unité Alzheimer">{a}</td>'
+                      f'<td class="num" data-l="Places">{pl}</td><td class="num" data-l="UHR">{u}</td><td class="num" data-l="PASA">{pa}</td></tr>')
+    corps = f"""<h1 class="p-h1">EHPAD avec unité Alzheimer, département par département</h1>
+<p class="p-sub">{nb(n_alz)} EHPAD déclarent une unité protégée pour les personnes atteintes de la maladie
+d’Alzheimer ou d’une maladie apparentée ({nb(p_alz)} places), {nb(n_uhr)} une unité d’hébergement renforcée et
+{nb(n_pasa)} un pôle d’activités et de soins adaptés.</p>
+<p class="p-maj">Répertoire FINESS de l’Agence du numérique en santé, places installées au 29/09/2026</p>
+{kpis([(nb(n_alz), 'EHPAD avec une unité protégée', True), (nb(p_alz), 'places en unité protégée'),
+       (nb(n_uhr), 'avec une UHR (' + nb(p_uhr) + ' places)'), (nb(n_pasa), 'avec un PASA')])}
+<section><h2>Trois dispositifs à ne pas confondre</h2><ul>
+<li><b>L’unité protégée</b>&nbsp;: une partie de l’EHPAD réservée à l’hébergement permanent de personnes
+désorientées, avec des lieux conçus pour circuler sans se perdre.</li>
+<li><b>L’unité d’hébergement renforcée (UHR)</b>&nbsp;: pour les troubles du comportement sévères.</li>
+<li><b>Le pôle d’activités et de soins adaptés (PASA)</b>&nbsp;: un accueil en journée de résidents de l’EHPAD,
+pour des activités adaptées. Il n’a pas de places propres.</li></ul>
+<p><a href="/guides/ehpad-alzheimer-unite-protegee/">Le guide&nbsp;: quand une unité protégée est utile</a></p></section>
+<section><h2>Par département</h2>
+<div class="tbl-wrap"><table class="tbl"><caption>EHPAD déclarant une unité protégée Alzheimer, une UHR ou un PASA</caption>
+<thead><tr><th>Département</th><th class="num">EHPAD</th><th class="num">Avec unité Alzheimer</th><th class="num">Places</th><th class="num">UHR</th><th class="num">PASA</th></tr></thead>
+<tbody>{''.join(lignes)}</tbody></table></div>
+<p>Le détail, établissement par établissement, figure sur chaque page département et chaque page ville.
+Le répertoire recense les places installées, pas les places libres&nbsp;: seul l’établissement peut dire si
+une place est disponible.</p></section>
+{cta('/', 'Trouver un EHPAD adapté à ma situation', 'seo_alz_to_configurator')}
+<p class="src-bloc"><b>Sources</b>&nbsp;: répertoire FINESS (Agence du numérique en santé, jeu « FINESS - Activités »,
+Licence Ouverte 2.0, fichier du 29/09/2026) et nomenclatures officielles de l’ANS (activité, mode de fonctionnement,
+clientèle). Contrôle croisé avec le référentiel Atlasanté des activités FINESS (janvier 2026).</p>"""
+    ecrire('/ehpad-alzheimer/', layout.page('/ehpad-alzheimer/', 'EHPAD avec unité Alzheimer : la liste par département',
+        f'{nb(n_alz)} EHPAD avec une unité protégée Alzheimer, {nb(n_uhr)} avec une UHR, {nb(n_pasa)} avec un PASA : '
+        'le décompte par département, d’après le répertoire officiel FINESS.',
+        corps, [('Accueil', '/'), ('Les EHPAD en France', '/ehpad/'), ('Unités Alzheimer', None)], type_page='hub'), 0.8, 'pages')
+
+
 def construire(ctx, ecrire):
     hub(ctx, ecrire)
+    page_alzheimer(ctx, ecrire)
     for rs, (rn, deps) in geo.REGIONS.items():
         if rs in ('guadeloupe', 'martinique', 'guyane', 'la-reunion', 'mayotte'):
             continue          # outre-mer : la région et le département se confondent, une seule page

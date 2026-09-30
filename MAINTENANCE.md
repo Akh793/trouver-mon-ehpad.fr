@@ -231,7 +231,9 @@ Quand la CNSA publie le fichier brut de l'année écoulée :
 
 | Quand | Quoi faire |
 |---|---|
-| FINESS classique (tous les 2 mois) | retélécharger `etalab-cs1100502-stock-*.csv`, régénérer `audit/finess_classique_500.json` (filtre : catégorie d'établissement `500`, colonnes FINESS + code MFT + libellé MFT) |
+| FINESS+ (quotidien, utile 1×/mois) | Depuis le 29/09/2026, la chaîne lit FINESS+ (ANS) : l'extraction classique est figée au 04/05/2026. Retélécharger `finessplus/str.json.gz` (jeu « FINESS - Structures ») et `finessplus/act.json.gz` (« FINESS - Activités ») sur data.gouv.fr, puis, depuis `build/` : `python3 finessplus/extraire.py` (liste des EHPAD ouverts → `finess_ehpad_plus.json`, à copier sur `finess_ehpad.json`), `python3 finessplus/mft.py` (→ `audit/finess_plus_500.json`), `python3 finessplus/activites.py` (→ `audit/activites_plus.json`). Nomenclatures : dépôt NOS de l'ANS (`TRE_R74`, `TRE_r401`, `TRE_r404`, `TRE_R279`, `JDV_j353`, `JDV_j354`), copies dans `finessplus/`. |
+| INSEE recensement (1×/an, en juillet) | retélécharger `insee/rp2023_agesex.parquet` (commande en tête de `insee/pop75.py`, changer le millésime), puis `python3 insee/pop75.py` → `insee/pop75.json` (75+ et 85+ par commune et département) |
+| ARS, contrôles (1×/trimestre) | `python3 ars/extraire_ars.py` : relit la page nationale et les 12 pages régionales (10 s entre deux requêtes, robots.txt des ARS), écrit `ars/ars_inspections.json`. Un document n'est rattaché à une fiche que si son nom porte le FINESS. |
 | HAS (quotidien, utile 1×/trimestre) | retélécharger le parquet, refiltrer sur les EHPAD, réécrire `has_ehpad.pkl` |
 | Alim'confiance (quotidien, utile 1×/trimestre) | réexporter le jeu, réécrire `alim.json` |
 | DREES EHPA (à la prochaine enquête) | recalculer `audit/ehpa_occupation_segment.json` et `audit/rotation.json`, mettre à jour `ROTATION`, `OCCUPATION_FR` et `DELAI_ATTENTE` dans `site/data.js`, et les chiffres de la FAQ « Comment savoir s'il reste des places ? » |
@@ -274,7 +276,7 @@ Toujours dans cet ordre, depuis `build/` :
 | 3bis | `python3 controles.py` | `../site/data/dep/*.js` | rien (rapport) | **aucune ligne `[BLOQUANT]` suivie d'un nombre de cas.** Sinon, ne pas publier : le script sort en code 1 |
 | 4 | `python3 build_site.py` | `index.template.html`, `site.css`, `fontface.css`, `vendor/*.css`, `site/data.js` | `../site/index.html` | `index.html écrit : ~79 700 octets ; 5 questions synchronisées` |
 | 5 | `python3 build_pages.py` | `site.css`, `fontface.css` | 4 pages annexes | `pages annexes générées : [...]` |
-| 6 | `python3 seo/build_seo.py` | `merged_v2.json`, `communes_geo.json`, `audit/*.json`, `site.css`, `seo.css` | `../site/ehpad/**`, pages nationales, guides, sitemaps | `villes avec page : 985 \| fiches établissement : 6778 \| départements : 101` · `redirections … : 3667` · `→ 7901 pages écrites` |
+| 6 | `python3 seo/build_seo.py` (garde les adresses des fiches dans `seo/urls_fiches.json` : une fiche renommée par FINESS garde son adresse, une fiche disparue redirige vers sa commune) | `merged_v2.json`, `communes_geo.json`, `audit/*.json`, `site.css`, `seo.css` | `../site/ehpad/**`, pages nationales, guides, sitemaps | `villes avec page : 985 \| fiches établissement : 6778 \| départements : 101` · `redirections … : 3667` · `→ 7901 pages écrites` |
 
 L'étape 1 n'est à relancer que si les sources brutes changent ; les étapes 2 → 6 sont rejouables
 seules et sans risque. **L'étape 3bis n'est pas facultative** : elle relit les fichiers réellement
@@ -315,7 +317,7 @@ Les 7 903 pages de contenu, elles, ne contiennent pas de CSS : elles pointent ve
 
 ## 6. Format des fichiers produits
 
-### 6.1 `site/data/dep/ehpad-XX.js` — un tableau par EHPAD, 45 colonnes
+### 6.1 `site/data/dep/ehpad-XX.js` — un tableau par EHPAD, 52 colonnes
 
 Écrit sous la forme `ME.dep("69",[[...],[...]]);` — chargé par injection de balise `<script>`, ce qui
 fonctionne aussi en `file://` (contrairement à `fetch`). L'ordre des colonnes est **la** convention du
@@ -339,7 +341,7 @@ répliqué dans l'objet `C` en tête de `site/app.js`. **Modifier l'un sans l'au
 | 20 | `ash` | habilitation aide sociale : `1` habilité · `0` non habilité · `2` à confirmer · `null` inconnu |
 | 21 | `ashsrc` | origine : `finess` · `divergence` · `csa` · `2020` · `mft` |
 | 22-23 | `statut`, `statutsrc` | `0` public · `1` associatif · `2` privé commercial ; origine du statut |
-| 24 | `cap` | capacité (fichier CNSA 2020 — daté, affiché comme tel) |
+| 24 | `cap` | places d'hébergement permanent installées (FINESS+ Activités) ; à défaut capacité CNSA 2020 — voir `capsrc` |
 | 25 | `p2020` | prix 2020 (référence historique) |
 | 26-31 | `hasN`, `hasD`, `hasO`, `hasM`, `hasC`, `hasCI` | note A-D, date, organisme évaluateur, moyenne /100, 4 cotations de chapitre, critères impératifs atteints /18 |
 | 32 | `alim` | `[résultat, date, suites]` de l'inspection d'hygiène |
@@ -351,6 +353,11 @@ répliqué dans l'objet `C` en tête de `site/app.js`. **Modifier l'un sans l'au
 | 41-42 | `tarif`, `pui` | `G` global / `P` partiel / `V` PUV ; `1` = pharmacie à usage intérieur |
 | 43 | `dens` | densité de la commune : `1` dense · `2` intermédiaire · `3` rural |
 | 44 | `occ` | taux d'occupation du **segment** (statut × densité), EHPA 2023 |
+| 45 | `reg` | régime de financement de la dépendance : `exp`, `classique` ou `inconnu` |
+| 46 | `capsrc` | origine de `cap` : `finess` (FINESS+, places installées) · `2020` (CNSA) · `null` |
+| 47 | `alz` | places installées en unité protégée Alzheimer (hébergement permanent, clientèle 436) |
+| 48 | `pasa` | `1` = pôle d'activités et de soins adaptés actif (sans nombre de places : FINESS+ l'enregistre à 0) |
+| 49-51 | `uhr`, `ht`, `aj` | places installées : unité d'hébergement renforcée, hébergement temporaire, accueil de jour |
 
 ### 6.2 Les autres fichiers de données
 

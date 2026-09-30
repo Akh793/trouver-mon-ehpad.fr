@@ -81,7 +81,9 @@
     maj:12, temp:13, linge:14, lingeU:15, nIncl:16, nSus:17, inclTxt:18, susTxt:19, ash:20, ashsrc:21,
     statut:22, statutsrc:23, cap:24, p2020:25, hasN:26, hasD:27, hasO:28, hasM:29, hasC:30, hasCI:31,
     alim:32, tel:33, adr:34, pm:35, siren:36, ouv:37, approx:38, mft:39, mftlib:40, tarif:41, pui:42,
-    dens:43, occ:44, reg:45 };
+    dens:43, occ:44, reg:45,
+    // FINESS+ Activités (29/09/2026) : source de la capacité, places installées par unité
+    capsrc:46, alz:47, pasa:48, uhr:49, ht:50, aj:51 };
 
   /* ---------- Chargement à la demande, par département (compatible file://) ---------- */
   const EHPAD = {}, COMMUNES = {}, PRIX = {}, pending = {};
@@ -154,7 +156,7 @@
     chambre: 'cs',
     enfants: 0, tmi: 30,
     ashOnly: false, ashConfirmer: true, statuts: { 0: true, 1: true, 2: true },
-    hasAB: false, tempOnly: false, prixConnu: false,
+    hasAB: false, tempOnly: false, alzOnly: false, prixConnu: false,
     tri: 'rac', priorite: 'rac', besoinAsh: 'nsp', favoris: [], favorisOnly: false,
     compare: [], selection: null, nbAffiches: 15, vue: 'carte', cmpDiff: false, cmpPlus: false,
     demarche: {},              // mode professionnel : { finess: { s: statut, n: note } }
@@ -551,7 +553,9 @@
       if (s.ashOnly && !(e[C.ash] === 1 || (s.ashConfirmer && e[C.ash] === 2))) return false;
       if (e[C.statut] != null && !s.statuts[e[C.statut]]) return false;
       if (s.hasAB && !(e[C.hasN] === 'A' || e[C.hasN] === 'B')) return false;
-      if (s.tempOnly && e[C.temp] == null) return false;
+      // hébergement temporaire : déclaré au répertoire FINESS+, ou tarif temporaire déclaré à la CNSA
+      if (s.tempOnly && e[C.temp] == null && !e[C.ht]) return false;
+      if (s.alzOnly && !e[C.alz] && !e[C.uhr]) return false;
       if (s.prixConnu && !r.prixConnu) return false;
       if (s.favorisOnly && s.favoris.indexOf(e[C.fin]) < 0) return false;
       return true;
@@ -990,6 +994,7 @@
     else if (e[C.ash] === 2) badges.push('<span class="badge b-orange">Aide sociale à confirmer</span>');
     if (e[C.statut] != null) badges.push(`<span class="badge b-slate">${esc(STATUTS[e[C.statut]])}</span>`);
     if (e[C.hasN]) badges.push(badgeHas(e));
+    if (e[C.alz] || e[C.uhr]) badges.push('<span class="badge b-slate">Unité Alzheimer</span>');
     return `<article class="res ${r.prixConnu ? '' : 'sansprix'}" id="item-${fin}" role="listitem" tabindex="0"
         data-fin="${fin}" aria-current="${sel}" aria-label="${esc(nom(e))}, ${montant} ${lib}">
       <p class="res-n">${esc(nom(e))}</p>
@@ -1288,12 +1293,26 @@
       : r.reg === 'inconnu' ? 'régime à confirmer' : 'selon le GIR'}</b></div>`);
     if (r.apaConnue && r.apa > 0) l.push(`<div class="ln"><span>APA versée à l’établissement</span><b>− ${euro(r.apa)}/mois</b></div>`);
     if (o.prix) l.push(`<div class="ln"><span>Évolution du tarif ${o.prix.d}–${o.prix.f}</span><b class="${o.prix.e < 0 ? 'vert' : 'rouge'}">${pct(o.prix.e)}</b></div>`);
-    if (e[C.cap]) l.push(`<div class="ln"><span>Capacité</span><b>${nbfr(e[C.cap])} places</b><i class="ln-d">ne dit rien des places libres</i></div>`);
+    if (e[C.cap]) l.push(`<div class="ln"><span>Capacité</span><b>${nbfr(e[C.cap])} places</b><i class="ln-d">${e[C.capsrc] === 'finess' ? 'installées (FINESS, 2026)' : 'en 2020'} · ne dit rien des places libres</i></div>`);
+    const offre = offreSpecialisee(e);
+    if (offre.length) l.push(`<div class="ln ln-offre"><span>Accueil spécialisé</span><b>${offre.map((x) => esc(x)).join(' · ')}</b><i class="ln-d">répertoire FINESS au 29/09/2026 ; places installées</i></div>`);
     const tete = r.prixConnu && perso()
       ? `<p class="f-resume">${resumeSimple(o)}</p>` : '';
     return tete + l.join('') +
       r.notes.map((n) => `<p class="warn">${esc(n)}</p>`).join('') +
       '<p class="f-src"><a href="notre-methodologie.html">Sources et dates</a> — tarifs CNSA, identité FINESS, évaluation HAS.</p>';
+  }
+
+  /** Unités et accueils déclarés au répertoire FINESS+ (places installées). Le PASA n'a pas de places
+      propres : il accueille en journée des résidents de l'établissement. */
+  function offreSpecialisee(e) {
+    const p = (n) => `${nbfr(n)} place${n > 1 ? 's' : ''}`, o = [];
+    if (e[C.alz]) o.push(`unité protégée Alzheimer (${p(e[C.alz])})`);
+    if (e[C.uhr]) o.push(`UHR (${p(e[C.uhr])})`);
+    if (e[C.pasa]) o.push('PASA');
+    if (e[C.ht]) o.push(`hébergement temporaire (${p(e[C.ht])})`);
+    if (e[C.aj]) o.push(`accueil de jour (${p(e[C.aj])})`);
+    return o;
   }
 
   /* ---------- Contexte départemental ---------- */
@@ -1341,7 +1360,8 @@
     ['total', 'Tarif de l’établissement', (o) => (o.r.prixConnu ? euro(o.r.total) + '/mois' : '—')],
     ['dist', 'Distance', (o) => nbfr(+o.dist.toFixed(1)) + ' km'],
     ['ash', 'Aide sociale à l’hébergement', (o) => (ASH_ETAT[o.e[C.ash]] ? ASH_ETAT[o.e[C.ash]].txt : 'information non disponible')],
-    ['cap', 'Capacité (2020)', (o) => (o.e[C.cap] ? o.e[C.cap] + ' places' : 'information non disponible')],
+    ['cap', 'Capacité', (o) => (o.e[C.cap] ? o.e[C.cap] + ' places' + (o.e[C.capsrc] === 'finess' ? '' : ' (2020)') : 'information non disponible')],
+    ['offre', 'Accueil spécialisé', (o) => { const x = offreSpecialisee(o.e); return x.length ? x.join(' · ') : 'aucun déclaré'; }],
     ['has', 'Évaluation officielle', (o) => (o.e[C.hasN] ? o.e[C.hasN] + (o.e[C.hasD] ? ' — ' + dfr(o.e[C.hasD]) : '') : 'non publiée')],
     ['statut', 'Statut', (o) => (o.e[C.statut] != null ? esc(STATUTS[o.e[C.statut]]) : 'information non disponible')],
     ['pj', 'Tarif journalier', (o) => (o.r.prixConnu ? euro2(o.r.pj) + '/jour' : '—')],
@@ -1490,7 +1510,7 @@
   /* Ce qui décrit la RECHERCHE : où, dans quel rayon, avec quels filtres.
      Rien ici ne renseigne sur l'argent ni sur la santé de qui que ce soit. */
   const PARTAGE_RECHERCHE = ['mode', 'pourQui', 'cp', 'rayon', 'chambre', 'tri',
-    'ashOnly', 'hasAB', 'tempOnly', 'prixConnu'];
+    'ashOnly', 'hasAB', 'tempOnly', 'alzOnly', 'prixConnu'];
   /* Ce qui décrit la SITUATION : ressources, épargne, fiscalité, niveau d'autonomie.
      Un GIR est une donnée de santé. Ces champs ne partent que sur demande explicite. */
   const PARTAGE_SITUATION = ['gir', 'revenus', 'autres', 'epargne', 'proprietaire', 'couple',
@@ -1528,7 +1548,7 @@
   let derniereCle = '';
 
   function cleResultat(s) {
-    return [s.commune && s.commune.insee, s.rayon, s.tri, s.ashOnly, s.ashConfirmer, s.hasAB, s.tempOnly,
+    return [s.commune && s.commune.insee, s.rayon, s.tri, s.ashOnly, s.ashConfirmer, s.hasAB, s.tempOnly, s.alzOnly,
       s.prixConnu, s.favorisOnly, s.statuts[0], s.statuts[1], s.statuts[2]].join('|');
   }
 
@@ -1662,6 +1682,7 @@
     if (s.ashOnly) sorties.push('<button type="button" class="mini2" data-sortie="ash">Ne plus exiger l’aide sociale</button>');
     if (s.hasAB) sorties.push('<button type="button" class="mini2" data-sortie="has">Ne plus exiger une évaluation A ou B</button>');
     if (s.tempOnly) sorties.push('<button type="button" class="mini2" data-sortie="temp">Ne plus exiger l’accueil temporaire</button>');
+    if (s.alzOnly) sorties.push('<button type="button" class="mini2" data-sortie="alz">Ne plus exiger d’unité Alzheimer</button>');
     if (s.favorisOnly) sorties.push('<button type="button" class="mini2" data-sortie="fav">Afficher tous les établissements</button>');
     if (s.prixConnu) sorties.push('<button type="button" class="mini2" data-sortie="prix">Afficher aussi ceux sans tarif déclaré</button>');
     sorties.push('<button type="button" class="mini2" data-sortie="tout">Retirer tous les filtres</button>');
@@ -1678,6 +1699,7 @@
     if (!state.statuts[2]) c.push(['statut2', 'Sans le privé commercial']);
     if (state.hasAB) c.push(['has', 'Évaluation A ou B']);
     if (state.tempOnly) c.push(['temp', 'Accueil temporaire']);
+    if (state.alzOnly) c.push(['alz', 'Unité Alzheimer']);
     if (state.prixConnu) c.push(['prix', 'Tarif déclaré seulement']);
     if (state.favorisOnly) c.push(['fav', 'Mes établissements gardés']);
     $('chips-actifs').innerHTML = c.map(([k, t]) => `<button type="button" data-sortie="${k}">${t} ×</button>`).join('');
@@ -1917,7 +1939,7 @@
      la zone, la distance, les critères de recherche et la liste de démarches, rien d'autre. */
   const KEY_DOS = 'mon_ehpad_dossiers_v1';
   const DOSSIER_CLES = ['cp', 'commune', 'rayon', 'gir', 'chambre', 'besoinAsh', 'ashConfirmer',
-    'hasAB', 'tempOnly', 'prixConnu', 'statuts', 'priorite', 'tri', 'favoris'];
+    'hasAB', 'tempOnly', 'alzOnly', 'prixConnu', 'statuts', 'priorite', 'tri', 'favoris'];
   const MAX_DOS = 20;
 
   function litDossiers() {
@@ -2167,11 +2189,12 @@
     if (k === 'ash') { state.besoinAsh = 'non'; state.ashOnly = false; if (state.priorite === 'ash') state.priorite = null; }
     if (k === 'has') state.hasAB = false;
     if (k === 'temp') state.tempOnly = false;
+    if (k === 'alz') state.alzOnly = false;
     if (k === 'fav') state.favorisOnly = false;
     if (k === 'prix') state.prixConnu = false;
     if (k.startsWith('statut')) state.statuts[+k.slice(6)] = true;
     if (k === 'tout') {
-      state.besoinAsh = 'nsp'; state.ashOnly = false; state.hasAB = false; state.tempOnly = false;
+      state.besoinAsh = 'nsp'; state.ashOnly = false; state.hasAB = false; state.tempOnly = false; state.alzOnly = false;
       state.favorisOnly = false; state.prixConnu = false; state.statuts = { 0: true, 1: true, 2: true };
       if (state.priorite === 'ash') state.priorite = null;
     }
@@ -2473,9 +2496,9 @@
   /* ---------- Tests (console : window.runTests()) ---------- */
   window.runTests = function () {
     const mois = META.month;
-    // 46 colonnes depuis l'ajout du régime (C.reg = 45). Sans mention contraire,
+    // 52 colonnes depuis FINESS+ Activités (C.aj = 51). Sans mention contraire,
     // les cas de test portent sur un établissement de droit commun.
-    const mk = (o) => Object.assign(new Array(46).fill(null), { 45: 'classique' }, o);
+    const mk = (o) => Object.assign(new Array(52).fill(null), { 45: 'classique' }, o);
     const base = { mode: 'famille', gir: '34', revenus: 1500, autres: 0, epargne: 0, couple: false,
       deuxResidents: false, conjointDomicile: false, aideLogement: 0, imposable: false, chambre: 'cs', enfants: 0, tmi: 30,
       aplPortee: 'partout', aplEtab: null, moisAnnee: 12 };
@@ -2492,7 +2515,7 @@
       ['APA : couple → ressources divisées par deux', () =>
         Math.abs(apaEtablissement(13.86 * mois, 5.89 * mois, 6000, true).participation
                - apaEtablissement(13.86 * mois, 5.89 * mois, 3000, false).participation) < 0.01],
-      ['Seuils officiels 2 846,77 € et 4 379,64 €', () => Math.abs(SEUILS.apaInf - 2846.77) < 0.01 && Math.abs(SEUILS.apaSup - 4379.64) < 0.01],
+      ['Seuils APA 2026 : 2 869,55 € et 4 414,70 € (2,21 et 3,40 × MTP de 1 298,44 €)', () => Math.abs(SEUILS.apaInf - 2869.55) < 0.01 && Math.abs(SEUILS.apaSup - 4414.70) < 0.01],
       ['Reste à charge = hébergement + dépendance − APA', () => Math.abs(calcule(E, { ...base }).rac - (100 + 5.89) * mois) < 1],
       ['Autres revenus : comptés dans les ressources de l’APA', () => {
         const a = calcule(E, { ...base, revenus: 2000, autres: 0 }), b = calcule(E, { ...base, revenus: 2000, autres: 2000 });

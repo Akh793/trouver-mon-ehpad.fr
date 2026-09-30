@@ -6,13 +6,15 @@ Dernière vérification des règles nationales : 11/09/2026. Version 2.0.
 
 ## Ce que le site couvre
 
-- 7 417 EHPAD ouverts en France (extraction FINESS du 10/09/2026), dont 5 793 déclarant un prix à la CNSA. Les 1 624 sans prix déclaré restent affichés avec la mention « prix non déclaré ».
+- 7 415 EHPAD ouverts en France (répertoire FINESS+ de l'Agence du numérique en santé, fichier du 29/09/2026), dont 5 791 déclarant un prix à la CNSA. Les 1 624 sans prix déclaré restent affichés avec la mention « prix non déclaré ».
 - Prix hébergement (chambre seule et double), tarif « aide sociale », tarifs dépendance GIR 1-2 / 3-4 / 5-6, prix de l'accueil temporaire, prix du linge, date de mise à jour déclarée — source CNSA.
-- Habilitation à l'aide sociale à l'hébergement, d'après le libellé officiel du mode de fixation tarifaire FINESS : 6 081 habilités, 1 142 non habilités, 194 « à confirmer » (l'établissement déclare un tarif aide sociale à la CNSA sans être habilité dans FINESS — habilitation partielle probable). La source de l'information figure sur chaque fiche.
-- Qualité : note d'évaluation A/B/C/D de la Haute Autorité de santé pour 4 815 établissements, date, organisme évaluateur (choisi et rémunéré par l'établissement), cotations des trois chapitres, nombre de critères impératifs atteints sur 18 (variable documentée `nb_ci_atteints`).
-- Hygiène alimentaire : résultat de la dernière inspection Alim'confiance pour 1 012 établissements, appariés par SIRET puis par SIREN + commune identique lorsqu'un seul candidat correspond.
+- Habilitation à l'aide sociale à l'hébergement, d'après le libellé officiel du mode de fixation tarifaire FINESS : 6 071 habilités, 1 140 non habilités, 204 « à confirmer » (l'établissement déclare un tarif aide sociale à la CNSA sans être habilité dans FINESS — habilitation partielle probable). La source de l'information figure sur chaque fiche.
+- Qualité : note d'évaluation A/B/C/D de la Haute Autorité de santé pour 4 813 établissements, date, organisme évaluateur (choisi et rémunéré par l'établissement), cotations des trois chapitres, nombre de critères impératifs atteints sur 18 (variable documentée `nb_ci_atteints`).
+- Hygiène alimentaire : résultat de la dernière inspection Alim'confiance pour 1 011 établissements, appariés par SIRET puis par SIREN + commune identique lorsqu'un seul candidat correspond.
 - Évolution du prix de la chambre de 2018 à 2025 pour 7 255 établissements : courbe, évolution totale et annualisée, écart à l'inflation INSEE (+17,2 % sur la période). Prix médian d'une chambre seule : 60,22 € en 2018, 73,41 € en 2025, soit +20,5 % pour les établissements présents aux deux dates ; 65 % ont augmenté plus vite que le coût de la vie, environ 2,5 % ont baissé.
-- Estimation de la disponibilité pour 6 602 établissements : taux d'occupation du segment (statut × densité de la commune, enquête EHPA 2023 de la DREES, de 89 à 97 résidents pour 100 places) et rotation des résidents (38,8 % par an), traduits en places libres et en délai moyen entre deux libérations quand la capacité 2020 est connue. Ce n'est jamais un relevé de places réellement disponibles, et le site le dit.
+- Capacité et offre spécialisée, en places installées (FINESS+ Activités, 29/09/2026) : hébergement permanent pour 7 347 établissements ; unité protégée Alzheimer (2 845), pôle d'activités et de soins adaptés (2 289), unité d'hébergement renforcée (210), hébergement temporaire (3 567), accueil de jour (1 571). Une place installée n'est pas une place libre. Page nationale : /ehpad-alzheimer/.
+- Personnes de 75 et 85 ans et plus par commune et par département (INSEE, recensement 2023) ; sur les pages de département, places d'EHPAD pour 1 000 habitants de 75 ans ou plus (France : 85).
+- Contrôles des ARS (plan national de contrôle des EHPAD 2022-2024) : lien vers le document publié par l'ARS quand son nom porte le numéro FINESS de l'établissement (677 EHPAD d'Île-de-France), sinon vers la page de l'ARS de la région. Aucun résumé ni aucune note n'en est tiré.
 - Mode de fixation tarifaire : tarif global ou partiel de soins, présence d'une pharmacie à usage intérieur.
 - Plan de financement familial : part de chaque enfant si la famille complète, à parts égales, et coût réel après déduction fiscale de la pension alimentaire (déductible sans plafond du revenu imposable).
 - Contexte départemental : part des places occupées par un bénéficiaire de l'ASH, taux d'équipement (DREES 2024), pratique départementale de l'ASH (DREES, enquête 2018) : recours sur succession, personnes sollicitées au titre de l'obligation alimentaire, prise en charge du GIR 5-6.
@@ -20,14 +22,14 @@ Dernière vérification des règles nationales : 11/09/2026. Version 2.0.
 ## Règles de calcul appliquées (vérifiées le 10/09/2026)
 
 - Passage du prix journalier au mois : × 30,5 jours, affiché sur la page.
-- APA en établissement : formule OpenFisca-France `apa_etablissement`. Participation du résident = tarif GIR 5-6 si ressources ≤ 2 846,77 €/mois ; progression linéaire de pente 0,80 entre 2 846,77 € et 4 379,64 € ; au-delà, tarif GIR 5-6 + 80 % de l'écart avec le tarif du GIR du résident. Ressources du ménage divisées par deux en couple. Pas de versement en dessous de 3 × Smic horaire brut. Seuils dérivés de la majoration pour tierce personne (1 288,13 € depuis le 01/04/2025).
+- APA en établissement : formule OpenFisca-France `apa_etablissement`. Participation du résident = tarif GIR 5-6 si ressources ≤ 2 869,55 €/mois ; progression linéaire de pente 0,80 entre 2 869,55 € et 4 414,70 € ; au-delà, tarif GIR 5-6 + 80 % de l'écart avec le tarif du GIR du résident. Ressources du ménage divisées par deux en couple. Pas de versement en dessous de 3 × Smic horaire brut. Seuils dérivés de la majoration pour tierce personne (1 298,44 € depuis le 01/04/2026).
 - Réduction d'impôt : 25 % des frais d'hébergement et de dépendance restant à charge, plafond 10 000 € de dépenses par an et par personne hébergée (soit 2 500 €), uniquement si la personne est imposable (article 199 quindecies du CGI).
 - Aide sociale à l'hébergement : le résident conserve au moins 10 % de ses ressources et jamais moins de 125 €/mois ; le conjoint resté à domicile conserve au moins 1 043,59 €/mois ; récupération sur succession et sur les donations de moins de dix ans ; les sommes versées par les obligés alimentaires ne sont pas récupérables sur la succession (réponse ministérielle n° 6093 du 19/08/2025).
 - Aide au logement : non simulée (le conventionnement de l'établissement n'est pas en donnée ouverte). Champ de saisie du montant déjà notifié ; à défaut, zéro, ce qui majore prudemment le reste à charge affiché.
 
 ## Ce que le site ne fait pas, et pourquoi
 
-- Aucun nombre de places réellement libres dans tel établissement : cette donnée n'est publiée nulle part (ViaTrajectoire est réservé aux professionnels, le tableau de bord de la performance médico-sociale n'est pas ouvert, la capacité la plus récente en données ouvertes date de 2020). Le site affiche à la place des moyennes de segment officielles, étiquetées comme telles, et le délai national mesuré par la DREES : 55 % des personnes entrées en 2023 ont attendu un mois ou moins.
+- Aucun nombre de places réellement libres dans tel établissement : cette donnée n'est publiée nulle part (ViaTrajectoire est réservé aux professionnels, le tableau de bord de la performance médico-sociale n'est pas ouvert ; FINESS donne les places installées, pas les places libres). Le site affiche à la place le délai national mesuré par la DREES : 55 % des personnes entrées en 2023 ont attendu un mois ou moins.
 - Aucun barème d'obligation alimentaire : il n'en existe pas au niveau national. Seule référence citée : la participation moyenne constatée par la DREES, 270 €/mois fin 2023.
 - Aucun taux d'encadrement, absentéisme ou rotation par établissement : publiés depuis août 2026 sur le portail officiel, mais pas en données ouvertes ; le site renvoie vers la fiche officielle.
 - Aucun avis de famille, aucun score composite : les composantes (note HAS, hygiène, prix, habilitation) sont affichées séparément.
@@ -51,9 +53,9 @@ Une commune ne comptant qu'un seul établissement n'a pas de page : son adresse 
 
 Chaque chiffre publié est calculé à partir des tarifs déclarés à la CNSA et porte sa source, sa date et la taille de l'échantillon. Formulation de reprise demandée : « Données : Trouver mon EHPAD, à partir des tarifs déclarés à la CNSA (janvier 2026) ».
 
-- Tarif d'hébergement médian en France, chambre seule : 73,62 € par jour, soit 2 245 € par mois (5 793 établissements déclarants).
+- Tarif d'hébergement médian en France, chambre seule : 73,63 € par jour, soit 2 246 € par mois (5 791 établissements déclarants).
 - Évolution des tarifs entre 2018 et 2025 : hausse médiane de +18,7 % mesurée établissement par établissement (7 255 établissements dont le tarif est connu à deux dates au moins) ; le tarif médian national, lui, passe de 60,22 € à 73,41 € par jour, soit +20,5 %. Inflation sur la même période : +17,2 % (INSEE).
-- Établissements habilités à l'aide sociale à l'hébergement : 6 081 sur 7 417.
+- Établissements habilités à l'aide sociale à l'hébergement : 6 071 sur 7 415.
 - Le détail par département est publié sur `/prix-ehpad-par-departement/` et dans le baromètre.
 
 ## Pages
@@ -78,6 +80,9 @@ Chaque chiffre publié est calculé à partir des tarifs déclarés à la CNSA e
 - CNSA — Prix hébergement et tarifs dépendance des EHPAD, données brutes : https://www.data.gouv.fr/datasets/prix-hebergement-et-tarifs-dependance-des-ehpad-donnees-brutes/
 - CNSA — Données retraitées 2018-2020 (statut, habilitation, capacité, prix 2020) : https://www.data.gouv.fr/datasets/prix-hebergement-et-tarifs-dependance-des-ehpad/
 - Agence du numérique en santé — FINESS Structures : https://www.data.gouv.fr/datasets/finess-structures-1/
+- Agence du numérique en santé — FINESS Activités (places installées, unités spécialisées) : https://www.data.gouv.fr/datasets/finess-activites-1/
+- INSEE — Recensement de la population 2023, population par sexe et âge (Melodi DS_RP_TD_POPULATION_AGESEX_PRINC) : https://api.insee.fr/melodi/file/DS_RP_TD_POPULATION_AGESEX_PRINC_2023/PARQUET
+- ARS — Publication des rapports du plan de contrôle des EHPAD : https://www.ars.sante.fr/publication-des-rapports-du-plan-de-controle-des-ehpad
 - Haute Autorité de santé — Résultats d'évaluation des ESSMS : https://www.data.gouv.fr/datasets/resultats-devaluation-des-etablissements-et-services-sociaux-et-medico-sociaux-essms/
 - DGAL — Alim'confiance : https://dgal.opendatasoft.com/explore/dataset/export_alimconfiance/
 - DREES — Indicateurs sociaux départementaux, personnes âgées : https://data.drees.solidarites-sante.gouv.fr/explore/dataset/639_personnes-agees/
@@ -92,4 +97,4 @@ Chaque chiffre publié est calculé à partir des tarifs déclarés à la CNSA e
 
 ## Format des données du site
 
-Les données sont chargées par département, à la demande : `data/dep/ehpad-<dep>.js`, `data/dep/communes-<dep>.js` et `data/dep/prix-<dep>.js` (séries de prix 2018-2025), plus `data/departements.js` (table départementale et emprises) et `data/prix-reference.js` (quartiles de prix par département). Chaque établissement est un tableau de 45 colonnes dont l'ordre est documenté en tête de `app.js` et dans `MAINTENANCE.md`.
+Les données sont chargées par département, à la demande : `data/dep/ehpad-<dep>.js`, `data/dep/communes-<dep>.js` et `data/dep/prix-<dep>.js` (séries de prix 2018-2025), plus `data/departements.js` (table départementale et emprises) et `data/prix-reference.js` (quartiles de prix par département). Chaque établissement est un tableau de 52 colonnes dont l'ordre est documenté en tête de `app.js` et dans `MAINTENANCE.md`.

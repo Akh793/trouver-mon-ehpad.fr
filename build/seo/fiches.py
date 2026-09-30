@@ -196,8 +196,40 @@ def bloc_qualite(r, dp):
         a = r['alim']
         out.append(f'<p>Hygiène alimentaire&nbsp;: <b>{esc(a[0])}</b> au contrôle du {date_fr(a[1])}'
                    + (f' (suite&nbsp;: {esc(a[2])})' if a[2] else '') + '.</p>')
+    out.append(bloc_ars(r))
     out.append('<p><a href="/guides/lire-une-evaluation-ehpad/">Lire une évaluation</a></p>')
     return ''.join(out)
+
+
+_ARS = None
+
+
+def bloc_ars(r):
+    """Documents du plan national de contrôle des EHPAD 2022-2024 publiés par l'ARS (ars/extraire_ars.py).
+    Un document n'est cité que s'il porte le numéro FINESS de l'établissement ; sinon, lien vers la
+    page régionale. Aucun résumé, aucune note : les constats datent du contrôle."""
+    global _ARS
+    if _ARS is None:
+        import os, json
+        f = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'ars', 'ars_inspections.json')
+        _ARS = json.load(open(f, encoding='utf-8')) if os.path.exists(f) else {'regions': {}, 'documents': {}}
+    rs, _ = geo.region_de(r['dep'])
+    reg = _ARS['regions'].get(rs)
+    docs = _ARS['documents'].get(r['fin'])
+    if docs:
+        liens = ' · '.join(
+            f'<a href="{esc(d["url"])}" rel="nofollow">{esc(d["type"])}' + (f' du {d["date"]}' if d.get('date') else '') + '</a>'
+            for d in docs)
+        return (f'<p>Contrôle de l’ARS (plan national de contrôle des EHPAD 2022-2024)&nbsp;: {liens}. '
+                f'Documents publiés par l’ARS {esc(_ARS["regions"][docs[0]["region"]]["nom"])} '
+                f'(liste consultée le {_ARS["consulte"]}). Ils décrivent la situation constatée le jour du contrôle.</p>')
+    if not reg: return ''
+    if reg.get('documents_rattaches'):
+        return (f'<p>Contrôle de l’ARS&nbsp;: aucun document publié par l’ARS {esc(reg["nom"])} ne porte le numéro FINESS '
+                f'de cet établissement (page consultée le {_ARS["consulte"]}). '
+                f'<a href="{esc(reg["url"])}" rel="nofollow">Voir la page de l’ARS</a>.</p>')
+    return (f'<p>Contrôle de l’ARS&nbsp;: l’ARS {esc(reg["nom"])} publie les documents de son plan de contrôle des EHPAD '
+            f'2022-2024 sur <a href="{esc(reg["url"])}" rel="nofollow">sa page dédiée</a>, où l’établissement se cherche par son nom.</p>')
 
 
 def bloc_aides(r):
@@ -213,12 +245,26 @@ def bloc_aides(r):
             f'<a href="/aides-ehpad/reduction-impot/">réduction d’impôt</a>.</li></ul>')
 
 
+def offre(r):
+    """Unités et accueils déclarés au répertoire FINESS+ (places installées au 29/09/2026)."""
+    p = lambda n: f'{n} place' + ('s' if n > 1 else '')
+    o = []
+    if r.get('alz'): o.append(f'unité protégée Alzheimer ({p(r["alz"])})')
+    if r.get('uhr'): o.append(f'unité d’hébergement renforcée ({p(r["uhr"])})')
+    if r.get('pasa'): o.append('pôle d’activités et de soins adaptés (PASA)')
+    if r.get('ht'): o.append(f'hébergement temporaire ({p(r["ht"])})')
+    if r.get('aj'): o.append(f'accueil de jour ({p(r["aj"])})')
+    return o
+
+
 def bloc_pratique(r):
     l = []
     l.append(f'<li>N° FINESS&nbsp;: {r["fin"]}.</li>')
     if r['statut'] is not None: l.append(f'<li>Statut&nbsp;: {STATUT_LONG[r["statut"]]}.</li>')
     if r['pm']: l.append(f'<li>Gestionnaire&nbsp;: {esc(titre(r["pm"]))}' + (f' (SIREN {r["siren"]})' if r.get('siren') else '') + '.</li>')
-    if r['cap']: l.append(f'<li>{r["cap"]} places (capacité 2020).</li>')
+    if r['cap']: l.append(f'<li>{r["cap"]} places' + (' d’hébergement permanent installées (répertoire FINESS, septembre 2026)' if r.get('capsrc') == 'finess' else ' (capacité 2020)') + '.</li>')
+    o = offre(r)
+    if o: l.append(f'<li>Accueil spécialisé&nbsp;: {", ".join(o)} (répertoire FINESS, places installées).</li>')
     if r['ouv']: l.append(f'<li>Ouvert en {esc(r["ouv"])}.</li>')
     if r['tarif'] in SOINS_COURT:
         l.append(f'<li>Soins&nbsp;: {SOINS_COURT[r["tarif"]]}' + (', pharmacie interne' if r['pui'] else '') + '.</li>')
@@ -283,7 +329,7 @@ def fiche(ctx, ecrire, r, voisins, dp, freres):
 <div class="f-head">
 <div class="f-grid">
 <div><b>{eur(mois_eur(r['p'])) + '<small style="font-size:.75rem;font-weight:400">/mois</small>' if r['p'] else 'Non déclaré'}</b><span>hébergement, chambre seule</span></div>
-<div><b>{r['cap'] or '—'}</b><span>places (2020)</span></div>
+<div><b>{r['cap'] or '—'}</b><span>places{'' if r.get('capsrc') == 'finess' else ' (2020)'}</span></div>
 <div><b>{'Oui' if r['ash'] == 1 else ('À confirmer' if r['ash'] == 2 else ('Non' if r['ash'] == 0 else '—'))}</b><span>aide sociale à l’hébergement</span></div>
 <div><b>{r['hasN'] or '—'}</b><span>évaluation officielle (A à D)</span></div>
 </div>

@@ -2,7 +2,7 @@
 """
 mon-ehpad.fr — construction des données v2.
 Reprend merged.json (v1) et applique les corrections et enrichissements de la v2 :
-  1. habilitation à l'aide sociale depuis le libellé officiel FINESS (3 états)
+  1. habilitation à l'aide sociale depuis le mode de fixation tarifaire FINESS+ et son libellé TRE_R74 (3 états)
   2. mode de tarification (global / partiel / PUV) et pharmacie à usage intérieur
   3. indicateur HAS documenté (nb_ci_atteints) au lieu de nb_ci_sup_3_5
   4. appariement Alim'confiance élargi (SIREN + commune, candidat unique)
@@ -21,7 +21,9 @@ m = {r['fin']: r for r in rows}
 print('socle v1 :', len(rows), 'EHPAD')
 
 # ------------------------------------------- 2. libellés officiels FINESS (MFT)
-cl = json.load(open(A + 'finess_classique_500.json', encoding='utf-8'))
+# FINESS+ (ANS) et nomenclature TRE_R74 depuis le 29/09/2026 : l'extraction « classique »
+# (audit/finess_classique_500.json) est gelée au 04/05/2026. Voir finessplus/extraire.py et mft.py.
+cl = json.load(open(A + 'finess_plus_500.json', encoding='utf-8'))
 HAB = {'40', '41', '44', '45', '50', '56'}
 NONHAB = {'42', '43', '46', '47', '51', '55'}
 stats = collections.Counter()
@@ -129,6 +131,26 @@ for f9, r in m.items():
         r['occ'] = occ.get((r['dens'], MAPS[r['statut']]))
     nd += bool(r['dens']); no += bool(r['occ'])
 print('densité connue :', nd, '| taux d’occupation du segment :', no)
+
+# ------------------------------- 6. FINESS+ Activités (29/09/2026) : offre de l'établissement
+# Places INSTALLÉES (statut 08) des activités actives, codes et libellés officiels ANS (NOS).
+# Voir finessplus/activites.py ; contrôle croisé Atlasanté t_actfiness (05/01/2026).
+ACT = json.load(open(A + 'activites_plus.json', encoding='utf-8'))
+cpt6 = collections.Counter()
+for f9, r in m.items():
+    a = ACT.get(f9) or {}
+    # capacité : hébergement permanent installé selon FINESS+ ; à défaut, la capacité CNSA 2020
+    if a.get('perm'):
+        r['cap'], r['capsrc'] = a['perm'], 'finess'
+    elif r.get('cap'):
+        r['capsrc'] = '2020'
+    else:
+        r['capsrc'] = None
+    for k in ('alz', 'pasa', 'uhr', 'ht', 'aj'):
+        r[k] = a.get(k) or None
+        if r[k]: cpt6[k] += 1
+    cpt6[r['capsrc']] += 1
+print('activités FINESS+ :', dict(cpt6))
 
 json.dump(rows, open('merged_v2.json', 'w', encoding='utf-8'), ensure_ascii=False)
 print('→ merged_v2.json écrit')

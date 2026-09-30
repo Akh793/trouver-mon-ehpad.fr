@@ -169,13 +169,13 @@ déclaré de tarif dépendance.</p></section>
 <section><h2>Ce qui change pour la facture</h2>
 <ul>
 <li>Avant&nbsp;: un tarif dépendance par GIR, l’allocation personnalisée d’autonomie qui en couvre l’essentiel, et une
-participation du résident qui augmente avec ses ressources au-delà de 2 846,77 € par mois.</li>
+participation du résident qui augmente avec ses ressources au-delà de 2 869,55 € par mois.</li>
 <li>Maintenant&nbsp;: une <b>participation forfaitaire de {eur2(pf) if pf else '—'} par jour</b>, la même pour tous, quels que
 soient le GIR et les ressources.</li>
 <li>Pour un résident aux ressources modestes, la différence est faible&nbsp;: le forfait remplace le tarif GIR 5-6
 qu’il payait déjà. Pour un résident aux ressources élevées et très dépendant, l’économie peut être nette.</li>
 </ul>
-<p>Hébergement plus part dépendance à la charge d’un résident aux ressources inférieures à 2 846,77 €, médiane mensuelle&nbsp;:
+<p>Hébergement plus part dépendance à la charge d’un résident aux ressources inférieures à 2 869,55 €, médiane mensuelle&nbsp;:
 <b>{eur(mois_eur(m_exp)) if m_exp else '—'}</b> dans le régime expérimental, <b>{eur(mois_eur(m_cla)) if m_cla else '—'}</b>
 ailleurs. {phrase_ecart(s_exp, s_cla)}</p>
 <p><a href="/aides-ehpad/apa/#fusion">Les règles de l’expérimentation</a> · sources&nbsp;:

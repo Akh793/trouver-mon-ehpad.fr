@@ -31,7 +31,7 @@ def _bareme():
     return {'mtp': g('mtp'), 'seuilInf': g('seuilInf'), 'seuilSup': g('seuilSup'),
             'irTaux': g('irTaux'), 'irPlafond': g('irPlafond')}
 BAREME = _bareme()
-APA_SEUIL_INF = round(BAREME['seuilInf'] * BAREME['mtp'], 2)      # 2 846,77 €/mois
+APA_SEUIL_INF = round(BAREME['seuilInf'] * BAREME['mtp'], 2)      # 2 869,55 €/mois depuis la MTP du 01/04/2026
 IR_MAX = BAREME['irTaux'] * BAREME['irPlafond']                    # 2 500 €/an
 
 # ---------------------------------------------------------------- chargement

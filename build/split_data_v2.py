@@ -52,7 +52,10 @@ COLS = ['fin', 'nom', 'cp', 'ville', 'lat', 'lon', 'p', 'pcd', 'pa', 't12', 't34
         'linge', 'lingeU', 'nIncl', 'nSus', 'inclTxt', 'susTxt', 'ash', 'ashsrc', 'statut', 'statutsrc',
         'cap', 'p2020', 'hasN', 'hasD', 'hasO', 'hasM', 'hasC', 'hasCI', 'alim', 'tel', 'adr', 'pm',
         'siren', 'ouv', 'approx', 'mft', 'mftlib', 'tarif', 'pui', 'dens', 'occ',
-        'reg']   # régime de financement de la dépendance : 'exp', 'classique' ou 'inconnu'
+        'reg',   # régime de financement de la dépendance : 'exp', 'classique' ou 'inconnu'
+        # FINESS+ Activités (29/09/2026) : source de la capacité ('finess' 2026 ou '2020' CNSA),
+        # places installées en unité Alzheimer, PASA (présence), UHR, hébergement temporaire, accueil de jour
+        'capsrc', 'alz', 'pasa', 'uhr', 'ht', 'aj']
 # --- régime de financement, déduit du TERRITOIRE (jamais des tarifs déclarés)
 import regime as _regime
 _R = _regime.Regimes()

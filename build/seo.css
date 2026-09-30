@@ -138,3 +138,6 @@ table.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
 .top-in .tb-icon{width:32px;height:32px;flex:0 0 auto;margin-left:auto}
 .top-in .tb-icon svg{width:.95rem;height:.95rem}
 @media (max-width:720px){.top-in .tb-icon{margin-left:0}}
+
+/* Ancres (#population, #unites-specialisees…) : le titre ne passe pas sous l’en-tête collant (29/09/2026) */
+main section[id]{scroll-margin-top:5rem}

@@ -142,14 +142,22 @@ def main():
         fiches = list(rows)
     else:
         fiches = [r for r in rows if r['p'] or r['hasN']]
+    # Adresses stables (29/09/2026) : une fiche garde l'adresse sous laquelle elle a été publiée,
+    # même si FINESS change le nom ou la commune de l'établissement (le numéro FINESS, lui, ne change
+    # pas). Registre : seo/urls_fiches.json, complété à chaque construction, jamais purgé.
+    REG_P = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'urls_fiches.json')
+    REG = json.load(open(REG_P, encoding='utf-8')) if os.path.exists(REG_P) else {}
     url_fiche = {}
     vus = set()
     for r in fiches:
         v = slug_ville.get(r['cle'], slug(r['ville_nom']))
-        u = f"/ehpad/{v}/{slug(r['nom_url'])[:60].strip('-')}-{r['fin']}/"
+        u = REG.get(r['fin']) or f"/ehpad/{v}/{slug(r['nom_url'])[:60].strip('-')}-{r['fin']}/"
         url_fiche[r['fin']] = u
         assert u not in vus, u
         vus.add(u)
+        REG[r['fin']] = u
+    json.dump(dict(sorted(REG.items())), open(REG_P, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
+    ctx_retirees = {f: u for f, u in REG.items() if f not in url_fiche}
     set_fiches = set(url_fiche)
 
     def lien_de(r):
@@ -178,6 +186,7 @@ def main():
     import etudes
     etudes.construire(ctx, ecrire)
     redirections(ctx)
+    fiches_retirees(ctx, ctx_retirees)
     sitemaps()
     print(f"→ {len(URLS)} pages écrites")
     # en dernier : les mots du lexique soulignés sur toutes les pages (accueil et annexes comprises)
@@ -266,6 +275,29 @@ def redirections(ctx):
             f'<a href="{cible}">Voir sa fiche</a>.</p></body></html>')
         n += 1
     print('redirections de communes à établissement unique :', n)
+
+
+def fiches_retirees(ctx, retirees):
+    """Établissement fermé, ou qui n'a plus de fiche : son ancienne adresse redirige vers la page de sa
+    commune (ou, à défaut, la liste nationale). Même mécanisme que ci-dessus (meta refresh à 0 s,
+    traité par Google comme une redirection permanente), pour ne pas laisser en ligne une fiche
+    périmée ni une erreur 404 sur une adresse déjà indexée."""
+    urls_villes = set(ctx['url_ville'][c] for c in ctx['villes_page'])
+    n = 0
+    for fin, u in sorted(retirees.items()):
+        ville = '/'.join(u.strip('/').split('/')[:2]) 
+        cible = f'/{ville}/' if f'/{ville}/' in urls_villes else '/ehpad/'
+        chemin = os.path.join(OUT, u.strip('/'), 'index.html')
+        os.makedirs(os.path.dirname(chemin), exist_ok=True)
+        open(chemin, 'w', encoding='utf-8').write(
+            '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">'
+            f'<link rel="canonical" href="{DOMAINE}{cible}">'
+            f'<meta http-equiv="refresh" content="0; url={cible}">'
+            f'<title>Établissement retiré du répertoire FINESS</title></head>'
+            f'<body><p>Cet établissement ne figure plus parmi les EHPAD en activité du répertoire FINESS. '
+            f'<a href="{cible}">Voir les EHPAD de la commune</a>.</p></body></html>')
+        n += 1
+    print('fiches retirées (redirigées) :', n)
 
 
 def feuille_de_style():
