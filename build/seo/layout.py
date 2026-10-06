@@ -6,6 +6,7 @@ from base import DOMAINE, MARQUE, CONTACT, MAJ, MAJ_ISO, esc, AUTEUR, AUTEUR_URL
 # de service pour les trois gabarits, sinon ils divergent en silence.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mesure
+import reassurance
 MESURE = mesure.extrait()
 
 AMORCE_THEME = """<script>/* Thème : appliqué avant le premier rendu, sinon la page clignote en blanc. */
@@ -72,6 +73,7 @@ NAV = """<header class="top"><div class="top-in">
 <button type="button" class="tb-icon tb-sw js-theme" role="switch" aria-checked="false" aria-label="Mode sombre" title="Mode sombre : activer ou désactiver"><span class="sw-txt" aria-hidden="true">Sombre</span><span class="sw-piste" aria-hidden="true"><span class="sw-pouce"><svg class="ico-lune" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M16.5 12.4A7 7 0 0 1 7.6 3.5a7 7 0 1 0 8.9 8.9Z"/></svg><svg class="ico-soleil" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.6v2M10 16.4v2M2.6 10h-2M19.4 10h-2M4.8 4.8 3.4 3.4M16.6 16.6l-1.4-1.4M15.2 4.8l1.4-1.4M3.4 16.6l1.4-1.4"/></svg></span></span></button></div></header>"""
 
 PIED = f"""<footer class="foot"><div class="foot-in">
+{reassurance.bloc()}
 <nav aria-label="Pied de page">
 <a href="/">Accueil</a>
 <a href="/ehpad/">Les EHPAD en France</a>

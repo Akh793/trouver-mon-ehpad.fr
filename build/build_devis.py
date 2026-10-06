@@ -973,7 +973,7 @@ def main():
              .replace('{SOCLE}', socle_html)
              + '<style>' + STYLE + '</style>\n<script>' + SCRIPT + '</script>')
 
-    html = bp.HEAD.format(
+    html = bp.HEAD.format(reassur=bp.reassurance.bloc(), 
         title='Comparer vos devis d’EHPAD, poste par poste',
         desc='Recopiez les lignes de vos devis d’EHPAD : coût mensuel réel tout compris, et ce que '
              'chaque établissement inclut ou facture en plus. Gratuit, rien n’est envoyé.',

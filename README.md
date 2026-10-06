@@ -8,7 +8,7 @@
 Comparateur indépendant, gratuit, sans inscription et sans démarchage commercial.
 
 [![Site web](https://img.shields.io/website?url=https%3A%2F%2Ftrouver-mon-ehpad.fr&label=trouver-mon-ehpad.fr&up_message=en%20ligne&down_message=hors%20ligne&style=flat-square)](https://trouver-mon-ehpad.fr/)
-[![Réutilisation data.gouv.fr](https://img.shields.io/badge/data.gouv.fr-r%C3%A9utilisation-000091?style=flat-square)](https://www.data.gouv.fr/fr/reuses/trouver-mon-ehpad-fr/)
+[![Réutilisation data.gouv.fr](https://img.shields.io/badge/data.gouv.fr-r%C3%A9utilisation-000091?style=flat-square)](https://www.data.gouv.fr/reuses/trouver-mon-ehpad-calculateur-du-reste-a-charge-net-aides-apa-apl-2026)
 [![Avis Trustpilot](https://img.shields.io/badge/Trustpilot-avis-00B67A?style=flat-square&logo=trustpilot&logoColor=white)](https://fr.trustpilot.com/review/trouver-mon-ehpad.fr)
 [![Publication](https://img.shields.io/github/actions/workflow/status/Akh793/trouver-mon-ehpad.fr/pages.yml?branch=main&label=publication&style=flat-square)](https://github.com/Akh793/trouver-mon-ehpad.fr/actions/workflows/pages.yml)
 [![Dernier commit](https://img.shields.io/github/last-commit/Akh793/trouver-mon-ehpad.fr?label=mise%20%C3%A0%20jour&style=flat-square)](https://github.com/Akh793/trouver-mon-ehpad.fr/commits/main)
@@ -113,7 +113,7 @@ cd site && python3 -m http.server 8000
 | | |
 |---|---|
 | 🌐 **Site officiel** | [trouver-mon-ehpad.fr](https://trouver-mon-ehpad.fr/) |
-| 🇫🇷 **Réutilisation data.gouv.fr** | [Fiche de réutilisation](https://www.data.gouv.fr/fr/reuses/trouver-mon-ehpad-fr/) |
+| 🇫🇷 **Réutilisation data.gouv.fr** | [Fiche de réutilisation](https://www.data.gouv.fr/reuses/trouver-mon-ehpad-calculateur-du-reste-a-charge-net-aides-apa-apl-2026) |
 | ⭐ **Avis** | [Trustpilot](https://fr.trustpilot.com/review/trouver-mon-ehpad.fr) |
 | 💼 **LinkedIn** | [Trouver mon EHPAD](https://www.linkedin.com/company/trouver-mon-ehpad/) |
 | 📘 **Facebook** | [Page Facebook](https://www.facebook.com/profile.php?id=61595177609655) |

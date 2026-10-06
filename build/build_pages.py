@@ -2,6 +2,7 @@
 """Génère les pages annexes : même gabarit, CSS inliné, aucun JS hors bandeau de consentement."""
 import os
 import mesure
+import reassurance
 SITE = '../site'
 FONT = open('fontface.css', encoding='utf-8').read()
 CSS = open('site.css', encoding='utf-8').read()
@@ -76,6 +77,7 @@ if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}}catch
 {body}
 </section>
 <footer id="site-footer">
+  {reassur}
   <nav aria-label="Pied de page">
     <a href="/">Accueil</a>
     <a href="/ehpad/">Les EHPAD en France</a>
@@ -328,13 +330,13 @@ if _cr:
 <tbody>{''.join(_ligne(c) for c in sorted(_cr, key=lambda c: _noms.get(c['fin'], {}).get('nom', '')))}</tbody></table></div>"""})
 
 for p in PAGES:
-    html = HEAD.format(title=p['title'], desc=p['desc'], slug=p['slug'], robots=p['robots'],
+    html = HEAD.format(reassur=reassurance.bloc(), title=p['title'], desc=p['desc'], slug=p['slug'], robots=p['robots'],
                        h1=p['h1'], body=p['body'], font=FONT, css=CSS,
                        jsonld=crumb(p['h1'], p['slug']) + (PERSONNE_LD if p['file'] == 'qui-sommes-nous.html' else ''),
                        mesure=MESURE)
     open(os.path.join(SITE, p['file']), 'w', encoding='utf-8').write(html)
 
 open(os.path.join(SITE, '404.html'), 'w', encoding='utf-8').write(
-    HEAD.format(title='Page introuvable | Trouver mon EHPAD', desc='Cette page n’existe pas.', slug='404.html',
+    HEAD.format(reassur=reassurance.bloc(), title='Page introuvable | Trouver mon EHPAD', desc='Cette page n’existe pas.', slug='404.html',
                 robots='noindex, follow', h1='Page introuvable', body=NOTFOUND, font=FONT, css=CSS, jsonld='', mesure=MESURE))
 print('pages annexes générées :', [p['file'] for p in PAGES] + ['404.html'])

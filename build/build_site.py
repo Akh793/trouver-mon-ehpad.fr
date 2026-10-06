@@ -2,6 +2,7 @@
 """Assemble index.html : CSS inlinés, FAQ synchronisée avec data.js (texte identique au balisage FAQPage)."""
 import json, subprocess, html, re, os
 import mesure
+import reassurance
 SITE='../site'
 # json.dumps produit un littéral de chaîne JavaScript correctement échappé.
 # Sans lui, un chemin Windows « C:\Users\rival\… » voit ses \U, \r, \t interprétés
@@ -39,6 +40,8 @@ out = (tpl.replace('{FONTFACE}', open('fontface.css', encoding='utf-8').read())
           .replace('{SITECSS}', open('site.css', encoding='utf-8').read())
           .replace('{FAQ_HTML}', faq_html)
           .replace('{MESURE}', mesure.extrait())
+          .replace('{REASSUR_RES}', reassurance.bloc('reassur-res'))
+          .replace('{REASSUR}', reassurance.bloc())
           # Le gabarit porte « "mainEntity": [FAQ_JSONLD] » : les crochets sont ceux du
           # tableau JSON. Les remplacer avec le marqueur produisait « "mainEntity": {…},{…} »,
           # un JSON-LD invalide qu'aucun moteur ne lisait. On ne remplace que le marqueur.

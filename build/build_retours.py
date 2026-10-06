@@ -174,7 +174,7 @@ STYLE = """
 def main():
     import build_pages as bp
     corps = CORPS + '<style>' + STYLE + '</style>\n<script>' + SCRIPT.replace('__API__', API) + '</script>'
-    html = bp.HEAD.format(
+    html = bp.HEAD.format(reassur=bp.reassurance.bloc(), 
         title='Vos retours sur le site | Trouver mon EHPAD',
         desc='Écrivez ce qui vous a aidé et ce qui vous a manqué sur trouver-mon-ehpad.fr. '
              'Les messages sont lus avant publication.',

@@ -1087,3 +1087,31 @@ input.guide:focus{animation:none}
   .coche-ok{animation:coche-fondu 1s linear forwards}.coche-ok path{animation:none;stroke-dashoffset:0}
   @keyframes coche-fondu{0%,70%{opacity:1}100%{opacity:0}}
 }
+
+/* Bloc de réassurance (06/10/2026) : pied de page et sous les résultats. Horizontal sur ordinateur,
+   empilé et centré sur mobile ; couleurs du thème, donc clair et sombre. */
+.reassur{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1rem;width:100%}
+.reassur:not(.reassur-res){padding-bottom:1.1rem;border-bottom:1px solid var(--bd)}
+#liste:empty~.reassur-res{display:none}
+.reassur .re-badge{display:inline-flex;align-items:center;gap:.6rem;padding:.55rem .9rem .55rem .6rem;border:1px solid var(--bd);
+  border-radius:12px;background:var(--surf);color:var(--ink);text-decoration:none;line-height:1.2;
+  transition:border-color .2s,box-shadow .2s,transform .2s}
+.reassur .re-badge:hover{color:var(--ink);border-color:var(--bl-t);box-shadow:0 6px 16px rgba(37,72,255,.12);transform:translateY(-1px)}
+.reassur .re-badge:focus-visible{outline:2px solid var(--bl-t);outline-offset:2px}
+.re-ico{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;flex:0 0 auto}
+.re-ico svg{width:20px;height:20px}
+.re-tp .re-ico{background:#00b67a;color:#fff}
+.re-dg .re-ico{background:var(--ti-bl);color:var(--bl-t)}
+.re-txt b{display:block;font-size:.84rem;font-weight:700}
+.re-txt small{display:block;font-size:.72rem;color:var(--mut);margin-top:.1rem}
+.re-eng{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin:0 0 0 auto;font-size:.8rem;font-weight:700;color:var(--ink)}
+.re-eng span{display:inline-flex;align-items:center;gap:.35rem}
+.re-eng span::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--co)}
+.reassur-res{margin-top:1.2rem;padding:1rem;border:1px dashed var(--bd);border-radius:var(--r2);background:var(--bg)}
+@media (max-width:640px){
+  .reassur{flex-direction:column;align-items:stretch;text-align:left}
+  .reassur .re-badge{justify-content:flex-start}
+  .re-eng{margin:0;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.reassur .re-badge{transition:none}.reassur .re-badge:hover{transform:none}}
+@media print{.reassur{display:none}}
